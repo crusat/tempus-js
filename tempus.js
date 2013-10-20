@@ -153,12 +153,11 @@ var TempusJS = function () {
         var resultIndex = 0;
         var daysCount = this.between(dateFrom, dateTo, 'day');
         var i = 0;
-        while (i < (daysCount - (daysCount % 7) + 7)) {
+        while (i < (daysCount - (daysCount % 7) + (daysCount % 7 > 0 ? 7 : 0))) {
             if (i % 7 === 0) {
                 result.push([]);
                 resultIndex = result.length - 1;
             }
-            console.log(daysCount);
             if ((i < 7)&&(i < dateFromDayOfWeek)) {
                 result[resultIndex].push(null);
                 daysCount++;
