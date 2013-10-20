@@ -69,10 +69,11 @@ var TempusJS = function () {
         }
     };
 
+    // Algorithm author: Tomohiko Sakamoto in 1993.
     this.getDayOfWeek = function(year, month, day) {
         year = parseInt(year);
         month = parseInt(month);
-        day=parseInt(day);
+        day = parseInt(day);
         var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
         year -= month < 3;
         return _daysShortNames[(year + year/4 - year/100 + year/400 + t[month-1] + day) % 7];
