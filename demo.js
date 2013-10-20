@@ -60,7 +60,7 @@ function ready() {
         month: 10,
         day: 31
     };
-    var arr = tempus.getArrayOfDays(date_begin, date_end);
+    var arr = tempus.getDaysArrayByWeek(date_begin, date_end);
     console.log(arr);
 //    for (year = 1900; year <= current_year; year++) {
 //        if (year % 20 === 0) {

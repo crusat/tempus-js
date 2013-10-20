@@ -9,6 +9,9 @@ var TempusJS = function () {
     var _daysShortNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     var _daysLongNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 
+    var YEAR_DAYS_COUNT_NOT_LEAP = 365;
+    var YEAR_DAYS_COUNT_LEAP = 366;
+
     // now method
     this.now = function () {
         return Math.floor((new Date()).getTime() / 1000);
@@ -109,25 +112,55 @@ var TempusJS = function () {
         return newDate;
     };
 
-    this.getArrayOfDays = function(dateFrom, dateTo) {
+    this.between = function(dateFrom, dateTo, type) {
+        var date = JSON.parse(JSON.stringify(dateFrom));
+        if (type === 'day') {
+            var daysBetween = 1;
+            var finished = false;
+            while (!finished) {
+                finished = true;
+                if ((date.year !== dateTo.year)||(date.month !== dateTo.month)||(date.day !== dateTo.day)) {
+                    date.day += 1;
+                    daysBetween += 1;
+                    finished = false;
+                }
+                var dayInMonth = this.getDaysCountInMonth(date.month, date.year);
+                if (date.day > dayInMonth) {
+                    date.month += 1;
+                    date.day -= dayInMonth;
+                    finished = false;
+                }
+                if (date.month > _MONTH_COUNT) {
+                    date.year += 1;
+                    date.month -= _MONTH_COUNT;
+                    finished = false;
+                }
+            }
+            return daysBetween;
+        }
+        return undefined;
+    };
+
+    this.getDaysArrayByWeek = function(dateFrom, dateTo) {
         if (typeof dateFrom === 'object') {
             var dateFromDayOfWeek = this.getDayOfWeek(dateFrom.year, dateFrom.month, dateFrom.day);
         }
-        console.log(dateFromDayOfWeek);
+        if (typeof dateTo === 'object') {
+            var dateToDayOfWeek = this.getDayOfWeek(dateTo.year, dateTo.month, dateTo.day);
+        }
         var date = JSON.parse(JSON.stringify(dateFrom));
         var result = [];
         result.push([]);
-        for (var i=0; i < 7; i++) {
-            if (i < dateFromDayOfWeek) {
-                result[0].push(null);
-            } else {
+        var days_count = tempus.between(dateFrom, dateTo, 'day');
+        for (var i = 0; i < days_count; i++) {
+//            if ((i < dateFromDayOfWeek)||(i > dateToDayOfWeek)) {
+//                result[0].push(null);
+//            } else {
                 result[0].push(date);
                 date = this.incDate(date, 1, 'day');
-            }
+//            }
 
         }
-//        return [[null, null, null, {day: 30, month: 1}, {day:31, month: 1}],
-//            [{day: 1, month: 2}, {day:2, month:2}, {day:3, month:2}], [], []];
         return result;
     };
 
