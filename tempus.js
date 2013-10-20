@@ -150,16 +150,27 @@ var TempusJS = function () {
         }
         var date = JSON.parse(JSON.stringify(dateFrom));
         var result = [];
-        result.push([]);
-        var days_count = tempus.between(dateFrom, dateTo, 'day');
-        for (var i = 0; i < days_count; i++) {
-//            if ((i < dateFromDayOfWeek)||(i > dateToDayOfWeek)) {
-//                result[0].push(null);
-//            } else {
-                result[0].push(date);
-                date = this.incDate(date, 1, 'day');
-//            }
-
+        var resultIndex = 0;
+        var daysCount = this.between(dateFrom, dateTo, 'day');
+        for (var i = 0; i < daysCount; i++) {
+            if (i % 7 === 0) {
+                result.push([]);
+            }
+            resultIndex = result.length - 1;
+            if (i < 7) {
+                if (i < dateFromDayOfWeek) {
+                    result[resultIndex].push(null);
+                }
+            } else {
+                if (i > daysCount) {
+                    if (i > dateToDayOfWeek) {
+                        result[resultIndex].push(null);
+                    }
+                } else {
+                    result[resultIndex].push(date);
+                    date = this.incDate(date, 1, 'day');
+                }
+            }
         }
         return result;
     };
