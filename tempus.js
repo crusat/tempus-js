@@ -5,6 +5,9 @@ var TempusJS = function () {
     var _monthLongNames = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september',
         'october', 'november', 'december'];
 
+    var _daysShortNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    var _daysLongNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
     // now method
     this.now = function () {
         return Math.floor((new Date()).getTime() / 1000);
@@ -56,6 +59,19 @@ var TempusJS = function () {
         } else {
             return _monthShortNames;
         }
+    };
+
+    this.getDaysNames = function(longNames) {
+        if (longNames === true) {
+            return _daysLongNames;
+        } else {
+            return _daysShortNames;
+        }
+    };
+
+    this.getArrayOfDays = function(dateFrom, dateTo) {
+        return [[null, null, null, {day: 30, month: 1}, {day:31, month: 1}],
+            [{day: 1, month: 2}, {day:2, month:2}, {day:3, month:2}], [], []];
     };
 
     // *** HELPERS ***
