@@ -50,13 +50,29 @@ function ready() {
     }
     domDaysArray.appendChild(tr);
     // counts
-//    tr = document.createElement('tr');
-//    for (month = 1; month <= MONTH_COUNT; month++) {
+    var date_begin = {
+        year: 2013,
+        month: 10,
+        day: 1
+    };
+    var date_end = {
+        year: 2013,
+        month: 10,
+        day: 31
+    };
+    var arr = tempus.getArrayOfDays(date_begin, date_end);
+    console.log(arr);
+//    for (year = 1900; year <= current_year; year++) {
+//        if (year % 20 === 0) {
+//            tr = document.createElement('tr');
+//        }
 //        td = document.createElement('td');
-//        td.appendChild(document.createTextNode(tempus.getDaysCountInMonth(month)));
+//        td.appendChild(document.createTextNode(year + (tempus.isLeapYear(year) ? ' Leap': '')));
 //        tr.appendChild(td);
+//        if ((year % 10 === 0)||(year === current_year)) {
+//            domYears.appendChild(tr);
+//        }
 //    }
-//    domDaysArray.appendChild(tr);
 }
 
 window.addEventListener("load", ready, false);

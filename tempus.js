@@ -4,6 +4,7 @@ var TempusJS = function () {
     var _monthShortNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
     var _monthLongNames = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september',
         'october', 'november', 'december'];
+    var _MONTH_COUNT = 12;
 
     var _daysShortNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     var _daysLongNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
@@ -76,12 +77,58 @@ var TempusJS = function () {
         day = parseInt(day);
         var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
         year -= month < 3;
-        return _daysShortNames[(year + year/4 - year/100 + year/400 + t[month-1] + day) % 7];
+        return Math.floor((year + year/4 - year/100 + year/400 + t[month-1] + day) % 7);
+    };
+
+    this.incDate = function(date, value, type) {
+        if (typeof date === 'object') {
+
+        } else {
+            return undefined;
+        }
+        var newDate = JSON.parse(JSON.stringify(date));
+        if (type === 'day') {
+            newDate.day += parseInt(value);
+        }
+        // normalize
+        var normalized = false;
+        while (!normalized) {
+            normalized = true;
+            var dayInMonth = this.getDaysCountInMonth(newDate.month, newDate.year);
+            if (newDate.day > dayInMonth) {
+                newDate.month += 1;
+                newDate.day -= dayInMonth;
+                normalized = false;
+            }
+            if (newDate.month > _MONTH_COUNT) {
+                newDate.year += 1;
+                newDate.month -= _MONTH_COUNT;
+                normalized = false;
+            }
+        }
+        return newDate;
     };
 
     this.getArrayOfDays = function(dateFrom, dateTo) {
-        return [[null, null, null, {day: 30, month: 1}, {day:31, month: 1}],
-            [{day: 1, month: 2}, {day:2, month:2}, {day:3, month:2}], [], []];
+        if (typeof dateFrom === 'object') {
+            var dateFromDayOfWeek = this.getDayOfWeek(dateFrom.year, dateFrom.month, dateFrom.day);
+        }
+        console.log(dateFromDayOfWeek);
+        var date = JSON.parse(JSON.stringify(dateFrom));
+        var result = [];
+        result.push([]);
+        for (var i=0; i < 7; i++) {
+            if (i < dateFromDayOfWeek) {
+                result[0].push(null);
+            } else {
+                result[0].push(date);
+                date = this.incDate(date, 1, 'day');
+            }
+
+        }
+//        return [[null, null, null, {day: 30, month: 1}, {day:31, month: 1}],
+//            [{day: 1, month: 2}, {day:2, month:2}, {day:3, month:2}], [], []];
+        return result;
     };
 
     // *** HELPERS ***
