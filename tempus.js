@@ -153,21 +153,22 @@ var TempusJS = function () {
         var resultIndex = 0;
         var daysCount = this.between(dateFrom, dateTo, 'day');
         var i = 0;
-        while (i < daysCount) {
+        while (i < (daysCount - (daysCount % 7) + 7)) {
             if (i % 7 === 0) {
                 result.push([]);
                 resultIndex = result.length - 1;
             }
+            console.log(daysCount);
             if ((i < 7)&&(i < dateFromDayOfWeek)) {
                 result[resultIndex].push(null);
+                daysCount++;
             } else {
-                if (i > daysCount+14) {
-                    if (i > dateToDayOfWeek) {
-                        result[resultIndex].push(null);
-                    }
+                if ((i > (daysCount - 1))&&(i > dateToDayOfWeek)) {
+                    result[resultIndex].push(null);
                 } else {
                     result[resultIndex].push(date);
                     date = this.incDate(date, 1, 'day');
+
                 }
             }
             i++;

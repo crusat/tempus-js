@@ -52,19 +52,19 @@ function ready() {
     // counts
     var date_begin = {
         year: 2013,
-        month: 10,
+        month: 11,
         day: 1
     };
     var date_end = {
         year: 2013,
-        month: 10,
-        day: 31
+        month: 11,
+        day: 30
     };
     var arr = tempus.getDaysArrayByWeek(date_begin, date_end);
     console.log(arr);
     for (var i = 0; i < arr.length; i++) {
         tr = document.createElement('tr');
-        for (var j = 0; j < arr.length; j++) {
+        for (var j = 0; j < arr[i].length; j++) {
             td = document.createElement('td');
             td.appendChild(document.createTextNode(arr[i][j] !== null ? arr[i][j].day : ''));
             tr.appendChild(td);
