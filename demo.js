@@ -62,17 +62,15 @@ function ready() {
     };
     var arr = tempus.getDaysArrayByWeek(date_begin, date_end);
     console.log(arr);
-//    for (year = 1900; year <= current_year; year++) {
-//        if (year % 20 === 0) {
-//            tr = document.createElement('tr');
-//        }
-//        td = document.createElement('td');
-//        td.appendChild(document.createTextNode(year + (tempus.isLeapYear(year) ? ' Leap': '')));
-//        tr.appendChild(td);
-//        if ((year % 10 === 0)||(year === current_year)) {
-//            domYears.appendChild(tr);
-//        }
-//    }
+    for (var i = 0; i < arr.length; i++) {
+        tr = document.createElement('tr');
+        for (var j = 0; j < arr.length; j++) {
+            td = document.createElement('td');
+            td.appendChild(document.createTextNode(arr[i][j] !== null ? arr[i][j].day : ''));
+            tr.appendChild(td);
+        }
+        domDaysArray.appendChild(tr);
+    }
 }
 
 window.addEventListener("load", ready, false);

@@ -152,7 +152,8 @@ var TempusJS = function () {
         var result = [];
         var resultIndex = 0;
         var daysCount = this.between(dateFrom, dateTo, 'day');
-        for (var i = 0; i < daysCount+14; i++) {
+        var i = 0;
+        while (i < daysCount) {
             if (i % 7 === 0) {
                 result.push([]);
                 resultIndex = result.length - 1;
@@ -169,6 +170,7 @@ var TempusJS = function () {
                     date = this.incDate(date, 1, 'day');
                 }
             }
+            i++;
         }
         return result;
     };
