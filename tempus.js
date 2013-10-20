@@ -50,6 +50,14 @@ var TempusJS = function () {
         return undefined;
     };
 
+    this.getMonthNames = function(longNames) {
+        if (longNames === true) {
+            return _monthLongNames;
+        } else {
+            return _monthShortNames;
+        }
+    };
+
     // *** HELPERS ***
     var indexOf = function (obj, fromIndex) {
         if (fromIndex == null) {

@@ -1,11 +1,11 @@
 function ready() {
-    var tr, td;
+    var tr, td, year, month;
     // current time
     document.getElementById('currentTime').innerHTML = tempus.now();
     // leap years
     var domYears = document.getElementById('years');
     var current_year = 2013;
-    for (var year = 1900; year <= current_year; year++) {
+    for (year = 1900; year <= current_year; year++) {
         if (year % 20 === 0) {
             tr = document.createElement('tr');
         }
@@ -19,8 +19,18 @@ function ready() {
     // days in month
     var MONTH_COUNT = 12;
     var domDaysInMonth = document.getElementById('daysInMonth');
+    // th
+    var monthNames = tempus.getMonthNames(true);
     tr = document.createElement('tr');
-    for (var month = 1; month <= MONTH_COUNT; month++) {
+    for (month = 0; month < monthNames.length; month++) {
+        td = document.createElement('td');
+        td.appendChild(document.createTextNode(monthNames[month]));
+        tr.appendChild(td);
+    }
+    domDaysInMonth.appendChild(tr);
+    // counts
+    tr = document.createElement('tr');
+    for (month = 1; month <= MONTH_COUNT; month++) {
         td = document.createElement('td');
         td.appendChild(document.createTextNode(tempus.getDaysCountInMonth(month)));
         tr.appendChild(td);
