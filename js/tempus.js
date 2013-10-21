@@ -31,9 +31,9 @@
                 month: currentDate.getMonth() + 1, // js default months beginning from 0.
                 day: currentDate.getDate(),
                 dayOfWeek: currentDate.getDay(),
-                hour: currentDate.getHours(),
-                minute: currentDate.getMinutes(),
-                second: currentDate.getSeconds(),
+                hours: currentDate.getHours(),
+                minutes: currentDate.getMinutes(),
+                seconds: currentDate.getSeconds(),
                 timestamp: Math.floor(currentDate.getTime() / 1000)
             };
         };
@@ -95,10 +95,19 @@
         };
 
         // Algorithm author: Tomohiko Sakamoto in 1993.
-        this.getDayOfWeek = function (year, month, day) {
-            year = parseInt(year);
-            month = parseInt(month);
-            day = parseInt(day);
+        this.getDayOfWeek = function (dateOrYear, month, day) {
+            var year;
+            if (typeof dateOrYear === 'object') {
+                year = dateOrYear.year;
+                month = dateOrYear.month;
+                day = dateOrYear.day;
+            } else if (typeof dateOrYear === 'number') {
+                year = parseInt(dateOrYear);
+                month = parseInt(month);
+                day = parseInt(day);
+            } else {
+                return undefined;
+            }
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
             year -= month < 3;
             return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
@@ -206,20 +215,20 @@
             var result = format;
             var d;
             if (typeof date === 'number') {
-                d = new DateTime(date);
+                d = new Date(date);
             } else if (typeof date === 'object') {
-                d = new DateTime(date.year, date.month, date.day, date.hour, date.minute, date.second);
+                d = new Date(date.year, date.month, date.day, date.hours, date.minutes, date.seconds);
             } else {
                 return undefined;
             }
             // vars
             var timestamp = Math.floor(d.getTime() / 1000);
-            var day = formattingWithNulls(d.getDay(), 2);
+            var day = formattingWithNulls(d.getDate(), 2);
             var month = formattingWithNulls(d.getMonth(), 2);
-            var full_year = formattingWithNulls(d.getYear(), 4);
-            var day_number = d.getDayOfWeek();
-            var day_name_short = d.getDayOfWeek('short');
-            var day_name_long = d.getDayOfWeek('long');
+            var full_year = formattingWithNulls(d.getFullYear(), 4);
+            var day_number = this.getDayOfWeek(date);
+            var day_name_short = this.getDayOfWeek(date, 'short');
+            var day_name_long = this.getDayOfWeek(date, 'long');
             var month_name_short = _monthShortNames[parseInt(month)-1];
             var month_name_long = _monthLongNames[parseInt(month)-1];
             var hour = formattingWithNulls(d.getHours(), 2);
