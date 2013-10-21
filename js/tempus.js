@@ -148,6 +148,46 @@
             return newDate;
         };
 
+        this.decDate = function (date, value, type) {
+            if (typeof date === 'object') {
+
+            } else {
+                return undefined;
+            }
+            var newDate = JSON.parse(JSON.stringify(date));
+            console.log('newDate', newDate);
+            if (type === 'day') {
+                newDate.day -= parseInt(value);
+            }
+            if (type === 'month') {
+                newDate.month -= parseInt(value);
+            }
+            if (type === 'year') {
+                newDate.year -= parseInt(value);
+            }
+            console.log('newDate2', newDate);
+            // normalize
+            var normalized = false;
+            while (!normalized) {
+                normalized = true;
+                if (newDate.day < 1) {
+                    newDate.month -= 1;
+                    if (newDate.month > 0) {
+                        newDate.day += this.getDaysCountInMonth(newDate.month, newDate.year);
+                    } else {
+                        newDate.day += this.getDaysCountInMonth(_MONTH_COUNT, newDate.year);
+                    }
+                    normalized = false;
+                }
+                if (newDate.month < 1) {
+                    newDate.year -= 1;
+                    newDate.month += _MONTH_COUNT;
+                    normalized = false;
+                }
+            }
+            return newDate;
+        };
+
         this.between = function (dateFrom, dateTo, type) {
             var date = JSON.parse(JSON.stringify(dateFrom));
             if (type === 'day') {
