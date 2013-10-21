@@ -13,8 +13,22 @@ var TempusJS = function () {
     var YEAR_DAYS_COUNT_LEAP = 366;
 
     // now method
-    this.now = function () {
+    this.time = function () {
         return Math.floor((new Date()).getTime() / 1000);
+    };
+
+    this.now = function () {
+        var currentDate = new Date();
+        return {
+            year: currentDate.getFullYear(),
+            month: currentDate.getMonth() + 1, // js default months beginning from 0.
+            day: currentDate.getDate(),
+            dayOfWeek: currentDate.getDay(),
+            hour: currentDate.getHours(),
+            minute: currentDate.getMinutes(),
+            second: currentDate.getSeconds(),
+            timestamp: Math.floor(currentDate.getTime()/1000)
+        };
     };
 
     // is leap year method

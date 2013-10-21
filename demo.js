@@ -1,7 +1,7 @@
 function ready() {
     var tr, td, year, month, day;
     // current time
-    document.getElementById('currentTime').innerHTML = tempus.now();
+    document.getElementById('currentTime').innerHTML = tempus.time();
     // leap years
     var domYears = document.getElementById('years');
     var current_year = 2013;
@@ -51,14 +51,14 @@ function ready() {
     domDaysArray.appendChild(tr);
     // counts
     var date_begin = {
-        year: 2013,
-        month: 10,
+        year: tempus.now().year,
+        month: tempus.now().month,
         day: 1
     };
     var date_end = {
-        year: 2013,
-        month: 10,
-        day: 31
+        year: tempus.now().year,
+        month: tempus.now().month,
+        day: tempus.getDaysCountInMonth(tempus.now().month, tempus.now().year)
     };
     var arr = tempus.getDaysArrayByWeek(date_begin, date_end);
     for (var i = 0; i < arr.length; i++) {
