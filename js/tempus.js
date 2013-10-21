@@ -155,7 +155,6 @@
                 return undefined;
             }
             var newDate = JSON.parse(JSON.stringify(date));
-            console.log('newDate', newDate);
             if (type === 'day') {
                 newDate.day -= parseInt(value);
             }
@@ -165,7 +164,6 @@
             if (type === 'year') {
                 newDate.year -= parseInt(value);
             }
-            console.log('newDate2', newDate);
             // normalize
             var normalized = false;
             while (!normalized) {
