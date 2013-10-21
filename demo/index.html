@@ -11,6 +11,12 @@
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/offcanvas.css" rel="stylesheet">
+    <script type="text/javascript" src="syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushJScript.js"></script>
+    <link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shCoreDefault.css"/>
+    <script>
+        SyntaxHighlighter.all();
+    </script>
 </head>
 <body>
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -182,9 +188,9 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Syntax</th>
-                                <th>Description</th>
-                                <th>Example</th>
+                                <th class="col-md-2">Syntax</th>
+                                <th class="col-md-2">Description</th>
+                                <th class="col-md-4">Example</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -192,7 +198,7 @@
                                 <td><pre>
 int time()</pre></td>
                                 <td>Return current timestamp in seconds.</td>
-                                <td><pre>
+                                <td><pre class="brush: js">
 // t = 1375976096;
 var t = tempus.time();</pre></td>
                             </tr>
@@ -200,19 +206,17 @@ var t = tempus.time();</pre></td>
                                 <td><pre>
 object now()</pre></td>
                                 <td>Return current date as object.</td>
-                                <td><pre>
-/*
-  t = {
-    day: 21,
-    dayOfWeek: 1,
-    hours: 15,
-    minutes: 10,
-    month: 10,
-    seconds: 3,
-    timestamp: 1382353803,
-    year: 2013
-  };
-*/
+                                <td><pre class="brush: js">
+//  t = {
+//    day: 21,
+//    dayOfWeek: 1,
+//    hours: 15,
+//    minutes: 10,
+//    month: 10,
+//    seconds: 3,
+//    timestamp: 1382353803,
+//    year: 2013
+//  };
 var t = tempus.now();</pre></td>
                             </tr>
                         </tbody>
