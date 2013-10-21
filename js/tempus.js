@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.2
+ * @version 0.3
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -40,7 +40,7 @@
 
         // is leap year method
         this.isLeapYear = function (year) {
-            year = parseInt(year);
+            year = year !== undefined ? parseInt(year) : this.now().year;
             if (year % 4 == 0) {
                 if (year % 100 == 0) {
                     return year % 400 == 0;
