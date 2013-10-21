@@ -1,3 +1,9 @@
+/**
+ * @author Aleksey Kuznetsov (me@akuzn.com)
+ * @version 0.1
+ * @url https://github.com/crusat/tempus-js
+ * @description Library with date/time functions
+ */
 (function () {
     var TempusJS = function () {
         // private
