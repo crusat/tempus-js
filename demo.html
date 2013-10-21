@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TempusJS">
+    <meta name="author" content="Kuznetsov Aleksey aka crusat">
+
+    <title>TempusJS</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/offcanvas.css" rel="stylesheet">
+</head>
+<body>
+<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">jQuery DateTime</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="tests.html">Tests</a></li>
+                <li><a href="https://github.com/crusat/jquery-datetime" target="_blank">View on Github</a></li>
+                <li><a href="http://akuzn.com" target="_blank">Contact</a></li>
+            </ul>
+        </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+</div><!-- /.navbar -->
+
+<div class="container">
+
+    <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas affix" id="sidebar" role="navigation">
+            <div class="well sidebar-nav col-sm-10">
+                <ul class="nav">
+                    <li><a href="#demo-live-preview">Live preview</a></li>
+                    <li><a href="#demo-format">Date/time format</a></li>
+                    <li><a href="#demo-current-time">Current date/time</a></li>
+                    <li><a href="#demo-format-datetime">Format method</a></li>
+                    <li><a href="#demo-reformat">Reformat method</a></li>
+                    <li><a href="#demo-strtotime">String to time method</a></li>
+                    <li><a href="#demo-validate">Validate method</a></li>
+                    <li><a href="#demo-validate-with-ranges">Validate with ranges</a></li>
+                    <li><a href="#demo-leap-years">Check is leap year</a></li>
+                </ul>
+            </div><!--/.well -->
+        </div><!--/span-->
+        <div class="col-md-offset-3 col-xs-12 col-sm-9">
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+            </p>
+            <div class="jumbotron">
+                <h1>jQuery DateTime demo</h1>
+                <p>This is demo examples of jQuery DateTime.</p>
+            </div>
+            <div class="row">
+                <div class="col-12 col-sm-12 col-lg-12">
+
+                <div class="bs-callout bs-callout-danger">
+                    <p>Here timestamps in seconds! In default JS in milliseconds!</p>
+                </div>
+
+                    <h2 id="demo-live-preview">Live preview</h2>
+                    <div>
+                        <label for="format_date_input_source_datetime">
+                            Source date/time:
+                            <input type="text" class="form-control" value="1375976096" id="format_date_input_source_datetime" />
+                        </label>
+                        <button class="btn btn-primary" id="format_date_btn_get_current">Get current date/time</button>
+                        <label for="format_date_checkbox_auto">
+                            <input type="checkbox" checked id="format_date_checkbox_auto" />
+                            Auto
+                        </label>
+                    </div>
+                    <div>
+                        <label for="format_date_input_source_format">
+                            Source format:
+                            <input type="text" class="form-control" value="%s" id="format_date_input_source_format" />
+                        </label>
+                    </div>
+                    <div>
+                        <label for="format_date_input_dest_format">
+                            Destination format:
+                            <input type="text" class="form-control" value="%d.%m.%Y %H:%M:%S" id="format_date_input_dest_format" />
+                        </label>
+                    </div>
+                    <div>
+                        <label for="format_date_input_result">
+                            Result:
+                            <input type="text" class="form-control" value="" id="format_date_input_result" readonly />
+                        </label>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" id="format_date_btn_start">Start</button>
+                        <label for="format_date_checkbox_auto_calculate">
+                            <input type="checkbox" checked id="format_date_checkbox_auto_calculate" />
+                            Auto
+                        </label>
+                    </div>
+
+                    <h2 id="demo-format">Format</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Directive</th>
+                                <th>Meaning</th>
+                                <th>Example</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>%d</td>
+                                <td>Day of the month as a zero-padded decimal number.</td>
+                                <td>01, 02, ..., 31</td>
+                            </tr>
+                            <tr>
+                                <td>%m</td>
+                                <td>Month as a zero-padded decimal number.</td>
+                                <td>01, 02, ..., 12</td>
+                            </tr>
+                            <tr>
+                                <td>%Y</td>
+                                <td>Year with century as a decimal number.</td>
+                                <td>1970, 1988, 2001, 2013</td>
+                            </tr>
+                            <tr>
+                                <td>%w</td>
+                                <td>Weekday as a decimal number, where 0 is Sunday and 6 is Saturday.</td>
+                                <td>0, 1, ..., 6</td>
+                            </tr>
+                            <tr>
+                                <td>%a</td>
+                                <td>Weekday abbreviated name.</td>
+                                <td>Sun, Mon, ..., Sat</td>
+                            </tr>
+                            <tr>
+                                <td>%A</td>
+                                <td>Weekday full name.</td>
+                                <td>Sunday, Monday, ..., Saturday</td>
+                            </tr>
+                            <tr>
+                                <td>%b</td>
+                                <td>Month abbreviated name.</td>
+                                <td>Jan, Feb, ..., Dec</td>
+                            </tr>
+                            <tr>
+                                <td>%B</td>
+                                <td>Month full name.</td>
+                                <td>January, February, ..., December</td>
+                            </tr>
+                            <tr>
+                                <td>%H</td>
+                                <td>Hour (24-hour clock) as a zero-padded decimal number.</td>
+                                <td>00, 01, ..., 23</td>
+                            </tr>
+                            <tr>
+                                <td>%M</td>
+                                <td>Minute as a zero-padded decimal number.</td>
+                                <td>00, 01, ..., 59</td>
+                            </tr>
+                            <tr>
+                                <td>%S</td>
+                                <td>Second as a zero-padded decimal number.</td>
+                                <td>00, 01, ..., 59</td>
+                            </tr>
+                            <tr>
+                                <td>%s</td>
+                                <td>Unix time (in seconds).</td>
+                                <td>0, ..., 1377157851, ..., 2147483647</td>
+                            </tr>
+                            <tr>
+                                <td>%s</td>
+                                <td>Unix time (in seconds).</td>
+                                <td>0, ..., 1377157851, ..., 2147483647</td>
+                            </tr>
+                            <tr>
+                                <td>%F</td>
+                                <td>ISO_8601 format (%Y-%m-%d).</td>
+                                <td>1970-01-01, ..., 2013-08-22, ...</td>
+                            </tr>
+                            <tr>
+                                <td>%D</td>
+                                <td>UK and USA format (%m/%d/%Y).</td>
+                                <td>01/01/1970, ..., 08/22/2013, ...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 id="demo-current-time">Getting current timestamp - without params</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime());">Run <span class="glyphicon glyphicon-play"></span></a>
+                    <pre>
+// Example result:
+// 1375976096
+var d = $.datetime();
+                    </pre>
+
+                    <h2>Getting current datetime</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 2013-08-08
+var d = $.datetime('%Y-%m-%d');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %H:%M:%S'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 2013-08-08 14:54:20
+var d = $.datetime('%Y-%m-%d %H:%M:%S');
+        </pre>
+
+                    <h2>Getting current datetime - all formatting</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 2013-03-14 4 3 Thu Thursday Mar March 14:57:01 1363258621 2013-03-14 03/14/2013
+// format like here: http://php.net/manual/function.strftime.php
+var d = $.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D');
+        </pre>
+
+                    <h2 id="demo-format-datetime">Format datetime</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.format('%d.%m.%Y', 1363046400));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 12.03.2013
+var d = $.datetime.format('%d.%m.%Y', 1363046400);
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.format('%a %d, %Y', 1363046400));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// Tue 12, 2013
+var d = $.datetime.format('%a %d, %Y', 1363046400);
+        </pre>
+
+                    <h2 id="demo-reformat">Reformat datetime</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-12', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 12.03.2013
+var d = $.datetime.reformat('2013-03-12', '%d.%m.%Y');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-15 16:00', '%a %d, %Y', '%Y-%m-%d %H:%M'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 15.03.2013
+var d = $.datetime.reformat('2013-03-15 16:00', '%d.%m.%Y', '%Y-%m-%d %H:%M');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-15T12:31:48', '%H:%M (%a %d, %Y)', '%Y-%m-%dT%H:%M:%S'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 12:31 (Fri 15, 2013)
+var d = $.datetime.reformat('2013-03-15T12:31:48', '%H:%M (%a %d, %Y)', '%Y-%m-%dT%H:%M:%S');
+        </pre>
+
+                    <h2 id="demo-strtotime">String to timestamp [+ by format]</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.strtotime('2013-03-12'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 1363046400
+var d = $.datetime.strtotime('2013-03-12');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.strtotime('2013-03-15 16:00', '%Y-%m-%d %H:%M'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// 1363348800
+var d = $.datetime.strtotime('2013-03-15 16:00', '%Y-%m-%d %H:%M');
+        </pre>
+
+                    <h2 id="demo-validate">Validate date/time by format</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('2013-03-12', '%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.validate('2013-03-12', '%Y-%m-%d');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('32.08.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// false
+var d = $.datetime.validate('32.08.2013', '%d.%m.%Y');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('29.02.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// false
+var d = $.datetime.validate('29.02.2013', '%d.%m.%Y');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('29.02.2012', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result (Leap year):
+// true
+var d = $.datetime.validate('29.02.2012', '%d.%m.%Y');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result (Leap year):
+// false
+var d = $.datetime.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');
+        </pre>
+
+                    <h2 id="demo-validate-with-ranges">Validate date/time by format with ranges</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('08.08.2013', '%d.%m.%Y', {year: {min:1970, max: 2038}}));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.validate('08.08.2013', '%d.%m.%Y', {year: {min:1970, max: 2038}});
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('08.08.1961', '%d.%m.%Y', {year: {min:1970, max: 2038}}));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// false
+var d = $.datetime.validate('08.08.1961', '%d.%m.%Y', {year: {min:1970, max: 2038}});
+        </pre>
+
+                    <h2>allow_empty param</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true);
+        </pre>
+
+                    <h2 id="demo-leap-years">Check is leap year</h2>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.isLeapYear(2013));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// false
+var d = $.datetime.isLeapYear(2013);
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.isLeapYear(2012));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.isLeapYear(2012);
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.isLeapYear(2000));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// true
+var d = $.datetime.isLeapYear(2000);
+        </pre>
+                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.isLeapYear(1900));">Run <span class="glyphicon glyphicon-play"></span></a>
+        <pre>
+// Example result:
+// false
+var d = $.datetime.isLeapYear(1900);
+        </pre>
+                </div><!--/span-->
+            </div><!--/row-->
+        </div><!--/span-->
+    </div><!--/row-->
+
+    <hr>
+
+    <footer>
+        <p>&copy; Kuznetsov Aleksey aka crusat, 2013</p>
+    </footer>
+
+</div><!--/.container-->
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery.datetime.js"></script>
+<script type="text/javascript" src="js/demo.js"></script>
+</body>
+</html>
