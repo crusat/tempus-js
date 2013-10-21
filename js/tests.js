@@ -27,6 +27,9 @@
         equal(tempus.isLeapYear(1900), false, '1900 is not leap year');
         equal(tempus.isLeapYear(1904), true, '1904 is leap year');
         equal(tempus.isLeapYear(1905), false, '1905 is not leap year');
+        for (var year = 1800; year <= yyyy; year++) {
+            equal(tempus.isLeapYear(year), isLeapYear(year), 'Dynamic test, year: ' + year);
+        }
     });
 })();
 
