@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.3
+ * @version 0.4
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -204,23 +204,24 @@
 
         this.format = function(format, date) {
             var result = format;
+            var d;
             if (typeof date === 'number') {
-                var d = new DateTime(date);
+                d = new DateTime(date);
             } else if (typeof date === 'object') {
-
+                d = new DateTime(date.year, date.month, date.day, date.hour, date.minute, date.second);
+            } else {
+                return undefined;
             }
-
-//            var months_names_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-//            var months_names_long = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             // vars
+            var timestamp = Math.floor(d.getTime() / 1000);
             var day = formattingWithNulls(d.getDay(), 2);
             var month = formattingWithNulls(d.getMonth(), 2);
             var full_year = formattingWithNulls(d.getYear(), 4);
             var day_number = d.getDayOfWeek();
             var day_name_short = d.getDayOfWeek('short');
             var day_name_long = d.getDayOfWeek('long');
-            var month_name_short = months_names_short[parseInt(month)-1];
-            var month_name_long = months_names_long[parseInt(month)-1];
+            var month_name_short = _monthShortNames[parseInt(month)-1];
+            var month_name_long = _monthLongNames[parseInt(month)-1];
             var hour = formattingWithNulls(d.getHours(), 2);
             var minutes = formattingWithNulls(d.getMinutes(), 2);
             var seconds = formattingWithNulls(d.getSeconds(), 2);
