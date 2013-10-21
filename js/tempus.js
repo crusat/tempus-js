@@ -202,6 +202,46 @@
             return result;
         };
 
+        this.format = function(format, date) {
+            var result = format;
+            if (typeof date === 'number') {
+                var d = new DateTime(date);
+            } else if (typeof date === 'object') {
+
+            }
+
+//            var months_names_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//            var months_names_long = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            // vars
+            var day = formattingWithNulls(d.getDay(), 2);
+            var month = formattingWithNulls(d.getMonth(), 2);
+            var full_year = formattingWithNulls(d.getYear(), 4);
+            var day_number = d.getDayOfWeek();
+            var day_name_short = d.getDayOfWeek('short');
+            var day_name_long = d.getDayOfWeek('long');
+            var month_name_short = months_names_short[parseInt(month)-1];
+            var month_name_long = months_names_long[parseInt(month)-1];
+            var hour = formattingWithNulls(d.getHours(), 2);
+            var minutes = formattingWithNulls(d.getMinutes(), 2);
+            var seconds = formattingWithNulls(d.getSeconds(), 2);
+            // formatting
+            result = result.replace('%d', day);
+            result = result.replace('%m', month);
+            result = result.replace('%Y', full_year);
+            result = result.replace('%w', day_number);
+            result = result.replace('%a', day_name_short);
+            result = result.replace('%A', day_name_long);
+            result = result.replace('%b', month_name_short);
+            result = result.replace('%B', month_name_long);
+            result = result.replace('%H', hour);
+            result = result.replace('%M', minutes);
+            result = result.replace('%S', seconds);
+            result = result.replace('%s', timestamp);
+            result = result.replace('%F', full_year + '-' + month + '-' + day);
+            result = result.replace('%D', month + '/' + day + '/' + full_year);
+            return result;
+        };
+
         // *** HELPERS ***
         var indexOf = function (obj, fromIndex) {
             if (fromIndex == null) {
@@ -215,6 +255,13 @@
             }
             return -1;
         };
+        var formattingWithNulls = function(val, symb_count) {
+            var v = val.toString();
+            while (v.length < symb_count) {
+                v = '0' + v;
+            }
+            return v;
+        }
     };
 
     window.tempus = new TempusJS();
