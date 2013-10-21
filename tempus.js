@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.1
+ * @version 0.2
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -113,6 +113,12 @@
             var newDate = JSON.parse(JSON.stringify(date));
             if (type === 'day') {
                 newDate.day += parseInt(value);
+            }
+            if (type === 'month') {
+                newDate.month += parseInt(value);
+            }
+            if (type === 'year') {
+                newDate.year += parseInt(value);
             }
             // normalize
             var normalized = false;
