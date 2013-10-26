@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.5
+ * @version 0.6
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -288,6 +288,70 @@
             result = result.replace('%F', full_year + '-' + month + '-' + day);
             result = result.replace('%D', month + '/' + day + '/' + full_year);
             return result;
+        };
+
+        this.parse = function(str, format) {
+            var lits = format.match(/(%d|%m|%Y|%H|%M|%S|%s)/g);
+    //            delete lits[0];
+            var format_re = format.replace(/(%d|%m|%H|%M|%S)/g, '(\\d{2})');
+            format_re = format_re.replace(/(%Y)/g, '(\\d{4})');
+            format_re = format_re.replace(/(%s)/g, '(\\d{1,10})'); //max timestamp is 2147483647.
+            var re = new RegExp(format_re, 'g');
+            var result = re.exec(str);
+            var result2 = [];
+            for (var i in result) {
+                if ((typeof result[i] === 'string')&&((format.length === 2) ||(result[i] !== str))) {
+                    result2.push(result[i]);
+                }
+            }
+            var day = 0;
+            var month = 0;
+            var full_year = 0;
+            var hour = 0;
+            var minutes = 0;
+            var seconds = 0;
+            var timestamp = 0;
+            for(var key in lits) {
+                switch(lits[key]) {
+                    case '%d':
+                        day = parseInt(result2[key]);
+                        day = isNaN(day) ? 0 : day;
+                        break;
+                    case '%m':
+                        month = parseInt(result2[key]);
+                        month = isNaN(month) ? 0 : month;
+                        break;
+                    case '%Y':
+                        full_year = parseInt(result2[key]);
+                        full_year = isNaN(full_year) ? 0 : full_year;
+                        break;
+                    case '%H':
+                        hour = parseInt(result2[key]);
+                        hour = isNaN(hour) ? 0 : hour;
+                        break;
+                    case '%M':
+                        minutes = parseInt(result2[key]);
+                        minutes = isNaN(minutes) ? 0 : minutes;
+                        break;
+                    case '%S':
+                        seconds = parseInt(result2[key]);
+                        seconds = isNaN(seconds) ? 0 : seconds;
+                        break;
+                    case '%s':
+                        timestamp = parseInt(result2[key]);
+                        timestamp = isNaN(timestamp) ? 0 : timestamp;
+                        break;
+                }
+            }
+            return {
+                day: day,
+                month: month,
+                year: full_year,
+                hour: hour,
+                minutes: minutes,
+                seconds: seconds,
+                timestamp: timestamp
+            }
         };
 
         // *** HELPERS ***
