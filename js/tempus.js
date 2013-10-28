@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.6
+ * @version 0.7
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -255,7 +255,12 @@
             if (typeof date === 'number') {
                 d = new Date(date);
             } else if (typeof date === 'object') {
-                d = new Date(date.year, date.month, date.day, date.hours, date.minutes, date.seconds);
+                d = new Date(date.year !== undefined ? date.year : 1970,
+                    date.month !== undefined ? date.month : 0,
+                    date.day !== undefined ? date.day : 1,
+                    date.hours !== undefined ? date.hours : 0,
+                    date.minutes !== undefined ? date.minutes : 0,
+                    date.seconds !== undefined ? date.seconds : 0);
             } else {
                 return undefined;
             }
