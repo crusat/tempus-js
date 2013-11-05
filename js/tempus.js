@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.10
+ * @version 0.0.12
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -20,8 +20,18 @@
         var YEAR_DAYS_COUNT_LEAP = 366;
 
         // now method
-        this.time = function () {
-            return Math.floor((new Date()).getTime() / 1000);
+        this.time = function (date) {
+            if (date !== undefined) {
+                return Math.floor((Date.UTC(
+                    date.year !== undefined ? date.year : 1970,
+                    date.month !== undefined ? date.month-1 : 0,
+                    date.day !== undefined ? date.day : 1,
+                    date.hours !== undefined ? date.hours : 0,
+                    date.minutes !== undefined ? date.minutes : 0,
+                    date.seconds !== undefined ? date.seconds : 0)) / 1000);
+            } else {
+                return Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000);
+            }
         };
 
         this.now = function (format) {
@@ -179,32 +189,24 @@
         };
 
         this.between = function (dateFrom, dateTo, type) {
-            var date = JSON.parse(JSON.stringify(dateFrom));
-            if (type === 'day') {
-                var daysBetween = 1;
-                var finished = false;
-                while (!finished) {
-                    finished = true;
-                    if ((date.year !== dateTo.year) || (date.month !== dateTo.month) || (date.day !== dateTo.day)) {
-                        date.day += 1;
-                        daysBetween += 1;
-                        finished = false;
-                    }
-                    var dayInMonth = this.getDaysCountInMonth(date.month, date.year);
-                    if (date.day > dayInMonth) {
-                        date.month += 1;
-                        date.day -= dayInMonth;
-                        finished = false;
-                    }
-                    if (date.month > _MONTH_COUNT) {
-                        date.year += 1;
-                        date.month -= _MONTH_COUNT;
-                        finished = false;
-                    }
-                }
-                return daysBetween;
+            var from = this.time(dateFrom);
+            var to = this.time(dateTo);
+            switch (type) {
+                case 'year':
+                    return Math.floor((to - from) / (86400 * 12 * 29.4));
+                case 'month':
+                    return Math.floor((to - from) / (86400 * 29.4)); // 29.4 - average of days count in months
+                case 'day':
+                    return Math.floor((to - from) / 86400);
+                case 'hours':
+                    return Math.floor((to - from) / 3600);
+                case 'minutes':
+                    return Math.floor((to - from) / 60);
+                case 'seconds':
+                    return to - from;
+                default:
+                    return undefined;
             }
-            return undefined;
         };
 
         this.getDaysArrayByWeek = function (dateFrom, dateTo) {

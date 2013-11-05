@@ -193,11 +193,18 @@
                             <tr>
                                 <td><pre>
 int time()</pre></td>
-                                <td>Return current timestamp in seconds.</td>
-                                <td><pre class="brush: js">
-// t = 1375976096;
-var t = tempus.time();</pre>
+                                <td>Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
+                                <td>
+<pre class="brush: js">
+// t = 1383667313;
+var t = tempus.time();
+</pre>
 <a class="btn btn-primary" onclick="alert(tempus.time());">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+// t = 1383609600;
+var t = tempus.time({year: 2013, month: 11, day: 5});
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.time({year: 2013, month: 11, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
                                 </td>
                             </tr>
                             <tr>
@@ -372,6 +379,30 @@ var t = tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month');</pre>
 //  t = {"year":1985,"month":1,"day":1};
 var t = tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                </td>
+                                </tr>
+                                <tr>
+                                    <td>
+<pre>int between( object dateFrom, object dateTo, string type=day|month|year|hours|minutes|seconds )</pre>
+                                    </td>
+                                <td>Return integer of date between from [dateFrom] to [dateTo] as [type].</td>
+                                <td>
+<pre class="brush: js">
+//  t = 4;
+var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 6;
+var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 3, day: 5}, 'month'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 266400;
+var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 10224;
+var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours'));">Run <span class="glyphicon glyphicon-play"></span></a>
                                 </td>
                                 </tr>
 
