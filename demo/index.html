@@ -250,7 +250,7 @@ var t = tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = '2013-11-05 12:36:42';
-var t = tempus.format(tempus.now(), 'Y-m-d H:i:S');</pre>
+var t = tempus.format(tempus.now(), 'Y-m-d H:M:S');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.now('Y-m-d H:M:S'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = '20131105';
@@ -289,6 +289,21 @@ var t = tempus.getMonthNames();</pre>
 //       "july","august","september","october","november","december"];
 var t = tempus.getMonthNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><pre>
+object getDayNames( [bool longNames] )</pre></td>
+                                <td>Return array of day names. If longNames is undefined, short names was returned.</td>
+                                <td><pre class="brush: js">
+//  t = ["sun","mon","tue","wed","thu","fri","sat"];
+var t = tempus.getDayNames();</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = ["sunday","monday","tuesday","wednesday",
+//       "thursday","friday","saturday"];
+var t = tempus.getDayNames(true);</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
                                     </td>
                                 </tr>
                         </tbody>
