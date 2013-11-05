@@ -24,9 +24,9 @@
             return Math.floor((new Date()).getTime() / 1000);
         };
 
-        this.now = function () {
+        this.now = function (format) {
             var currentDate = new Date();
-            return {
+            var obj = {
                 year: currentDate.getFullYear(),
                 month: currentDate.getMonth() + 1, // js default months beginning from 0.
                 day: currentDate.getDate(),
@@ -36,6 +36,7 @@
                 seconds: currentDate.getSeconds(),
                 timestamp: Math.floor(currentDate.getTime() / 1000)
             };
+            return format === undefined ? obj : this.format(obj, format);;
         };
 
         // is leap year method
@@ -249,7 +250,7 @@
             return result;
         };
 
-        this.format = function(format, date) {
+        this.format = function(date, format) {
             var result = format;
             var d;
             if (typeof date === 'number') {
@@ -278,29 +279,29 @@
             var minutes = formattingWithNulls(d.getMinutes(), 2);
             var seconds = formattingWithNulls(d.getSeconds(), 2);
             // formatting
-            result = result.replace('%d', day);
-            result = result.replace('%m', month);
-            result = result.replace('%Y', full_year);
-            result = result.replace('%w', day_number);
-            result = result.replace('%a', day_name_short);
-            result = result.replace('%A', day_name_long);
-            result = result.replace('%b', month_name_short);
-            result = result.replace('%B', month_name_long);
-            result = result.replace('%H', hour);
-            result = result.replace('%M', minutes);
-            result = result.replace('%S', seconds);
-            result = result.replace('%s', timestamp);
-            result = result.replace('%F', full_year + '-' + month + '-' + day);
-            result = result.replace('%D', month + '/' + day + '/' + full_year);
+            result = result.replace('d', day);
+            result = result.replace('m', month);
+            result = result.replace('Y', full_year);
+            result = result.replace('w', day_number);
+            result = result.replace('a', day_name_short);
+            result = result.replace('A', day_name_long);
+            result = result.replace('b', month_name_short);
+            result = result.replace('B', month_name_long);
+            result = result.replace('H', hour);
+            result = result.replace('M', minutes);
+            result = result.replace('S', seconds);
+            result = result.replace('s', timestamp);
+            result = result.replace('F', full_year + '-' + month + '-' + day);
+            result = result.replace('D', month + '/' + day + '/' + full_year);
             return result;
         };
 
         this.parse = function(str, format) {
-            var lits = format.match(/(%d|%m|%Y|%H|%M|%S|%s)/g);
+            var lits = format.match(/(d|m|Y|H|M|S|s)/g);
     //            delete lits[0];
-            var format_re = format.replace(/(%d|%m|%H|%M|%S)/g, '(\\d{2})');
-            format_re = format_re.replace(/(%Y)/g, '(\\d{4})');
-            format_re = format_re.replace(/(%s)/g, '(\\d{1,10})'); //max timestamp is 2147483647.
+            var format_re = format.replace(/(d|m|H|M|S)/g, '(\\d{2})');
+            format_re = format_re.replace(/(Y)/g, '(\\d{4})');
+            format_re = format_re.replace(/(s)/g, '(\\d{1,10})'); //max timestamp is 2147483647.
             var re = new RegExp(format_re, 'g');
             var result = re.exec(str);
             var result2 = [];
@@ -318,31 +319,31 @@
             var timestamp = 0;
             for(var key in lits) {
                 switch(lits[key]) {
-                    case '%d':
+                    case 'd':
                         day = parseInt(result2[key]);
                         day = isNaN(day) ? 0 : day;
                         break;
-                    case '%m':
+                    case 'm':
                         month = parseInt(result2[key]);
                         month = isNaN(month) ? 0 : month;
                         break;
-                    case '%Y':
+                    case 'Y':
                         full_year = parseInt(result2[key]);
                         full_year = isNaN(full_year) ? 0 : full_year;
                         break;
-                    case '%H':
+                    case 'H':
                         hour = parseInt(result2[key]);
                         hour = isNaN(hour) ? 0 : hour;
                         break;
-                    case '%M':
+                    case 'M':
                         minutes = parseInt(result2[key]);
                         minutes = isNaN(minutes) ? 0 : minutes;
                         break;
-                    case '%S':
+                    case 'S':
                         seconds = parseInt(result2[key]);
                         seconds = isNaN(seconds) ? 0 : seconds;
                         break;
-                    case '%s':
+                    case 's':
                         timestamp = parseInt(result2[key]);
                         timestamp = isNaN(timestamp) ? 0 : timestamp;
                         break;
