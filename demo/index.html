@@ -17,6 +17,7 @@
     <script>
         SyntaxHighlighter.all();
     </script>
+    <script type="text/javascript" src="../js/tempus.js"></script>
 </head>
 <body>
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -200,7 +201,9 @@ int time()</pre></td>
                                 <td>Return current timestamp in seconds.</td>
                                 <td><pre class="brush: js">
 // t = 1375976096;
-var t = tempus.time();</pre></td>
+var t = tempus.time();</pre>
+<a class="btn btn-primary" onclick="alert(tempus.time());">Run <span class="glyphicon glyphicon-play"></span></a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><pre>
@@ -217,7 +220,9 @@ object now()</pre></td>
 //    timestamp: 1382353803,
 //    year: 2013
 //  };
-var t = tempus.now();</pre></td>
+var t = tempus.now();</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                </td>
                             </tr>
                             <tr>
                                 <td><pre>
@@ -225,18 +230,12 @@ bool isLeapYear()</pre></td>
                                 <td>If year is leap return true.</td>
                                 <td><pre class="brush: js">
 //  leapYear = true;
-var leapYear = tempus.isLeapYear(2004);</pre></td>
+var leapYear = tempus.isLeapYear(2004);</pre>
+<a class="btn btn-primary" onclick="alert(tempus.isLeapYear(2004));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
-
-                    <h2 id="demo-current-time">Getting current timestamp - without params</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime());">Run <span class="glyphicon glyphicon-play"></span></a>
-                    <pre>
-// Example result:
-// 1375976096
-var d = $.datetime();
-                    </pre>
 
                     <h2>Getting current datetime</h2>
                     <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
