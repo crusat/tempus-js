@@ -168,11 +168,6 @@
                                 <td>0, ..., 1377157851, ..., 2147483647</td>
                             </tr>
                             <tr>
-                                <td>s</td>
-                                <td>Unix time (in seconds).</td>
-                                <td>0, ..., 1377157851, ..., 2147483647</td>
-                            </tr>
-                            <tr>
                                 <td>F</td>
                                 <td>ISO_8601 format (%Y-%m-%d).</td>
                                 <td>1970-01-01, ..., 2013-08-22, ...</td>
@@ -231,7 +226,7 @@ var t = tempus.now('d.m.Y');</pre>
                             <tr>
                                 <td><pre>
 bool isLeapYear( [int year] )</pre></td>
-                                <td>If year is leap return true. If no arguments - checking current year.</td>
+                                <td>If year is leap return true. If no parameters - checking current year.</td>
                                 <td>
 <pre class="brush: js">
 //  checking leap of current year.
@@ -245,6 +240,24 @@ var leapYear = tempus.isLeapYear(2004);
 <a class="btn btn-primary" onclick="alert(tempus.isLeapYear(2004));">Run <span class="glyphicon glyphicon-play"></span></a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td><pre>
+object format( object|int date, string format )</pre></td>
+                                <td>Return formatted string of date. You can use object or timestamp as parameter of method.</td>
+                                <td><pre class="brush: js">
+//  t = '05.11.2013';
+var t = tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = '2013-11-05 12:36:42';
+var t = tempus.format(tempus.now(), 'Y-m-d H:i:S');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.now('Y-m-d H:M:S'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = '20131105';
+var t = tempus.format(tempus.time(), 'Ymd');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), 'Ymd'));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                    </td>
+                                </tr>
                         </tbody>
                     </table>
 

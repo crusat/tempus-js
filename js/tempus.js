@@ -254,7 +254,7 @@
             var result = format;
             var d;
             if (typeof date === 'number') {
-                d = new Date(date);
+                d = new Date(date*1000);
             } else if (typeof date === 'object') {
                 d = new Date(date.year !== undefined ? date.year : 1970,
                     date.month !== undefined ? date.month : 0,
