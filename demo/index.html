@@ -185,6 +185,9 @@
                             </tr><tr>
                                 <td><a href="#tempus.between">between</a></td>
                                 <td>Return integer of date between from [dateFrom] to [dateTo] as [type].</td>
+                            </tr><tr>
+                                <td><a href="#tempus.parse">parse</a></td>
+                                <td>Return date object from parsed string.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -431,6 +434,26 @@ var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, d
 //  t = 56;
 var t = tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day'));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<hr id="tempus.parse" />
+<h2>tempus.parse <span class="text-muted">(str, format)</span></h2>
+<h3>Syntax</h3>
+<pre>object parse( string str, string format )</pre>
+<h3>Description</h3>
+Return date object from parsed string.
+<h3>Examples</h3>
+<pre class="brush: js">
+//  t = {"day":21,"month":10,"year":2013,"hour":0,"minutes":0,"seconds":0};
+var t = tempus.parse('21.10.2013', 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('21.10.2013', 'd.m.Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"day":5,"month":10,"year":2013,"hour":16,"minutes":20,"seconds":15};
+var t = tempus.parse('20131005162015', 'YmdHMS');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('20131005162015', 'YmdHMS')));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+
 
                     <h2>Getting current datetime - all formatting</h2>
                     <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D'));">Run <span class="glyphicon glyphicon-play"></span></a>
