@@ -207,8 +207,8 @@ var t = tempus.time();</pre>
                             </tr>
                             <tr>
                                 <td><pre>
-object now()</pre></td>
-                                <td>Return current date as object.</td>
+object now( [string format] )</pre></td>
+                                <td>Return current date as object or formatted string.</td>
                                 <td><pre class="brush: js">
 //  t = {
 //    day: 21,
@@ -222,13 +222,22 @@ object now()</pre></td>
 //  };
 var t = tempus.now();</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = '21.10.2013';
+var t = tempus.now('d.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now('d.m.Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
                                 </td>
                             </tr>
                             <tr>
                                 <td><pre>
-bool isLeapYear()</pre></td>
-                                <td>If year is leap return true.</td>
+bool isLeapYear( [int year] )</pre></td>
+                                <td>If year is leap return true. If no arguments - checking current year.</td>
                                 <td>
+<pre class="brush: js">
+//  checking leap of current year.
+var leapYear = tempus.isLeapYear();
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.now('Y')+' is leap year? '+tempus.isLeapYear());">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  leapYear = true;
 var leapYear = tempus.isLeapYear(2004);
@@ -396,7 +405,5 @@ var d = $.datetime.validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true)
 <!-- Placed at the end of the document so the pages load faster -->
 <script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="../js/jquery.datetime.js"></script>
-<script type="text/javascript" src="../js/demo.js"></script>
 </body>
 </html>
