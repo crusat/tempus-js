@@ -351,6 +351,14 @@
             }
         };
 
+        this.setTimeout = function(callback, timeout) {
+            return setTimeout(callback, parseInt(timeout)*1000);
+        };
+
+        this.setInterval = function(callback, timeout) {
+            return setInterval(callback, parseInt(timeout)*1000);
+        };
+
         // *** HELPERS ***
         var indexOf = function (obj, fromIndex) {
             if (fromIndex == null) {
