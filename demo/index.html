@@ -260,7 +260,7 @@ var t = tempus.format(tempus.time(), 'Ymd');</pre>
                                 </tr>
                                 <tr>
                                     <td><pre>
-bool getDaysCountInMonth( int month, [int year] )</pre></td>
+int getDaysCountInMonth( int month, [int year] )</pre></td>
                                 <td>Return days count in month. If year is undefined - leap year is false.</td>
                                 <td><pre class="brush: js">
 //  t = 30;
@@ -276,22 +276,23 @@ var t = tempus.getDaysCountInMonth(2);</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2));">Run <span class="glyphicon glyphicon-play"></span></a>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td><pre>
+object getMonthNames( [bool longNames] )</pre></td>
+                                <td>Return array of month names. If longNames is undefined, short names was returned.</td>
+                                <td><pre class="brush: js">
+//  t = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+var t = tempus.getMonthNames();</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = ["january","february","march","april","may","june",
+//       "july","august","september","october","november","december"];
+var t = tempus.getMonthNames(true);</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                    </td>
+                                </tr>
                         </tbody>
                     </table>
-
-                    <h2>Getting current datetime</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 2013-08-08
-var d = $.datetime('%Y-%m-%d');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %H:%M:%S'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 2013-08-08 14:54:20
-var d = $.datetime('%Y-%m-%d %H:%M:%S');
-        </pre>
 
                     <h2>Getting current datetime - all formatting</h2>
                     <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D'));">Run <span class="glyphicon glyphicon-play"></span></a>

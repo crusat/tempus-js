@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.7
+ * @version 0.9
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -87,7 +87,7 @@
             }
         };
 
-        this.getDaysNames = function (longNames) {
+        this.getDayNames = function (longNames) {
             if (longNames === true) {
                 return _daysLongNames;
             } else {
