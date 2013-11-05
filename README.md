@@ -3,6 +3,9 @@ tempus-js
 
 JavaScript small library for most comfortable using date/time.
 
+0.8
+fixed format(), now().
+
 0.7
 bugfix format().
 

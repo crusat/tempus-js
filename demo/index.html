@@ -242,7 +242,7 @@ var leapYear = tempus.isLeapYear(2004);
                             </tr>
                             <tr>
                                 <td><pre>
-object format( object|int date, string format )</pre></td>
+string format( object|int date, string format )</pre></td>
                                 <td>Return formatted string of date. You can use object or timestamp as parameter of method.</td>
                                 <td><pre class="brush: js">
 //  t = '05.11.2013';
@@ -256,6 +256,24 @@ var t = tempus.format(tempus.now(), 'Y-m-d H:i:S');</pre>
 //  t = '20131105';
 var t = tempus.format(tempus.time(), 'Ymd');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), 'Ymd'));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><pre>
+bool getDaysCountInMonth( int month, [int year] )</pre></td>
+                                <td>Return days count in month. If year is undefined - leap year is false.</td>
+                                <td><pre class="brush: js">
+//  t = 30;
+var t = tempus.getDaysCountInMonth(11, 2013);</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(11, 2013));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 29;
+var t = tempus.getDaysCountInMonth(2, 2012);</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2, 2012));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 28;
+var t = tempus.getDaysCountInMonth(2);</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2));">Run <span class="glyphicon glyphicon-play"></span></a>
                                     </td>
                                 </tr>
                         </tbody>
