@@ -56,48 +56,10 @@
                 <div class="col-12 col-sm-12 col-lg-12">
 
                 <div class="bs-callout bs-callout-danger">
-                    <p>Here timestamps in seconds! In default JS in milliseconds!</p>
+                    <p class="alert-danger alert">Here timestamps in seconds! In default JS in milliseconds!</p>
                 </div>
 
-                    <h2 id="demo-live-preview">Live preview</h2>
-                    <div>
-                        <label for="format_date_input_source_datetime">
-                            Source date/time:
-                            <input type="text" class="form-control" value="1375976096" id="format_date_input_source_datetime" />
-                        </label>
-                        <button class="btn btn-primary" id="format_date_btn_get_current">Get current date/time</button>
-                        <label for="format_date_checkbox_auto">
-                            <input type="checkbox" checked id="format_date_checkbox_auto" />
-                            Auto
-                        </label>
-                    </div>
-                    <div>
-                        <label for="format_date_input_source_format">
-                            Source format:
-                            <input type="text" class="form-control" value="%s" id="format_date_input_source_format" />
-                        </label>
-                    </div>
-                    <div>
-                        <label for="format_date_input_dest_format">
-                            Destination format:
-                            <input type="text" class="form-control" value="%d.%m.%Y %H:%M:%S" id="format_date_input_dest_format" />
-                        </label>
-                    </div>
-                    <div>
-                        <label for="format_date_input_result">
-                            Result:
-                            <input type="text" class="form-control" value="" id="format_date_input_result" readonly />
-                        </label>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary" id="format_date_btn_start">Start</button>
-                        <label for="format_date_checkbox_auto_calculate">
-                            <input type="checkbox" checked id="format_date_checkbox_auto_calculate" />
-                            Auto
-                        </label>
-                    </div>
-
-                    <h2 id="demo-format">Format</h2>
+                    <h1 id="demo-format">Format</h1>
                     <table class="table">
                         <thead>
                             <tr>
@@ -180,17 +142,7 @@
                         </tbody>
                     </table>
 
-                    <h2>Methods</h2>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="col-md-2">Syntax</th>
-                                <th class="col-md-2">Description</th>
-                                <th class="col-md-4">Example</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
+                    <h1>Methods</h1>
                                 <td><pre>
 int time()</pre></td>
                                 <td>Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
@@ -247,11 +199,16 @@ var leapYear = tempus.isLeapYear(2004);
 <a class="btn btn-primary" onclick="alert(tempus.isLeapYear(2004));">Run <span class="glyphicon glyphicon-play"></span></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><pre>
-string format( object|int date, string format )</pre></td>
-                                <td>Return formatted string of date. You can use object or timestamp as parameter of method.</td>
-                                <td><pre class="brush: js">
+
+
+<hr />
+<h2>tempus.format <span class="text-muted">(date, format)</span></h2>
+<h3>Syntax</h3>
+<pre>string format( object|int date, string format )</pre>
+<h3>Description</h3>
+Return formatted string of date. You can use object or timestamp as parameter of method.
+<h3>Examples</h3>
+<pre class="brush: js">
 //  t = '05.11.2013';
 var t = tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
@@ -263,13 +220,16 @@ var t = tempus.format(tempus.now(), 'Y-m-d H:M:S');</pre>
 //  t = '20131105';
 var t = tempus.format(tempus.time(), 'Ymd');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), 'Ymd'));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><pre>
-int getDaysCountInMonth( int month, [int year] )</pre></td>
-                                <td>Return days count in month. If year is undefined - leap year is false.</td>
-                                <td><pre class="brush: js">
+
+
+<hr />
+<h2>tempus.getDaysCountInMonth <span class="text-muted">(month, year)</span></h2>
+<h3>Syntax</h3>
+<pre>int getDaysCountInMonth( int month, [int year] )</pre>
+<h3>Description</h3>
+Return days count in month. If year is undefined - leap year is false.
+<h3>Examples</h3>
+<pre class="brush: js">
 //  t = 30;
 var t = tempus.getDaysCountInMonth(11, 2013);</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(11, 2013));">Run <span class="glyphicon glyphicon-play"></span></a>
@@ -281,13 +241,16 @@ var t = tempus.getDaysCountInMonth(2, 2012);</pre>
 //  t = 28;
 var t = tempus.getDaysCountInMonth(2);</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><pre>
-object getMonthNames( [bool longNames] )</pre></td>
-                                <td>Return array of month names. If longNames is undefined, short names was returned.</td>
-                                <td><pre class="brush: js">
+
+
+<hr />
+<h2>tempus.getMonthNames <span class="text-muted">(longNames)</span></h2>
+<h3>Syntax</h3>
+<pre>object getMonthNames( [bool longNames] )</pre>
+<h3>Description</h3>
+Return array of month names. If longNames is undefined, short names was returned.
+<h3>Examples</h3>
+<pre class="brush: js">
 //  t = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
 var t = tempus.getMonthNames();</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
@@ -296,13 +259,16 @@ var t = tempus.getMonthNames();</pre>
 //       "july","august","september","october","november","december"];
 var t = tempus.getMonthNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><pre>
-object getDayNames( [bool longNames] )</pre></td>
-                                <td>Return array of day names. If longNames is undefined, short names was returned.</td>
-                                <td><pre class="brush: js">
+
+
+<hr />
+<h2>tempus.getDayNames <span class="text-muted">(longNames)</span></h2>
+<h3>Syntax</h3>
+<pre>object getDayNames( [bool longNames] )</pre>
+<h3>Description</h3>
+Return array of day names. If longNames is undefined, short names was returned.
+<h3>Examples</h3>
+<pre class="brush: js">
 //  t = ["sun","mon","tue","wed","thu","fri","sat"];
 var t = tempus.getDayNames();</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
@@ -311,14 +277,15 @@ var t = tempus.getDayNames();</pre>
 //       "thursday","friday","saturday"];
 var t = tempus.getDayNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
+
+
+<hr />
+<h2>tempus.getDayOfWeek <span class="text-muted">(date)</span></h2>
+<h3>Syntax</h3>
 <pre>int getDayOfWeek( object date )</pre>
-                                    </td>
-                                <td>Return day of week.</td>
-                                <td>
+<h3>Description</h3>
+Return day of week.
+<h3>Examples</h3>
 <pre class="brush: js">
 //  t = 6;
 var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 5});</pre>
@@ -331,14 +298,15 @@ var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 6});</pre>
 //  t = 2;
 var t = tempus.getDayOfWeek(tempus.now());</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
+
+
+<hr />
+<h2>tempus.incDate <span class="text-muted">(date, value, type)</span></h2>
+<h3>Syntax</h3>
 <pre>object incDate( object date, int value, string type=day|month|year )</pre>
-                                    </td>
-                                <td>Return date object, increased on [value] [type].</td>
-                                <td>
+<h3>Description</h3>
+Return date object, increased on [value] [type].
+<h3>Examples</h3>
 <pre class="brush: js">
 //  t = {"year":2013,"month":10,"day":12};
 var t = tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day');</pre>
@@ -355,14 +323,15 @@ var t = tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month');</pre>
 //  t = {"year":2015,"month":1,"day":1};
 var t = tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                </td>
-                                </tr>
-                                <tr>
-                                    <td>
+
+
+<hr />
+<h2>tempus.decDate <span class="text-muted">(date, value, type)</span></h2>
+<h3>Syntax</h3>
 <pre>object decDate( object date, int value, string type=day|month|year )</pre>
-                                    </td>
-                                <td>Return date object, decreased on [value] [type].</td>
-                                <td>
+<h3>Description</h3>
+Return date object, decreased on [value] [type].
+<h3>Examples</h3>
 <pre class="brush: js">
 //  t = {"year":2013,"month":9,"day":28};
 var t = tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day');</pre>
@@ -379,14 +348,15 @@ var t = tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month');</pre>
 //  t = {"year":1985,"month":1,"day":1};
 var t = tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                </td>
-                                </tr>
-                                <tr>
-                                    <td>
+
+
+<hr />
+<h2>tempus.between <span class="text-muted">(dateFrom, dateTo, type)</span></h2>
+<h3>Syntax</h3>
 <pre>int between( object dateFrom, object dateTo, string type=day|month|year|hours|minutes|seconds )</pre>
-                                    </td>
-                                <td>Return integer of date between from [dateFrom] to [dateTo] as [type].</td>
-                                <td>
+<h3>Description</h3>
+Return integer of date between from [dateFrom] to [dateTo] as [type].
+<h3>Examples</h3>
 <pre class="brush: js">
 //  t = 4;
 var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day');</pre>
@@ -408,11 +378,6 @@ var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, d
 //  t = 56;
 var t = tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day'));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                </td>
-                                </tr>
-
-                        </tbody>
-                    </table>
 
                     <h2>Getting current datetime - all formatting</h2>
                     <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D'));">Run <span class="glyphicon glyphicon-play"></span></a>
