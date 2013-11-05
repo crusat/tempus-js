@@ -310,10 +310,15 @@ var t = tempus.getDayNames(true);</pre>
                                     <td><pre>
 int getDayOfWeek( object date )</pre></td>
                                 <td>Return day of week.</td>
-                                <td><pre class="brush: js">
+                                <td>
+<pre class="brush: js">
 //  t = 6;
 var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 5});</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek({year: 2013, month: 10, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 0;
+var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 6});</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek({year: 2013, month: 10, day: 6}));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = 2;
 var t = tempus.getDayOfWeek(tempus.now());</pre>
