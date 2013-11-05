@@ -143,10 +143,14 @@
                     </table>
 
                     <h1>Methods</h1>
-                                <td><pre>
-int time()</pre></td>
-                                <td>Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
-                                <td>
+
+<hr />
+<h2>tempus.time <span class="text-muted">(date)</span></h2>
+<h3>Syntax</h3>
+<pre>int time( [object date] )</pre>
+<h3>Description</h3>
+Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.
+<h3>Examples</h3>
 <pre class="brush: js">
 // t = 1383667313;
 var t = tempus.time();
@@ -157,13 +161,16 @@ var t = tempus.time();
 var t = tempus.time({year: 2013, month: 11, day: 5});
 </pre>
 <a class="btn btn-primary" onclick="alert(tempus.time({year: 2013, month: 11, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><pre>
-object now( [string format] )</pre></td>
-                                <td>Return current date as object or formatted string.</td>
-                                <td><pre class="brush: js">
+
+
+<hr />
+<h2>tempus.now <span class="text-muted">(format)</span></h2>
+<h3>Syntax</h3>
+<pre>object now( [string format] )</pre>
+<h3>Description</h3>
+Return current date as object or formatted string.
+<h3>Examples</h3>
+<pre class="brush: js">
 //  t = {
 //    day: 21,
 //    dayOfWeek: 1,
@@ -180,13 +187,15 @@ var t = tempus.now();</pre>
 //  t = '21.10.2013';
 var t = tempus.now('d.m.Y');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now('d.m.Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><pre>
-bool isLeapYear( [int year] )</pre></td>
-                                <td>If year is leap return true. If no parameters - checking current year.</td>
-                                <td>
+
+
+<hr />
+<h2>tempus.isLeapYear <span class="text-muted">(year)</span></h2>
+<h3>Syntax</h3>
+<pre>bool isLeapYear( [int year] )</pre>
+<h3>Description</h3>
+If year is leap return true. If no parameters - checking current year.
+<h3>Examples</h3>
 <pre class="brush: js">
 //  checking leap of current year.
 var leapYear = tempus.isLeapYear();
@@ -197,8 +206,7 @@ var leapYear = tempus.isLeapYear();
 var leapYear = tempus.isLeapYear(2004);
 </pre>
 <a class="btn btn-primary" onclick="alert(tempus.isLeapYear(2004));">Run <span class="glyphicon glyphicon-play"></span></a>
-                                </td>
-                            </tr>
+
 
 
 <hr />
