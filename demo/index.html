@@ -143,8 +143,53 @@
                     </table>
 
                     <h1>Methods</h1>
+                    <h2>Table of contents</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#tempus.time">time</a></td>
+                                <td>Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.now">now</a></td>
+                                <td>Return current date as object or formatted string.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.isLeapYear">isLeapYear</a></td>
+                                <td>If year is leap return true. If no parameters - checking current year.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.format">format</a></td>
+                                <td>Return formatted string of date. You can use object or timestamp as parameter of method.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getDaysCountInMonth">getDaysCountInMonth</a></td>
+                                <td>Return days count in month. If year is undefined - leap year is false.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getMonthNames">getMonthNames</a></td>
+                                <td>Return array of month names. If longNames is undefined, short names was returned.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getDayNames">getDayNames</a></td>
+                                <td>Return array of day names. If longNames is undefined, short names was returned.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getDayOfWeek">getDayOfWeek</a></td>
+                                <td>Return day of week.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.incDate">incDate</a></td>
+                                <td>Return date object, increased on [value] [type].</td>
+                            </tr><tr>
+                                <td><a href="#tempus.decDate">decDate</a></td>
+                                <td>Return date object, decreased on [value] [type].</td>
+                            </tr><tr>
+                                <td><a href="#tempus.between">between</a></td>
+                                <td>Return integer of date between from [dateFrom] to [dateTo] as [type].</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-<hr />
+<hr id="tempus.time" />
 <h2>tempus.time <span class="text-muted">(date)</span></h2>
 <h3>Syntax</h3>
 <pre>int time( [object date] )</pre>
@@ -163,7 +208,7 @@ var t = tempus.time({year: 2013, month: 11, day: 5});
 <a class="btn btn-primary" onclick="alert(tempus.time({year: 2013, month: 11, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.now" />
 <h2>tempus.now <span class="text-muted">(format)</span></h2>
 <h3>Syntax</h3>
 <pre>object now( [string format] )</pre>
@@ -189,7 +234,7 @@ var t = tempus.now('d.m.Y');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now('d.m.Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.isLeapYear" />
 <h2>tempus.isLeapYear <span class="text-muted">(year)</span></h2>
 <h3>Syntax</h3>
 <pre>bool isLeapYear( [int year] )</pre>
@@ -209,7 +254,7 @@ var leapYear = tempus.isLeapYear(2004);
 
 
 
-<hr />
+<hr id="tempus.format" />
 <h2>tempus.format <span class="text-muted">(date, format)</span></h2>
 <h3>Syntax</h3>
 <pre>string format( object|int date, string format )</pre>
@@ -230,7 +275,7 @@ var t = tempus.format(tempus.time(), 'Ymd');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), 'Ymd'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.getDaysCountInMonth" />
 <h2>tempus.getDaysCountInMonth <span class="text-muted">(month, year)</span></h2>
 <h3>Syntax</h3>
 <pre>int getDaysCountInMonth( int month, [int year] )</pre>
@@ -251,7 +296,7 @@ var t = tempus.getDaysCountInMonth(2);</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.getMonthNames" />
 <h2>tempus.getMonthNames <span class="text-muted">(longNames)</span></h2>
 <h3>Syntax</h3>
 <pre>object getMonthNames( [bool longNames] )</pre>
@@ -269,7 +314,7 @@ var t = tempus.getMonthNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.getDayNames" />
 <h2>tempus.getDayNames <span class="text-muted">(longNames)</span></h2>
 <h3>Syntax</h3>
 <pre>object getDayNames( [bool longNames] )</pre>
@@ -287,7 +332,7 @@ var t = tempus.getDayNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.getDayOfWeek" />
 <h2>tempus.getDayOfWeek <span class="text-muted">(date)</span></h2>
 <h3>Syntax</h3>
 <pre>int getDayOfWeek( object date )</pre>
@@ -308,7 +353,7 @@ var t = tempus.getDayOfWeek(tempus.now());</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.incDate" />
 <h2>tempus.incDate <span class="text-muted">(date, value, type)</span></h2>
 <h3>Syntax</h3>
 <pre>object incDate( object date, int value, string type=day|month|year )</pre>
@@ -333,7 +378,7 @@ var t = tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.decDate" />
 <h2>tempus.decDate <span class="text-muted">(date, value, type)</span></h2>
 <h3>Syntax</h3>
 <pre>object decDate( object date, int value, string type=day|month|year )</pre>
@@ -358,7 +403,7 @@ var t = tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr />
+<hr id="tempus.between" />
 <h2>tempus.between <span class="text-muted">(dateFrom, dateTo, type)</span></h2>
 <h3>Syntax</h3>
 <pre>int between( object dateFrom, object dateTo, string type=day|month|year|hours|minutes|seconds )</pre>

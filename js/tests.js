@@ -15,7 +15,7 @@
 
     // tests
     test('tempus.time()', function () {
-        equal(tempus.time(), Math.floor(new Date().getTime()/1000), 'Current unix time');
+        equal(tempus.time(), Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000), 'Current UTC');
         equal(typeof tempus.time(), 'number', 'Type is number');
     });
 
@@ -27,7 +27,7 @@
         equal(tempus.isLeapYear(1900), false, '1900 is not leap year');
         equal(tempus.isLeapYear(1904), true, '1904 is leap year');
         equal(tempus.isLeapYear(1905), false, '1905 is not leap year');
-        equal(typeof tempus.time(), 'boolean', 'Type is boolean');
+        equal(typeof tempus.isLeapYear(), 'boolean', 'Type is boolean');
         for (var year = 1800; year <= yyyy; year++) {
             equal(tempus.isLeapYear(year), isLeapYear(year), 'Dynamic test, year: ' + year);
         }
