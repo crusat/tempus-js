@@ -307,8 +307,9 @@ var t = tempus.getDayNames(true);</pre>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><pre>
-int getDayOfWeek( object date )</pre></td>
+                                    <td>
+<pre>int getDayOfWeek( object date )</pre>
+                                    </td>
                                 <td>Return day of week.</td>
                                 <td>
 <pre class="brush: js">
@@ -324,6 +325,30 @@ var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 6});</pre>
 var t = tempus.getDayOfWeek(tempus.now());</pre>
 <a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td>
+<pre>object incDate( object date, int value, string type=day|month|year )</pre>
+                                    </td>
+                                <td>Return date object, increased on [value] [type].</td>
+                                <td>
+<pre class="brush: js">
+//  t = {"year":2013,"month":10,"day":12};
+var t = tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"year":2014,"month":1,"day":13};
+var t = tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"year":2013,"month":12,"day":30};
+var t = tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"year":2015,"month":1,"day":1};
+var t = tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                </td>
                                 </tr>
                         </tbody>
                     </table>
