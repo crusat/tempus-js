@@ -306,6 +306,20 @@ var t = tempus.getDayNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td><pre>
+int getDayOfWeek( object date )</pre></td>
+                                <td>Return day of week.</td>
+                                <td><pre class="brush: js">
+//  t = 6;
+var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 5});</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek({year: 2013, month: 10, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = 2;
+var t = tempus.getDayOfWeek(tempus.now());</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
+                                    </td>
+                                </tr>
                         </tbody>
                     </table>
 

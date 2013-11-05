@@ -3,6 +3,9 @@ tempus-js
 
 JavaScript small library for most comfortable using date/time.
 
+0.10
+fixed getDayOfWeek().
+
 0.9
 getDaysNames() renamed to getDayNames().
 

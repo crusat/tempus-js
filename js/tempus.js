@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov (me@akuzn.com)
- * @version 0.9
+ * @version 0.10
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time functions
  */
@@ -96,19 +96,10 @@
         };
 
         // Algorithm author: Tomohiko Sakamoto in 1993.
-        this.getDayOfWeek = function (dateOrYear, month, day) {
-            var year;
-            if (typeof dateOrYear === 'object') {
-                year = dateOrYear.year;
-                month = dateOrYear.month;
-                day = dateOrYear.day;
-            } else if (typeof dateOrYear === 'number') {
-                year = parseInt(dateOrYear);
-                month = parseInt(month);
-                day = parseInt(day);
-            } else {
-                return undefined;
-            }
+        this.getDayOfWeek = function (date) {
+            var year = date.year;
+            var month = date.month;
+            var day = date.day;
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
             year -= month < 3;
             return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
