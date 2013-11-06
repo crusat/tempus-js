@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.14
+ * @version 0.0.15
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -363,6 +363,15 @@
 
         this.setInterval = function(callback, timeout) {
             return setInterval(callback, parseInt(timeout)*1000);
+        };
+
+        this.validate = function(date, format) {
+            if (typeof date === 'string') {
+                date = this.parse(date, format);
+            }
+            var normalizedDate = this.normalizeDate(date);
+            return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
+                    (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
         };
 
         // *** HELPERS ***
