@@ -1,23 +1,18 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.16
+ * @version 0.0.17
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
 (function () {
     var TempusJS = function () {
         // private
-        var _daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var _monthShortNames = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-        var _monthLongNames = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september',
-            'october', 'november', 'december'];
-        var _MONTH_COUNT = 12;
-
-        var _daysShortNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-        var _daysLongNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-
-        var YEAR_DAYS_COUNT_NOT_LEAP = 365;
-        var YEAR_DAYS_COUNT_LEAP = 366;
+        var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var monthLongNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+            'October', 'November', 'December'];
+        var daysShortNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        var daysLongNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
         // now method
         this.time = function (date, format) {
@@ -81,24 +76,24 @@
             var leapYear = year === undefined ? false : this.isLeapYear(year);
             if (typeof month === 'number') {
                 if (month === 2) {
-                    return _daysInMonth[month - 1] + (leapYear ? 1 : 0);
+                    return daysInMonth[month - 1] + (leapYear ? 1 : 0);
                 } else {
-                    return _daysInMonth[month - 1]
+                    return daysInMonth[month - 1]
                 }
             }
             if (typeof month === 'string') {
-                var month_int = indexOf(_monthShortNames, month);
+                var month_int = indexOf(monthShortNames, month);
                 if (month_int === -1) {
-                    month_int = indexOf(_monthLongNames, month);
+                    month_int = indexOf(monthLongNames, month);
                 }
                 if (month_int === -1) {
                     return undefined;
                 }
                 month = month_int;
                 if (month === 2) {
-                    return _daysInMonth[month - 1] + (leapYear ? 1 : 0);
+                    return daysInMonth[month - 1] + (leapYear ? 1 : 0);
                 } else {
-                    return _daysInMonth[month - 1]
+                    return daysInMonth[month - 1]
                 }
             }
             return undefined;
@@ -106,17 +101,17 @@
 
         this.getMonthNames = function (longNames) {
             if (longNames === true) {
-                return _monthLongNames;
+                return monthLongNames;
             } else {
-                return _monthShortNames;
+                return monthShortNames;
             }
         };
 
         this.getDayNames = function (longNames) {
             if (longNames === true) {
-                return _daysLongNames;
+                return daysLongNames;
             } else {
-                return _daysShortNames;
+                return daysShortNames;
             }
         };
 
@@ -266,10 +261,10 @@
             var month = formattingWithNulls(d.getMonth(), 2);
             var full_year = formattingWithNulls(d.getFullYear(), 4);
             var day_number = this.getDayOfWeek(date);
-            var day_name_short = this.getDayOfWeek(date, 'short');
-            var day_name_long = this.getDayOfWeek(date, 'long');
-            var month_name_short = _monthShortNames[parseInt(month)-1];
-            var month_name_long = _monthLongNames[parseInt(month)-1];
+            var day_name_short = daysShortNames[this.getDayOfWeek(date, 'short')];
+            var day_name_long = daysLongNames[this.getDayOfWeek(date, 'long')];
+            var month_name_short = monthShortNames[parseInt(month)-1];
+            var month_name_long = monthLongNames[parseInt(month)-1];
             var hour = formattingWithNulls(d.getHours(), 2);
             var minutes = formattingWithNulls(d.getMinutes(), 2);
             var seconds = formattingWithNulls(d.getSeconds(), 2);
@@ -375,6 +370,10 @@
             var normalizedDate = this.normalizeDate(date);
             return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
                     (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
+        };
+
+        this.reformat = function(date, formatFrom, formatTo) {
+            return this.format(this.parse(date, formatFrom), formatTo);
         };
 
         // *** HELPERS ***

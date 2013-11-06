@@ -576,33 +576,25 @@ var t = tempus.validate('00:00 01.01.2012', 'H:M d.m.Y');</pre>
 <!--validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true);-->
 
 
-
-                    <h2 id="demo-reformat">Reformat datetime</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-12', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 12.03.2013
-var d = $.datetime.reformat('2013-03-12', '%d.%m.%Y');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-15 16:00', '%a %d, %Y', '%Y-%m-%d %H:%M'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 15.03.2013
-var d = $.datetime.reformat('2013-03-15 16:00', '%d.%m.%Y', '%Y-%m-%d %H:%M');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-15T12:31:48', '%H:%M (%a %d, %Y)', '%Y-%m-%dT%H:%M:%S'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 12:31 (Fri 15, 2013)
-var d = $.datetime.reformat('2013-03-15T12:31:48', '%H:%M (%a %d, %Y)', '%Y-%m-%dT%H:%M:%S');
-        </pre>
-
-                    <h2 id="demo-strtotime">String to timestamp [+ by format]</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.strtotime('2013-03-12'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-
-        </pre>
+<hr id="tempus.reformat" />
+<h2>tempus.reformat <span class="text-muted">(date, formatFrom, formatTo)</span></h2>
+<h3>Syntax</h3>
+<pre>string reformat( string date, string formatFrom, string formatTo )</pre>
+<h3>Description</h3>
+Reformat date from one to other format.
+<h3>Examples</h3>
+<pre class="brush: js">
+//  t = "12.03.2013";
+var t = tempus.reformat('2013-03-12', 'Y-m-d', 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-12', 'Y-m-d', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = "15.03.2013";
+var t = tempus.reformat('2013-03-15 16:00', 'Y-m-d H:M', 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15 16:00', 'Y-m-d H:M', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = "12:31 (Fri 15, 2013)";
+var t = tempus.reformat('2013-03-15T12:31:48', 'Y-m-dTH:M:S', 'H:M (a d, Y)');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15T12:31:48', 'Y-m-dTH:M:S', 'H:M (a d, Y)'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
                 </div><!--/span-->
             </div><!--/row-->

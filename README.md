@@ -3,6 +3,9 @@ tempus-js
 
 JavaScript library for most comfortable using date/time.
 
+0.0.17
+method reformat() and fixed format().
+
 0.0.16
 method time() now accepts strings date and date-format.
 
