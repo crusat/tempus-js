@@ -3,6 +3,12 @@ tempus-js
 
 JavaScript library for most comfortable using date/time.
 
+0.0.19
+fixed date() and format().
+
+0.0.18
+back to percent formatting.
+
 0.0.17
 method reformat() and fixed format().
 

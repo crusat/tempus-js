@@ -274,8 +274,8 @@ var t = tempus.now();</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = '21.10.2013';
-var t = tempus.now('d.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now('d.m.Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.now('%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.now('%d.%m.%Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.isLeapYear" />
@@ -307,16 +307,16 @@ Return formatted string of date. You can use object or timestamp as parameter of
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = '05.11.2013';
-var t = tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.format({year: 2013, month: 11, day:5}, 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = '2013-11-05 12:36:42';
-var t = tempus.format(tempus.now(), 'Y-m-d H:M:S');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.now('Y-m-d H:M:S'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.format(tempus.now(), '%Y-%m-%d %H:%M:%S');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.now('%Y-%m-%d %H:%M:%S'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = '20131105';
-var t = tempus.format(tempus.time(), 'Ymd');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), 'Ymd'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.format(tempus.time(), '%Y%m%d');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), '%Y%m%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.getDaysCountInMonth" />
@@ -348,12 +348,12 @@ var t = tempus.getDaysCountInMonth(2);</pre>
 Return array of month names. If longNames is undefined, short names was returned.
 <h3>Examples</h3>
 <pre class="brush: js">
-//  t = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+//  t = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var t = tempus.getMonthNames();</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
-//  t = ["january","february","march","april","may","june",
-//       "july","august","september","october","november","december"];
+//  t = ["January","February","March","April","May","June",
+//       "July","August","September","October","November","December"];
 var t = tempus.getMonthNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
 
@@ -366,12 +366,12 @@ var t = tempus.getMonthNames(true);</pre>
 Return array of day names. If longNames is undefined, short names was returned.
 <h3>Examples</h3>
 <pre class="brush: js">
-//  t = ["sun","mon","tue","wed","thu","fri","sat"];
+//  t = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 var t = tempus.getDayNames();</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
-//  t = ["sunday","monday","tuesday","wednesday",
-//       "thursday","friday","saturday"];
+//  t = ["Sunday","Monday","Tuesday","Wednesday",
+//       "Thursday","Friday","Saturday"];
 var t = tempus.getDayNames(true);</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
 
@@ -400,7 +400,7 @@ var t = tempus.getDayOfWeek(tempus.now());</pre>
 <hr id="tempus.incDate" />
 <h2>tempus.incDate <span class="text-muted">(date, value, type)</span></h2>
 <h3>Syntax</h3>
-<pre>object incDate( object date, int value, string type=day|month|year )</pre>
+<pre>object incDate( object date, int value, string type=seconds|minutes|hours|day|month|year )</pre>
 <h3>Description</h3>
 Return date object, increased on [value] [type].
 <h3>Examples</h3>
@@ -425,7 +425,7 @@ var t = tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <hr id="tempus.decDate" />
 <h2>tempus.decDate <span class="text-muted">(date, value, type)</span></h2>
 <h3>Syntax</h3>
-<pre>object decDate( object date, int value, string type=day|month|year )</pre>
+<pre>object decDate( object date, int value, string type=seconds|minutes|hours|day|month|year )</pre>
 <h3>Description</h3>
 Return date object, decreased on [value] [type].
 <h3>Examples</h3>
@@ -486,12 +486,12 @@ Return date object from parsed string.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = {"day":21,"month":10,"year":2013,"hour":0,"minutes":0,"seconds":0};
-var t = tempus.parse('21.10.2013', 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('21.10.2013', 'd.m.Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.parse('21.10.2013', '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('21.10.2013', '%d.%m.%Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = {"day":5,"month":10,"year":2013,"hour":16,"minutes":20,"seconds":15};
-var t = tempus.parse('20131005162015', 'YmdHMS');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('20131005162015', 'YmdHMS')));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.parse('20131005162015', '%Y%m%d%H%M%S');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('20131005162015', '%Y%m%d%H%M%S')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.normalizeDate" />
@@ -542,32 +542,32 @@ var t = tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});<
 <a class="btn btn-primary" onclick="alert(tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = true;
-var t = tempus.validate('2013-03-12', 'Y-m-d');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('2013-03-12', 'Y-m-d'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('2013-03-12', '%Y-%m-%d');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('2013-03-12', '%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = true;
-var t = tempus.validate('16:00 08.08.2013', 'H:M d.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('16:00 08.08.2013', 'H:M d.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = false;
-var t = tempus.validate('32.08.2013', 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('32.08.2013', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('32.08.2013', '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('32.08.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = false;
-var t = tempus.validate('29.02.2013', 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2013', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('29.02.2013', '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = true;
-var t = tempus.validate('29.02.2012', 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2012', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('29.02.2012', '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2012', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = false;
-var t = tempus.validate('24:61 29.02.2012', 'H:M d.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('24:61 29.02.2012', 'H:M d.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = true;
-var t = tempus.validate('00:00 01.01.2012', 'H:M d.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('00:00 01.01.2012', 'H:M d.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <!--var d = $.datetime.validate();-->
@@ -585,16 +585,16 @@ Reformat date from one to other format.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = "12.03.2013";
-var t = tempus.reformat('2013-03-12', 'Y-m-d', 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-12', 'Y-m-d', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.reformat('2013-03-12', '%Y-%m-%d', '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-12', '%Y-%m-%d', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = "15.03.2013";
-var t = tempus.reformat('2013-03-15 16:00', 'Y-m-d H:M', 'd.m.Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15 16:00', 'Y-m-d H:M', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = "12:31 (Fri 15, 2013)";
-var t = tempus.reformat('2013-03-15T12:31:48', 'Y-m-dTH:M:S', 'H:M (a d, Y)');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15T12:31:48', 'Y-m-dTH:M:S', 'H:M (a d, Y)'));">Run <span class="glyphicon glyphicon-play"></span></a>
+var t = tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
                 </div><!--/span-->
             </div><!--/row-->

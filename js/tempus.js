@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.17
+ * @version 0.0.19
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -32,16 +32,29 @@
             }
         };
 
-        this.date = function(timestamp) {
-            var date = new Date((new Date(parseInt(timestamp)*1000)).getTime() + (new Date(parseInt(timestamp)*1000)).getTimezoneOffset() * 60000);
-            return {
-                year: date.getFullYear(),
-                month: date.getMonth() + 1, // js default months beginning from 0.
-                day: date.getDate(),
-                hours: date.getHours(),
-                minutes: date.getMinutes(),
-                seconds: date.getSeconds()
-            };
+        this.date = function(date) {
+            var d;
+            if (typeof date === "number") {
+                var jsDate = new Date((new Date(parseInt(date)*1000)).getTime() + (new Date(parseInt(date)*1000)).getTimezoneOffset() * 60000);
+                d = {
+                    year: jsDate.getFullYear(),
+                    month: jsDate.getMonth() + 1, // js default months beginning from 0.
+                    day: jsDate.getDate(),
+                    hours: jsDate.getHours(),
+                    minutes: jsDate.getMinutes(),
+                    seconds: jsDate.getSeconds()
+                };
+            } else if (typeof date === "object") {
+                d = {
+                    year: date.year !== undefined ? date.year : 1970,
+                    month: date.month !== undefined ? date.month : 1,
+                    day: date.day !== undefined ? date.day : 1,
+                    hours: date.hours !== undefined ? date.hours : 0,
+                    minutes: date.minutes !== undefined ? date.minutes : 0,
+                    seconds: date.seconds !== undefined ? date.seconds : 0
+                }
+            }
+            return d;
         };
 
         this.now = function (format) {
@@ -243,31 +256,24 @@
         this.format = function(date, format) {
             var result = format;
             var d;
-            if (typeof date === 'number') {
-                d = new Date(date*1000);
-            } else if (typeof date === 'object') {
-                d = new Date(date.year !== undefined ? date.year : 1970,
-                    date.month !== undefined ? date.month : 0,
-                    date.day !== undefined ? date.day : 1,
-                    date.hours !== undefined ? date.hours : 0,
-                    date.minutes !== undefined ? date.minutes : 0,
-                    date.seconds !== undefined ? date.seconds : 0);
+            if ((typeof date === 'number')||(typeof date === 'object')) {
+                d = this.date(date);
             } else {
                 return undefined;
             }
             // vars
-            var timestamp = Math.floor(d.getTime() / 1000);
-            var day = formattingWithNulls(d.getDate(), 2);
-            var month = formattingWithNulls(d.getMonth(), 2);
-            var full_year = formattingWithNulls(d.getFullYear(), 4);
+            var timestamp = this.time(d);
+            var day = formattingWithNulls(d.day, 2);
+            var month = formattingWithNulls(d.month, 2);
+            var full_year = formattingWithNulls(d.year, 4);
             var day_number = this.getDayOfWeek(date);
             var day_name_short = daysShortNames[this.getDayOfWeek(date)];
             var day_name_long = daysLongNames[this.getDayOfWeek(date)];
             var month_name_short = monthShortNames[parseInt(month)-1];
             var month_name_long = monthLongNames[parseInt(month)-1];
-            var hour = formattingWithNulls(d.getHours(), 2);
-            var minutes = formattingWithNulls(d.getMinutes(), 2);
-            var seconds = formattingWithNulls(d.getSeconds(), 2);
+            var hours = formattingWithNulls(d.hours, 2);
+            var minutes = formattingWithNulls(d.minutes, 2);
+            var seconds = formattingWithNulls(d.seconds, 2);
             // formatting
             result = result.replace('%d', day);
             result = result.replace('%m', month);
@@ -277,7 +283,7 @@
             result = result.replace('%A', day_name_long);
             result = result.replace('%b', month_name_short);
             result = result.replace('%B', month_name_long);
-            result = result.replace('%H', hour);
+            result = result.replace('%H', hours);
             result = result.replace('%M', minutes);
             result = result.replace('%S', seconds);
             result = result.replace('%s', timestamp);
