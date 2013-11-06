@@ -504,6 +504,61 @@ var t = tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,second
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0})));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
+<hr id="tempus.valid" />
+<h2>tempus.validate <span class="text-muted">(date, format)</span></h2>
+<h3>Syntax</h3>
+<pre>bool validate( object date )</pre>
+<p>or</p>
+<pre>bool validate( string date, string format )</pre>
+<h3>Description</h3>
+Validate date.
+<h3>Examples</h3>
+<pre class="brush: js">
+//  t = false;
+var t = tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = false;
+var t = tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = true;
+var t = tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = true;
+var t = tempus.validate('2013-03-12', 'Y-m-d');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('2013-03-12', 'Y-m-d'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = true;
+var t = tempus.validate('16:00 08.08.2013', 'H:M d.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('16:00 08.08.2013', 'H:M d.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = false;
+var t = tempus.validate('32.08.2013', 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('32.08.2013', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = false;
+var t = tempus.validate('29.02.2013', 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2013', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = true;
+var t = tempus.validate('29.02.2012', 'd.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2012', 'd.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = false;
+var t = tempus.validate('24:61 29.02.2012', 'H:M d.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('24:61 29.02.2012', 'H:M d.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = true;
+var t = tempus.validate('00:00 01.01.2012', 'H:M d.m.Y');</pre>
+<a class="btn btn-primary" onclick="alert(tempus.validate('00:00 01.01.2012', 'H:M d.m.Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<!--var d = $.datetime.validate();-->
+<!--.validate('08.08.2013', '%d.%m.%Y', {year: {min:1970, max: 2038}});-->
+<!--validate('08.08.1961', '%d.%m.%Y', {year: {min:1970, max: 2038}});-->
+<!--validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true);-->
 
 
                     <h2>Getting current datetime - all formatting</h2>
@@ -547,72 +602,6 @@ var d = $.datetime.strtotime('2013-03-12');
 // Example result:
 // 1363348800
 var d = $.datetime.strtotime('2013-03-15 16:00', '%Y-%m-%d %H:%M');
-        </pre>
-
-                    <h2 id="demo-validate">Validate date/time by format</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('2013-03-12', '%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// true
-var d = $.datetime.validate('2013-03-12', '%Y-%m-%d');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// true
-var d = $.datetime.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('32.08.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// false
-var d = $.datetime.validate('32.08.2013', '%d.%m.%Y');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('29.02.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// false
-var d = $.datetime.validate('29.02.2013', '%d.%m.%Y');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('29.02.2012', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result (Leap year):
-// true
-var d = $.datetime.validate('29.02.2012', '%d.%m.%Y');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result (Leap year):
-// false
-var d = $.datetime.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// true
-var d = $.datetime.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');
-        </pre>
-
-                    <h2 id="demo-validate-with-ranges">Validate date/time by format with ranges</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('08.08.2013', '%d.%m.%Y', {year: {min:1970, max: 2038}}));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// true
-var d = $.datetime.validate('08.08.2013', '%d.%m.%Y', {year: {min:1970, max: 2038}});
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('08.08.1961', '%d.%m.%Y', {year: {min:1970, max: 2038}}));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// false
-var d = $.datetime.validate('08.08.1961', '%d.%m.%Y', {year: {min:1970, max: 2038}});
-        </pre>
-
-                    <h2>allow_empty param</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// true
-var d = $.datetime.validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true);
         </pre>
 
                 </div><!--/span-->
