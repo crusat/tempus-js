@@ -327,7 +327,8 @@
             var seconds = 0;
             var timestamp = 0;
             for(var key in lits) {
-                switch(lits[key]) {
+                if (lits.hasOwnProperty(key)) {
+                    switch(lits[key]) {
                     case '%d':
                         day = parseInt(result2[key]);
                         day = isNaN(day) ? 0 : day;
@@ -356,6 +357,7 @@
                         timestamp = parseInt(result2[key]);
                         timestamp = isNaN(timestamp) ? 0 : timestamp;
                         break;
+                    }
                 }
             }
             if (timestamp !== 0) {
