@@ -3,6 +3,9 @@ tempus-js
 
 JavaScript library for most comfortable using date/time.
 
+0.0.14
+optimized normalizeDate(), added date(), fixed parse().
+
 0.0.13
 added normalizeDate(). Fixed incDate(), decDate(), parse().
 

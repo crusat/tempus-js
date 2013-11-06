@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.13
+ * @version 0.0.14
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -32,6 +32,18 @@
             } else {
                 return Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000);
             }
+        };
+
+        this.date = function(timestamp) {
+            var date = new Date((new Date(parseInt(timestamp)*1000)).getTime() + (new Date(parseInt(timestamp)*1000)).getTimezoneOffset() * 60000);
+            return {
+                year: date.getFullYear(),
+                month: date.getMonth() + 1, // js default months beginning from 0.
+                day: date.getDate(),
+                hours: date.getHours(),
+                minutes: date.getMinutes(),
+                seconds: date.getSeconds()
+            };
         };
 
         this.now = function (format) {
@@ -144,60 +156,7 @@
         };
 
         this.normalizeDate = function(date) {
-            var normalized = false;
-            while (!normalized) {
-                normalized = true;
-
-                // more
-                if (date.minutes > 59) {
-                    date.hours += 1;
-                    date.minutes -= 60;
-                    normalized = false;
-                }
-                if (date.hours > 23) {
-                    date.day += 1;
-                    date.hours -= 24;
-                    normalized = false;
-                }
-                var dayInMonth = this.getDaysCountInMonth(date.month, date.year);
-                if (date.day > dayInMonth) {
-                    date.month += 1;
-                    date.day -= dayInMonth;
-                    normalized = false;
-                }
-                if (date.month > _MONTH_COUNT) {
-                    date.year += 1;
-                    date.month -= _MONTH_COUNT;
-                    normalized = false;
-                }
-
-                // less
-                if (date.minutes < 0) {
-                    date.hours -= 1;
-                    date.minutes += 60;
-                    normalized = false;
-                }
-                if (date.hours < 0) {
-                    date.day -= 1;
-                    date.hours += 23;
-                    normalized = false;
-                }
-                if (date.day < 1) {
-                    date.month -= 1;
-                    if (date.month > 0) {
-                        date.day += this.getDaysCountInMonth(date.month, date.year);
-                    } else {
-                        date.day += this.getDaysCountInMonth(_MONTH_COUNT, date.year);
-                    }
-                    normalized = false;
-                }
-                if (date.month < 1) {
-                    date.year -= 1;
-                    date.month += _MONTH_COUNT;
-                    normalized = false;
-                }
-            }
-            return JSON.parse(JSON.stringify(date));
+            return JSON.parse(JSON.stringify(this.date(this.time(date))));
         };
 
         this.decDate = function (date, value, type) {
@@ -384,14 +343,7 @@
             }
             if (timestamp !== 0) {
                 var date = new Date(parseInt(timestamp*1000));
-                var obj = {
-                    year: date.getFullYear(),
-                    month: date.getMonth() + 1, // js default months beginning from 0.
-                    day: date.getDate(),
-                    hours: date.getHours(),
-                    minutes: date.getMinutes(),
-                    seconds: date.getSeconds()
-                };
+                var obj = this.date(timestamp);
                 return this.incDate(obj, date.getTimezoneOffset(), 'minutes');
             }
 
