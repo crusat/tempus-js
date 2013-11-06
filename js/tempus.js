@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.15
+ * @version 0.0.16
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -20,15 +20,18 @@
         var YEAR_DAYS_COUNT_LEAP = 366;
 
         // now method
-        this.time = function (date) {
+        this.time = function (date, format) {
             if (date !== undefined) {
+                if (typeof date === 'string') {
+                    date = this.parse(date, format);
+                }
                 return Math.floor((Date.UTC(
-                    date.year !== undefined ? date.year : 1970,
-                    date.month !== undefined ? date.month-1 : 0,
-                    date.day !== undefined ? date.day : 1,
-                    date.hours !== undefined ? date.hours : 0,
-                    date.minutes !== undefined ? date.minutes : 0,
-                    date.seconds !== undefined ? date.seconds : 0)) / 1000);
+                        date.year !== undefined ? date.year : 1970,
+                        date.month !== undefined ? date.month-1 : 0,
+                        date.day !== undefined ? date.day : 1,
+                        date.hours !== undefined ? date.hours : 0,
+                        date.minutes !== undefined ? date.minutes : 0,
+                        date.seconds !== undefined ? date.seconds : 0)) / 1000);
             } else {
                 return Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000);
             }

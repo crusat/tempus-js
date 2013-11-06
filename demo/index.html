@@ -203,9 +203,11 @@
                     </table>
 
 <hr id="tempus.time" />
-<h2>tempus.time <span class="text-muted">(date)</span></h2>
+<h2>tempus.time <span class="text-muted">(date, format)</span></h2>
 <h3>Syntax</h3>
 <pre>int time( [object date] )</pre>
+<p>or</p>
+<pre>int time( [string date, string format] )</pre>
 <h3>Description</h3>
 Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.
 <h3>Examples</h3>
@@ -219,6 +221,16 @@ var t = tempus.time();
 var t = tempus.time({year: 2013, month: 11, day: 5});
 </pre>
 <a class="btn btn-primary" onclick="alert(tempus.time({year: 2013, month: 11, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+// t = 1363046400;
+var t = tempus.time('2013-03-12', 'Y-m-d');
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.time('2013-03-12', 'Y-m-d'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+// t = 1363363200;
+var t = tempus.time('2013-03-15 16:00', 'Y-m-d H:M');
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.time('2013-03-15 16:00', 'Y-m-d H:M'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.date" />
@@ -564,14 +576,6 @@ var t = tempus.validate('00:00 01.01.2012', 'H:M d.m.Y');</pre>
 <!--validate('', '%d.%m.%Y', {year: {min:1970, max: 2038}}, true);-->
 
 
-                    <h2>Getting current datetime - all formatting</h2>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 2013-03-14 4 3 Thu Thursday Mar March 14:57:01 1363258621 2013-03-14 03/14/2013
-// format like here: http://php.net/manual/function.strftime.php
-var d = $.datetime('%Y-%m-%d %w %a %A %b %B %H:%M:%S %s %F %D');
-        </pre>
 
                     <h2 id="demo-reformat">Reformat datetime</h2>
                     <a class="btn btn-primary pull-right" onclick="alert($.datetime.reformat('2013-03-12', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
@@ -597,14 +601,7 @@ var d = $.datetime.reformat('2013-03-15T12:31:48', '%H:%M (%a %d, %Y)', '%Y-%m-%
                     <a class="btn btn-primary pull-right" onclick="alert($.datetime.strtotime('2013-03-12'));">Run <span class="glyphicon glyphicon-play"></span></a>
         <pre>
 // Example result:
-// 1363046400
-var d = $.datetime.strtotime('2013-03-12');
-        </pre>
-                    <a class="btn btn-primary pull-right" onclick="alert($.datetime.strtotime('2013-03-15 16:00', '%Y-%m-%d %H:%M'));">Run <span class="glyphicon glyphicon-play"></span></a>
-        <pre>
-// Example result:
-// 1363348800
-var d = $.datetime.strtotime('2013-03-15 16:00', '%Y-%m-%d %H:%M');
+
         </pre>
 
                 </div><!--/span-->
