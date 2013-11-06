@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.20
+ * @version 0.0.21
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -375,6 +375,16 @@
             return this.setInterval(function() {
                 callback(that.now());
             }, 1);
+        };
+
+        this.alarm = function(date, callback) {
+            var a = this.setInterval(function() {
+                if (that.between(that.now(), date, 'seconds') === 0) {
+                    callback(date);
+                    clearInterval(a);
+                }
+            }, 1);
+            return a;
         };
 
         this.validate = function(date, format) {

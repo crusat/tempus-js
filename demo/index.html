@@ -210,6 +210,9 @@
                             </tr><tr>
                                 <td><a href="#tempus.clock">clock</a></td>
                                 <td>Clock. Every second callback is calling with parameter "date". "date" - is current date object. Also run callback immediately after starting.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.alarm">alarm</a></td>
+                                <td>Alarm at [date]. After alarming self-destructs.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -669,6 +672,25 @@ var clock = tempus.clock(function(date) {
 </pre>
 <a class="btn btn-primary" onclick="var clock = tempus.clock(function(date) {document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, '%H:%M:%S');});">Run <span class="glyphicon glyphicon-play"></span></a>
 <span id="tempus-clock-example"></span>
+
+
+<hr id="tempus.alarm" />
+<h2>tempus.alarm <span class="text-muted">(date, callback)</span></h2>
+<h3>Syntax</h3>
+<pre>object alarm( object date, function callback )</pre>
+<h3>Description</h3>
+Alarm at [date]. After alarming self-destructs.
+<h3>Examples</h3>
+<pre class="brush: js">
+//  For example, please, click button
+var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');
+document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');
+var a = tempus.alarm(alarmAt, function(date) {
+    alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));
+});
+</pre>
+<a class="btn btn-primary" onclick="var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');var a = tempus.alarm(alarmAt, function(date) {alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));});">Run <span class="glyphicon glyphicon-play"></span></a>
+<span>Alarming at <span id="tempus-alarm-example"></span></span>
 
                 </div><!--/span-->
             </div><!--/row-->

@@ -3,6 +3,9 @@ tempus-js
 
 JavaScript library for most comfortable using date/time.
 
+0.0.21
+method alarm().
+
 0.0.20
 method clock().
 
