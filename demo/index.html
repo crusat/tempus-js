@@ -195,6 +195,9 @@
                             </tr><tr>
                                 <td><a href="#tempus.normalizeDate">normalizeDate</a></td>
                                 <td>Normalize date to valid.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.validate">validate</a></td>
+                                <td>Validate date.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -504,7 +507,7 @@ var t = tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,second
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0})));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr id="tempus.valid" />
+<hr id="tempus.validate" />
 <h2>tempus.validate <span class="text-muted">(date, format)</span></h2>
 <h3>Syntax</h3>
 <pre>bool validate( object date )</pre>
