@@ -158,7 +158,7 @@
                                 <td>Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
                             </tr><tr>
                                 <td><a href="#tempus.date">date</a></td>
-                                <td>Return date object from timestamp (UTC).</td>
+                                <td>Return date object from timestamp (UTC). Or fix received object to default tempus date object.</td>
                             </tr><tr>
                                 <td><a href="#tempus.now">now</a></td>
                                 <td>Return current date as object or formatted string.</td>
@@ -198,6 +198,9 @@
                             </tr><tr>
                                 <td><a href="#tempus.validate">validate</a></td>
                                 <td>Validate date.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.reformat">reformat</a></td>
+                                <td>Reformat date from one to other format.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -234,11 +237,11 @@ var t = tempus.time('2013-03-15 16:00', '%Y-%m-%d %H:%M');
 
 
 <hr id="tempus.date" />
-<h2>tempus.date <span class="text-muted">(timestamp)</span></h2>
+<h2>tempus.date <span class="text-muted">(date)</span></h2>
 <h3>Syntax</h3>
-<pre>object date( [int timestamp] )</pre>
+<pre>object date( [int timestamp|object date] )</pre>
 <h3>Description</h3>
-Return date object from timestamp (UTC).
+Return date object from timestamp (UTC). Or fix received object to default tempus date object.
 <h3>Examples</h3>
 <pre class="brush: js">
 // t = {"year":2013,"month":11,"day":5,"hours":16,"minutes":1,"seconds":53};
@@ -250,6 +253,16 @@ var t = tempus.date(1383667313);
 var t = tempus.date(1383609600);
 </pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.date(1383609600)));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+// t = {"year":1970,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.date({});
+</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.date({})));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+// t = {"year":2013,"month":10,"day":5,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.date({year:2013, month:10, day:5});
+</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.date({year:2013, month:10, day:5})));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.now" />
@@ -461,7 +474,7 @@ var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, 
 <pre class="brush: js">
 //  t = 6;
 var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 3, day: 5}, 'month'));">Run <span class="glyphicon glyphicon-play"></span></a>
+<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month'));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  t = 266400;
 var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes');</pre>
