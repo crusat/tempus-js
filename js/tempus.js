@@ -1,19 +1,31 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.21
+ * @version 0.0.23
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
 (function () {
-    var TempusJS = function () {
+    var TempusJS = function (options) {
         // private
         var that = this;
+        var locale = 'en_US';
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var monthLongNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-            'October', 'November', 'December'];
-        var daysShortNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        var daysLongNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var locales = {
+            "en_US": {
+                "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
+                    "September", "October", "November", "December"],
+                "daysShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                "daysLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+            },
+            "ru_RU": {
+                "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+                "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
+                    "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+                "daysShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+            }
+        };
 
         // now method
         this.time = function (date, format) {
@@ -96,9 +108,9 @@
                 }
             }
             if (typeof month === 'string') {
-                var month_int = indexOf(monthShortNames, month);
+                var month_int = indexOf(locales[locale]["monthShortNames"], month);
                 if (month_int === -1) {
-                    month_int = indexOf(monthLongNames, month);
+                    month_int = indexOf(locales[locale]["monthLongNames"], month);
                 }
                 if (month_int === -1) {
                     return undefined;
@@ -115,17 +127,17 @@
 
         this.getMonthNames = function (longNames) {
             if (longNames === true) {
-                return monthLongNames;
+                return locales[locale]["monthLongNames"];
             } else {
-                return monthShortNames;
+                return locales[locale]["monthShortNames"];
             }
         };
 
         this.getDayNames = function (longNames) {
             if (longNames === true) {
-                return daysLongNames;
+                return locales[locale]["daysLongNames"];
             } else {
-                return daysShortNames;
+                return locales[locale]["daysShortNames"];
             }
         };
 
@@ -268,10 +280,10 @@
             var month = formattingWithNulls(d.month, 2);
             var full_year = formattingWithNulls(d.year, 4);
             var day_number = this.getDayOfWeek(date);
-            var day_name_short = daysShortNames[this.getDayOfWeek(date)];
-            var day_name_long = daysLongNames[this.getDayOfWeek(date)];
-            var month_name_short = monthShortNames[parseInt(month)-1];
-            var month_name_long = monthLongNames[parseInt(month)-1];
+            var day_name_short = locales[locale]["daysShortNames"][this.getDayOfWeek(date)];
+            var day_name_long = locales[locale]["daysLongNames"][this.getDayOfWeek(date)];
+            var month_name_short = locales[locale]["monthShortNames"][parseInt(month)-1];
+            var month_name_long = locales[locale]["monthLongNames"][parseInt(month)-1];
             var hours = formattingWithNulls(d.hours, 2);
             var minutes = formattingWithNulls(d.minutes, 2);
             var seconds = formattingWithNulls(d.seconds, 2);
@@ -398,6 +410,19 @@
 
         this.reformat = function(date, formatFrom, formatTo) {
             return this.format(this.parse(date, formatFrom), formatTo);
+        };
+
+        this.setLocale = function(loc) {
+            locale = loc || "en_US";
+            return locale;
+        };
+
+        this.getLocale = function() {
+            return locale;
+        };
+
+        this.getAvailableLocales = function() {
+            return Object.keys(locales);
         };
 
         // *** HELPERS ***

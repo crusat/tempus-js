@@ -3,6 +3,12 @@ tempus-js
 
 JavaScript library for most comfortable using date/time.
 
+0.0.23
+method getAvailableLocales(), locales fixed.
+
+0.0.22
+localization with setLocale() and getLocale().
+
 0.0.21
 method alarm().
 

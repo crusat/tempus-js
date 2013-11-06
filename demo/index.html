@@ -213,6 +213,15 @@
                             </tr><tr>
                                 <td><a href="#tempus.alarm">alarm</a></td>
                                 <td>Alarm at [date]. After alarming self-destructs.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.setLocale">setLocale</a></td>
+                                <td>Setting up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getLocale">getLocale</a></td>
+                                <td>Get current value of locale.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getAvailableLocales">getAvailableLocales</a></td>
+                                <td>Get available locales list.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -691,6 +700,51 @@ var a = tempus.alarm(alarmAt, function(date) {
 </pre>
 <a class="btn btn-primary" onclick="var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');var a = tempus.alarm(alarmAt, function(date) {alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));});">Run <span class="glyphicon glyphicon-play"></span></a>
 <span>Alarming at <span id="tempus-alarm-example"></span></span>
+
+
+<hr id="tempus.setLocale" />
+<h2>tempus.setLocale <span class="text-muted">(locale)</span></h2>
+<h3>Syntax</h3>
+<pre>string setLocale( string locale )</pre>
+<h3>Description</h3>
+Setting up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
+<h3>Examples</h3>
+<pre class="brush: js">
+//  t = "2013, Ноябрь, 06, Среда";
+tempus.setLocale("ru_RU");
+var t = tempus.now('%Y, %B, %d, %A');
+</pre>
+<a class="btn btn-primary" onclick="tempus.setLocale('ru_RU');alert(tempus.now('%Y, %B, %d, %A'));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<hr id="tempus.getLocale" />
+<h2>tempus.getLocale <span class="text-muted">()</span></h2>
+<h3>Syntax</h3>
+<pre>string getLocale()</pre>
+<h3>Description</h3>
+Get current value of locale.
+<h3>Examples</h3>
+<pre class="brush: js">
+//  t = "en_US";
+var t = tempus.getLocale();
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getLocale());">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<hr id="tempus.getAvailableLocales" />
+<h2>tempus.getAvailableLocales <span class="text-muted">()</span></h2>
+<h3>Syntax</h3>
+<pre>string getLocale()</pre>
+<h3>Description</h3>
+Get available locales list.
+<h3>Examples</h3>
+<pre class="brush: js">
+//  t = ["en_US", "ru_RU"];
+var t = tempus.getAvailableLocales();
+</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getAvailableLocales()));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
 
                 </div><!--/span-->
             </div><!--/row-->
