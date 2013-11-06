@@ -1,12 +1,13 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.19
+ * @version 0.0.20
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
 (function () {
     var TempusJS = function () {
         // private
+        var that = this;
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var monthShortNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         var monthLongNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -367,6 +368,13 @@
 
         this.setInterval = function(callback, timeout) {
             return setInterval(callback, parseInt(timeout)*1000);
+        };
+
+        this.clock = function(callback) {
+            callback(that.now());
+            return this.setInterval(function() {
+                callback(that.now());
+            }, 1);
         };
 
         this.validate = function(date, format) {
