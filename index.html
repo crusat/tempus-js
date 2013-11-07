@@ -9,15 +9,15 @@
     <title>TempusJS</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap/css/offcanvas.css" rel="stylesheet">
-    <script type="text/javascript" src="syntaxhighlighter/scripts/shCore.js"></script>
-    <script type="text/javascript" src="syntaxhighlighter/scripts/shBrushJScript.js"></script>
-    <link type="text/css" rel="stylesheet" href="syntaxhighlighter/styles/shCoreDefault.css"/>
+    <link href="demo/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="demo/bootstrap/css/offcanvas.css" rel="stylesheet">
+    <script type="text/javascript" src="demo/syntaxhighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="demo/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+    <link type="text/css" rel="stylesheet" href="demo/syntaxhighlighter/styles/shCoreDefault.css"/>
     <script>
         SyntaxHighlighter.all();
     </script>
-    <script type="text/javascript" src="../js/tempus.js"></script>
+    <script type="text/javascript" src="js/tempus.js"></script>
 </head>
 <body>
 <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
@@ -34,7 +34,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#demo-format">Format</a></li>
                 <li><a href="#methods">Methods</a></li>
-                <li><a href="../tests.html">Tests</a></li>
+                <li><a href="tests.html">Tests</a></li>
                 <li><a href="https://github.com/crusat/tempus-js" target="_blank">View on Github</a></li>
                 <li><a href="mailto:me@akuzn.com" target="_blank">Contact me - me@akuzn.com</a></li>
             </ul>
@@ -323,7 +323,7 @@ If year is leap return true. If no parameters - checking current year.
 //  checking leap of current year.
 var leapYear = tempus.isLeapYear();
 </pre>
-<a class="btn btn-primary" onclick="alert(tempus.now('Y')+' is leap year? '+tempus.isLeapYear());">Run <span class="glyphicon glyphicon-play"></span></a>
+<a class="btn btn-primary" onclick="alert(tempus.now('%Y')+' is leap year? '+tempus.isLeapYear());">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  leapYear = true;
 var leapYear = tempus.isLeapYear(2004);
