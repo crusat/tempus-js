@@ -157,52 +157,52 @@
                         <tbody>
                             <tr>
                                 <td><a href="#tempus.time">time</a></td>
-                                <td>Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
+                                <td>Returns current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
                             </tr><tr>
                                 <td><a href="#tempus.date">date</a></td>
-                                <td>Return date object from timestamp (UTC). Or fix received object to default tempus date object.</td>
+                                <td>Returns date object from timestamp (UTC). Or fix received object to default tempus date object.</td>
                             </tr><tr>
                                 <td><a href="#tempus.now">now</a></td>
-                                <td>Return current date as object or formatted string.</td>
+                                <td>Returns current date as object or formatted string.</td>
                             </tr><tr>
                                 <td><a href="#tempus.isLeapYear">isLeapYear</a></td>
-                                <td>If year is leap return true. If no parameters - checking current year.</td>
+                                <td>If year is leap returns true. If no parameters - checking current year.</td>
                             </tr><tr>
                                 <td><a href="#tempus.format">format</a></td>
-                                <td>Return formatted string of date. You can use object or timestamp as parameter of method.</td>
+                                <td>Returns formatted string of date. You can use object or timestamp as parameter of method.</td>
                             </tr><tr>
                                 <td><a href="#tempus.getDaysCountInMonth">getDaysCountInMonth</a></td>
-                                <td>Return days count in month. If year is undefined - leap year is false.</td>
+                                <td>Returns days count in month. If year is undefined - leap year is false.</td>
                             </tr><tr>
                                 <td><a href="#tempus.getMonthNames">getMonthNames</a></td>
-                                <td>Return array of month names. If longNames is undefined, short names was returned.</td>
+                                <td>Returns array of month names. If longNames is undefined, short names was returned.</td>
                             </tr><tr>
                                 <td><a href="#tempus.getDayNames">getDayNames</a></td>
-                                <td>Return array of day names. If longNames is undefined, short names was returned.</td>
+                                <td>Returns array of day names. If longNames is undefined, short names was returned.</td>
                             </tr><tr>
                                 <td><a href="#tempus.getDayOfWeek">getDayOfWeek</a></td>
-                                <td>Return day of week.</td>
+                                <td>Returns day of week.</td>
                             </tr><tr>
                                 <td><a href="#tempus.incDate">incDate</a></td>
-                                <td>Return date object, increased on [value] [type].</td>
+                                <td>Returns date object, increased on [value] [type].</td>
                             </tr><tr>
                                 <td><a href="#tempus.decDate">decDate</a></td>
-                                <td>Return date object, decreased on [value] [type].</td>
+                                <td>Returns date object, decreased on [value] [type].</td>
                             </tr><tr>
                                 <td><a href="#tempus.between">between</a></td>
-                                <td>Return integer of date between from [dateFrom] to [dateTo] as [type].</td>
+                                <td>Returns integer of date between from [dateFrom] to [dateTo] as [type].</td>
                             </tr><tr>
                                 <td><a href="#tempus.parse">parse</a></td>
-                                <td>Return date object from parsed string.</td>
+                                <td>Returns date object from parsed string.</td>
                             </tr><tr>
                                 <td><a href="#tempus.normalizeDate">normalizeDate</a></td>
                                 <td>Normalize date to valid.</td>
                             </tr><tr>
                                 <td><a href="#tempus.validate">validate</a></td>
-                                <td>Validate date.</td>
+                                <td>Validates date.</td>
                             </tr><tr>
                                 <td><a href="#tempus.reformat">reformat</a></td>
-                                <td>Reformat date from one to other format.</td>
+                                <td>Reformats date from one to other format.</td>
                             </tr><tr>
                                 <td><a href="#tempus.setTimeout">setTimeout</a></td>
                                 <td>Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).</td>
@@ -214,19 +214,19 @@
                                 <td>Clock. Every second callback is calling with parameter "date". "date" - is current date object. Also run callback immediately after starting.</td>
                             </tr><tr>
                                 <td><a href="#tempus.alarm">alarm</a></td>
-                                <td>Alarm at [date]. After alarming self-destructs.</td>
+                                <td>Alarms at [date]. After alarming self-destructs.</td>
                             </tr><tr>
                                 <td><a href="#tempus.setLocale">setLocale</a></td>
-                                <td>Setting up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".</td>
+                                <td>Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".</td>
                             </tr><tr>
                                 <td><a href="#tempus.getLocale">getLocale</a></td>
-                                <td>Get current value of locale.</td>
+                                <td>Gets current value of locale.</td>
                             </tr><tr>
                                 <td><a href="#tempus.getAvailableLocales">getAvailableLocales</a></td>
-                                <td>Get available locales list.</td>
+                                <td>Gets available locales list.</td>
                             </tr><tr>
                                 <td><a href="#tempus.getVersion">getVersion</a></td>
-                                <td>Get current version of TempusJS.</td>
+                                <td>Gets current version of TempusJS.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -238,7 +238,7 @@
 <p>or</p>
 <pre>int time( [string date, string format] )</pre>
 <h3>Description</h3>
-Return current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.
+Returns current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.
 <h3>Examples</h3>
 <pre class="brush: js">
 // t = 1383667313;
@@ -267,7 +267,7 @@ var t = tempus.time('2013-03-15 16:00', '%Y-%m-%d %H:%M');
 <h3>Syntax</h3>
 <pre>object date( [int timestamp|object date] )</pre>
 <h3>Description</h3>
-Return date object from timestamp (UTC). Or fix received object to default tempus date object.
+Returns date object from timestamp (UTC). Or fix received object to default tempus date object.
 <h3>Examples</h3>
 <pre class="brush: js">
 // t = {"year":2013,"month":11,"day":5,"hours":16,"minutes":1,"seconds":53};
@@ -296,7 +296,7 @@ var t = tempus.date({year:2013, month:10, day:5});
 <h3>Syntax</h3>
 <pre>object now( [string format] )</pre>
 <h3>Description</h3>
-Return current date as object or formatted string.
+Returns current date as object or formatted string.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = {
@@ -322,7 +322,7 @@ var t = tempus.now('%d.%m.%Y');</pre>
 <h3>Syntax</h3>
 <pre>bool isLeapYear( [int year] )</pre>
 <h3>Description</h3>
-If year is leap return true. If no parameters - checking current year.
+If year is leap returns true. If no parameters - checking current year.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  checking leap of current year.
@@ -342,7 +342,7 @@ var leapYear = tempus.isLeapYear(2004);
 <h3>Syntax</h3>
 <pre>string format( object|int date, string format )</pre>
 <h3>Description</h3>
-Return formatted string of date. You can use object or timestamp as parameter of method.
+Returns formatted string of date. You can use object or timestamp as parameter of method.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = '05.11.2013';
@@ -363,7 +363,7 @@ var t = tempus.format(tempus.time(), '%Y%m%d');</pre>
 <h3>Syntax</h3>
 <pre>int getDaysCountInMonth( int month, [int year] )</pre>
 <h3>Description</h3>
-Return days count in month. If year is undefined - leap year is false.
+Returns days count in month. If year is undefined - leap year is false.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = 30;
@@ -384,7 +384,7 @@ var t = tempus.getDaysCountInMonth(2);</pre>
 <h3>Syntax</h3>
 <pre>object getMonthNames( [bool longNames] )</pre>
 <h3>Description</h3>
-Return array of month names. If longNames is undefined, short names was returned.
+Returns array of month names. If longNames is undefined, short names was returned.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -402,7 +402,7 @@ var t = tempus.getMonthNames(true);</pre>
 <h3>Syntax</h3>
 <pre>object getDayNames( [bool longNames] )</pre>
 <h3>Description</h3>
-Return array of day names. If longNames is undefined, short names was returned.
+Returns array of day names. If longNames is undefined, short names was returned.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -420,7 +420,7 @@ var t = tempus.getDayNames(true);</pre>
 <h3>Syntax</h3>
 <pre>int getDayOfWeek( object date )</pre>
 <h3>Description</h3>
-Return day of week.
+Returns day of week.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = 6;
@@ -441,7 +441,7 @@ var t = tempus.getDayOfWeek(tempus.now());</pre>
 <h3>Syntax</h3>
 <pre>object incDate( object date, int value, string type=seconds|minutes|hours|day|month|year )</pre>
 <h3>Description</h3>
-Return date object, increased on [value] [type].
+Returns date object, increased on [value] [type].
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0};
@@ -466,7 +466,7 @@ var t = tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <h3>Syntax</h3>
 <pre>object decDate( object date, int value, string type=seconds|minutes|hours|day|month|year )</pre>
 <h3>Description</h3>
-Return date object, decreased on [value] [type].
+Returns date object, decreased on [value] [type].
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0};
@@ -491,7 +491,7 @@ var t = tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
 <h3>Syntax</h3>
 <pre>int between( object dateFrom, object dateTo, string type=day|month|year|hours|minutes|seconds )</pre>
 <h3>Description</h3>
-Return integer of date between from [dateFrom] to [dateTo] as [type].
+Returns integer of date between from [dateFrom] to [dateTo] as [type].
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = 4;
@@ -521,7 +521,7 @@ var t = tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');</pr
 <h3>Syntax</h3>
 <pre>object parse( string str, string format )</pre>
 <h3>Description</h3>
-Return date object from parsed string.
+Returns date object from parsed string.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0};
@@ -565,7 +565,7 @@ var t = tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,second
 <p>or</p>
 <pre>bool validate( string date, string format )</pre>
 <h3>Description</h3>
-Validate date.
+Validates date.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = false;
@@ -620,7 +620,7 @@ var t = tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');</pre>
 <h3>Syntax</h3>
 <pre>string reformat( string date, string formatFrom, string formatTo )</pre>
 <h3>Description</h3>
-Reformat date from one to other format.
+Reformats date from one to other format.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = "12.03.2013";
@@ -693,7 +693,7 @@ var clock = tempus.clock(function(date) {
 <h3>Syntax</h3>
 <pre>object alarm( object date, function callback )</pre>
 <h3>Description</h3>
-Alarm at [date]. After alarming self-destructs.
+Alarms at [date]. After alarming self-destructs.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  For example, please, click button
@@ -712,7 +712,7 @@ var a = tempus.alarm(alarmAt, function(date) {
 <h3>Syntax</h3>
 <pre>string setLocale( string locale )</pre>
 <h3>Description</h3>
-Setting up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
+Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = "2013, Ноябрь, 06, Среда";
@@ -727,7 +727,7 @@ var t = tempus.now('%Y, %B, %d, %A');
 <h3>Syntax</h3>
 <pre>string getLocale()</pre>
 <h3>Description</h3>
-Get current value of locale.
+Gets current value of locale.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = "en_US";
@@ -741,7 +741,7 @@ var t = tempus.getLocale();
 <h3>Syntax</h3>
 <pre>object getAvailableLocales()</pre>
 <h3>Description</h3>
-Get available locales list.
+Gets available locales list.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = ["en_US", "ru_RU"];
@@ -755,7 +755,7 @@ var t = tempus.getAvailableLocales();
 <h3>Syntax</h3>
 <pre>string getVersion()</pre>
 <h3>Description</h3>
-Get current version of TempusJS.
+Gets current version of TempusJS.
 <h3>Examples</h3>
 <pre class="brush: js">
 var t = tempus.getVersion();
