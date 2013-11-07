@@ -52,6 +52,8 @@
             <div class="jumbotron">
                 <h1>TempusJS demo</h1>
                 <p>This is demo examples of TempusJS.</p>
+                <a href="js/tempus.min.js" target="_blank" class="btn btn-primary btn-lg">Download compressed Tempus <span class="jsVersion"></span></a>
+                <a href="js/tempus.js" target="_blank" class="btn btn-primary btn-lg">Download uncompressed Tempus <span class="jsVersion"></span></a>
             </div>
             <div class="row">
                 <div class="col-12 col-sm-12 col-lg-12">
@@ -222,6 +224,9 @@
                             </tr><tr>
                                 <td><a href="#tempus.getAvailableLocales">getAvailableLocales</a></td>
                                 <td>Get available locales list.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.getVersion">getVersion</a></td>
+                                <td>Get current version of TempusJS.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -734,7 +739,7 @@ var t = tempus.getLocale();
 <hr id="tempus.getAvailableLocales" />
 <h2>tempus.getAvailableLocales <span class="text-muted">()</span></h2>
 <h3>Syntax</h3>
-<pre>string getLocale()</pre>
+<pre>object getAvailableLocales()</pre>
 <h3>Description</h3>
 Get available locales list.
 <h3>Examples</h3>
@@ -743,6 +748,19 @@ Get available locales list.
 var t = tempus.getAvailableLocales();
 </pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getAvailableLocales()));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<hr id="tempus.getVersion" />
+<h2>tempus.getVersion <span class="text-muted">()</span></h2>
+<h3>Syntax</h3>
+<pre>string getVersion()</pre>
+<h3>Description</h3>
+Get current version of TempusJS.
+<h3>Examples</h3>
+<pre class="brush: js">
+var t = tempus.getVersion();
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getVersion());">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 
@@ -758,5 +776,16 @@ var t = tempus.getAvailableLocales();
     </footer>
 
 </div><!--/.container-->
+<script type="text/javascript">
+    function versionLoad() {
+        var elements = document.getElementsByClassName('jsVersion');
+        for (var some in elements) {
+            if (elements.hasOwnProperty(some)) {
+                elements[some].innerHTML = tempus.getVersion();
+            }
+        }
+    }
+    window.addEventListener("load", versionLoad, false);
+</script>
 </body>
 </html>

@@ -1,5 +1,5 @@
-0.1.23
-First public version.
+0.1.24
+First public version &&  added method getVersion().
 
 0.0.23
 method getAvailableLocales(), locales fixed.

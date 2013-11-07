@@ -1,13 +1,14 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.1.23
+ * @version 0.1.24
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
 (function () {
-    var TempusJS = function (options) {
+    var TempusJS = function () {
         // private
         var that = this;
+        var version = '0.1.24';
         var locale = 'en_US';
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var locales = {
@@ -425,6 +426,10 @@
 
         this.getAvailableLocales = function() {
             return Object.keys(locales);
+        };
+
+        this.getVersion = function() {
+            return version;
         };
 
         // *** HELPERS ***
