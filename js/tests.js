@@ -68,6 +68,30 @@
         equal(tempus.getDayOfWeek({year: 2014, month: 1, day: 1}), 3, 'Day of week test');
         equal(typeof tempus.getDayOfWeek({year: 2014, month: 1, day: 1}), 'number', 'Type is number');
     });
+
+    test('tempus.incDate', function () {
+        deepEqual(tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day'),
+            {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+        deepEqual(tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day'),
+            {"year":2014,"month":1,"day":13,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+        deepEqual(tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month'),
+            {"year":2013,"month":12,"day":30,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+        deepEqual(tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year'),
+            {"year":2015,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+        equal(typeof tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year'), 'object', 'Type is object');
+    });
+
+    test('tempus.decDate', function () {
+        deepEqual(tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day'),
+            {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+        deepEqual(tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day'),
+            {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+        deepEqual(tempus.decDate({year: 2013, month: 1, day: 1}, 11, 'month'),
+            {"year":2012,"month":2,"day":1,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+        deepEqual(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year'),
+            {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+        equal(typeof tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year'), 'object', 'Type is object');
+    });
 })();
 
 
