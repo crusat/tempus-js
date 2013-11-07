@@ -46,6 +46,28 @@
         equal(tempus.getDaysCountInMonth(2, 2013), 28, 'Days count, not leap year, february 2013');
         equal(typeof tempus.getDaysCountInMonth(2, 2013), 'number', 'Type is number');
     });
+
+    test('tempus.getMonthNames', function () {
+        deepEqual(tempus.getMonthNames(), ["Jan","Feb","Mar","Apr","May","Jun",
+            "Jul","Aug","Sep","Oct","Nov","Dec"], 'Month short names');
+        deepEqual(tempus.getMonthNames(true), ["January","February","March","April","May","June",
+            "July","August","September","October","November","December"], 'Month long names');
+        equal(typeof tempus.getMonthNames(), 'object', 'Type is object (array)');
+    });
+
+    test('tempus.getDayNames', function () {
+        deepEqual(tempus.getDayNames(), ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], 'Day short names');
+        deepEqual(tempus.getDayNames(true), ["Sunday","Monday","Tuesday","Wednesday",
+            "Thursday","Friday","Saturday"], 'Day long names');
+        equal(typeof tempus.getDayNames(), 'object', 'Type is object (array)');
+    });
+
+    test('tempus.getDayOfWeek', function () {
+        equal(tempus.getDayOfWeek({year: 2013, month: 10, day: 5}), 6, 'Day of week test');
+        equal(tempus.getDayOfWeek({year: 2013, month: 10, day: 6}), 0, 'Day of week test');
+        equal(tempus.getDayOfWeek({year: 2014, month: 1, day: 1}), 3, 'Day of week test');
+        equal(typeof tempus.getDayOfWeek({year: 2014, month: 1, day: 1}), 'number', 'Type is number');
+    });
 })();
 
 
