@@ -100,6 +100,26 @@
         equal(tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours'), 10224, 'Between');
         equal(typeof tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours'), 'number', 'Type is number');
     });
+
+    test('tempus.parse', function () {
+        deepEqual(tempus.parse('21.10.2013', '%d.%m.%Y'),
+            {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+        deepEqual(tempus.parse('20131005162015', '%Y%m%d%H%M%S'),
+            {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15}, 'Parse');
+        equal(typeof tempus.parse('20131005162015', '%Y%m%d%H%M%S'), 'object', 'Type is object');
+    });
+
+    test('tempus.normalizeDate', function () {
+        deepEqual(tempus.normalizeDate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}),
+            {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0}, 'Normalize date');
+        deepEqual(tempus.normalizeDate({day:46,month:13,year:2013,hours:0,minutes:0,seconds:0}),
+            {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0}, 'Normalize date');
+        deepEqual(tempus.normalizeDate({day:32,month:-5,year:2013,hours:55,minutes:0,seconds:-2}),
+            {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58}, 'Normalize date');
+        deepEqual(tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}),
+            {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}, 'Normalize date');
+        equal(typeof tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}), 'object', 'Type is object');
+    });
 })();
 
 

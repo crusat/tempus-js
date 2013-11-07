@@ -519,11 +519,11 @@ var t = tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');</pr
 Return date object from parsed string.
 <h3>Examples</h3>
 <pre class="brush: js">
-//  t = {"day":21,"month":10,"year":2013,"hour":0,"minutes":0,"seconds":0};
+//  t = {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0};
 var t = tempus.parse('21.10.2013', '%d.%m.%Y');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('21.10.2013', '%d.%m.%Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
-//  t = {"day":5,"month":10,"year":2013,"hour":16,"minutes":20,"seconds":15};
+//  t = {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15};
 var t = tempus.parse('20131005162015', '%Y%m%d%H%M%S');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('20131005162015', '%Y%m%d%H%M%S')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
