@@ -14,12 +14,12 @@
     var yyyy = today.getFullYear();
 
     // tests
-    test('tempus.time()', function () {
+    test('tempus.time', function () {
         equal(tempus.time(), Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000), 'Current UTC');
         equal(typeof tempus.time(), 'number', 'Type is number');
     });
 
-    test('tempus.isLeapYear()', function () {
+    test('tempus.isLeapYear', function () {
         equal(tempus.isLeapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
         equal(tempus.isLeapYear(2013), false, '2013 is not leap year');
         equal(tempus.isLeapYear(2012), true, '2012 is leap year');
@@ -31,6 +31,20 @@
         for (var year = 1800; year <= yyyy; year++) {
             equal(tempus.isLeapYear(year), isLeapYear(year), 'Dynamic test, year: ' + year);
         }
+    });
+
+    test('tempus.format', function () {
+        equal(tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'), '05.11.2013', 'Date format');
+        equal(tempus.format({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}, '%Y-%m-%d %H:%M:%S'), '2000-10-01 10:00:00', 'Date and time format');
+        equal(tempus.format({year: 2000}, '%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
+        equal(typeof tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'), 'string', 'Type is string');
+    });
+
+    test('tempus.getDaysCountInMonth', function () {
+        equal(tempus.getDaysCountInMonth(11, 2013), 30, 'Days count - november 2013');
+        equal(tempus.getDaysCountInMonth(2, 2012), 29, 'Days count, leap year, february 2012.');
+        equal(tempus.getDaysCountInMonth(2, 2013), 28, 'Days count, not leap year, february 2013');
+        equal(typeof tempus.getDaysCountInMonth(2, 2013), 'number', 'Type is number');
     });
 })();
 
