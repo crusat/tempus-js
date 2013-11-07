@@ -1,0 +1,9 @@
+{
+    "author": "Kuznetsov Aleksey <me@akuzn.com>",
+    "name": "tempus",
+    "version": "0.1.23",
+    "devDependencies": {
+        "grunt": "~0.4.1",
+        "grunt-contrib-uglify": "~0.2.2"
+    }
+}
