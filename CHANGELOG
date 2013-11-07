@@ -1,3 +1,6 @@
+0.1.25
+parseInt() changed to Number().
+
 0.1.24
 First public version &&  added method getVersion().
 

@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.1.24
+ * @version 0.1.25
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -8,7 +8,7 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.24';
+        var version = '0.1.25';
         var locale = 'en_US';
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var locales = {
@@ -49,7 +49,7 @@
         this.date = function(date) {
             var d;
             if (typeof date === "number") {
-                var jsDate = new Date((new Date(parseInt(date)*1000)).getTime() + (new Date(parseInt(date)*1000)).getTimezoneOffset() * 60000);
+                var jsDate = new Date((new Date(Number(date)*1000)).getTime() + (new Date(Number(date)*1000)).getTimezoneOffset() * 60000);
                 d = {
                     year: jsDate.getFullYear(),
                     month: jsDate.getMonth() + 1, // js default months beginning from 0.
@@ -88,7 +88,7 @@
 
         // is leap year method
         this.isLeapYear = function (year) {
-            year = year !== undefined ? parseInt(year) : this.now().year;
+            year = year !== undefined ? Number(year) : this.now().year;
             if (year % 4 == 0) {
                 if (year % 100 == 0) {
                     return year % 400 == 0;
@@ -160,22 +160,22 @@
             }
             var newDate = JSON.parse(JSON.stringify(date));
             if (type === 'seconds') {
-                newDate.seconds += parseInt(value);
+                newDate.seconds += Number(value);
             }
             if (type === 'minutes') {
-                newDate.minutes += parseInt(value);
+                newDate.minutes += Number(value);
             }
             if (type === 'hours') {
-                newDate.hours += parseInt(value);
+                newDate.hours += Number(value);
             }
             if (type === 'day') {
-                newDate.day += parseInt(value);
+                newDate.day += Number(value);
             }
             if (type === 'month') {
-                newDate.month += parseInt(value);
+                newDate.month += Number(value);
             }
             if (type === 'year') {
-                newDate.year += parseInt(value);
+                newDate.year += Number(value);
             }
             return this.normalizeDate(newDate);
         };
@@ -192,22 +192,22 @@
             }
             var newDate = JSON.parse(JSON.stringify(date));
             if (type === 'seconds') {
-                newDate.seconds -= parseInt(value);
+                newDate.seconds -= Number(value);
             }
             if (type === 'minutes') {
-                newDate.minutes -= parseInt(value);
+                newDate.minutes -= Number(value);
             }
             if (type === 'hours') {
-                newDate.hours -= parseInt(value);
+                newDate.hours -= Number(value);
             }
             if (type === 'day') {
-                newDate.day -= parseInt(value);
+                newDate.day -= Number(value);
             }
             if (type === 'month') {
-                newDate.month -= parseInt(value);
+                newDate.month -= Number(value);
             }
             if (type === 'year') {
-                newDate.year -= parseInt(value);
+                newDate.year -= Number(value);
             }
             return this.normalizeDate(newDate);
         };
@@ -283,8 +283,8 @@
             var day_number = this.getDayOfWeek(date);
             var day_name_short = locales[locale]["daysShortNames"][this.getDayOfWeek(date)];
             var day_name_long = locales[locale]["daysLongNames"][this.getDayOfWeek(date)];
-            var month_name_short = locales[locale]["monthShortNames"][parseInt(month)-1];
-            var month_name_long = locales[locale]["monthLongNames"][parseInt(month)-1];
+            var month_name_short = locales[locale]["monthShortNames"][Number(month)-1];
+            var month_name_long = locales[locale]["monthLongNames"][Number(month)-1];
             var hours = formattingWithNulls(d.hours, 2);
             var minutes = formattingWithNulls(d.minutes, 2);
             var seconds = formattingWithNulls(d.seconds, 2);
@@ -331,38 +331,38 @@
                 if (lits.hasOwnProperty(key)) {
                     switch(lits[key]) {
                     case '%d':
-                        day = parseInt(result2[key]);
+                        day = Number(result2[key]);
                         day = isNaN(day) ? 0 : day;
                         break;
                     case '%m':
-                        month = parseInt(result2[key]);
+                        month = Number(result2[key]);
                         month = isNaN(month) ? 0 : month;
                         break;
                     case '%Y':
-                        full_year = parseInt(result2[key]);
+                        full_year = Number(result2[key]);
                         full_year = isNaN(full_year) ? 0 : full_year;
                         break;
                     case '%H':
-                        hour = parseInt(result2[key]);
+                        hour = Number(result2[key]);
                         hour = isNaN(hour) ? 0 : hour;
                         break;
                     case '%M':
-                        minutes = parseInt(result2[key]);
+                        minutes = Number(result2[key]);
                         minutes = isNaN(minutes) ? 0 : minutes;
                         break;
                     case '%S':
-                        seconds = parseInt(result2[key]);
+                        seconds = Number(result2[key]);
                         seconds = isNaN(seconds) ? 0 : seconds;
                         break;
                     case '%s':
-                        timestamp = parseInt(result2[key]);
+                        timestamp = Number(result2[key]);
                         timestamp = isNaN(timestamp) ? 0 : timestamp;
                         break;
                     }
                 }
             }
             if (timestamp !== 0) {
-                var date = new Date(parseInt(timestamp*1000));
+                var date = new Date(Number(timestamp*1000));
                 var obj = this.date(timestamp);
                 return this.incDate(obj, date.getTimezoneOffset(), 'minutes');
             }
@@ -378,11 +378,11 @@
         };
 
         this.setTimeout = function(callback, timeout) {
-            return setTimeout(callback, parseInt(timeout)*1000);
+            return setTimeout(callback, Number(timeout)*1000);
         };
 
         this.setInterval = function(callback, timeout) {
-            return setInterval(callback, parseInt(timeout)*1000);
+            return setInterval(callback, Number(timeout)*1000);
         };
 
         this.clock = function(callback) {
