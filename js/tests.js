@@ -120,6 +120,20 @@
             {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}, 'Normalize date');
         equal(typeof tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}), 'object', 'Type is object');
     });
+
+    test('tempus.validate', function () {
+        equal(tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}), false, 'validate');
+        equal(tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}), false, 'validate');
+        equal(tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}), true, 'validate');
+        equal(tempus.validate('2013-03-12', '%Y-%m-%d'), true, 'validate');
+        equal(tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y'), true, 'validate');
+        equal(tempus.validate('32.08.2013', '%d.%m.%Y'), false, 'validate');
+        equal(tempus.validate('29.02.2013', '%d.%m.%Y'), false, 'validate');
+        equal(tempus.validate('29.02.2012', '%d.%m.%Y'), true, 'validate');
+        equal(tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y'), false, 'validate');
+        equal(tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y'), true, 'validate');
+        equal(typeof tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}), 'boolean', 'Type is boolean');
+    });
 })();
 
 
