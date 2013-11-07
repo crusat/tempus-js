@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.0.23
+ * @version 0.1.23
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
