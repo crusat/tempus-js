@@ -1,3 +1,6 @@
+0.1.26
+Fixed bug with time zones.
+
 0.1.25
 parseInt() changed to Number().
 

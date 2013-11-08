@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.1.25
+ * @version 0.1.26
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -8,7 +8,7 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.25';
+        var version = '0.1.26';
         var locale = 'en_US';
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var locales = {
@@ -28,7 +28,6 @@
             }
         };
 
-        // now method
         this.time = function (date, format) {
             if (date !== undefined) {
                 if (typeof date === 'string') {
@@ -49,14 +48,14 @@
         this.date = function(date) {
             var d;
             if (typeof date === "number") {
-                var jsDate = new Date((new Date(Number(date)*1000)).getTime() + (new Date(Number(date)*1000)).getTimezoneOffset() * 60000);
+                var jsDate = new Date(date*1000);
                 d = {
-                    year: jsDate.getFullYear(),
-                    month: jsDate.getMonth() + 1, // js default months beginning from 0.
-                    day: jsDate.getDate(),
-                    hours: jsDate.getHours(),
-                    minutes: jsDate.getMinutes(),
-                    seconds: jsDate.getSeconds()
+                    year: jsDate.getUTCFullYear(),
+                    month: jsDate.getUTCMonth() + 1, // js default months beginning from 0.
+                    day: jsDate.getUTCDate(),
+                    hours: jsDate.getUTCHours(),
+                    minutes: jsDate.getUTCMinutes(),
+                    seconds: jsDate.getUTCSeconds()
                 };
             } else if (typeof date === "object") {
                 d = {
@@ -81,7 +80,7 @@
                 hours: currentDate.getHours(),
                 minutes: currentDate.getMinutes(),
                 seconds: currentDate.getSeconds(),
-                timestamp: Math.floor(currentDate.getTime() / 1000)
+                timestamp: Math.floor((currentDate.getTime() - currentDate.getTimezoneOffset() * 60000) / 1000)
             };
             return format === undefined ? obj : this.format(obj, format);
         };

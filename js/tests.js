@@ -22,7 +22,7 @@
 
     // tests
     test('tempus.time', function () {
-        equal(tempus.time(), Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000), 'Current UTC');
+        equal(tempus.time(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
         equal(typeof tempus.time(), 'number', 'Type is number');
     });
 

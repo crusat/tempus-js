@@ -164,10 +164,10 @@ $ bower install tempus
                                 <td>Returns current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.</td>
                             </tr><tr>
                                 <td><a href="#tempus.date">date</a></td>
-                                <td>Returns date object from timestamp (UTC). Or fix received object to default tempus date object.</td>
+                                <td>Returns date object from timestamp. Or fix received object to default tempus date object.</td>
                             </tr><tr>
                                 <td><a href="#tempus.now">now</a></td>
-                                <td>Returns current date as object or formatted string.</td>
+                                <td>Returns a current date (in your time zone) as object or formatted string.</td>
                             </tr><tr>
                                 <td><a href="#tempus.isLeapYear">isLeapYear</a></td>
                                 <td>If year is leap returns true. If no parameters - checking current year.</td>
@@ -300,7 +300,7 @@ var t = tempus.date({year:2013, month:10, day:5});
 <h3>Syntax</h3>
 <pre>object now( [string format] )</pre>
 <h3>Description</h3>
-Returns current date as object or formatted string.
+Returns a current date (in your time zone) as object or formatted string.
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = {
