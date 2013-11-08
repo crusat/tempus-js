@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.1.26
+ * @version 0.1.27
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -8,7 +8,7 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.26';
+        var version = '0.1.27';
         var locale = 'en_US';
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var locales = {
@@ -151,32 +151,50 @@
             return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
         };
 
-        this.incDate = function (date, value, type) {
-            if (typeof date === 'object') {
+        var calcDate = function(date, value, type, modif) {
+            if (typeof date !== 'object') {
+                return undefined;
+            }
 
+            var newDate = JSON.parse(JSON.stringify(date));
+
+            if (typeof value === 'object') {
+                newDate = that.date(newDate);
+                return that.normalizeDate({
+                    year: newDate.year + modif*(value.year !== undefined ? value.year : 0),
+                    month: newDate.month + modif*(value.month !== undefined ? value.month : 0),
+                    day: newDate.day + modif*(value.day !== undefined ? value.day : 0),
+                    hours: newDate.hours + modif*(value.hours !== undefined ? value.hours : 0),
+                    minutes: newDate.minutes + modif*(value.minutes !== undefined ? value.minutes : 0),
+                    seconds: newDate.seconds + modif*(value.seconds !== undefined ? value.seconds : 0)
+                });
+            } else if (typeof value === 'number') {
+                if (type === 'seconds') {
+                    newDate.seconds += modif*Number(value);
+                }
+                if (type === 'minutes') {
+                    newDate.minutes += modif*Number(value);
+                }
+                if (type === 'hours') {
+                    newDate.hours += modif*Number(value);
+                }
+                if (type === 'day') {
+                    newDate.day += modif*Number(value);
+                }
+                if (type === 'month') {
+                    newDate.month += modif*Number(value);
+                }
+                if (type === 'year') {
+                    newDate.year += modif*Number(value);
+                }
+                return that.normalizeDate(newDate);
             } else {
                 return undefined;
             }
-            var newDate = JSON.parse(JSON.stringify(date));
-            if (type === 'seconds') {
-                newDate.seconds += Number(value);
-            }
-            if (type === 'minutes') {
-                newDate.minutes += Number(value);
-            }
-            if (type === 'hours') {
-                newDate.hours += Number(value);
-            }
-            if (type === 'day') {
-                newDate.day += Number(value);
-            }
-            if (type === 'month') {
-                newDate.month += Number(value);
-            }
-            if (type === 'year') {
-                newDate.year += Number(value);
-            }
-            return this.normalizeDate(newDate);
+        };
+
+        this.incDate = function (date, value, type) {
+            return calcDate(date, value, type, 1);
         };
 
         this.normalizeDate = function(date) {
@@ -184,31 +202,7 @@
         };
 
         this.decDate = function (date, value, type) {
-            if (typeof date === 'object') {
-
-            } else {
-                return undefined;
-            }
-            var newDate = JSON.parse(JSON.stringify(date));
-            if (type === 'seconds') {
-                newDate.seconds -= Number(value);
-            }
-            if (type === 'minutes') {
-                newDate.minutes -= Number(value);
-            }
-            if (type === 'hours') {
-                newDate.hours -= Number(value);
-            }
-            if (type === 'day') {
-                newDate.day -= Number(value);
-            }
-            if (type === 'month') {
-                newDate.month -= Number(value);
-            }
-            if (type === 'year') {
-                newDate.year -= Number(value);
-            }
-            return this.normalizeDate(newDate);
+            return calcDate(date, value, type, -1);
         };
 
         this.between = function (dateFrom, dateTo, type) {
@@ -429,6 +423,68 @@
 
         this.getVersion = function() {
             return version;
+        };
+
+        /*
+         * options.dateFrom - string or object
+         * options.formatFrom - string|undefined
+         * options.dateTo - string or object
+         * options.formatTo - string|undefined
+         * options.period - number (seconds)|string (seconds, minutes, hours, day, month, year)
+         * options.format - result format, string
+         */
+        this.generateDates = function(options) {
+            var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
+            // timestamp "from"
+            if (typeof options.dateFrom === 'string') {
+                tsFrom = that.parse(options.dateFrom, options.formatFrom);
+            }
+            tsFrom = that.time(tsFrom);
+            // timestamp "to"
+            if (typeof options.dateTo === 'string') {
+                tsTo = that.parse(options.dateTo, options.formatTo);
+            }
+            tsTo = that.time(tsTo);
+            // period
+            if (typeof options.period === 'number') {
+                period = {
+                    year: 0,
+                    month: 0,
+                    day: 0,
+                    hours: 0,
+                    minutes: 0,
+                    seconds: options.period
+                }
+            } else if (typeof options.period === 'string') {
+                period = {
+                    year: options.period === 'year' ? 1 : 0,
+                    month: options.period === 'month' ? 1 : 0,
+                    day: options.period === 'day' ? 1 : 0,
+                    hours: options.period === 'hours' ? 1 : 0,
+                    minutes: options.period === 'minutes' ? 1 : 0,
+                    seconds: options.period === 'seconds' ? 1 : 0
+                }
+            } else if (typeof options.period === 'object') {
+                period = {
+                    year: options.period.year !== undefined ? options.period.year : 0,
+                    month: options.period.month !== undefined ? options.period.month : 0,
+                    day: options.period.day !== undefined ? options.period.day : 0,
+                    hours: options.period.hours !== undefined ? options.period.hours : 0,
+                    minutes: options.period.minutes !== undefined ? options.period.minutes : 0,
+                    seconds: options.period.seconds !== undefined ? options.period.seconds : 0
+                }
+            }
+
+            // result
+            result = [];
+            for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
+                if (options.format !== undefined) {
+                    result.push(that.format(tsFrom, options.format));
+                } else {
+                    result.push(tsFrom);
+                }
+            }
+            return result;
         };
 
         // *** HELPERS ***
