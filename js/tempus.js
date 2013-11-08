@@ -42,7 +42,7 @@
                         date.minutes !== undefined ? date.minutes : 0,
                         date.seconds !== undefined ? date.seconds : 0)) / 1000);
             } else {
-                return Math.floor(new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60000) / 1000);
+                return Math.floor(new Date().getTime() / 1000);
             }
         };
 
