@@ -27,6 +27,82 @@
                 "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
             }
         };
+        var registeredFormats = {
+            '%d': {
+                format: function(date) {
+                    return formattingWithNulls(date.day, 2);
+                },
+                parse: function(value) {
+                    var day = Number(value);
+                    return isNaN(day) ? 0 : day;
+                }
+            },
+            '%m': {
+                format: function(date) {
+                    return formattingWithNulls(date.month, 2);
+                }
+            },
+            '%Y': {
+                format: function(date) {
+                    return formattingWithNulls(date.year, 4);
+                }
+            },
+            '%w': {
+                format: function(date) {
+                    return that.getDayOfWeek(date);
+                }
+            },
+            '%a': {
+                format: function(date) {
+                    return locales[locale]["daysShortNames"][that.getDayOfWeek(date)];
+                }
+            },
+            '%A': {
+                format: function(date) {
+                    return locales[locale]["daysLongNames"][that.getDayOfWeek(date)];
+                }
+            },
+            '%b': {
+                format: function(date) {
+                    return locales[locale]["monthShortNames"][date.month-1];
+                }
+            },
+            '%B': {
+                format: function(date) {
+                    return locales[locale]["monthLongNames"][date.month-1];
+                }
+            },
+            '%H': {
+                format: function(date) {
+                    return formattingWithNulls(date.hours, 2);
+                }
+            },
+            '%M': {
+                format: function(date) {
+                    return formattingWithNulls(date.minutes, 2);
+                }
+            },
+            '%S': {
+                format: function(date) {
+                    return formattingWithNulls(date.seconds, 2);
+                }
+            },
+            '%s': {
+                format: function(date) {
+                    return that.time(date);
+                }
+            },
+            '%F': {
+                format: function(date) {
+                    return formattingWithNulls(date.year, 4) + '-' + formattingWithNulls(date.month, 2) + '-' + formattingWithNulls(date.day, 2);
+                }
+            },
+            '%D': {
+                format: function(date) {
+                    return formattingWithNulls(date.month, 2) + '/' + formattingWithNulls(date.day, 2) + '/' + formattingWithNulls(date.year, 4)
+                }
+            }
+        };
 
         this.time = function (date, format) {
             if (date !== undefined) {
@@ -268,34 +344,12 @@
             } else {
                 return undefined;
             }
-            // vars
-            var timestamp = this.time(d);
-            var day = formattingWithNulls(d.day, 2);
-            var month = formattingWithNulls(d.month, 2);
-            var full_year = formattingWithNulls(d.year, 4);
-            var day_number = this.getDayOfWeek(date);
-            var day_name_short = locales[locale]["daysShortNames"][this.getDayOfWeek(date)];
-            var day_name_long = locales[locale]["daysLongNames"][this.getDayOfWeek(date)];
-            var month_name_short = locales[locale]["monthShortNames"][Number(month)-1];
-            var month_name_long = locales[locale]["monthLongNames"][Number(month)-1];
-            var hours = formattingWithNulls(d.hours, 2);
-            var minutes = formattingWithNulls(d.minutes, 2);
-            var seconds = formattingWithNulls(d.seconds, 2);
             // formatting
-            result = result.replace('%d', day);
-            result = result.replace('%m', month);
-            result = result.replace('%Y', full_year);
-            result = result.replace('%w', day_number);
-            result = result.replace('%a', day_name_short);
-            result = result.replace('%A', day_name_long);
-            result = result.replace('%b', month_name_short);
-            result = result.replace('%B', month_name_long);
-            result = result.replace('%H', hours);
-            result = result.replace('%M', minutes);
-            result = result.replace('%S', seconds);
-            result = result.replace('%s', timestamp);
-            result = result.replace('%F', full_year + '-' + month + '-' + day);
-            result = result.replace('%D', month + '/' + day + '/' + full_year);
+            for (var key in registeredFormats) {
+                if (registeredFormats.hasOwnProperty(key)) {
+                    result = result.replace(key, registeredFormats[key].format(d));
+                }
+            }
             return result;
         };
 
@@ -431,7 +485,8 @@
          * options.dateTo - string or object
          * options.formatTo - string|undefined
          * options.period - number (seconds)|string (seconds, minutes, hours, day, month, year)
-         * options.format - result format, string
+         * options.format - results format, string
+         * options.asObject - results is object
          */
         this.generateDates = function(options) {
             var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
@@ -476,15 +531,33 @@
             }
 
             // result
-            result = [];
+            result = options.asObject === true ? {} : [];
             for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
-                if (options.format !== undefined) {
-                    result.push(that.format(tsFrom, options.format));
+                if (options.asObject === true) {
+                    if (options.format !== undefined) {
+                        result[that.format(tsFrom, options.format)] = {};
+                    } else {
+                        result[that.format(tsFrom, '%F %H:%M:%S')] = {};
+                    }
                 } else {
-                    result.push(tsFrom);
+                    if (options.format !== undefined) {
+                        result.push(that.format(tsFrom, options.format));
+                    } else {
+                        result.push(tsFrom);
+                    }
                 }
             }
             return result;
+        };
+
+        this.registerFormat = function(value, formatFunc, parseFunc) {
+            registeredFormats[value] = {
+                format: formatFunc,
+                parse: parseFunc
+            }
+        };
+        this.unregisterFormat = function(value) {
+            delete registeredFormats[value];
         };
 
         // *** HELPERS ***
@@ -506,7 +579,7 @@
                 v = '0' + v;
             }
             return v;
-        }
+        };
     };
 
     window.tempus = new TempusJS();

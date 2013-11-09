@@ -1,3 +1,7 @@
+0.1.28
+- Added methods registerFormat(), unregisterFormat();
+- Added options "asObject" to generateDates.
+
 0.1.27
 Added method generateDates(), updated incDate() and decDate().
 

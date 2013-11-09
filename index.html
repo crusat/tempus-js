@@ -234,6 +234,12 @@ $ bower install tempus
                             </tr><tr>
                                 <td><a href="#tempus.generateDates">generateDates</a></td>
                                 <td>Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or timestamps, if format is undefined.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.registerFormat">registerFormat</a></td>
+                                <td>Registering a new format.</td>
+                            </tr><tr>
+                                <td><a href="#tempus.unregisterFormat">unregisterFormat</a></td>
+                                <td>Unregistering a format.</td>
                             </tr>
                         </tbody>
                     </table>
@@ -664,7 +670,7 @@ var t = tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %
 <hr id="tempus.setTimeout" />
 <h2>tempus.setTimeout <span class="text-muted">(callback, timeout)</span></h2>
 <h3>Syntax</h3>
-<pre>object setTimeout( function callback, int timeout )</pre>
+<pre>object setTimeout( function callback, number timeout )</pre>
 <h3>Description</h3>
 Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).
 <h3>Examples</h3>
@@ -685,7 +691,7 @@ var t = tempus.setTimeout(function() {
 <hr id="tempus.setInterval" />
 <h2>tempus.setInterval <span class="text-muted">(callback, timeout)</span></h2>
 <h3>Syntax</h3>
-<pre>object setInterval( function callback, int timeout )</pre>
+<pre>object setInterval( function callback, number timeout )</pre>
 <h3>Description</h3>
 Just wrapper on setInterval, this timeout in seconds (not a milliseconds).
 <h3>Examples</h3>
@@ -806,7 +812,8 @@ var t = tempus.getVersion();
     dateTo: string|object
     formatTo: string|undefined
     period: number (seconds)|object|string='seconds'|'minutes'|'hours'|'day'|'month'|'year'
-    format: string|undefined
+    format: string|undefined,
+    asObject: boolean
 }
 </pre>
 <h3>Description</h3>
@@ -884,6 +891,51 @@ var t = tempus.generateDates({
     format: '%d.%m.%Y'
 });</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({dateFrom: {year: 2013, month: 1, day: 5},dateTo: {year: 2013, month: 2, day: 1},period: {day: 1},format: '%d.%m.%Y'})));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"05.01.2013":{},"06.01.2013":{},"07.01.2013":{},"08.01.2013":{},"09.01.2013":{},
+//    "10.01.2013":{},"11.01.2013":{},"12.01.2013":{},"13.01.2013":{},"14.01.2013":{},"15.01.2013":{}};
+var t = tempus.generateDates({
+    dateFrom: {year: 2013, month: 1, day: 5},
+    dateTo: {year: 2013, month: 1, day: 15},
+    period: {day: 1},
+    format: '%d.%m.%Y',
+    asObject: true
+});</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({dateFrom: {year: 2013, month: 1, day: 5},dateTo: {year: 2013, month: 1, day: 15},period: {day: 1},format: '%d.%m.%Y', asObject: true})));">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<hr id="tempus.registerFormat" />
+<h2>tempus.registerFormat <span class="text-muted">(value, formatFunc, parseFunc)</span></h2>
+<h3>Syntax</h3>
+<pre>undefined registerFormat( string value, function formatFunc, function parseFunc )</pre>
+<h3>Description</h3>
+Registering a new format.
+<h3>Examples</h3>
+<pre class="brush: js">
+// registering a new format
+tempus.registerFormat('%q', function(date) { return date.month; }, function() {});
+// test it
+// t = "01.1.2013";
+var t = tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y');
+</pre>
+<a class="btn btn-primary" onclick="alert(tempus.getVersion());">Run <span class="glyphicon glyphicon-play"></span></a>
+
+
+<hr id="tempus.unregisterFormat" />
+<h2>tempus.unregisterFormat <span class="text-muted">(value)</span></h2>
+<h3>Syntax</h3>
+<pre>undefined unregisterFormat( string value )</pre>
+<h3>Description</h3>
+Unregistering a format.
+<h3>Examples</h3>
+<pre class="brush: js">
+// unregistering a format
+tempus.unregisterFormat('%d');
+// test it
+// t = "%d.01.2013";
+var t = tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
+</pre>
+<a class="btn btn-primary" onclick="tempus.unregisterFormat('%d');alert(tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y'));tempus.registerFormat('%d', function(date) {return formattingWithNulls(date.day, 2);}, function(value) {var day = Number(value);return isNaN(day) ? 0 : day;});">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 
@@ -900,6 +952,13 @@ var t = tempus.generateDates({
 
 </div><!--/.container-->
 <script type="text/javascript">
+    var formattingWithNulls = function(val, symb_count) {
+        var v = val.toString();
+        while (v.length < symb_count) {
+            v = '0' + v;
+        }
+        return v;
+    };
     function versionLoad() {
         var elements = document.getElementsByClassName('jsVersion');
         for (var some in elements) {
