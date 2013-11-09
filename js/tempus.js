@@ -10,6 +10,7 @@
         var that = this;
         var version = '0.1.28';
         var locale = 'en_US';
+        var weekStartsFromMonday = false;
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var locales = {
             "en_US": {
@@ -201,7 +202,8 @@
             }
         };
 
-        this.date = function(date) {
+        // options.week = true
+        this.date = function(date, options) {
             var d;
             if (typeof date === "number") {
                 var jsDate = new Date(date*1000);
@@ -213,6 +215,9 @@
                     minutes: jsDate.getUTCMinutes(),
                     seconds: jsDate.getUTCSeconds()
                 };
+                if (options && options.week === true) {
+                    d.week = that.getWeekNumber(d);
+                }
             } else if (typeof date === "object") {
                 d = {
                     year: date.year !== undefined ? date.year : 1970,
@@ -221,6 +226,9 @@
                     hours: date.hours !== undefined ? date.hours : 0,
                     minutes: date.minutes !== undefined ? date.minutes : 0,
                     seconds: date.seconds !== undefined ? date.seconds : 0
+                };
+                if (options && options.week === true) {
+                    d.week = that.getWeekNumber(d);
                 }
             }
             return d;
@@ -299,6 +307,7 @@
 
         // Algorithm author: Tomohiko Sakamoto in 1993.
         this.getDayOfWeek = function (date) {
+            date = that.date(date);
             var year = date.year;
             var month = date.month;
             var day = date.day;
@@ -380,40 +389,6 @@
                 default:
                     return undefined;
             }
-        };
-
-        this.getDaysArrayByWeek = function (dateFrom, dateTo) {
-            if (typeof dateFrom === 'object') {
-                var dateFromDayOfWeek = this.getDayOfWeek(dateFrom.year, dateFrom.month, dateFrom.day);
-            }
-            if (typeof dateTo === 'object') {
-                var dateToDayOfWeek = this.getDayOfWeek(dateTo.year, dateTo.month, dateTo.day);
-            }
-            var date = JSON.parse(JSON.stringify(dateFrom));
-            var result = [];
-            var resultIndex = 0;
-            var daysCount = this.between(dateFrom, dateTo, 'day');
-            var i = 0;
-            while (i < (daysCount - (daysCount % 7) + (daysCount % 7 > 0 ? 7 : 0))) {
-                if (i % 7 === 0) {
-                    result.push([]);
-                    resultIndex = result.length - 1;
-                }
-                if ((i < 7) && (i < dateFromDayOfWeek)) {
-                    result[resultIndex].push(null);
-                    daysCount++;
-                } else {
-                    if ((i > (daysCount - 1)) && (i > dateToDayOfWeek)) {
-                        result[resultIndex].push(null);
-                    } else {
-                        result[resultIndex].push(date);
-                        date = this.incDate(date, 1, 'day');
-
-                    }
-                }
-                i++;
-            }
-            return result;
         };
 
         this.format = function(date, format) {
@@ -518,6 +493,14 @@
             return locale;
         };
 
+        this.setWeekStartsFromMonday = function(v) {
+            weekStartsFromMonday = v ? true : false;
+            return weekStartsFromMonday;
+        };
+        this.getWeekStartsFromMonday = function() {
+            return weekStartsFromMonday;
+        };
+
         this.getAvailableLocales = function() {
             return Object.keys(locales);
         };
@@ -534,6 +517,7 @@
          * options.period - number (seconds)|string (seconds, minutes, hours, day, month, year)
          * options.format - results format, string
          * options.asObject - results is object
+         * options.groupBy - group by someone
          */
         this.generateDates = function(options) {
             var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
@@ -578,19 +562,40 @@
             }
 
             // result
-            result = options.asObject === true ? {} : [];
-            for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
+            if (options.groupBy === undefined) {
+                result = options.asObject === true ? {} : [];
+            } else {
+                result = [];
+                result.push([]);
+                var prevValue = that.date(tsFrom, {week:true})[options.groupBy];
+            }
+            var addTo = function(array, value) {
                 if (options.asObject === true) {
                     if (options.format !== undefined) {
-                        result[that.format(tsFrom, options.format)] = {};
+                        array[that.format(value, options.format)] = {};
                     } else {
-                        result[that.format(tsFrom, '%F %H:%M:%S')] = {};
+                        array[that.format(value, '%F %H:%M:%S')] = {};
                     }
                 } else {
                     if (options.format !== undefined) {
-                        result.push(that.format(tsFrom, options.format));
+                        array.push(that.format(value, options.format));
                     } else {
-                        result.push(tsFrom);
+                        array.push(value);
+                    }
+                }
+                return array;
+            };
+
+            for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
+                if (options.groupBy === undefined) {
+                    addTo(result, tsFrom);
+                } else {
+                    if (that.date(tsFrom, {week:true})[options.groupBy] === prevValue) {
+                        addTo(result[result.length-1], tsFrom);
+                    } else {
+                        result.push([]);
+                        addTo(result[result.length-1], tsFrom);
+                        prevValue = that.date(tsFrom, {week:true})[options.groupBy];
                     }
                 }
             }
@@ -606,6 +611,16 @@
         };
         this.unregisterFormat = function(value) {
             delete registeredFormats[value];
+        };
+
+        this.getWeekNumber = function(date) {
+            var weekNumber;
+            var start;
+            var currentDay = this.time(date);
+            start = that.time({year: date.year});
+            start -= that.getDayOfWeek(start)*86400;
+            weekNumber = Math.floor((((currentDay - start)/86400 + (weekStartsFromMonday !== true ? 1 : 0))) / 7) + 1;
+            return weekNumber;
         };
 
         // *** HELPERS ***
@@ -627,15 +642,6 @@
                 v = '0' + v;
             }
             return v;
-        };
-        var getKeyByValue = function( obj, value ) {
-            for( var prop in obj ) {
-                if( obj.hasOwnProperty( prop ) ) {
-                     if( obj[ prop ] === value )
-                         return prop;
-                }
-            }
-            return undefined;
         }
     };
 
