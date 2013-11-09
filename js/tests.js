@@ -113,6 +113,14 @@
             {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}, 'Parse');
         deepEqual(tempus.parse('20131005162015', '%Y%m%d%H%M%S'),
             {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15}, 'Parse');
+        deepEqual(tempus.parse('2012-05-07', '%F'),
+            {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+        deepEqual(tempus.parse('12/01/2013', '%D'),
+            {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+        deepEqual(tempus.parse('05 Dec, 2010', '%d %b, %Y'),
+            {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+        deepEqual(tempus.parse('10 October, 2010', '%d %B, %Y'),
+            {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0}, 'Parse');
         equal(typeof tempus.parse('20131005162015', '%Y%m%d%H%M%S'), 'object', 'Type is object');
     });
 

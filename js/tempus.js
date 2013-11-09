@@ -62,31 +62,51 @@
                 format: function(date) {
                     return that.getDayOfWeek(date);
                 },
+                parse: function(value) {
+                    // impossible
+                    return {};
+                },
                 parseLit: '\\d{1}'
             },
             '%a': {
                 format: function(date) {
                     return locales[locale]["daysShortNames"][that.getDayOfWeek(date)];
                 },
-                parseLit: '\\s+'
+                parse: function(value) {
+                    // impossible
+                    return {};
+                },
+                parseLit: '\\w+'
             },
             '%A': {
                 format: function(date) {
                     return locales[locale]["daysLongNames"][that.getDayOfWeek(date)];
                 },
-                parseLit: '\\s+'
+                parse: function(value) {
+                    // impossible
+                    return {};
+                },
+                parseLit: '\\w+'
             },
             '%b': {
                 format: function(date) {
                     return locales[locale]["monthShortNames"][date.month-1];
                 },
-                parseLit: '\\s+'
+                parse: function(value) {
+                    var month = that.getMonthNames().indexOf(value)+1;
+                    return {month: month !== -1 ? month : undefined}
+                },
+                parseLit: '\\w+'
             },
             '%B': {
                 format: function(date) {
                     return locales[locale]["monthLongNames"][date.month-1];
                 },
-                parseLit: '\\s+'
+                parse: function(value) {
+                    var month = that.getMonthNames(true).indexOf(value)+1;
+                    return {month: month !== -1 ? month : undefined}
+                },
+                parseLit: '\\w+'
             },
             '%H': {
                 format: function(date) {
@@ -134,11 +154,31 @@
                 format: function(date) {
                     return formattingWithNulls(date.year, 4) + '-' + formattingWithNulls(date.month, 2) + '-' + formattingWithNulls(date.day, 2);
                 },
+                parse: function(value) {
+                    var year = Number(value.slice(0,4));
+                    var month = Number(value.slice(6,7));
+                    var day = Number(value.slice(9,10));
+                    return {
+                        year: year,
+                        month: month,
+                        day: day
+                    }
+                },
                 parseLit: '\\d{4}-\\d{2}-\\d{2}'
             },
             '%D': {
                 format: function(date) {
                     return formattingWithNulls(date.month, 2) + '/' + formattingWithNulls(date.day, 2) + '/' + formattingWithNulls(date.year, 4)
+                },
+                parse: function(value) {
+                    var month = Number(value.slice(0,2));
+                    var day = Number(value.slice(3,5));
+                    var year = Number(value.slice(6,10));
+                    return {
+                        year: year,
+                        month: month,
+                        day: day
+                    }
                 },
                 parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
             }
@@ -588,6 +628,15 @@
             }
             return v;
         };
+        var getKeyByValue = function( obj, value ) {
+            for( var prop in obj ) {
+                if( obj.hasOwnProperty( prop ) ) {
+                     if( obj[ prop ] === value )
+                         return prop;
+                }
+            }
+            return undefined;
+        }
     };
 
     window.tempus = new TempusJS();
