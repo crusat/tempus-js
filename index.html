@@ -563,6 +563,22 @@ var t = tempus.parse('21.10.2013', '%d.%m.%Y');</pre>
 //  t = {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15};
 var t = tempus.parse('20131005162015', '%Y%m%d%H%M%S');</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('20131005162015', '%Y%m%d%H%M%S')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.parse('2012-05-07', '%F');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('2012-05-07', '%F')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.parse('12/01/2013', '%D');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('12/01/2013', '%D')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.parse('05 Dec, 2010', '%d %b, %Y');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('05 Dec, 2010', '%d %b, %Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  t = {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.parse('10 October, 2010', '%d %B, %Y');</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('10 October, 2010', '%d %B, %Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.normalizeDate" />
