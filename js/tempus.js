@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.1.27
+ * @version 0.1.28
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -8,7 +8,7 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.27';
+        var version = '0.1.28';
         var locale = 'en_US';
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         var locales = {
@@ -33,74 +33,114 @@
                     return formattingWithNulls(date.day, 2);
                 },
                 parse: function(value) {
-                    var day = Number(value);
-                    return isNaN(day) ? 0 : day;
-                }
+                    var v = Number(value);
+                    return {day: (isNaN(v) ? undefined : v) };
+                },
+                parseLit: '\\d{2}'
             },
             '%m': {
                 format: function(date) {
                     return formattingWithNulls(date.month, 2);
-                }
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    return {month: (isNaN(v) ? undefined : v) };
+                },
+                parseLit: '\\d{2}'
             },
             '%Y': {
                 format: function(date) {
                     return formattingWithNulls(date.year, 4);
-                }
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    return {year: (isNaN(v) ? undefined : v) };
+                },
+                parseLit: '\\d{4}'
             },
             '%w': {
                 format: function(date) {
                     return that.getDayOfWeek(date);
-                }
+                },
+                parseLit: '\\d{1}'
             },
             '%a': {
                 format: function(date) {
                     return locales[locale]["daysShortNames"][that.getDayOfWeek(date)];
-                }
+                },
+                parseLit: '\\s+'
             },
             '%A': {
                 format: function(date) {
                     return locales[locale]["daysLongNames"][that.getDayOfWeek(date)];
-                }
+                },
+                parseLit: '\\s+'
             },
             '%b': {
                 format: function(date) {
                     return locales[locale]["monthShortNames"][date.month-1];
-                }
+                },
+                parseLit: '\\s+'
             },
             '%B': {
                 format: function(date) {
                     return locales[locale]["monthLongNames"][date.month-1];
-                }
+                },
+                parseLit: '\\s+'
             },
             '%H': {
                 format: function(date) {
                     return formattingWithNulls(date.hours, 2);
-                }
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    return {hours: (isNaN(v) ? undefined : v) };
+                },
+                parseLit: '\\d{2}'
             },
             '%M': {
                 format: function(date) {
                     return formattingWithNulls(date.minutes, 2);
-                }
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    return {minutes: (isNaN(v) ? undefined : v) };
+                },
+                parseLit: '\\d{2}'
             },
             '%S': {
                 format: function(date) {
                     return formattingWithNulls(date.seconds, 2);
-                }
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    return {seconds: (isNaN(v) ? undefined : v) };
+                },
+                parseLit: '\\d{2}'
             },
             '%s': {
                 format: function(date) {
                     return that.time(date);
-                }
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    var date = new Date(Number(v*1000));
+                    var obj = that.date(v);
+                    return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
+                },
+                parseLit: '\\d{1,10}'
             },
             '%F': {
                 format: function(date) {
                     return formattingWithNulls(date.year, 4) + '-' + formattingWithNulls(date.month, 2) + '-' + formattingWithNulls(date.day, 2);
-                }
+                },
+                parseLit: '\\d{4}-\\d{2}-\\d{2}'
             },
             '%D': {
                 format: function(date) {
                     return formattingWithNulls(date.month, 2) + '/' + formattingWithNulls(date.day, 2) + '/' + formattingWithNulls(date.year, 4)
-                }
+                },
+                parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
             }
         };
 
@@ -354,11 +394,17 @@
         };
 
         this.parse = function(str, format) {
-            var lits = format.match(/(%d|%m|%Y|%H|%M|%S|%s)/g);
-    //            delete lits[0];
-            var format_re = format.replace(/(%d|%m|%H|%M|%S)/g, '(\\d{2})');
-            format_re = format_re.replace(/(%Y)/g, '(\\d{4})');
-            format_re = format_re.replace(/(%s)/g, '(\\d{1,10})'); //max timestamp is 2147483647.
+            var key;
+            var litsarr = [];
+            var format_re = format;
+            for (key in registeredFormats) {
+                if (registeredFormats.hasOwnProperty(key)) {
+                    litsarr.push(key);
+                    format_re = format_re.replace(new RegExp('('+key+')', 'g'), '('+registeredFormats[key].parseLit+')');
+                }
+            }
+            var litsstr = new RegExp('('+litsarr.join('|')+')', 'g');
+            var lits = format.match(litsstr);
             var re = new RegExp(format_re, 'g');
             var result = re.exec(str);
             var result2 = [];
@@ -367,61 +413,22 @@
                     result2.push(result[i]);
                 }
             }
-            var day = 0;
-            var month = 0;
-            var full_year = 0;
-            var hour = 0;
-            var minutes = 0;
-            var seconds = 0;
-            var timestamp = 0;
-            for(var key in lits) {
+            var resultdate = {};
+            var tmpdate;
+            for(key in lits) {
                 if (lits.hasOwnProperty(key)) {
-                    switch(lits[key]) {
-                    case '%d':
-                        day = Number(result2[key]);
-                        day = isNaN(day) ? 0 : day;
-                        break;
-                    case '%m':
-                        month = Number(result2[key]);
-                        month = isNaN(month) ? 0 : month;
-                        break;
-                    case '%Y':
-                        full_year = Number(result2[key]);
-                        full_year = isNaN(full_year) ? 0 : full_year;
-                        break;
-                    case '%H':
-                        hour = Number(result2[key]);
-                        hour = isNaN(hour) ? 0 : hour;
-                        break;
-                    case '%M':
-                        minutes = Number(result2[key]);
-                        minutes = isNaN(minutes) ? 0 : minutes;
-                        break;
-                    case '%S':
-                        seconds = Number(result2[key]);
-                        seconds = isNaN(seconds) ? 0 : seconds;
-                        break;
-                    case '%s':
-                        timestamp = Number(result2[key]);
-                        timestamp = isNaN(timestamp) ? 0 : timestamp;
-                        break;
-                    }
+                    tmpdate = registeredFormats[lits[key]].parse(result2[key]);
+                    resultdate = {
+                        year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
+                        month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
+                        day: tmpdate.day != undefined ? tmpdate.day : resultdate.day,
+                        hours: tmpdate.hours != undefined ? tmpdate.hours : resultdate.hours,
+                        minutes: tmpdate.minutes != undefined ? tmpdate.minutes : resultdate.minutes,
+                        seconds: tmpdate.seconds != undefined ? tmpdate.seconds : resultdate.seconds
+                    };
                 }
             }
-            if (timestamp !== 0) {
-                var date = new Date(Number(timestamp*1000));
-                var obj = this.date(timestamp);
-                return this.incDate(obj, date.getTimezoneOffset(), 'minutes');
-            }
-
-            return {
-                day: day,
-                month: month,
-                year: full_year,
-                hours: hour,
-                minutes: minutes,
-                seconds: seconds
-            }
+            return this.date(resultdate);
         };
 
         this.setTimeout = function(callback, timeout) {
@@ -550,10 +557,11 @@
             return result;
         };
 
-        this.registerFormat = function(value, formatFunc, parseFunc) {
+        this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
             registeredFormats[value] = {
                 format: formatFunc,
-                parse: parseFunc
+                parse: parseFunc,
+                parseLit: parseLit
             }
         };
         this.unregisterFormat = function(value) {

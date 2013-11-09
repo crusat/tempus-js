@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="TempusJS">
     <meta name="author" content="Kuznetsov Aleksey aka crusat">
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
     <title>TempusJS</title>
 
@@ -66,7 +67,7 @@ $ bower install tempus
                     <p class="alert-danger alert">Here timestamps in seconds! In default JS in milliseconds!</p>
                 </div>
 
-                    <h1 id="demo-format">Format</h1>
+                    <h1 id="demo-format">Default format</h1>
                     <table class="table">
                         <thead>
                             <tr>
@@ -905,20 +906,31 @@ var t = tempus.generateDates({
 
 
 <hr id="tempus.registerFormat" />
-<h2>tempus.registerFormat <span class="text-muted">(value, formatFunc, parseFunc)</span></h2>
+<h2>tempus.registerFormat <span class="text-muted">(value, formatFunc, parseFunc, parseLit)</span></h2>
 <h3>Syntax</h3>
-<pre>undefined registerFormat( string value, function formatFunc, function parseFunc )</pre>
+<pre>undefined registerFormat( string value, function formatFunc, function parseFunc, string parseLit )</pre>
 <h3>Description</h3>
 Registering a new format.
 <h3>Examples</h3>
 <pre class="brush: js">
 // registering a new format
-tempus.registerFormat('%q', function(date) { return date.month; }, function() {});
+tempus.registerFormat('%q',
+    function(date) {
+        return date.month;
+    },
+    function(value) {
+        var v = Number(value);
+        return {month: (isNaN(v) ? undefined : v) };
+    },
+    '\\d{1,2}'
+);
 // test it
 // t = "01.1.2013";
 var t = tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y');
+// t = {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
+var t = tempus.parse('10.2.2013', '%d.%q.%Y');
 </pre>
-<a class="btn btn-primary" onclick="alert(tempus.getVersion());">Run <span class="glyphicon glyphicon-play"></span></a>
+<a class="btn btn-primary" onclick="tempus.registerFormat('%q',function(date) {return date.month;},function(value) {var v = Number(value);return {month: (isNaN(v) ? undefined : v) };},'\\d{1,2}');alert(tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y')+'\n'+JSON.stringify(tempus.parse('10.2.2013', '%d.%q.%Y')));tempus.unregisterFormat('%q');">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.unregisterFormat" />
