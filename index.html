@@ -830,7 +830,8 @@ var t = tempus.getVersion();
     formatTo: string|undefined
     period: number (seconds)|object|string='seconds'|'minutes'|'hours'|'day'|'month'|'year'
     format: string|undefined,
-    asObject: boolean
+    asObject: boolean,
+    groupBy: string=year|month|week|day|hours|minutes|seconds
 }
 </pre>
 <h3>Description</h3>
@@ -919,6 +920,26 @@ var t = tempus.generateDates({
     asObject: true
 });</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({dateFrom: {year: 2013, month: 1, day: 5},dateTo: {year: 2013, month: 1, day: 15},period: {day: 1},format: '%d.%m.%Y', asObject: true})));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  Too long...
+var t = tempus.generateDates({
+    dateFrom: {year: 2013, month: 1, day: 1},
+    dateTo: {year: 2013, month: 3, day: 15},
+    period: {day: 1},
+    format: '%d.%m.%Y',
+    groupBy: 'month'
+});</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({dateFrom: {year: 2013, month: 1, day: 1},dateTo: {year: 2013, month: 3, day: 15},period: {day: 1},format: '%d.%m.%Y',groupBy: 'month'})));">Run <span class="glyphicon glyphicon-play"></span></a>
+<pre class="brush: js">
+//  Too long...
+var t = tempus.generateDates({
+    dateFrom: {year: 2013, month: 1, day: 1},
+    dateTo: {year: 2013, month: 1, day: 31},
+    period: {day: 1},
+    format: '%d.%m.%Y',
+    groupBy: 'week'
+});</pre>
+<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({    dateFrom: {year: 2013, month: 1, day: 1},dateTo: {year: 2013, month: 1, day: 31},period: {day: 1},format: '%d.%m.%Y',groupBy: 'week'})));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.registerFormat" />

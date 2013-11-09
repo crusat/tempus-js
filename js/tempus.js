@@ -218,6 +218,9 @@
                 if (options && options.week === true) {
                     d.week = that.getWeekNumber(d);
                 }
+                if (options && options.dayOfWeek === true) {
+                    d.dayOfWeek = that.getDayOfWeek(d);
+                }
             } else if (typeof date === "object") {
                 d = {
                     year: date.year !== undefined ? date.year : 1970,
@@ -229,6 +232,9 @@
                 };
                 if (options && options.week === true) {
                     d.week = that.getWeekNumber(d);
+                }
+                if (options && options.dayOfWeek === true) {
+                    d.dayOfWeek = that.getDayOfWeek(d);
                 }
             }
             return d;
