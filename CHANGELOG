@@ -1,6 +1,6 @@
 0.1.28
 - Added methods registerFormat(), unregisterFormat();
-- Added options "asObject" to generateDates.
+- Added options "asObject" and "groupBy" to generateDates.
 - Rewritten methods format() and parse().
 
 0.1.27
