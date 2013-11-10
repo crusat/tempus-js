@@ -18,6 +18,7 @@
     <script>
         SyntaxHighlighter.all();
     </script>
+    <script type="text/javascript" src="js/json2.js"></script>
     <script type="text/javascript" src="js/tempus.js"></script>
 </head>
 <body>
@@ -66,6 +67,7 @@ $ bower install tempus
                 <div class="bs-callout bs-callout-danger">
                     <p class="alert-danger alert">Here timestamps in seconds! In default JS in milliseconds!</p>
                 </div>
+                <p class="text-muted">Supports IE6+, Firefox, Chrome, Opera</p>
 
                     <h1 id="demo-format">Default format</h1>
                     <table class="table">
@@ -1016,7 +1018,12 @@ var t = tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
             }
         }
     }
-    window.addEventListener("load", versionLoad, false);
+
+    if (window.addEventListener){
+        window.addEventListener("load", versionLoad, false);
+    } else if (window.attachEvent){
+        window.attachEvent("load", versionLoad);
+    }
 </script>
 
 <script type="text/javascript">

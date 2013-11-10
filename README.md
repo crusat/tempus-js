@@ -9,4 +9,4 @@ Install over bower:
 
     bower install tempus
 
-Last version 0.1.28
+Last version 0.1.29

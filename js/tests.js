@@ -11,7 +11,7 @@
     function setLocaleTest(date, locale) {
         tempus.setLocale(locale);
         var t = tempus.format(date, '%Y, %B, %d, %A');
-        tempus.setLocale("en_US");
+        tempus.setLocale();
         return t;
     }
     // prepare for tests

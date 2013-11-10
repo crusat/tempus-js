@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov <me@akuzn.com>
- * @version 0.1.28
+ * @version 0.1.29
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -8,7 +8,7 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.28';
+        var version = '0.1.29';
         var locale = 'en_US';
         var weekStartsFromMonday = false;
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -327,7 +327,7 @@
                 return undefined;
             }
 
-            var newDate = JSON.parse(JSON.stringify(date));
+            var newDate = clone(date);
 
             if (typeof value === 'object') {
                 newDate = that.date(newDate);
@@ -369,7 +369,7 @@
         };
 
         this.normalizeDate = function(date) {
-            return JSON.parse(JSON.stringify(this.date(this.time(date))));
+            return clone(this.date(this.time(date)));
         };
 
         this.decDate = function (date, value, type) {
@@ -437,7 +437,7 @@
             var resultdate = {};
             var tmpdate;
             for(key in lits) {
-                if (lits.hasOwnProperty(key)) {
+                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))&&!isNaN(Number(key))) {
                     tmpdate = registeredFormats[lits[key]].parse(result2[key]);
                     resultdate = {
                         year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
@@ -648,6 +648,22 @@
                 v = '0' + v;
             }
             return v;
+        };
+        var clone = function(obj){
+            if (null == obj || "object" != typeof obj) return obj;
+            var copy = obj.constructor();
+            for (var attr in obj) {
+                if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+            }
+            return copy;
+        };
+        if (!Array.prototype.indexOf) {
+            Array.prototype.indexOf = function(obj, start) {
+                for (var i = (start || 0), j = this.length; i < j; i++) {
+                    if (this[i] === obj) { return i; }
+                }
+                return -1;
+            }
         }
     };
 

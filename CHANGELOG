@@ -1,3 +1,6 @@
+0.1.29
+- Supports IE6+, Firefox, Chrome, Opera.
+
 0.1.28
 - Added methods registerFormat(), unregisterFormat();
 - Added options "asObject" and "groupBy" to generateDates.
