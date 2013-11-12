@@ -192,39 +192,6 @@ var t = tempus.format(tempus.time(), '%Y%m%d');</pre>
 
 
 
-<hr id="tempus.decDate" />
-<h2>tempus.decDate <span class="text-muted">(date, value, type)</span></h2>
-<h3>Syntax</h3>
-<pre>object decDate( object date, int value, string type=seconds|minutes|hours|day|month|year )</pre>
-<h3>Description</h3>
-Returns date object, decreased on [value] [type].
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"year":2012,"month":2,"day":30,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"year":2012,"month":8,"day":1,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.decDate({year:2013, month: 1, day:1}, {month: 5});</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year:2013, month: 1, day:1}, {month: 5})));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"year":2012,"month":1,"day":30,"hours":8,"minutes":49,"seconds":59};
-var t = tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10, hours: 15, minutes: 10, seconds: 1});</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10, hours: 15, minutes: 10, seconds: 1})));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
 <hr id="tempus.between" />
 <h2>tempus.between <span class="text-muted">(dateFrom, dateTo, type)</span></h2>
 <h3>Syntax</h3>

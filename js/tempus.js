@@ -594,14 +594,41 @@
             return calcDate(date, value, type, -1);
         };
 
+        /**
+         * Returns integer of date between from [dateFrom] to [dateTo] as [type].
+         * @param dateFrom {object} Tempus date object (see {@link date}).
+         * @param dateTo {object} Tempus date object (see {@link date}).
+         * @param type {string} Type. Can be 'seconds', 'minutes', 'hours', 'day', 'month', 'year'.
+         * @returns {number|undefined} Value of [type] between dateFrom to dateTo.
+         * @example
+         * // returns 4
+         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day');
+         * @example
+         * // returns 6
+         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month');
+         * @example
+         * // returns 266400
+         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes');
+         * @example
+         * // returns 10224
+         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours');
+         * @example
+         * // Happy New Year!
+         * // returns 56
+         * tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');
+         * @example
+         * // my current age
+         * // returns 25
+         * tempus.between({year: 1988, month: 3, day: 6}, tempus.now(), 'year');
+         */
         this.between = function (dateFrom, dateTo, type) {
             var from = this.time(dateFrom);
             var to = this.time(dateTo);
             switch (type) {
                 case 'year':
-                    return Math.floor((to - from) / (86400 * 12 * 29.4));
+                    return Math.floor((to - from) / 31556952); // 365.2425 - average days in year. Here in seconds
                 case 'month':
-                    return Math.floor((to - from) / (86400 * 29.4)); // 29.4 - average of days count in months
+                    return Math.floor((to - from) / 2629746);
                 case 'day':
                     return Math.floor((to - from) / 86400);
                 case 'hours':
