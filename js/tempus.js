@@ -801,15 +801,39 @@
         };
 
         /**
-         *
-         * @param callback
-         * @param timeout
-         * @returns {number}
+         * Just wrapper on setInterval, this timeout in seconds (not a milliseconds).
+         * @param callback {function} Callback.
+         * @param timeout {number} Int or float number, timeout.
+         * @returns {number} Default setInterval identify.
+         * @example
+         * //  "Hello again!" 3x times every 2 seconds;
+         * var x = 3;
+         * var t = tempus.setInterval(function() {
+         *     x--;
+         *     if (x === 0) {
+         *         clearInterval(t);
+         *     };
+         *     alert("Hello again!");
+         * }, 2);
          */
         this.setInterval = function(callback, timeout) {
             return setInterval(callback, Number(timeout)*1000);
         };
 
+        /**
+         * Clock. Every second callback is calling with parameter "date".
+         * "date" - is current date object. Also run callback immediately after starting.
+         * @param callback {function} Callback.
+         * @returns {number} Default setInterval identify.
+         * @example
+         * // Clock example
+         * &lt;div id="tempus-clock-example"&gt;&lt;/div&gt;
+         * &lt;script&gt;
+         * var clock = tempus.clock(function(date) {
+         *     document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, "%H:%M:%S");
+         * });
+         * &lt;/script&gt;
+         */
         this.clock = function(callback) {
             callback(that.now());
             return this.setInterval(function() {

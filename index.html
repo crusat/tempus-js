@@ -246,41 +246,6 @@ var t = tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %
 <a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr id="tempus.setInterval" />
-<h2>tempus.setInterval <span class="text-muted">(callback, timeout)</span></h2>
-<h3>Syntax</h3>
-<pre>object setInterval( function callback, number timeout )</pre>
-<h3>Description</h3>
-Just wrapper on setInterval, this timeout in seconds (not a milliseconds).
-<h3>Examples</h3>
-<pre class="brush: js">
-//  "Hello again!" 3x times;
-var x = 3;
-var t = tempus.setInterval(function() {
-        x--;
-        if (x === 0) {
-            clearInterval(t);
-        };
-        alert("Hello again!");
-    }, 2);</pre>
-<a class="btn btn-primary" onclick="var x = 3;var t = tempus.setInterval(function() {x--;if (x === 0) {clearInterval(t);};alert('Hello again!');}, 2);">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
-<hr id="tempus.clock" />
-<h2>tempus.clock <span class="text-muted">(callback)</span></h2>
-<h3>Syntax</h3>
-<pre>object clock( function callback )</pre>
-<h3>Description</h3>
-Clock. Every second callback is calling with parameter "date". "date" - is current date object. Also run callback immediately after starting.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  For example, please, click button
-var clock = tempus.clock(function(date) {
-    document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, "%H:%M:%S");
-});
-</pre>
-<a class="btn btn-primary" onclick="var clock = tempus.clock(function(date) {document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, '%H:%M:%S');});">Run <span class="glyphicon glyphicon-play"></span></a>
-<span id="tempus-clock-example"></span>
 
 
 <hr id="tempus.alarm" />

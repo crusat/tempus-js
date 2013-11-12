@@ -302,6 +302,157 @@ tempus.between({year: 1988, month: 3, day: 6}, tempus.now(), 'year');</code></pr
         
             
 <dt>
+    <h4 class="name" id="clock"><span class="type-signature"></span>clock<span class="signature">(callback)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Clock. Every second callback is calling with parameter &quot;date&quot;.
+&quot;date&quot; - is current date object. Also run callback immediately after starting.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line837">line 837</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Default setInterval identify.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// Clock example
+&lt;div id="tempus-clock-example"&gt;&lt;/div&gt;
+&lt;script&gt;
+var clock = tempus.clock(function(date) {
+    document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, "%H:%M:%S");
+});
+&lt;/script&gt;</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="date"><span class="type-signature"></span>date<span class="signature">(date, options)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
     
@@ -2622,6 +2773,356 @@ tempus.parse('2013-03-05 12:31');</code></pre>
         
             
 <dt>
+    <h4 class="name" id="setInterval"><span class="type-signature"></span>setInterval<span class="signature">(callback, timeout)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Just wrapper on setInterval, this timeout in seconds (not a milliseconds).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Int or float number, timeout.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line819">line 819</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Default setInterval identify.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>//  "Hello again!" 3x times every 2 seconds;
+var x = 3;
+var t = tempus.setInterval(function() {
+    x--;
+    if (x === 0) {
+        clearInterval(t);
+    };
+    alert("Hello again!");
+}, 2);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setTimeout"><span class="type-signature"></span>setTimeout<span class="signature">(callback, timeout)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Int or float number, timeout.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line799">line 799</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Default setTimeout identify.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// Show message over 2 seconds.
+var t = tempus.setTimeout(function() {
+    alert("Hello over 2 seconds!");
+}, 2);</code></pre>
+
+    <pre class="prettyprint"><code>// Show message over 0.5 seconds.
+var t = tempus.setTimeout(function() {
+    alert("Hello over 0.5 seconds!");
+}, 0.5);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="time"><span class="type-signature"></span>time<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
     
@@ -2827,13 +3328,13 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#between">between</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#time">time</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 17:44:15 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 17:54:41 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
