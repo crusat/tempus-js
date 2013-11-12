@@ -645,7 +645,7 @@
         /**
          * Returns formatted string of date. You can use object or timestamp as parameter of method.
          * @param date {object|number} Tempus date object (see {@link date}) or timestamp.
-         * @param format {string|undefined} Format of date. See index page for defaults.
+         * @param format {string} Format of date. See index page for defaults.
          * @returns {string|undefined} Formatted string
          * @example
          * // returns '05.11.2013'
@@ -690,7 +690,7 @@
          */
         this.detectFormat = function(str) {
             var defaultFormats = [
-                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$',
+                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
                 '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
                 '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
                 '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
@@ -918,6 +918,25 @@
                     (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
         };
 
+        /**
+         * Reformats date from one to other format.
+         * @param date {string} Formatted date string.
+         * @param formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @param formatTo {string} Format of date. See index page for defaults.
+         * @returns {string|undefined} Returns a reformatted date string.
+         * @example
+         * // returns "12.03.2013"
+         * tempus.reformat('2013-03-12', '%Y-%m-%d', '%d.%m.%Y');
+         * @example
+         * // returns "15.03.2013"
+         * tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y');
+         * @example
+         * // returns "12:31 (Fri 15, 2013)"
+         * tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)');
+         * @example
+         * // returns "2012-05-15"
+         * tempus.reformat('15.05.2012', undefined, '%Y-%m-%d');
+         */
         this.reformat = function(date, formatFrom, formatTo) {
             return this.format(this.parse(date, formatFrom), formatTo);
         };
