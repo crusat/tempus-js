@@ -12,6 +12,7 @@
     <div class="wrapper">
         <div class="logo-shadow">TempusJS</div>
         <div class="logo">TempusJS</div>
+        <div class="subtext">This is JavaScript library for most comfortable using date/time functions.</div>
         <ul class="menu">
             <li><a href="tests.html">Tests</a></li>
             <li><a href="docs/index.html">Docs</a></li>
@@ -21,16 +22,10 @@
     </div>
     <script type="text/javascript" src="js/tempus.js"></script>
     <script type="text/javascript">
-        function load() {
+        window.onload = function() {
             var clock = tempus.clock(function(date) {
                 document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, "%H:%M:%S");
             });
-        }
-
-        if (window.addEventListener){
-            window.addEventListener("load", load, false);
-        } else if (window.attachEvent){
-            window.attachEvent("load", load);
         }
     </script>
 </body>

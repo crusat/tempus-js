@@ -98,3 +98,10 @@ html {
     right: 10px;
     font-size: 18px;
 }
+.subtext {
+    color: #dadada;
+    /*font-size: 16px;*/
+    position: absolute;
+    left: 10px;
+    top: 70px;
+}
