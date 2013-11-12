@@ -1,3 +1,6 @@
+0.1.30
+- Format can be undefined for autodetect.
+
 0.1.29
 - Supports IE6+, Firefox, Chrome, Opera.
 

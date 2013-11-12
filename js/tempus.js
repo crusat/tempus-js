@@ -1,6 +1,6 @@
 /**
  * @author Aleksey Kuznetsov me@akuzn.com
- * @version 0.1.29
+ * @version 0.1.30
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
@@ -13,7 +13,7 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.29';
+        var version = '0.1.30';
         var locale = 'en_US';
         var weekStartsFromMonday = false;
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -323,7 +323,17 @@
             return format === undefined ? obj : this.format(obj, format);
         };
 
-        // is leap year method
+        /**
+         * If year is leap returns true.
+         * @param year {number|undefined} A year for checking. If undefined - checking current year.
+         * @returns {boolean} Results, leap year or not.
+         * @example
+         * // In 2013 returns false.
+         * tempus.isLeapYear();
+         * @example
+         * // returns true
+         * tempus.isLeapYear(2004);
+         */
         this.isLeapYear = function (year) {
             year = year !== undefined ? Number(year) : this.now().year;
             if (year % 4 == 0) {
