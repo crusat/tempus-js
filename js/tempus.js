@@ -780,10 +780,32 @@
             return this.date(resultdate);
         };
 
+        /**
+         * Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).
+         * @param callback {function} Callback.
+         * @param timeout {number} Int or float number, timeout.
+         * @returns {number} Default setTimeout identify.
+         * @example
+         * // Show message over 2 seconds.
+         * var t = tempus.setTimeout(function() {
+         *     alert("Hello over 2 seconds!");
+         * }, 2);
+         * @example
+         * // Show message over 0.5 seconds.
+         * var t = tempus.setTimeout(function() {
+         *     alert("Hello over 0.5 seconds!");
+         * }, 0.5);
+         */
         this.setTimeout = function(callback, timeout) {
             return setTimeout(callback, Number(timeout)*1000);
         };
 
+        /**
+         *
+         * @param callback
+         * @param timeout
+         * @returns {number}
+         */
         this.setInterval = function(callback, timeout) {
             return setInterval(callback, Number(timeout)*1000);
         };

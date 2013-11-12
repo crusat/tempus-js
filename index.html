@@ -168,40 +168,6 @@ $ bower install tempus
 
 
 
-
-<hr id="tempus.parse" />
-<h2>tempus.parse <span class="text-muted">(str, format)</span></h2>
-<h3>Syntax</h3>
-<pre>object parse( string str, string format )</pre>
-<h3>Description</h3>
-Returns date object from parsed string.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.parse('21.10.2013', '%d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('21.10.2013', '%d.%m.%Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15};
-var t = tempus.parse('20131005162015', '%Y%m%d%H%M%S');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('20131005162015', '%Y%m%d%H%M%S')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.parse('2012-05-07', '%F');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('2012-05-07', '%F')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.parse('12/01/2013', '%D');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('12/01/2013', '%D')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.parse('05 Dec, 2010', '%d %b, %Y');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('05 Dec, 2010', '%d %b, %Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0};
-var t = tempus.parse('10 October, 2010', '%d %B, %Y');</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.parse('10 October, 2010', '%d %B, %Y')));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
 <hr id="tempus.validate" />
 <h2>tempus.validate <span class="text-muted">(date, format)</span></h2>
 <h3>Syntax</h3>
@@ -278,27 +244,6 @@ var t = tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y');</pre>
 //  t = "12:31 (Fri 15, 2013)";
 var t = tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)'));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
-<hr id="tempus.setTimeout" />
-<h2>tempus.setTimeout <span class="text-muted">(callback, timeout)</span></h2>
-<h3>Syntax</h3>
-<pre>object setTimeout( function callback, number timeout )</pre>
-<h3>Description</h3>
-Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).
-<h3>Examples</h3>
-<pre class="brush: js">
-//  "Hello over 2 second!";
-var t = tempus.setTimeout(function() {
-        alert("Hello over 2 second!");
-    }, 2);</pre>
-<a class="btn btn-primary" onclick="tempus.setTimeout(function() {alert('Hello over 2 second!');}, 2);">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  "Hello over 0.5 second!";
-var t = tempus.setTimeout(function() {
-        alert("Hello over 0.5 second!");
-    }, 0.5);</pre>
-<a class="btn btn-primary" onclick="tempus.setTimeout(function() {alert('Hello over 0.5 second!');}, 0.5);">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.setInterval" />
