@@ -1,2 +1,2 @@
 #!/bin/bash
-jsdoc js/tempus.js -d docs
+jsdoc -c ./conf.json

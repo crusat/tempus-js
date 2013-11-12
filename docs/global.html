@@ -99,7 +99,7 @@
     
     
     <div class="description">
-        Returns date object from timestamp (UTC). Or fix received object to default tempus date object.
+        <p>Returns date object from timestamp (UTC). Or fix received object to default tempus date object.</p>
     </div>
     
 
@@ -152,7 +152,7 @@
             
             
             
-            <td class="description last">Date as timestamp or object.</td>
+            <td class="description last"><p>Date as timestamp or object.</p></td>
         </tr>
 	
 	
@@ -178,7 +178,7 @@
             
             
             
-            <td class="description last">Options object.
+            <td class="description last"><p>Options object.</p>
                 <h6>Properties</h6>
                 
 
@@ -220,7 +220,7 @@
             
             
             
-            <td class="description last">Add to response number of week. Default is false.</td>
+            <td class="description last"><p>Add to response number of week. Default is false.</p></td>
         </tr>
 	
 	
@@ -243,7 +243,7 @@
             
             
             
-            <td class="description last">Add to response day of week. Default is false.</td>
+            <td class="description last"><p>Add to response day of week. Default is false.</p></td>
         </tr>
 	
 	
@@ -305,7 +305,7 @@
     
             
 <div class="param-desc">
-    date - Tempus date object.
+    <p>date - Tempus date object.</p>
 </div>
 
 
@@ -349,6 +349,160 @@ tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});</code>
         
             
 <dt>
+    <h4 class="name" id="now"><span class="type-signature"></span>now<span class="signature">(format)</span><span class="type-signature"> &rarr; {object|string}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns a current date (in your time zone) as object or formatted string.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>If format is undefined, returns is object. If not, formatted string - see format.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line311">line 311</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Tempus <a href="global.html#date">date</a> object or formatted string.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns {day: 21, dayOfWeek: 1, hours: 15, minutes: 10, month: 10, seconds: 3, timestamp: 1382353803, year: 2013};
+tempus.now();</code></pre>
+
+    <pre class="prettyprint"><code>// returns '21.10.2013'
+tempus.now('%d.%m.%Y');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="time"><span class="type-signature"></span>time<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
     
@@ -357,7 +511,8 @@ tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});</code>
     
     
     <div class="description">
-        Returns current timestamp (UTC) in seconds. If "date" parameter is not undefined, timestamp was received from this.
+        <p>Returns current timestamp (UTC) in seconds. If &quot;date&quot; parameter is not undefined, timestamp was received from this.
+If date is object, <a href="global.html#date">date</a> will apply for it.</p>
     </div>
     
 
@@ -410,8 +565,7 @@ tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});</code>
             
             
             
-            <td class="description last">Date as object {year: 2013, month: 1, day: 2, hours: 15, minutes: 10,
-seconds: 5} or string (any formatted date, see examples)</td>
+            <td class="description last"><p>Date as object (see <a href="global.html#date">date</a>) or string (any formatted date, see examples)</p></td>
         </tr>
 	
 	
@@ -437,7 +591,7 @@ seconds: 5} or string (any formatted date, see examples)</td>
             
             
             
-            <td class="description last">Date format as string (see formats doc) or undefined for autodetect format.</td>
+            <td class="description last"><p>Date format as string (see formats doc) or undefined for autodetect format.</p></td>
         </tr>
 	
 	
@@ -493,7 +647,7 @@ seconds: 5} or string (any formatted date, see examples)</td>
     
             
 <div class="param-desc">
-    UTC in seconds.
+    <p>UTC in seconds.</p>
 </div>
 
 
@@ -554,13 +708,13 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#date">date</a></li><li><a href="global.html#time">time</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#date">date</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#time">time</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 15:24:01 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 16:03:54 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

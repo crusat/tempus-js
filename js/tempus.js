@@ -192,8 +192,8 @@
 
         /**
          * Returns current timestamp (UTC) in seconds. If "date" parameter is not undefined, timestamp was received from this.
-         * @param date {object|string} Date as object {year: 2013, month: 1, day: 2, hours: 15, minutes: 10,
-         * seconds: 5} or string (any formatted date, see examples)
+         * If date is object, {@link date} will apply for it.
+         * @param date {object|string} Date as object (see {@link date}) or string (any formatted date, see examples)
          * @param format {string|undefined} Date format as string (see formats doc) or undefined for autodetect format.
          * @returns {number} UTC in seconds.
          * @example
@@ -297,6 +297,17 @@
             return d;
         };
 
+        /**
+         * Returns a current date (in your time zone) as object or formatted string.
+         * @param format {string|undefined} If format is undefined, returns is object. If not, formatted string - see {@link format}.
+         * @returns {object|string} Tempus {@link date} object or formatted string.
+         * @example
+         * // returns {day: 21, dayOfWeek: 1, hours: 15, minutes: 10, month: 10, seconds: 3, timestamp: 1382353803, year: 2013};
+         * tempus.now();
+         * @example
+         * // returns '21.10.2013'
+         * tempus.now('%d.%m.%Y');
+         */
         this.now = function (format) {
             var currentDate = new Date();
             var obj = {
