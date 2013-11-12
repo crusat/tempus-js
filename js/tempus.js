@@ -1003,8 +1003,8 @@
          * @param options.formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
          * @param options.dateTo {string|object} Tempus date object (see {@link date}) or formatted date string.
          * @param options.formatTo {string|undefined} Format (see index page). If undefined, will use formatFrom.
-         * @param options.period {number|string} Step size for dates, can be 'seconds', 'minutes', 'hours',
-         *     'day', 'month', 'year' or number value (seconds).
+         * @param options.period {number|string|object} Step size for dates, can be 'seconds', 'minutes', 'hours',
+         *     'day', 'month', 'year', number value (seconds) or tempus date object (see {@link date}).
          * @param options.format {string|undefined} Results format. If undefined, returns tempus date objects (see {@link date}).
          * @param options.asObject {boolean} If true, dates will be keys for objects in result array.
          * @param options.groupBy {string} If not undefined, group array by some field in tempus date object. Can be
@@ -1013,13 +1013,76 @@
          * @example
          * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
          * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
-         * var t = tempus.generateDates({
+         * tempus.generateDates({
          *     dateFrom: '01.01.2013',
          *     formatFrom: '%d.%m.%Y',
          *     dateTo: '10.01.2013',
          *     formatTo: '%d.%m.%Y',
          *     period: {day: 1},
          *     format: '%d.%m.%Y'
+         * });
+         * @example
+         * // returns [1356998400,1357084800,1357171200,1357257600,1357344000,
+         * //     1357430400,1357516800,1357603200,1357689600,1357776000];
+         * tempus.generateDates({
+         *     dateFrom: '01.01.2013',
+         *     formatFrom: '%d.%m.%Y',
+         *     dateTo: '10.01.2013',
+         *     formatTo: '%d.%m.%Y',
+         *     period: {day: 1}
+         * });
+         * @example
+         * // returns ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
+         * //     "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
+         * //     "20:00","21:00","22:00","23:00"];
+         * tempus.generateDates({
+         *     dateFrom: '01.01.2013 00:00',
+         *     formatFrom: '%d.%m.%Y %H:%M',
+         *     dateTo: '01.01.2013 23:00',
+         *     formatTo: '%d.%m.%Y %H:%M',
+         *     period: 'hours',
+         *     format: '%H:%M'
+         * });
+         * @example
+         * // returns ["2013-01-01","2013-02-01","2013-03-01","2013-04-01","2013-05-01",
+         * //     "2013-06-01","2013-07-01","2013-08-01","2013-09-01","2013-10-01"];
+         * tempus.generateDates({
+         *     dateFrom: '01.01.2013',
+         *     formatFrom: '%d.%m.%Y',
+         *     dateTo: '31.10.2013',
+         *     formatTo: '%d.%m.%Y',
+         *     period: 'month',
+         *     format: '%Y-%m-%d'
+         * });
+         * @example
+         * // returns ["2013-01-01 00:00","2013-01-02 12:00","2013-01-04 00:00","2013-01-05 12:00","2013-01-07 00:00",
+         * //     "2013-01-08 12:00","2013-01-10 00:00","2013-01-11 12:00"];
+         * tempus.generateDates({
+         *     dateFrom: '01.01.2013',
+         *     dateTo: '12.01.2013',
+         *     period: {day: 1, hours: 12},
+         *     format: '%Y-%m-%d %H:%M'
+         * });
+         * @example
+         * // returns ["05.01.2013","06.01.2013","07.01.2013","08.01.2013","09.01.2013","10.01.2013","11.01.2013",
+         * //     "12.01.2013","13.01.2013","14.01.2013","15.01.2013","16.01.2013","17.01.2013","18.01.2013",
+         * //     "19.01.2013","20.01.2013","21.01.2013","22.01.2013","23.01.2013","24.01.2013","25.01.2013",
+         * //     "26.01.2013","27.01.2013","28.01.2013","29.01.2013","30.01.2013","31.01.2013","01.02.2013"];
+         * tempus.generateDates({
+         *     dateFrom: {year: 2013, month: 1, day: 5},
+         *     dateTo: {year: 2013, month: 2, day: 1},
+         *     period: {day: 1},
+         *     format: '%d.%m.%Y'
+         * });
+         * @example
+         * // returns {"05.01.2013":{},"06.01.2013":{},"07.01.2013":{},"08.01.2013":{},"09.01.2013":{},
+         * //     "10.01.2013":{},"11.01.2013":{},"12.01.2013":{},"13.01.2013":{},"14.01.2013":{},"15.01.2013":{}};
+         * tempus.generateDates({
+         *     dateFrom: {year: 2013, month: 1, day: 5},
+         *     dateTo: {year: 2013, month: 1, day: 15},
+         *     period: {day: 1},
+         *     format: '%d.%m.%Y',
+         *     asObject: true
          * });
          */
         this.generateDates = function(options) {
