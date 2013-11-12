@@ -197,17 +197,6 @@ Generates dates from [dateFrom] to [dateTo] with period [period] and result form
 <h3>Examples</h3>
 
 
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({dateFrom: {year: 2013, month: 1, day: 5},dateTo: {year: 2013, month: 2, day: 1},period: {day: 1},format: '%d.%m.%Y'})));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = {"05.01.2013":{},"06.01.2013":{},"07.01.2013":{},"08.01.2013":{},"09.01.2013":{},
-//    "10.01.2013":{},"11.01.2013":{},"12.01.2013":{},"13.01.2013":{},"14.01.2013":{},"15.01.2013":{}};
-var t = tempus.generateDates({
-    dateFrom: {year: 2013, month: 1, day: 5},
-    dateTo: {year: 2013, month: 1, day: 15},
-    period: {day: 1},
-    format: '%d.%m.%Y',
-    asObject: true
-});</pre>
 <a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.generateDates({dateFrom: {year: 2013, month: 1, day: 5},dateTo: {year: 2013, month: 1, day: 15},period: {day: 1},format: '%d.%m.%Y', asObject: true})));">Run <span class="glyphicon glyphicon-play"></span></a>
 <pre class="brush: js">
 //  Too long...
