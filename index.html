@@ -190,33 +190,13 @@ var t = tempus.format(tempus.time(), '%Y%m%d');</pre>
 <a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), '%Y%m%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-<hr id="tempus.getDaysCountInMonth" />
-<h2>tempus.getDaysCountInMonth <span class="text-muted">(month, year)</span></h2>
-<h3>Syntax</h3>
-<pre>int getDaysCountInMonth( int month, [int year] )</pre>
-<h3>Description</h3>
-Returns days count in month. If year is undefined - leap year is false.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = 30;
-var t = tempus.getDaysCountInMonth(11, 2013);</pre>
-<a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(11, 2013));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 29;
-var t = tempus.getDaysCountInMonth(2, 2012);</pre>
-<a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2, 2012));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 28;
-var t = tempus.getDaysCountInMonth(2);</pre>
-<a class="btn btn-primary" onclick="alert(tempus.getDaysCountInMonth(2));">Run <span class="glyphicon glyphicon-play"></span></a>
-
 
 <hr id="tempus.getMonthNames" />
 <h2>tempus.getMonthNames <span class="text-muted">(longNames)</span></h2>
 <h3>Syntax</h3>
 <pre>object getMonthNames( [bool longNames] )</pre>
 <h3>Description</h3>
-Returns array of month names. If longNames is undefined, short names was returned.
+
 <h3>Examples</h3>
 <pre class="brush: js">
 //  t = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];

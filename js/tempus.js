@@ -400,6 +400,22 @@
             return undefined;
         };
 
+        /**
+         * Returns array of month names. If longNames is undefined, short names was returned.
+         * @param longNames {boolean} If true, long names was returning, else - short names.
+         * @returns {object} Array of names of month.
+         * @example
+         * // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+         * tempus.getMonthNames();
+         * @example
+         * // returns ["January","February","March","April","May","June",
+         * //  "July","August","September","October","November","December"];
+         * tempus.getMonthNames(true);
+         * @example
+         * // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+         * tempus.setLocale('ru_RU');
+         * tempus.getMonthNames();
+         */
         this.getMonthNames = function (longNames) {
             if (longNames === true) {
                 return locales[locale]["monthLongNames"];
