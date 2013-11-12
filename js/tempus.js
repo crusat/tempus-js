@@ -253,6 +253,10 @@
          * @example
          * // returns {"year":2013,"month":10,"day":5,"hours":0,"minutes":0,"seconds":0}
          * tempus.date({year:2013, month:10, day:5});
+         * @example
+         * // returns {"year":2013,"month":10,"day":5,
+         * //          "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
+         * tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});
          */
         this.date = function(date, options) {
             var d;
