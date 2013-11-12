@@ -91,6 +91,260 @@
         <dl>
             
 <dt>
+    <h4 class="name" id="date"><span class="type-signature"></span>date<span class="signature">(date, options)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns date object from timestamp (UTC). Or fix received object to default tempus date object.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Date as timestamp or object.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Options object.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>week</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Add to response number of week. Default is false.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dayOfWeek</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">bool</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Add to response day of week. Default is false.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line257">line 257</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    date - Tempus date object.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns {"year":2013,"month":11,"day":5,"hours":16,"minutes":1,"seconds":53}
+tempus.date(1383667313);</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2013,"month":11,"day":5,"hours":0,"minutes":0,"seconds":0}
+tempus.date(1383609600);</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":1970,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
+tempus.date({});</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2013,"month":10,"day":5,"hours":0,"minutes":0,"seconds":0}
+tempus.date({year:2013, month:10, day:5});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="time"><span class="type-signature"></span>time<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
     
@@ -210,7 +464,7 @@ seconds: 5} or string (any formatted date, see examples)</td>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line218">line 218</a>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line220">line 220</a>
     </li></ul></dd>
     
     
@@ -257,10 +511,12 @@ seconds: 5} or string (any formatted date, see examples)</td>
     
         <h5>Examples</h5>
         
-    <pre class="prettyprint"><code>// returns 1384252977
+    <pre class="prettyprint"><code>// get current UTC
+// returns 1384252977
 tempus.time();</code></pre>
 
-    <pre class="prettyprint"><code>// returns 1381795200
+    <pre class="prettyprint"><code>// parse date and get UTC
+// returns 1381795200
 tempus.time('15.10.2013', '%d.%m.%Y');</code></pre>
 
     <pre class="prettyprint"><code>// returns 1381795200
@@ -294,13 +550,13 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#time">time</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#date">date</a></li><li><a href="global.html#time">time</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 14:56:35 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 15:20:53 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

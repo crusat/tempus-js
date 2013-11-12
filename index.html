@@ -248,35 +248,6 @@ $ bower install tempus
                         </tbody>
                     </table>
 
-<hr id="tempus.time" />
-<h2>tempus.time <span class="text-muted">(date, format)</span></h2>
-<h3>Syntax</h3>
-<pre>int time( [object date] )</pre>
-<p>or</p>
-<pre>int time( [string date, string format] )</pre>
-<h3>Description</h3>
-Returns current timestamp (UTC) in seconds. If parameter is not undefined, timestamp was received from this.
-<h3>Examples</h3>
-<pre class="brush: js">
-// t = 1383667313;
-var t = tempus.time();
-</pre>
-<a class="btn btn-primary" onclick="alert(tempus.time());">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-// t = 1383609600;
-var t = tempus.time({year: 2013, month: 11, day: 5});
-</pre>
-<a class="btn btn-primary" onclick="alert(tempus.time({year: 2013, month: 11, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-// t = 1363046400;
-var t = tempus.time('2013-03-12', '%Y-%m-%d');
-</pre>
-<a class="btn btn-primary" onclick="alert(tempus.time('2013-03-12', '%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-// t = 1363363200;
-var t = tempus.time('2013-03-15 16:00', '%Y-%m-%d %H:%M');
-</pre>
-<a class="btn btn-primary" onclick="alert(tempus.time('2013-03-15 16:00', '%Y-%m-%d %H:%M'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
 <hr id="tempus.date" />

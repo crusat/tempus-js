@@ -197,9 +197,11 @@
          * @param format {string|undefined} Date format as string (see formats doc) or undefined for autodetect format.
          * @returns {number} UTC in seconds.
          * @example
+         * // get current UTC
          * // returns 1384252977
          * tempus.time();
          * @example
+         * // parse date and get UTC
          * // returns 1381795200
          * tempus.time('15.10.2013', '%d.%m.%Y');
          * @example
@@ -232,7 +234,26 @@
             }
         };
 
-        // options.week = true
+        /**
+         * Returns date object from timestamp (UTC). Or fix received object to default tempus date object.
+         * @param date {number|object} Date as timestamp or object.
+         * @param options {object|undefined} Options object.
+         * @param options.week {bool} Add to response number of week. Default is false.
+         * @param options.dayOfWeek {bool} Add to response day of week. Default is false.
+         * @returns {object} date - Tempus date object.
+         * @example
+         * // returns {"year":2013,"month":11,"day":5,"hours":16,"minutes":1,"seconds":53}
+         * tempus.date(1383667313);
+         * @example
+         * // returns {"year":2013,"month":11,"day":5,"hours":0,"minutes":0,"seconds":0}
+         * tempus.date(1383609600);
+         * @example
+         * // returns {"year":1970,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
+         * tempus.date({});
+         * @example
+         * // returns {"year":2013,"month":10,"day":5,"hours":0,"minutes":0,"seconds":0}
+         * tempus.date({year:2013, month:10, day:5});
+         */
         this.date = function(date, options) {
             var d;
             if (typeof date === "number") {
@@ -266,6 +287,8 @@
                 if (options && options.dayOfWeek === true) {
                     d.dayOfWeek = that.getDayOfWeek(d);
                 }
+            } else {
+                d = undefined;
             }
             return d;
         };
