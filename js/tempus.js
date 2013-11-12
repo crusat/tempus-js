@@ -1185,6 +1185,30 @@
             return result;
         };
 
+        /**
+         * Registering a new format.
+         * @param value {string} Identify
+         * @param formatFunc {function} Format function.
+         * @param parseFunc {function} Parse function.
+         * @param parseLit {string} Parse regexp.
+         * @example
+         * // no returns
+         * tempus.registerFormat('%q',
+         *     function(date) {
+         *         return date.month;
+         *     },
+         *     function(value) {
+         *         var v = Number(value);
+         *         return {month: (isNaN(v) ? undefined : v) };
+         *     },
+         *     '\\d{1,2}'
+         * );
+         * // test it
+         * // returns "01.1.2013";
+         * tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y');
+         * // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
+         * tempus.parse('10.2.2013', '%d.%q.%Y');
+         */
         this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
             registeredFormats[value] = {
                 format: formatFunc,
@@ -1192,18 +1216,47 @@
                 parseLit: parseLit
             }
         };
+
+        /**
+         * Unregistering a format.
+         * @param value {string} Identify
+         * @example
+         * // unregistering a format
+         * tempus.unregisterFormat('%d');
+         * // test it
+         * // returns "%d.01.2013"
+         * tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
+         */
         this.unregisterFormat = function(value) {
             delete registeredFormats[value];
         };
 
-        this.getWeekNumber = function(date) {
-            var weekNumber;
-            var start;
-            var currentDay = this.time(date);
-            start = that.time({year: date.year});
-            start -= that.getDayOfWeek(start)*86400;
-            weekNumber = Math.floor((((currentDay - start)/86400 + (weekStartsFromMonday !== true ? 1 : 0))) / 7) + 1;
-            return weekNumber;
+        /**
+         * Get week number.
+         * @param date {object|string} Date as object (see {@link date}) or string (any formatted date, see examples)
+         * @param format {string|undefined} Date format as string (see formats doc) or undefined for autodetect format.
+         * @returns {number} Week number from 1.
+         * @example
+         * // returns 46
+         * tempus.getWeekNumber({day: 12, month: 11, year: 2013});
+         * @example
+         * // returns 42
+         * tempus.getWeekNumber('12.10.2000');
+         * @example
+         * // returns 1
+         * tempus.getWeekNumber('1999-01-01');
+         */
+        this.getWeekNumber = function(date, format) {
+            var currentTime;
+            if (typeof date === 'string') {
+                currentTime = that.time(date, format);
+                date = that.date(currentTime);
+                currentTime *= 1000;
+            } else {
+                currentTime = that.time(date)*1000;
+            }
+            var startOfYear = new Date(date.year,0,1);
+            return Math.ceil((((currentTime - startOfYear) / 86400000) + startOfYear.getDay()+1)/7);
         };
 
         // *** HELPERS ***

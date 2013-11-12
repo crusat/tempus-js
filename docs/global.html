@@ -2840,6 +2840,186 @@ tempus.getVersion();</code></pre>
         
             
 <dt>
+    <h4 class="name" id="getWeekNumber"><span class="type-signature"></span>getWeekNumber<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Get week number.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Date as object (see <a href="global.html#date">date</a>) or string (any formatted date, see examples)</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Date format as string (see formats doc) or undefined for autodetect format.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line1249">line 1249</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Week number from 1.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns 46
+tempus.getWeekNumber({day: 12, month: 11, year: 2013});</code></pre>
+
+    <pre class="prettyprint"><code>// returns 42
+tempus.getWeekNumber('12.10.2000');</code></pre>
+
+    <pre class="prettyprint"><code>// returns 1
+tempus.getWeekNumber('1999-01-01');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="incDate"><span class="type-signature"></span>incDate<span class="signature">(date, value, type)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
     
@@ -3910,6 +4090,212 @@ tempus.reformat('15.05.2012', undefined, '%Y-%m-%d');</code></pre>
         
             
 <dt>
+    <h4 class="name" id="registerFormat"><span class="type-signature"></span>registerFormat<span class="signature">(value, formatFunc, parseFunc, parseLit)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Registering a new format.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Identify</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>formatFunc</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Format function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>parseFunc</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Parse function.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>parseLit</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Parse regexp.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line1212">line 1212</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// no returns
+tempus.registerFormat('%q',
+    function(date) {
+        return date.month;
+    },
+    function(value) {
+        var v = Number(value);
+        return {month: (isNaN(v) ? undefined : v) };
+    },
+    '\\d{1,2}'
+);
+// test it
+// returns "01.1.2013";
+tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y');
+// returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
+tempus.parse('10.2.2013', '%d.%q.%Y');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="setInterval"><span class="type-signature"></span>setInterval<span class="signature">(callback, timeout)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
     
@@ -4598,6 +4984,132 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
         
             
 <dt>
+    <h4 class="name" id="unregisterFormat"><span class="type-signature"></span>unregisterFormat<span class="signature">(value)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Unregistering a format.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Identify</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line1230">line 1230</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// unregistering a format
+tempus.unregisterFormat('%d');
+// test it
+// returns "%d.01.2013"
+tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="validate"><span class="type-signature"></span>validate<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
     
     
@@ -4821,13 +5333,13 @@ tempus.validate('29.02.2013 23:00');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#generateDates">generateDates</a></li><li><a href="global.html#getAvailableLocales">getAvailableLocales</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getLocale">getLocale</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#getVersion">getVersion</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#reformat">reformat</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setLocale">setLocale</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#generateDates">generateDates</a></li><li><a href="global.html#getAvailableLocales">getAvailableLocales</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getLocale">getLocale</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#getVersion">getVersion</a></li><li><a href="global.html#getWeekNumber">getWeekNumber</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#reformat">reformat</a></li><li><a href="global.html#registerFormat">registerFormat</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setLocale">setLocale</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#unregisterFormat">unregisterFormat</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:47:26 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 19:25:45 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

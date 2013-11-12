@@ -2,6 +2,7 @@
 - Format can be undefined for autodetect.
 - Little bug fixed with getDaysCountInMonth from string.
 - Fixed error with tempus.between(). Now all ok.
+- Fixed bug at getWeekNumber().
 
 0.1.29
 - Supports IE6+, Firefox, Chrome, Opera.
