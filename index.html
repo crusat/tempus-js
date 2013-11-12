@@ -169,59 +169,6 @@ $ bower install tempus
 
 
 
-<hr id="tempus.format" />
-<h2>tempus.format <span class="text-muted">(date, format)</span></h2>
-<h3>Syntax</h3>
-<pre>string format( object|int date, string format )</pre>
-<h3>Description</h3>
-Returns formatted string of date. You can use object or timestamp as parameter of method.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = '05.11.2013';
-var t = tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = '2013-11-05 12:36:42';
-var t = tempus.format(tempus.now(), '%Y-%m-%d %H:%M:%S');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.now('%Y-%m-%d %H:%M:%S'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = '20131105';
-var t = tempus.format(tempus.time(), '%Y%m%d');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.format(tempus.time(), '%Y%m%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
-
-
-<hr id="tempus.between" />
-<h2>tempus.between <span class="text-muted">(dateFrom, dateTo, type)</span></h2>
-<h3>Syntax</h3>
-<pre>int between( object dateFrom, object dateTo, string type=day|month|year|hours|minutes|seconds )</pre>
-<h3>Description</h3>
-Returns integer of date between from [dateFrom] to [dateTo] as [type].
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = 4;
-var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 6;
-var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 266400;
-var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 10224;
-var t = tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  Happy new year!
-//  t = 56;
-var t = tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day'));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
 <hr id="tempus.parse" />
 <h2>tempus.parse <span class="text-muted">(str, format)</span></h2>
 <h3>Syntax</h3>

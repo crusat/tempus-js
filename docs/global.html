@@ -226,7 +226,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line623">line 623</a>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line624">line 624</a>
     </li></ul></dd>
     
     
@@ -288,7 +288,8 @@ tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 
     <pre class="prettyprint"><code>// returns 10224
 tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours');</code></pre>
 
-    <pre class="prettyprint"><code>// returns 56
+    <pre class="prettyprint"><code>// Happy New Year!
+// returns 56
 tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');</code></pre>
 
     <pre class="prettyprint"><code>// my current age
@@ -762,6 +763,343 @@ tempus.decDate({year:2013, month: 1, day:1}, {month: 5});</code></pre>
     <pre class="prettyprint"><code>// returns {"year":2012,"month":1,"day":30,"hours":8,"minutes":49,"seconds":59}
 tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
     hours: 15, minutes: 10, seconds: 1});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="detectFormat"><span class="type-signature"></span>detectFormat<span class="signature">(str)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Detecting format of date  as string.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Formatted date as string</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line691">line 691</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Format of date or undefined if auto detect failed.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns "%d.%m.%Y"
+tempus.detectFormat('10.12.2013');</code></pre>
+
+    <pre class="prettyprint"><code>// returns "%Y-%m-%d %H:%M"
+tempus.detectFormat('2013-01-01 12:00');</code></pre>
+
+    <pre class="prettyprint"><code>// returns "%d.%m.%Y"
+tempus.detectFormat('01/02/2013');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="format"><span class="type-signature"></span>format<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns formatted string of date. You can use object or timestamp as parameter of method.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tempus date object (see <a href="global.html#date">date</a>) or timestamp.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Format of date. See index page for defaults.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line660">line 660</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Formatted string</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns '05.11.2013'
+tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns '2013-11-05 12:36:42'
+tempus.format(tempus.now(), '%Y-%m-%d %H:%M:%S');</code></pre>
+
+    <pre class="prettyprint"><code>// returns '20131105'
+tempus.format(tempus.time(), '%Y%m%d');</code></pre>
 
     
 </dd>
@@ -1996,7 +2334,7 @@ tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});</
             
             
             
-            <td class="description last"><p>If format is undefined, returns is object. If not, formatted string - see format.</p></td>
+            <td class="description last"><p>If format is undefined, returns is object. If not, formatted string - see <a href="global.html#format">format</a>.</p></td>
         </tr>
 	
 	
@@ -2082,6 +2420,201 @@ tempus.now();</code></pre>
 
     <pre class="prettyprint"><code>// returns '21.10.2013'
 tempus.now('%d.%m.%Y');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="parse"><span class="type-signature"></span>parse<span class="signature">(str, format)</span><span class="type-signature"> &rarr; {object|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns date object from parsed string.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>str</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Formatted date string.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Format (see index page). If undefined, tempus will be auto detect format.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line737">line 737</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Tempus date object (see <a href="global.html#date">date</a>).</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}
+tempus.parse('21.10.2013', '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15}
+tempus.parse('20131005162015', '%Y%m%d%H%M%S');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0}
+tempus.parse('2012-05-07', '%F');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0}
+tempus.parse('12/01/2013', '%D');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0}
+tempus.parse('05 Dec, 2010', '%d %b, %Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0}
+tempus.parse('10 October, 2010', '%d %B, %Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":31,"month":12,"year":2012,"hours":0,"minutes":0,"seconds":0}
+tempus.parse('31.12.2012');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2013,"month":3,"day":5,"hours":12,"minutes":31,"seconds":0}
+tempus.parse('2013-03-05 12:31');</code></pre>
 
     
 </dd>
@@ -2294,13 +2827,13 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#between">between</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#time">time</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#between">between</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#time">time</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 17:20:04 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 17:44:15 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

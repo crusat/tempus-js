@@ -642,6 +642,21 @@
             }
         };
 
+        /**
+         * Returns formatted string of date. You can use object or timestamp as parameter of method.
+         * @param date {object|number} Tempus date object (see {@link date}) or timestamp.
+         * @param format {string|undefined} Format of date. See index page for defaults.
+         * @returns {string|undefined} Formatted string
+         * @example
+         * // returns '05.11.2013'
+         * tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y');
+         * @example
+         * // returns '2013-11-05 12:36:42'
+         * tempus.format(tempus.now(), '%Y-%m-%d %H:%M:%S');
+         * @example
+         * // returns '20131105'
+         * tempus.format(tempus.time(), '%Y%m%d');
+         */
         this.format = function(date, format) {
             var result = format;
             var d;
@@ -659,9 +674,28 @@
             return result;
         };
 
+        /**
+         * Detecting format of date  as string.
+         * @param str {string} Formatted date as string
+         * @returns {string|undefined} Format of date or undefined if auto detect failed.
+         * @example
+         * // returns "%d.%m.%Y"
+         * tempus.detectFormat('10.12.2013');
+         * @example
+         * // returns "%Y-%m-%d %H:%M"
+         * tempus.detectFormat('2013-01-01 12:00');
+         * @example
+         * // returns "%d.%m.%Y"
+         * tempus.detectFormat('01/02/2013');
+         */
         this.detectFormat = function(str) {
-            var defaultFormats = ['^%d.%m.%Y$', '^%m/%d/%Y$', '^%Y-%m-%d$', '^%d.%m.%Y %H:%M:%S$',
-                '^%Y-%m-%d %H:%M:%S$', '^%Y$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$'];
+            var defaultFormats = [
+                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$',
+                '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
+                '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
+                '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
+                '^%Y$', '^%H:%M:%S$', '^%H:%M$'
+            ];
             for (var i=0; i < defaultFormats.length; i++) {
                 if (that.parse(str, defaultFormats[i]) !== undefined) {
                     return defaultFormats[i].slice(1,-1);
@@ -670,6 +704,36 @@
             return undefined;
         };
 
+        /**
+         * Returns date object from parsed string.
+         * @param str {string} Formatted date string.
+         * @param format {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @returns {object|undefined} Tempus date object (see {@link date}).
+         * @example
+         * // returns {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('21.10.2013', '%d.%m.%Y');
+         * @example
+         * // returns {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15}
+         * tempus.parse('20131005162015', '%Y%m%d%H%M%S');
+         * @example
+         * // returns {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('2012-05-07', '%F');
+         * @example
+         * // returns {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('12/01/2013', '%D');
+         * @example
+         * // returns {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('05 Dec, 2010', '%d %b, %Y');
+         * @example
+         * // returns {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('10 October, 2010', '%d %B, %Y');
+         * @example
+         * // returns {"day":31,"month":12,"year":2012,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('31.12.2012');
+         * @example
+         * // returns {"year":2013,"month":3,"day":5,"hours":12,"minutes":31,"seconds":0}
+         * tempus.parse('2013-03-05 12:31');
+         */
         this.parse = function(str, format) {
             var key;
             var litsarr = [];
