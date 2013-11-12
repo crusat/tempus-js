@@ -430,7 +430,7 @@
         /**
          * Returns array of month names. If longNames is undefined, short names was returned.
          * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {object} Array of month names.
+         * @returns {Array} Array of month names.
          * @example
          * // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
          * tempus.getMonthNames();
@@ -454,7 +454,7 @@
         /**
          * Returns array of day names. If longNames is undefined, short names was returned.
          * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {object} Array of day names.
+         * @returns {Array} Array of day names.
          * @example
          * // returns ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
          * tempus.getDayNames();
@@ -970,7 +970,8 @@
 
         /**
          * Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
-         * @param loc {string} Need locale.
+         * For list locales see {@link getAvailableLocales}.
+         * @param loc {string|undefined} Need locale. If undefined, "en_US" will be select.
          * @returns {undefined}
          * @example
          * // returns "2013, Ноябрь, 06, Среда"
@@ -981,6 +982,13 @@
             locale = loc || "en_US";
         };
 
+        /**
+         * Gets current value of locale.
+         * @returns {string} Current locale.
+         * @example
+         * // returns "en_US"
+         * tempus.getLocale();
+         */
         this.getLocale = function() {
             return locale;
         };
@@ -993,23 +1001,53 @@
             return weekStartsFromMonday;
         };
 
+        /**
+         * Get available locales list.
+         * @returns {Array} Array of available locales.
+         * @example
+         * // returns ["en_US", "ru_RU"]
+         * tempus.getAvailableLocales();
+         */
         this.getAvailableLocales = function() {
             return Object.keys(locales);
         };
 
+        /**
+         * Get current version of TempusJS.
+         * @returns {string} Current version of TempusJS.
+         * @example
+         * // returns current version
+         * tempus.getVersion();
+         */
         this.getVersion = function() {
             return version;
         };
 
-        /*
-         * options.dateFrom - string or object
-         * options.formatFrom - string|undefined
-         * options.dateTo - string or object
-         * options.formatTo - string|undefined
-         * options.period - number (seconds)|string (seconds, minutes, hours, day, month, year)
-         * options.format - results format, string
-         * options.asObject - results is object
-         * options.groupBy - group by someone
+        /**
+         * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or timestamps, if format is undefined.
+         * @param options {object|undefined} Options object.
+         * @param options.dateFrom {string|object} Tempus date object (see {@link date}) or formatted date string.
+         * @param options.formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @param options.dateTo {string|object} Tempus date object (see {@link date}) or formatted date string.
+         * @param options.formatTo {string|undefined} Format (see index page). If undefined, will use formatFrom.
+         * @param options.period {number|string} Step size for dates, can be 'seconds', 'minutes', 'hours',
+         *     'day', 'month', 'year' or number value (seconds).
+         * @param options.format {string|undefined} Results format. If undefined, returns tempus date objects (see {@link date}).
+         * @param options.asObject {boolean} If true, dates will be keys for objects in result array.
+         * @param options.groupBy {string} If not undefined, group array by some field in tempus date object. Can be
+         *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
+         * @returns {Array|object} Array or object from dates.
+         * @example
+         * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+         * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
+         * var t = tempus.generateDates({
+         *     dateFrom: '01.01.2013',
+         *     formatFrom: '%d.%m.%Y',
+         *     dateTo: '10.01.2013',
+         *     formatTo: '%d.%m.%Y',
+         *     period: {day: 1},
+         *     format: '%d.%m.%Y'
+         * });
          */
         this.generateDates = function(options) {
             var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
@@ -1020,7 +1058,7 @@
             tsFrom = that.time(tsFrom);
             // timestamp "to"
             if (typeof options.dateTo === 'string') {
-                tsTo = that.parse(options.dateTo, options.formatTo);
+                tsTo = that.parse(options.dateTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom));
             }
             tsTo = that.time(tsTo);
             // period
@@ -1153,13 +1191,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#reformat">reformat</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setLocale">setLocale</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#generateDates">generateDates</a></li><li><a href="global.html#getAvailableLocales">getAvailableLocales</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getLocale">getLocale</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#getVersion">getVersion</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#reformat">reformat</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setLocale">setLocale</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:15:01 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:35:54 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

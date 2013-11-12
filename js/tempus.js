@@ -996,17 +996,32 @@
             return version;
         };
 
-        /*
-         * options.dateFrom - string or object
-         * options.formatFrom - string|undefined
-         * options.dateTo - string or object
-         * options.formatTo - string|undefined
-         * options.period - number (seconds)|string (seconds, minutes, hours, day, month, year)
-         * options.format - results format, string
-         * options.asObject - results is object
-         * options.groupBy - group by someone
+        /**
+         * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or timestamps, if format is undefined.
+         * @param options {object|undefined} Options object.
+         * @param options.dateFrom {string|object} Tempus date object (see {@link date}) or formatted date string.
+         * @param options.formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @param options.dateTo {string|object} Tempus date object (see {@link date}) or formatted date string.
+         * @param options.formatTo {string|undefined} Format (see index page). If undefined, will use formatFrom.
+         * @param options.period {number|string} Step size for dates, can be 'seconds', 'minutes', 'hours',
+         *     'day', 'month', 'year' or number value (seconds).
+         * @param options.format {string|undefined} Results format. If undefined, returns tempus date objects (see {@link date}).
+         * @param options.asObject {boolean} If true, dates will be keys for objects in result array.
+         * @param options.groupBy {string} If not undefined, group array by some field in tempus date object. Can be
+         *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
+         * @returns {Array|object} Array or object from dates.
+         * @example
+         * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+         * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
+         * var t = tempus.generateDates({
+         *     dateFrom: '01.01.2013',
+         *     formatFrom: '%d.%m.%Y',
+         *     dateTo: '10.01.2013',
+         *     formatTo: '%d.%m.%Y',
+         *     period: {day: 1},
+         *     format: '%d.%m.%Y'
+         * });
          */
-
         this.generateDates = function(options) {
             var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
             // timestamp "from"
@@ -1016,7 +1031,7 @@
             tsFrom = that.time(tsFrom);
             // timestamp "to"
             if (typeof options.dateTo === 'string') {
-                tsTo = that.parse(options.dateTo, options.formatTo);
+                tsTo = that.parse(options.dateTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom));
             }
             tsTo = that.time(tsTo);
             // period
