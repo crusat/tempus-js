@@ -403,7 +403,7 @@
         /**
          * Returns array of month names. If longNames is undefined, short names was returned.
          * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {object} Array of names of month.
+         * @returns {object} Array of month names.
          * @example
          * // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
          * tempus.getMonthNames();
@@ -424,6 +424,21 @@
             }
         };
 
+        /**
+         * Returns array of day names. If longNames is undefined, short names was returned.
+         * @param longNames {boolean} If true, long names was returning, else - short names.
+         * @returns {object} Array of day names.
+         * @example
+         * // returns ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+         * tempus.getDayNames();
+         * @example
+         * // returns ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+         * tempus.getDayNames(true);
+         * @example
+         * // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
+         * tempus.setLocale('ru_RU');
+         * tempus.getDayNames();
+         */
         this.getDayNames = function (longNames) {
             if (longNames === true) {
                 return locales[locale]["daysLongNames"];
@@ -432,7 +447,20 @@
             }
         };
 
-        // Algorithm author: Tomohiko Sakamoto in 1993.
+        /**
+         * Get day of week by Tomohiko Sakamoto's algorithm, 1993.
+         * @param date {object} Tempus date object (see {@link date}).
+         * @returns {number} Index day of week (0..6), 0 is Sunday.
+         * @example
+         * // returns 6
+         * tempus.getDayOfWeek({year: 2013, month: 10, day: 5});
+         * @example
+         * // returns 0
+         * tempus.getDayOfWeek({year: 2013, month: 10, day: 6});
+         * @example
+         * // returns 2
+         * tempus.getDayOfWeek(tempus.now());
+         */
         this.getDayOfWeek = function (date) {
             date = that.date(date);
             var year = date.year;

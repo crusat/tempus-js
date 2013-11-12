@@ -191,63 +191,6 @@ var t = tempus.format(tempus.time(), '%Y%m%d');</pre>
 
 
 
-<hr id="tempus.getMonthNames" />
-<h2>tempus.getMonthNames <span class="text-muted">(longNames)</span></h2>
-<h3>Syntax</h3>
-<pre>object getMonthNames( [bool longNames] )</pre>
-<h3>Description</h3>
-
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-var t = tempus.getMonthNames();</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = ["January","February","March","April","May","June",
-//       "July","August","September","October","November","December"];
-var t = tempus.getMonthNames(true);</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getMonthNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
-<hr id="tempus.getDayNames" />
-<h2>tempus.getDayNames <span class="text-muted">(longNames)</span></h2>
-<h3>Syntax</h3>
-<pre>object getDayNames( [bool longNames] )</pre>
-<h3>Description</h3>
-Returns array of day names. If longNames is undefined, short names was returned.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-var t = tempus.getDayNames();</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames()));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = ["Sunday","Monday","Tuesday","Wednesday",
-//       "Thursday","Friday","Saturday"];
-var t = tempus.getDayNames(true);</pre>
-<a class="btn btn-primary" onclick="alert(JSON.stringify(tempus.getDayNames(true)));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
-<hr id="tempus.getDayOfWeek" />
-<h2>tempus.getDayOfWeek <span class="text-muted">(date)</span></h2>
-<h3>Syntax</h3>
-<pre>int getDayOfWeek( object date )</pre>
-<h3>Description</h3>
-Returns day of week.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = 6;
-var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 5});</pre>
-<a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek({year: 2013, month: 10, day: 5}));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 0;
-var t = tempus.getDayOfWeek({year: 2013, month: 10, day: 6});</pre>
-<a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek({year: 2013, month: 10, day: 6}));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = 2;
-var t = tempus.getDayOfWeek(tempus.now());</pre>
-<a class="btn btn-primary" onclick="alert(tempus.getDayOfWeek(tempus.now()));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
 <hr id="tempus.incDate" />
 <h2>tempus.incDate <span class="text-muted">(date, value, type)</span></h2>
 <h3>Syntax</h3>
