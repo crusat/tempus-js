@@ -3,7 +3,7 @@ TempusJS
 
 JavaScript library for most comfortable using date/time.
 
-Supports IE6+, Firefox, Chrome, Opera. [Check tests](http://crusat.github.io/tempus-js/tests.html)
+Supports IE6+, Firefox, Chrome, Opera. [Check tests in your browser](http://crusat.github.io/tempus-js/tests.html)
 
 Demo and description here: http://crusat.github.io/tempus-js/
 
@@ -94,5 +94,3 @@ Default formats
         <td>01/01/1970, ..., 08/22/2013, ...</td>
     </tr>
 </table>
-
-Last version 0.1.29

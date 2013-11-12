@@ -346,6 +346,33 @@
 
         // get days count in month method
         // from 1 to 12
+        /**
+         * Returns days count in month.
+         * @param month {number|string} If number (1..12) - month index, also you can send
+         *   string - month name as (Jan..Dec), (January..December)
+         *   or, for example, (Янв..Дек) if you change locale (see {@link setLocale}).
+         * @param year {number|undefined} Year for checking. If it is undefined - leap year is false.
+         * @returns {number|undefined} Returns days count or undefined if error occurred.
+         * @example
+         * // returns 30
+         * tempus.getDaysCountInMonth(11, 2013);
+         * @example
+         * // returns 29
+         * tempus.getDaysCountInMonth(2, 2012);
+         * @example
+         * // returns 28
+         * tempus.getDaysCountInMonth(2);
+         * @example
+         * // returns 31
+         * tempus.getDaysCountInMonth('Jan');
+         * @example
+         * // returns 30
+         * tempus.getDaysCountInMonth('September');
+         * @example
+         * // returns 31
+         * tempus.setLocale('ru_RU');
+         * tempus.getDaysCountInMonth('Март');
+         */
         this.getDaysCountInMonth = function (month, year) {
             var leapYear = year === undefined ? false : this.isLeapYear(year);
             if (typeof month === 'number') {
@@ -356,18 +383,18 @@
                 }
             }
             if (typeof month === 'string') {
-                var month_int = indexOf(locales[locale]["monthShortNames"], month);
+                var month_int = locales[locale]["monthShortNames"].indexOf(month);
                 if (month_int === -1) {
-                    month_int = indexOf(locales[locale]["monthLongNames"], month);
+                    month_int = locales[locale]["monthLongNames"].indexOf(month);
                 }
                 if (month_int === -1) {
                     return undefined;
                 }
                 month = month_int;
                 if (month === 2) {
-                    return daysInMonth[month - 1] + (leapYear ? 1 : 0);
+                    return daysInMonth[month] + (leapYear ? 1 : 0);
                 } else {
-                    return daysInMonth[month - 1]
+                    return daysInMonth[month]
                 }
             }
             return undefined;
