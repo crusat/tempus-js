@@ -513,9 +513,36 @@
             }
         };
 
+        /**
+         * Returns date object, increased on [value] [type].
+         * @param date {object} Source date. Tempus date object (see {@link date}).
+         * @param value {number|object} Any integer value or tempus date object.
+         * @param type {string} Value type. Can be 'seconds','minutes', 'hours', 'day', 'month', 'year'
+         * @returns {object} Tempus date object.
+         * @example
+         * // returns {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0}
+         * tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day');
+         * @example
+         * // returns {"year":2014,"month":1,"day":13,"hours":0,"minutes":0,"seconds":0}
+         * tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day');
+         * @example
+         * // returns {"year":2013,"month":12,"day":30,"hours":0,"minutes":0,"seconds":0}
+         * tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month');
+         * @example
+         * // returns {"year":2015,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
+         * tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');
+         * @example
+         * // returns {"year":2013,"month":6,"day":1,"hours":0,"minutes":0,"seconds":0}
+         * tempus.incDate({year:2013, month: 1, day:1}, {month: 5});
+         * @example
+         * // returns {"year":2014,"month":4,"day":20,"hours":15,"minutes":10,"seconds":1}
+         * tempus.incDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
+         *                 hours: 15, minutes: 10, seconds: 1});
+         */
         this.incDate = function (date, value, type) {
             return calcDate(date, value, type, 1);
         };
+
 
         this.normalizeDate = function(date) {
             return clone(this.date(this.time(date)));
