@@ -340,8 +340,218 @@ tempus.date({});</code></pre>
 tempus.date({year:2013, month:10, day:5});</code></pre>
 
     <pre class="prettyprint"><code>// returns {"year":2013,"month":10,"day":5,
-//          "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
+//     "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
 tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="decDate"><span class="type-signature"></span>decDate<span class="signature">(date, value, type)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns date object, decreased on [value] [type].</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Source date. Tempus date object (see <a href="global.html#date">date</a>).</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Any integer value or tempus date object (see <a href="global.html#date">date</a>).</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Value type. Can be 'seconds','minutes', 'hours', 'day', 'month', 'year'</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line593">line 593</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Tempus date object.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0}
+tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0}
+tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2012,"month":2,"day":30,"hours":0,"minutes":0,"seconds":0}
+tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
+tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2012,"month":8,"day":1,"hours":0,"minutes":0,"seconds":0}
+tempus.decDate({year:2013, month: 1, day:1}, {month: 5});</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"year":2012,"month":1,"day":30,"hours":8,"minutes":49,"seconds":59}
+tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
+    hours: 15, minutes: 10, seconds: 1});</code></pre>
 
     
 </dd>
@@ -714,8 +924,8 @@ tempus.getDayOfWeek(tempus.now());</code></pre>
             
             
             <td class="description last"><p>If number (1..12) - month index, also you can send
-  string - month name as (Jan..Dec), (January..December)
-  or, for example, (Янв..Дек) if you change locale (see setLocale).</p></td>
+    string - month name as (Jan..Dec), (January..December)
+    or, for example, (Янв..Дек) if you change locale (see setLocale).</p></td>
         </tr>
 	
 	
@@ -987,7 +1197,7 @@ tempus.getDaysCountInMonth('Март');</code></pre>
 tempus.getMonthNames();</code></pre>
 
     <pre class="prettyprint"><code>// returns ["January","February","March","April","May","June",
-//  "July","August","September","October","November","December"];
+//     "July","August","September","October","November","December"];
 tempus.getMonthNames(true);</code></pre>
 
     <pre class="prettyprint"><code>// returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
@@ -1084,7 +1294,7 @@ tempus.getMonthNames();</code></pre>
             
             
             
-            <td class="description last"><p>Any integer value or tempus date object.</p></td>
+            <td class="description last"><p>Any integer value or tempus date object (see <a href="global.html#date">date</a>).</p></td>
         </tr>
 	
 	
@@ -1202,7 +1412,7 @@ tempus.incDate({year:2013, month: 1, day:1}, {month: 5});</code></pre>
 
     <pre class="prettyprint"><code>// returns {"year":2014,"month":4,"day":20,"hours":15,"minutes":10,"seconds":1}
 tempus.incDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
-                hours: 15, minutes: 10, seconds: 1});</code></pre>
+    hours: 15, minutes: 10, seconds: 1});</code></pre>
 
     
 </dd>
@@ -1354,6 +1564,160 @@ tempus.isLeapYear();</code></pre>
 
     <pre class="prettyprint"><code>// returns true
 tempus.isLeapYear(2004);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="normalizeDate"><span class="type-signature"></span>normalizeDate<span class="signature">(date)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Normalize date to valid.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tempus date object (see <a href="global.html#date">date</a>).</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line563">line 563</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Tempus date object (see <a href="global.html#date">date</a>).</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0}
+tempus.normalizeDate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0}
+tempus.normalizeDate({day:46,month:13,year:2013,hours:0,minutes:0,seconds:0});</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58}
+tempus.normalizeDate({day:32,month:-5,year:2013,hours:55,minutes:0,seconds:-2});</code></pre>
+
+    <pre class="prettyprint"><code>// returns {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}
+tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});</code></pre>
 
     
 </dd>
@@ -1720,13 +2084,13 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#date">date</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#time">time</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#time">time</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 16:53:05 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 17:03:40 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -255,7 +255,7 @@
          * tempus.date({year:2013, month:10, day:5});
          * @example
          * // returns {"year":2013,"month":10,"day":5,
-         * //          "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
+         * //     "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
          * tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});
          */
         this.date = function(date, options) {
@@ -349,8 +349,8 @@
         /**
          * Returns days count in month.
          * @param month {number|string} If number (1..12) - month index, also you can send
-         *   string - month name as (Jan..Dec), (January..December)
-         *   or, for example, (Янв..Дек) if you change locale (see {@link setLocale}).
+         *     string - month name as (Jan..Dec), (January..December)
+         *     or, for example, (Янв..Дек) if you change locale (see {@link setLocale}).
          * @param year {number|undefined} Year for checking. If it is undefined - leap year is false.
          * @returns {number|undefined} Returns days count or undefined if error occurred.
          * @example
@@ -409,7 +409,7 @@
          * tempus.getMonthNames();
          * @example
          * // returns ["January","February","March","April","May","June",
-         * //  "July","August","September","October","November","December"];
+         * //     "July","August","September","October","November","December"];
          * tempus.getMonthNames(true);
          * @example
          * // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
@@ -516,7 +516,7 @@
         /**
          * Returns date object, increased on [value] [type].
          * @param date {object} Source date. Tempus date object (see {@link date}).
-         * @param value {number|object} Any integer value or tempus date object.
+         * @param value {number|object} Any integer value or tempus date object (see {@link date}).
          * @param type {string} Value type. Can be 'seconds','minutes', 'hours', 'day', 'month', 'year'
          * @returns {object} Tempus date object.
          * @example
@@ -537,17 +537,59 @@
          * @example
          * // returns {"year":2014,"month":4,"day":20,"hours":15,"minutes":10,"seconds":1}
          * tempus.incDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
-         *                 hours: 15, minutes: 10, seconds: 1});
+         *     hours: 15, minutes: 10, seconds: 1});
          */
         this.incDate = function (date, value, type) {
             return calcDate(date, value, type, 1);
         };
 
-
+        /**
+         * Normalize date to valid.
+         * @param date {object} Tempus date object (see {@link date}).
+         * @returns {object} Tempus date object (see {@link date}).
+         * @example
+         * // returns {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0}
+         * tempus.normalizeDate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});
+         * @example
+         * // returns {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0}
+         * tempus.normalizeDate({day:46,month:13,year:2013,hours:0,minutes:0,seconds:0});
+         * @example
+         * // returns {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58}
+         * tempus.normalizeDate({day:32,month:-5,year:2013,hours:55,minutes:0,seconds:-2});
+         * @example
+         * // returns {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}
+         * tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});
+         */
         this.normalizeDate = function(date) {
             return clone(this.date(this.time(date)));
         };
 
+        /**
+         * Returns date object, decreased on [value] [type].
+         * @param date {object} Source date. Tempus date object (see {@link date}).
+         * @param value {number|object} Any integer value or tempus date object (see {@link date}).
+         * @param type {string} Value type. Can be 'seconds','minutes', 'hours', 'day', 'month', 'year'
+         * @returns {object} Tempus date object.
+         * @example
+         * // returns {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0}
+         * tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day');
+         * @example
+         * // returns {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0}
+         * tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day');
+         * @example
+         * // returns {"year":2012,"month":2,"day":30,"hours":0,"minutes":0,"seconds":0}
+         * tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month');
+         * @example
+         * // returns {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
+         * tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');
+         * @example
+         * // returns {"year":2012,"month":8,"day":1,"hours":0,"minutes":0,"seconds":0}
+         * tempus.decDate({year:2013, month: 1, day:1}, {month: 5});
+         * @example
+         * // returns {"year":2012,"month":1,"day":30,"hours":8,"minutes":49,"seconds":59}
+         * tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
+         *     hours: 15, minutes: 10, seconds: 1});
+         */
         this.decDate = function (date, value, type) {
             return calcDate(date, value, type, -1);
         };
@@ -825,18 +867,6 @@
         };
 
         // *** HELPERS ***
-        var indexOf = function (obj, fromIndex) {
-            if (fromIndex == null) {
-                fromIndex = 0;
-            } else if (fromIndex < 0) {
-                fromIndex = Math.max(0, this.length + fromIndex);
-            }
-            for (var i = fromIndex, j = this.length; i < j; i++) {
-                if (this[i] === obj)
-                    return i;
-            }
-            return -1;
-        };
         var formattingWithNulls = function(val, symb_count) {
             var v = val.toString();
             while (v.length < symb_count) {
