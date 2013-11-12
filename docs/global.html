@@ -91,6 +91,178 @@
         <dl>
             
 <dt>
+    <h4 class="name" id="alarm"><span class="type-signature"></span>alarm<span class="signature">(date, callback)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Alarms at [date]. After alarming self-destructs.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tempus date object (see <a href="global.html#date">date</a>).</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Callback.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line857">line 857</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Default setInterval identify.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">number</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// Over 20 seconds show message "Alarmed at ..."
+var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');
+document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');
+var a = tempus.alarm(alarmAt, function(date) {
+    alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));
+});</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="between"><span class="type-signature"></span>between<span class="signature">(dateFrom, dateTo, type)</span><span class="type-signature"> &rarr; {number|undefined}</span></h4>
     
     
@@ -3312,6 +3484,216 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="validate"><span class="type-signature"></span>validate<span class="signature">(date, format)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Validates date.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Tempus date object (see <a href="global.html#date">date</a>) or formatted date string.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Format (see index page). If undefined, tempus will be auto detect format.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line912">line 912</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Valid or not valid.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">boolean</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns false
+tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});</code></pre>
+
+    <pre class="prettyprint"><code>// returns false
+tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});</code></pre>
+
+    <pre class="prettyprint"><code>// returns true
+tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});</code></pre>
+
+    <pre class="prettyprint"><code>// returns true
+tempus.validate('2013-03-12', '%Y-%m-%d');</code></pre>
+
+    <pre class="prettyprint"><code>// returns true
+tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns false
+tempus.validate('32.08.2013', '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns false
+tempus.validate('29.02.2013', '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns true
+tempus.validate('29.02.2012', '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns false
+tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns true
+tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns false
+tempus.validate('29.02.2012 24:00');</code></pre>
+
+    <pre class="prettyprint"><code>// returns true
+tempus.validate('29.02.2012 23:00');</code></pre>
+
+    <pre class="prettyprint"><code>// returns false
+tempus.validate('29.02.2013 23:00');</code></pre>
+
+    
+</dd>
+
         </dl>
     
     
@@ -3328,13 +3710,13 @@ tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 17:54:41 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:03:26 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

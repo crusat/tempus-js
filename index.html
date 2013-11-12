@@ -167,58 +167,6 @@ $ bower install tempus
 
 
 
-
-<hr id="tempus.validate" />
-<h2>tempus.validate <span class="text-muted">(date, format)</span></h2>
-<h3>Syntax</h3>
-<pre>bool validate( object date )</pre>
-<p>or</p>
-<pre>bool validate( string date, string format )</pre>
-<h3>Description</h3>
-Validates date.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  t = false;
-var t = tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = false;
-var t = tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = true;
-var t = tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = true;
-var t = tempus.validate('2013-03-12', '%Y-%m-%d');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('2013-03-12', '%Y-%m-%d'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = true;
-var t = tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = false;
-var t = tempus.validate('32.08.2013', '%d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('32.08.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = false;
-var t = tempus.validate('29.02.2013', '%d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2013', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = true;
-var t = tempus.validate('29.02.2012', '%d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('29.02.2012', '%d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = false;
-var t = tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-<pre class="brush: js">
-//  t = true;
-var t = tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');</pre>
-<a class="btn btn-primary" onclick="alert(tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y'));">Run <span class="glyphicon glyphicon-play"></span></a>
-
-
 <!--var d = $.datetime.validate();-->
 <!--.validate('08.08.2013', '%d.%m.%Y', {year: {min:1970, max: 2038}});-->
 <!--validate('08.08.1961', '%d.%m.%Y', {year: {min:1970, max: 2038}});-->
@@ -246,25 +194,6 @@ var t = tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %
 <a class="btn btn-primary" onclick="alert(tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)'));">Run <span class="glyphicon glyphicon-play"></span></a>
 
 
-
-
-<hr id="tempus.alarm" />
-<h2>tempus.alarm <span class="text-muted">(date, callback)</span></h2>
-<h3>Syntax</h3>
-<pre>object alarm( object date, function callback )</pre>
-<h3>Description</h3>
-Alarms at [date]. After alarming self-destructs.
-<h3>Examples</h3>
-<pre class="brush: js">
-//  For example, please, click button
-var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');
-document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');
-var a = tempus.alarm(alarmAt, function(date) {
-    alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));
-});
-</pre>
-<a class="btn btn-primary" onclick="var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');var a = tempus.alarm(alarmAt, function(date) {alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));});">Run <span class="glyphicon glyphicon-play"></span></a>
-<span>Alarming at <span id="tempus-alarm-example"></span></span>
 
 
 <hr id="tempus.setLocale" />

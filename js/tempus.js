@@ -841,6 +841,19 @@
             }, 1);
         };
 
+        /**
+         * Alarms at [date]. After alarming self-destructs.
+         * @param date {object} Tempus date object (see {@link date}).
+         * @param callback {function} Callback.
+         * @returns {number} Default setInterval identify.
+         * @example
+         * // Over 20 seconds show message "Alarmed at ..."
+         * var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');
+         * document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');
+         * var a = tempus.alarm(alarmAt, function(date) {
+         *     alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));
+         * });
+         */
         this.alarm = function(date, callback) {
             var a = this.setInterval(function() {
                 if (that.between(that.now(), date, 'seconds') === 0) {
@@ -851,6 +864,51 @@
             return a;
         };
 
+        /**
+         * Validates date.
+         * @param date {object|string} Tempus date object (see {@link date}) or formatted date string.
+         * @param format {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @returns {boolean} Valid or not valid.
+         * @example
+         * // returns false
+         * tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});
+         * @example
+         * // returns false
+         * tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});
+         * @example
+         * // returns true
+         * tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});
+         * @example
+         * // returns true
+         * tempus.validate('2013-03-12', '%Y-%m-%d');
+         * @example
+         * // returns true
+         * tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');
+         * @example
+         * // returns false
+         * tempus.validate('32.08.2013', '%d.%m.%Y');
+         * @example
+         * // returns false
+         * tempus.validate('29.02.2013', '%d.%m.%Y');
+         * @example
+         * // returns true
+         * tempus.validate('29.02.2012', '%d.%m.%Y');
+         * @example
+         * // returns false
+         * tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');
+         * @example
+         * // returns true
+         * tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');
+         * @example
+         * // returns false
+         * tempus.validate('29.02.2012 24:00');
+         * @example
+         * // returns true
+         * tempus.validate('29.02.2012 23:00');
+         * @example
+         * // returns false
+         * tempus.validate('29.02.2013 23:00');
+         */
         this.validate = function(date, format) {
             if (typeof date === 'string') {
                 date = this.parse(date, format);
