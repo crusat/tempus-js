@@ -1322,9 +1322,6 @@ tempus.detectFormat('01/02/2013');</code></pre>
             
                 
 <span class="param-type">string</span>
-|
-
-<span class="param-type">undefined</span>
 
 
             
@@ -1796,7 +1793,7 @@ tempus.getDayOfWeek(tempus.now());</code></pre>
             
             <td class="description last"><p>If number (1..12) - month index, also you can send
     string - month name as (Jan..Dec), (January..December)
-    or, for example, (Янв..Дек) if you change locale (see setLocale).</p></td>
+    or, for example, (Янв..Дек) if you change locale (see <a href="global.html#setLocale">setLocale</a>).</p></td>
         </tr>
 	
 	
@@ -2945,6 +2942,212 @@ tempus.parse('2013-03-05 12:31');</code></pre>
         
             
 <dt>
+    <h4 class="name" id="reformat"><span class="type-signature"></span>reformat<span class="signature">(date, formatFrom, formatTo)</span><span class="type-signature"> &rarr; {string|undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Reformats date from one to other format.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>date</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Formatted date string.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>formatFrom</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Format (see index page). If undefined, tempus will be auto detect format.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>formatTo</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Format of date. See index page for defaults.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line940">line 940</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Returns a reformatted date string.</p>
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">string</span>
+|
+
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Examples</h5>
+        
+    <pre class="prettyprint"><code>// returns "12.03.2013"
+tempus.reformat('2013-03-12', '%Y-%m-%d', '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns "15.03.2013"
+tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y');</code></pre>
+
+    <pre class="prettyprint"><code>// returns "12:31 (Fri 15, 2013)"
+tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)');</code></pre>
+
+    <pre class="prettyprint"><code>// returns "2012-05-15"
+tempus.reformat('15.05.2012', undefined, '%Y-%m-%d');</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="setInterval"><span class="type-signature"></span>setInterval<span class="signature">(callback, timeout)</span><span class="type-signature"> &rarr; {number}</span></h4>
     
     
@@ -3113,6 +3316,148 @@ var t = tempus.setInterval(function() {
     };
     alert("Hello again!");
 }, 2);</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="setLocale"><span class="type-signature"></span>setLocale<span class="signature">(loc)</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is &quot;en_US&quot;.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>loc</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"><p>Need locale.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="tempus.js.html">tempus.js</a>, <a href="tempus.js.html#line953">line 953</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">undefined</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code>// returns "2013, Ноябрь, 06, Среда"
+tempus.setLocale("ru_RU");
+tempus.now('%Y, %B, %d, %A');</code></pre>
 
     
 </dd>
@@ -3710,13 +4055,13 @@ tempus.validate('29.02.2013 23:00');</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#reformat">reformat</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setLocale">setLocale</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:03:26 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:15:01 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>

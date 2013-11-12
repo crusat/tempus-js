@@ -403,7 +403,7 @@
         /**
          * Returns array of month names. If longNames is undefined, short names was returned.
          * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {object} Array of month names.
+         * @returns {Array} Array of month names.
          * @example
          * // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
          * tempus.getMonthNames();
@@ -427,7 +427,7 @@
         /**
          * Returns array of day names. If longNames is undefined, short names was returned.
          * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {object} Array of day names.
+         * @returns {Array} Array of day names.
          * @example
          * // returns ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
          * tempus.getDayNames();
@@ -941,11 +941,27 @@
             return this.format(this.parse(date, formatFrom), formatTo);
         };
 
+        /**
+         * Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
+         * For list locales see {@link getAvailableLocales}.
+         * @param loc {string|undefined} Need locale. If undefined, "en_US" will be select.
+         * @returns {undefined}
+         * @example
+         * // returns "2013, Ноябрь, 06, Среда"
+         * tempus.setLocale("ru_RU");
+         * tempus.now('%Y, %B, %d, %A');
+         */
         this.setLocale = function(loc) {
             locale = loc || "en_US";
-            return locale;
         };
 
+        /**
+         * Gets current value of locale.
+         * @returns {string} Current locale.
+         * @example
+         * // returns "en_US"
+         * tempus.getLocale();
+         */
         this.getLocale = function() {
             return locale;
         };
@@ -958,10 +974,24 @@
             return weekStartsFromMonday;
         };
 
+        /**
+         * Get available locales list.
+         * @returns {Array} Array of available locales.
+         * @example
+         * // returns ["en_US", "ru_RU"]
+         * tempus.getAvailableLocales();
+         */
         this.getAvailableLocales = function() {
             return Object.keys(locales);
         };
 
+        /**
+         * Get current version of TempusJS.
+         * @returns {string} Current version of TempusJS.
+         * @example
+         * // returns current version
+         * tempus.getVersion();
+         */
         this.getVersion = function() {
             return version;
         };
@@ -976,6 +1006,7 @@
          * options.asObject - results is object
          * options.groupBy - group by someone
          */
+
         this.generateDates = function(options) {
             var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
             // timestamp "from"

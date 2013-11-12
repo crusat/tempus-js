@@ -672,7 +672,7 @@
         /**
          * Returns formatted string of date. You can use object or timestamp as parameter of method.
          * @param date {object|number} Tempus date object (see {@link date}) or timestamp.
-         * @param format {string|undefined} Format of date. See index page for defaults.
+         * @param format {string} Format of date. See index page for defaults.
          * @returns {string|undefined} Formatted string
          * @example
          * // returns '05.11.2013'
@@ -717,7 +717,7 @@
          */
         this.detectFormat = function(str) {
             var defaultFormats = [
-                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$',
+                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
                 '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
                 '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
                 '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
@@ -945,13 +945,40 @@
                     (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
         };
 
+        /**
+         * Reformats date from one to other format.
+         * @param date {string} Formatted date string.
+         * @param formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @param formatTo {string} Format of date. See index page for defaults.
+         * @returns {string|undefined} Returns a reformatted date string.
+         * @example
+         * // returns "12.03.2013"
+         * tempus.reformat('2013-03-12', '%Y-%m-%d', '%d.%m.%Y');
+         * @example
+         * // returns "15.03.2013"
+         * tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y');
+         * @example
+         * // returns "12:31 (Fri 15, 2013)"
+         * tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)');
+         * @example
+         * // returns "2012-05-15"
+         * tempus.reformat('15.05.2012', undefined, '%Y-%m-%d');
+         */
         this.reformat = function(date, formatFrom, formatTo) {
             return this.format(this.parse(date, formatFrom), formatTo);
         };
 
+        /**
+         * Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
+         * @param loc {string} Need locale.
+         * @returns {undefined}
+         * @example
+         * // returns "2013, Ноябрь, 06, Среда"
+         * tempus.setLocale("ru_RU");
+         * tempus.now('%Y, %B, %d, %A');
+         */
         this.setLocale = function(loc) {
             locale = loc || "en_US";
-            return locale;
         };
 
         this.getLocale = function() {
@@ -1126,13 +1153,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#alarm">alarm</a></li><li><a href="global.html#between">between</a></li><li><a href="global.html#clock">clock</a></li><li><a href="global.html#date">date</a></li><li><a href="global.html#decDate">decDate</a></li><li><a href="global.html#detectFormat">detectFormat</a></li><li><a href="global.html#format">format</a></li><li><a href="global.html#getDayNames">getDayNames</a></li><li><a href="global.html#getDayOfWeek">getDayOfWeek</a></li><li><a href="global.html#getDaysCountInMonth">getDaysCountInMonth</a></li><li><a href="global.html#getMonthNames">getMonthNames</a></li><li><a href="global.html#incDate">incDate</a></li><li><a href="global.html#isLeapYear">isLeapYear</a></li><li><a href="global.html#normalizeDate">normalizeDate</a></li><li><a href="global.html#now">now</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#reformat">reformat</a></li><li><a href="global.html#setInterval">setInterval</a></li><li><a href="global.html#setLocale">setLocale</a></li><li><a href="global.html#setTimeout">setTimeout</a></li><li><a href="global.html#time">time</a></li><li><a href="global.html#validate">validate</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:03:26 GMT+0400 (MSK)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha1</a> on Tue Nov 12 2013 18:15:01 GMT+0400 (MSK)
 </footer>
 
 <script> prettyPrint(); </script>
