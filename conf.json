@@ -1,0 +1,23 @@
+{
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "include": ["js/tempus.js", "README.md"]
+    },
+    "opts": {
+        "destination": "./docs/"
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": true
+        }
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": true
+    }
+}
