@@ -844,66 +844,6 @@
             }
         };
 
-        /**
-         * Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).
-         * @param callback {function} Callback.
-         * @param timeout {number} Int or float number, timeout.
-         * @returns {number} Default setTimeout identify.
-         * @example
-         * // Show message over 2 seconds.
-         * var t = tempus.setTimeout(function() {
-         *     alert("Hello over 2 seconds!");
-         * }, 2);
-         * @example
-         * // Show message over 0.5 seconds.
-         * var t = tempus.setTimeout(function() {
-         *     alert("Hello over 0.5 seconds!");
-         * }, 0.5);
-         */
-        this.setTimeout = function(callback, timeout) {
-            return setTimeout(callback, Number(timeout)*1000);
-        };
-
-        /**
-         * Just wrapper on setInterval, this timeout in seconds (not a milliseconds).
-         * @param callback {function} Callback.
-         * @param timeout {number} Int or float number, timeout.
-         * @returns {number} Default setInterval identify.
-         * @example
-         * //  "Hello again!" 3x times every 2 seconds;
-         * var x = 3;
-         * var t = tempus.setInterval(function() {
-         *     x--;
-         *     if (x === 0) {
-         *         clearInterval(t);
-         *     };
-         *     alert("Hello again!");
-         * }, 2);
-         */
-        this.setInterval = function(callback, timeout) {
-            return setInterval(callback, Number(timeout)*1000);
-        };
-
-        /**
-         * Clock. Every second callback is calling with parameter "date".
-         * "date" - is current date object. Also run callback immediately after starting.
-         * @param callback {function} Callback.
-         * @returns {number} Default setInterval identify.
-         * @example
-         * // Clock example
-         * &lt;div id="tempus-clock-example"&gt;&lt;/div&gt;
-         * &lt;script&gt;
-         * var clock = tempus.clock(function(date) {
-         *     document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, "%H:%M:%S");
-         * });
-         * &lt;/script&gt;
-         */
-        this.clock = function(callback) {
-            callback(that.now());
-            return this.setInterval(function() {
-                callback(that.now());
-            }, 1);
-        };
 
         /**
          * Alarms at [date]. After alarming self-destructs.
@@ -920,15 +860,15 @@
          *     alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));
          * });
          */
-        this.alarm = function(date, callback) {
-            var a = this.setInterval(function() {
-                if (that.between(that.now(), date, 'seconds') === 0) {
-                    callback(date);
-                    clearInterval(a);
-                }
-            }, 1);
-            return a;
-        };
+//        this.alarm = function(date, callback) {
+//            var a = this.setInterval(function() {
+//                if (that.between(that.now(), date, 'seconds') === 0) {
+//                    callback(date);
+//                    clearInterval(a);
+//                }
+//            }, 1);
+//            return a;
+//        };
 
         /**
          * Validates date.

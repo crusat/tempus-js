@@ -4,16 +4,16 @@
         Tempus,
         version = '0.2.0',
         daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        locale = 'en_US',
-        locales = {
-            "en_US": {
+        lang = 'en',
+        translations = {
+            "en": {
                 "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
                     "September", "October", "November", "December"],
                 "daysShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
                 "daysLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
             },
-            "ru_RU": {
+            "ru": {
                 "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
                 "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
                     "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
@@ -64,7 +64,7 @@
             },
             '%a': {
                 format: function (date) {
-                    return locales[locale]["daysShortNames"][date.dayOfWeek()];
+                    return translations[lang]["daysShortNames"][date.dayOfWeek()];
                 },
                 parse: function (value) {
                     // impossible
@@ -74,7 +74,7 @@
             },
             '%A': {
                 format: function (date) {
-                    return locales[locale]["daysLongNames"][date.dayOfWeek()];
+                    return translations[lang]["daysLongNames"][date.dayOfWeek()];
                 },
                 parse: function (value) {
                     // impossible
@@ -82,26 +82,26 @@
                 },
                 parseLit: '\\w+'
             },
-    //        '%b': {
-    //            format: function(date) {
-    //                return locales[locale]["monthShortNames"][date.month-1];
-    //            },
-    //            parse: function(value) {
-    //                var month = that.getMonthNames().indexOf(value)+1;
-    //                return {month: month !== -1 ? month : undefined}
-    //            },
-    //            parseLit: '\\w+'
-    //        },
-    //        '%B': {
-    //            format: function(date) {
-    //                return locales[locale]["monthLongNames"][date.month-1];
-    //            },
-    //            parse: function(value) {
-    //                var month = that.getMonthNames(true).indexOf(value)+1;
-    //                return {month: month !== -1 ? month : undefined}
-    //            },
-    //            parseLit: '\\w+'
-    //        },
+            '%b': {
+                format: function(date) {
+                    return translations[lang]["monthShortNames"][date.month()-1];
+                },
+                parse: function(value) {
+                    var month = that.getMonthNames().indexOf(value)+1;
+                    return {month: month !== -1 ? month : undefined}
+                },
+                parseLit: '\\w+'
+            },
+            '%B': {
+                format: function(date) {
+                    return translations[lang]["monthLongNames"][date.month()-1];
+                },
+                parse: function(value) {
+                    var month = that.getMonthNames(true).indexOf(value)+1;
+                    return {month: month !== -1 ? month : undefined}
+                },
+                parseLit: '\\w+'
+            },
             '%H': {
                 format: function (date) {
                     return formattingWithNulls(date.hours(), 2);
@@ -132,18 +132,18 @@
                 },
                 parseLit: '\\d{2}'
             },
-    //        '%s': {
-    //            format: function(date) {
-    //                return that.time(date);
-    //            },
-    //            parse: function(value) {
-    //                var v = Number(value);
-    //                var date = new TempusDate(Number(v), timezoneOffset);
-    //                var obj = that.date(v);
-    //                return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
-    //            },
-    //            parseLit: '\\d{1,10}'
-    //        },
+            '%s': {
+                format: function(date) {
+                    return date.timestamp();
+                },
+                parse: function(value) {
+                    var v = Number(value);
+                    var date = new TempusDate(Number(v), timezoneOffset);
+                    var obj = that.date(v);
+                    return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
+                },
+                parseLit: '\\d{1,10}'
+            },
             '%F': {
                 format: function (date) {
                     return formattingWithNulls(date.year(), 4) + '-' + formattingWithNulls(date.month(), 2) + '-' + formattingWithNulls(date.day(), 2);
@@ -288,6 +288,14 @@
                 }
                 return this;
             },
+            timestamp: function(value) {
+                if (value !== undefined) {
+                    seconds = Number(value);
+                } else {
+                    return seconds;
+                }
+                return this;
+            },
             /**
              * Get day of week.
              * @returns {number|undefined} Numeric value of day of week.
@@ -419,6 +427,22 @@
                     }
                 }
                 return result;
+            },
+            /**
+             * Globally set or get language.
+             * @param value {string} Language's code.
+             * @returns {string|Tempus} Language's code or Tempus object.
+             * @example
+             * // returns "Ноябрь, 14"
+             * TP.lang('ru').date({year: 2013, month: 11, day: 14}).format('%B, %d');
+             */
+            lang: function(value) {
+                if (value !== undefined) {
+                    lang = value;
+                } else {
+                    return lang;
+                }
+                return this;
             }
 
 
@@ -426,8 +450,3 @@
     })();
     window.Tempus = window.TP = Tempus;
 })();
-
-
-// Default formats
-
-

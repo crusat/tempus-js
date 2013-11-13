@@ -8,18 +8,11 @@
         container = element;
         return this;
     };
-    TP.clock = function(callback) {
-        callback(TP.now());
-        return setInterval(function() {
-            callback(TP.now());
-        }, 1000);
-    };
     TP.getContainer = function() {
         return container;
     };
-    TP.digitalClock = function() {
+    TP.digitalClock = function(options) {
         TP.clock(function(date) {
-            console.log('x');
             container.innerHTML = date.format('%H:%M:%S');
         });
     }
