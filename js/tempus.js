@@ -2,6 +2,303 @@
 //
 //    var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 //    var version = '0.2.0';
+
+//
+//    var formattingWithNulls = function (val, symb_count) {
+//        var v = val.toString();
+//        while (v.length < symb_count) {
+//            v = '0' + v;
+//        }
+//        return v;
+//    };
+//
+//
+//    var Tempus = function (options) {
+//        var that = this;
+//
+//
+//        this.init = function () {
+//            console.log('ready');
+//        };
+//
+//
+//
+//
+//        this.format = function (format) {
+//            var result = format;
+//            // formatting
+//            for (var key in registeredFormats) {
+//                if (registeredFormats.hasOwnProperty(key)) {
+//                    result = result.replace(key, registeredFormats[key].format(this));
+//                }
+//            }
+//            return result;
+//        };
+//
+//
+//
+//        return {
+//            setSome: function (xxx) {
+//                some = xxx;
+//            },
+//            getSome: function () {
+//                return some;
+//            }
+//        }
+//    };
+//
+//    window.tempus = Tempus;
+//})(window);
+
+
+//(function (window, undefined) {
+//
+//    // Core
+//    var Tempus = (function () {
+//        // private
+//        var version = '0.2.0';
+//        var settings = {};
+//        // undefined needed for time delta.
+//
+//        console.log(this);
+//        // public
+//        this.getVersion = function () {
+//            return version;
+//        };
+//        this.date = function (options) {
+//            settings.year = options.year;
+//            settings.month = options.month;
+//            settings.day = options.day;
+//            settings.hours = options.hours;
+//            settings.minutes = options.minutes;
+//            settings.seconds = options.seconds;
+//            console.log(this);
+//            return this;
+//        };
+//        this.now = function () {
+//            var d = new Date();
+//            settings.year = d.getFullYear();
+//            settings.month = d.getMonth() + 1;
+//            settings.day = d.getDate();
+//            settings.hours = d.getHours();
+//            settings.minutes = d.getMinutes();
+//            settings.seconds = d.getSeconds();
+//            console.log(this);
+//            return this;
+//        };
+//        this.getSettings = function() {
+//            return settings;
+//        };
+//        this.isLeapYear = function () {
+//            if (settings.year % 4 == 0) {
+//                if (settings.year % 100 == 0) {
+//                    return settings.year % 400 == 0;
+//                } else return true;
+//            }
+//            return false;
+//        };
+//
+//        return this;
+//
+//    }());
+//
+//    // Widgets
+//    Tempus = (function (Tempus) {
+//        // private variable to store id of a container
+//        var container = '';
+//
+//        Tempus.getById = function (id) {
+//
+//            container = document.getElementById(id);
+//            return this;
+//        };
+//        return Tempus; // return the extended object
+//
+//    }(Tempus));
+//
+//    // exports
+//    window.tempus = (function() {
+//        return Tempus;
+//    })();
+//
+//})(window);
+//
+//
+//tempus.getVersion();
+
+(function() {
+    var _TP = window.TP,
+        _Tempus = window.Tempus,
+        Tempus;
+
+    Tempus = (function() {
+        var version = '0.2.0',
+            year = undefined,
+            month = undefined,
+            day = undefined,
+            hours = undefined,
+            minutes = undefined,
+            seconds = undefined,
+            dayOfWeek = undefined;
+
+        var getDayOfWeek = function (year, month, day) {
+            var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+            year -= month < 3;
+            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
+        };
+
+        var dateChange = function(type, newValue) {
+            if (year !== undefined && month !== undefined && day !== undefined) {
+                dayOfWeek = getDayOfWeek(year, month, day);
+            }
+        };
+
+        return {
+            year: function(value) {
+                if (value !== undefined) {
+                    year = Number(value);
+                    dateChange('year', value);
+                } else {
+                    return year;
+                }
+                return this;
+            },
+            month: function(value) {
+                if (value !== undefined) {
+                    month = Number(value);
+                    dateChange('month', value);
+                } else {
+                    return month;
+                }
+                return this;
+            },
+            day: function(value) {
+                if (value !== undefined) {
+                    day = Number(value);
+                    dateChange('day', value);
+                } else {
+                    return day;
+                }
+                return this;
+            },
+            hours: function(value) {
+                if (value !== undefined) {
+                    hours = Number(value);
+                    dateChange('hours', value);
+                } else {
+                    return hours;
+                }
+                return this;
+            },
+            minutes: function(value) {
+                if (value !== undefined) {
+                    minutes = Number(value);
+                    dateChange('minutes', value);
+                } else {
+                    return minutes;
+                }
+                return this;
+            },
+            seconds: function(value) {
+                if (value !== undefined) {
+                    seconds = Number(value);
+                    dateChange('seconds', value);
+                } else {
+                    return seconds;
+                }
+                return this;
+            },
+            dayOfWeek: function() {
+                return dayOfWeek;
+            },
+            /**
+             * Releases TP variable from global scope.
+             * @param all {boolean} If true, Tempus variable also will been released.
+             * @returns {Tempus} Tempus object.
+             * @example
+             * // returns Tempus object
+             * var myTempusObj = Tempus.noConflict(true);
+            */
+            noConflict: function(all) {
+                window.TP = _TP;
+                if (all === true) {
+                    window.Tempus = _Tempus
+                }
+                return Tempus;
+            },
+            /**
+             * Get a current version of TempusJS.
+             * @returns {string} Current version of TempusJS.
+             * @example
+             * // returns current version
+             * TP.getVersion();
+             */
+            getVersion: function() {
+                return version;
+            },
+            /**
+             * Set a current date.
+             * @returns {Tempus}
+             * @example
+             * // returns Tempus object with current date.
+             * TP.now();
+             * @example
+             * // returns simple object with current date
+             * TP.now().date();
+             */
+            now: function () {
+                var d = new Date();
+                year = d.getFullYear();
+                month = d.getMonth() + 1;
+                day = d.getDate();
+                hours = d.getHours();
+                minutes = d.getMinutes();
+                seconds = d.getSeconds();
+                return this;
+            },
+            /**
+             * Set new date.
+             * @param newDate {object|undefined} New date as object {year: number, month: number, day: number,
+             *     hours: number, minutes: number, seconds: number} or part of it.
+             * @returns {Tempus|object} Tempus object or simply object with date info.
+             * @example
+             * // returns Tempus object with date {year: 2013, month: 11, day: 13}.
+             * TP.date({year: 2013, month: 11, day: 13});
+             * @example
+             * // returns {year: 2013, month: 10, day: 1}
+             * TP.date({year: 2013, month: 10, day: 1}).date();
+             */
+            date: function(newDate) {
+                if (newDate === undefined) {
+                    return {
+                        year: year,
+                        month: month,
+                        day: day,
+                        hours: hours,
+                        minutes: minutes,
+                        seconds: seconds,
+                        dayOfWeek: dayOfWeek
+                    }
+                }
+                if (typeof newDate === 'object') {
+                    this.year(newDate.year);
+                    this.month(newDate.month);
+                    this.day(newDate.day);
+                    this.hours(newDate.hours);
+                    this.minutes(newDate.minutes);
+                    this.seconds(newDate.seconds);
+                }
+                return this;
+            }
+
+
+        };
+    })();
+    window.Tempus = window.TP = Tempus;
+})();
+
+
+// Default formats
 //    var locale = 'en_US';
 //    var locales = {
 //        "en_US": {
@@ -19,14 +316,7 @@
 //            "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
 //        }
 //    };
-//    var getDayOfWeek = function (date) {
-//        var year = date.year;
-//        var month = date.month;
-//        var day = date.day;
-//        var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-//        year -= month < 3;
-//        return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
-//    };
+//    var ;
 //    var registeredFormats = {
 //        '%d': {
 //            format: function (date) {
@@ -183,205 +473,6 @@
 //            parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
 //        }
 //    };
-//
-//    var formattingWithNulls = function (val, symb_count) {
-//        var v = val.toString();
-//        while (v.length < symb_count) {
-//            v = '0' + v;
-//        }
-//        return v;
-//    };
-//
-//
-//    var Tempus = function (options) {
-//        var that = this;
-//
-//
-//        this.init = function () {
-//            console.log('ready');
-//        };
-//
-//
-//
-//
-//        this.format = function (format) {
-//            var result = format;
-//            // formatting
-//            for (var key in registeredFormats) {
-//                if (registeredFormats.hasOwnProperty(key)) {
-//                    result = result.replace(key, registeredFormats[key].format(this));
-//                }
-//            }
-//            return result;
-//        };
-//
-//
-//
-//        return {
-//            setSome: function (xxx) {
-//                some = xxx;
-//            },
-//            getSome: function () {
-//                return some;
-//            }
-//        }
-//    };
-//
-//    window.tempus = Tempus;
-//})(window);
-
-
-//(function (window, undefined) {
-//
-//    // Core
-//    var Tempus = (function () {
-//        // private
-//        var version = '0.2.0';
-//        var settings = {};
-//        // undefined needed for time delta.
-//
-//        console.log(this);
-//        // public
-//        this.getVersion = function () {
-//            return version;
-//        };
-//        this.date = function (options) {
-//            settings.year = options.year;
-//            settings.month = options.month;
-//            settings.day = options.day;
-//            settings.hours = options.hours;
-//            settings.minutes = options.minutes;
-//            settings.seconds = options.seconds;
-//            console.log(this);
-//            return this;
-//        };
-//        this.now = function () {
-//            var d = new Date();
-//            settings.year = d.getFullYear();
-//            settings.month = d.getMonth() + 1;
-//            settings.day = d.getDate();
-//            settings.hours = d.getHours();
-//            settings.minutes = d.getMinutes();
-//            settings.seconds = d.getSeconds();
-//            console.log(this);
-//            return this;
-//        };
-//        this.getSettings = function() {
-//            return settings;
-//        };
-//        this.isLeapYear = function () {
-//            if (settings.year % 4 == 0) {
-//                if (settings.year % 100 == 0) {
-//                    return settings.year % 400 == 0;
-//                } else return true;
-//            }
-//            return false;
-//        };
-//
-//        return this;
-//
-//    }());
-//
-//    // Widgets
-//    Tempus = (function (Tempus) {
-//        // private variable to store id of a container
-//        var container = '';
-//
-//        Tempus.getById = function (id) {
-//
-//            container = document.getElementById(id);
-//            return this;
-//        };
-//        return Tempus; // return the extended object
-//
-//    }(Tempus));
-//
-//    // exports
-//    window.tempus = (function() {
-//        return Tempus;
-//    })();
-//
-//})(window);
-//
-//
-//tempus.getVersion();
-
-(function() {
-    var _TP = window.TP,
-        _Tempus = window.Tempus,
-        Tempus;
-
-    Tempus = (function() {
-        var version = '0.2.0';
-
-        return {
-            year: undefined,
-            month: undefined,
-            day: undefined,
-            hours: undefined,
-            minutes: undefined,
-            seconds: undefined,
-            /**
-             * Releases TP variable from global scope.
-             * @param all {boolean} If true, Tempus variable also will been released.
-             * @returns {Tempus} Tempus object.
-             * @example
-             * // returns Tempus object
-             * var myTempusObj = Tempus.noConflict(true);
-            */
-            noConflict: function(all) {
-                window.TP = _TP;
-                if (all === true) {
-                    window.Tempus = _Tempus
-                }
-                return Tempus;
-            },
-            /**
-             * Get a current version of TempusJS.
-             * @returns {string} Current version of TempusJS.
-             * @example
-             * // returns current version
-             * Tempus.getVersion();
-             */
-            getVersion: function() {
-                return version;
-            },
-            /**
-             * Set a current date.
-             * @returns {Tempus}
-             */
-            now: function () {
-                var d = new Date();
-                this.year = d.getFullYear();
-                this.month = d.getMonth() + 1;
-                this.day = d.getDate();
-                this.hours = d.getHours();
-                this.minutes = d.getMinutes();
-                this.seconds = d.getSeconds();
-                return this;
-            },
-            /**
-             * Set new date.
-             * @param newDate {object} New date as object {year: number, month: number, day: number,
-             *     hours: number, minutes: number, seconds: number} or part of it.
-             * @returns {Tempus} Tempus object.
-             */
-            date: function(newDate) {
-                if (typeof newDate === 'object') {
-                    this.year = newDate.year;
-                    this.month = newDate.month;
-                    this.day = newDate.day;
-                    this.hours = newDate.hours;
-                    this.minutes = newDate.minutes;
-                    this.seconds = newDate.seconds;
-                }
-                return this;
-            }
-        };
-    })();
-    window.Tempus = window.TP = Tempus;
-})();
-
 
 // Widgets module
 (function (TP) {
