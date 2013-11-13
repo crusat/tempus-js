@@ -388,15 +388,15 @@
          * // returns true
          * tempus.isLeapYear(2004);
          */
-        this.isLeapYear = function (year) {
-            year = year !== undefined ? Number(year) : this.now().year;
-            if (year % 4 == 0) {
-                if (year % 100 == 0) {
-                    return year % 400 == 0;
-                } else return true;
-            }
-            return false;
-        };
+//        this.isLeapYear = function (year) {
+//            year = year !== undefined ? Number(year) : this.now().year;
+//            if (year % 4 == 0) {
+//                if (year % 100 == 0) {
+//                    return year % 400 == 0;
+//                } else return true;
+//            }
+//            return false;
+//        };
 
         // get days count in month method
         // from 1 to 12

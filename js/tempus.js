@@ -139,7 +139,8 @@
             hours = undefined,
             minutes = undefined,
             seconds = undefined,
-            dayOfWeek = undefined;
+            dayOfWeek = undefined,
+            leapYear = undefined;
 
         var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
@@ -147,9 +148,21 @@
             return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
         };
 
+        var isLeapYear = function (year) {
+            if (year % 4 == 0) {
+                if (year % 100 == 0) {
+                    return year % 400 == 0;
+                } else return true;
+            }
+            return false;
+        };
+
         var dateChange = function(type, newValue) {
             if (year !== undefined && month !== undefined && day !== undefined) {
                 dayOfWeek = getDayOfWeek(year, month, day);
+            }
+            if (year !== undefined && type === 'year') {
+                leapYear = isLeapYear(newValue);
             }
         };
 
@@ -157,7 +170,7 @@
             /**
              * Get or set year.
              * @param value {number|undefined} New year. If undefined, returns numeric value.
-             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             year: function(value) {
                 if (value !== undefined) {
@@ -171,7 +184,7 @@
             /**
              * Get or set month.
              * @param value {number|undefined} New month. If undefined, returns numeric value.
-             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             month: function(value) {
                 if (value !== undefined) {
@@ -185,7 +198,7 @@
             /**
              * Get or set day.
              * @param value {number|undefined} New day. If undefined, returns numeric value.
-             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             day: function(value) {
                 if (value !== undefined) {
@@ -199,7 +212,7 @@
             /**
              * Get or set hours.
              * @param value {number|undefined} New hours. If undefined, returns numeric value.
-             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             hours: function(value) {
                 if (value !== undefined) {
@@ -213,7 +226,7 @@
             /**
              * Get or set minutes.
              * @param value {number|undefined} New minutes. If undefined, returns numeric value.
-             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             minutes: function(value) {
                 if (value !== undefined) {
@@ -227,7 +240,7 @@
             /**
              * Get or set seconds.
              * @param value {number|undefined} New seconds. If undefined, returns numeric value.
-             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             seconds: function(value) {
                 if (value !== undefined) {
@@ -240,10 +253,38 @@
             },
             /**
              * Get day of week.
-             * @returns {number} Numeric value of day of week.
+             * @returns {number|undefined} Numeric value of day of week.
              */
             dayOfWeek: function() {
                 return dayOfWeek;
+            },
+            /**
+             * Is year leap?
+             * @returns {boolean|undefined} If true year is leap else not leap.
+             * @example
+             * // returns false
+             * TP.year(2013).leapYear();
+             * @example
+             * // returns true
+             * TP.year(2012).leapYear();
+             * @example
+             * // returns true
+             * TP.year(2000).leapYear();
+             * @example
+             * // returns false
+             * TP.year(1900).leapYear();
+             * @example
+             * // returns false
+             * TP.date({year: 1941, day: 22, month: 6}).leapYear();
+             * @example
+             * // returns true
+             * TP.date({year: 2008, day: 1, month: 1}).leapYear();
+             * @example
+             * // check current year
+             * TP.now().leapYear();
+             */
+            leapYear: function() {
+                return leapYear;
             },
             /**
              * Releases TP variable from global scope.
@@ -282,12 +323,12 @@
              */
             now: function () {
                 var d = new Date();
-                year = d.getFullYear();
-                month = d.getMonth() + 1;
-                day = d.getDate();
-                hours = d.getHours();
-                minutes = d.getMinutes();
-                seconds = d.getSeconds();
+                this.year(d.getFullYear());
+                this.month(d.getMonth() + 1);
+                this.day(d.getDate());
+                this.hours(d.getHours());
+                this.minutes(d.getMinutes());
+                this.seconds(d.getSeconds());
                 return this;
             },
             /**
