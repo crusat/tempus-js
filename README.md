@@ -95,6 +95,6 @@ Default formats
     </tr>
 </table>
 
-
+License: MIT.
 
 Contact me: me@akuzn.com

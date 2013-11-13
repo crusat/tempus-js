@@ -1,3 +1,8 @@
+0.1.31
+- Added TempusDate constructor.
+- Added time zones support.
+- Fixed bug with Russia's MSK time zone (No time conversion).
+
 0.1.30
 - Format can be undefined for autodetect.
 - Little bug fixed with getDaysCountInMonth from string.

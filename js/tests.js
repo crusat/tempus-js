@@ -78,25 +78,33 @@
 
     test('tempus.incDate', function () {
         deepEqual(tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day'),
-            {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+            {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 6, "timestamp": 1381521600,
+            "timezoneOffset": -14400}, 'Date increment');
         deepEqual(tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day'),
-            {"year":2014,"month":1,"day":13,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+            {"year":2014,"month":1,"day":13,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 1,"timestamp": 1389556800,
+            "timezoneOffset": -14400}, 'Date increment');
         deepEqual(tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month'),
-            {"year":2013,"month":12,"day":30,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+            {"year":2013,"month":12,"day":30,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 1, "timestamp": 1388347200,
+            "timezoneOffset": -14400}, 'Date increment');
         deepEqual(tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year'),
-            {"year":2015,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}, 'Date increment');
+            {"year":2015,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 4, "timestamp": 1420056000,
+            "timezoneOffset": -14400}, 'Date increment');
         equal(typeof tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year'), 'object', 'Type is object');
     });
 
     test('tempus.decDate', function () {
         deepEqual(tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day'),
-            {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+            {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 6, "timestamp": 1380312000,
+            "timezoneOffset": -14400}, 'Date decrement');
         deepEqual(tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day'),
-            {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+            {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 2, "timestamp": 1375732800,
+            "timezoneOffset": -14400}, 'Date decrement');
         deepEqual(tempus.decDate({year: 2013, month: 1, day: 1}, 11, 'month'),
-            {"year":2012,"month":2,"day":1,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+            {"year":2012,"month":2,"day":1,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 3, "timestamp": 1328040000,
+            "timezoneOffset": -14400}, 'Date decrement');
         deepEqual(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year'),
-            {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}, 'Date decrement');
+            {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 2,"timestamp": 473371200,
+            "timezoneOffset": -14400}, 'Date decrement');
         equal(typeof tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year'), 'object', 'Type is object');
     });
 
@@ -110,29 +118,39 @@
 
     test('tempus.parse', function () {
         deepEqual(tempus.parse('21.10.2013', '%d.%m.%Y'),
-            {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+            {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 1,"timestamp": 1382299200,
+            "timezoneOffset": -14400}, 'Parse');
         deepEqual(tempus.parse('20131005162015', '%Y%m%d%H%M%S'),
-            {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15}, 'Parse');
+            {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15,"dayOfWeek": 6,"timestamp": 1380975615,
+            "timezoneOffset": -14400}, 'Parse');
         deepEqual(tempus.parse('2012-05-07', '%F'),
-            {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+            {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 1,"timestamp": 1336334400,
+            "timezoneOffset": -14400}, 'Parse');
         deepEqual(tempus.parse('12/01/2013', '%D'),
-            {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+            {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1385841600,
+            "timezoneOffset": -14400}, 'Parse');
         deepEqual(tempus.parse('05 Dec, 2010', '%d %b, %Y'),
-            {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+            {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1291492800,
+            "timezoneOffset": -14400}, 'Parse');
         deepEqual(tempus.parse('10 October, 2010', '%d %B, %Y'),
-            {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0}, 'Parse');
+            {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1286654400,
+            "timezoneOffset": -14400}, 'Parse');
         equal(typeof tempus.parse('20131005162015', '%Y%m%d%H%M%S'), 'object', 'Type is object');
     });
 
     test('tempus.normalizeDate', function () {
         deepEqual(tempus.normalizeDate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}),
-            {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0}, 'Normalize date');
+            {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 3,"timestamp": 1388520000,
+            "timezoneOffset": -14400}, 'Normalize date');
         deepEqual(tempus.normalizeDate({day:46,month:13,year:2013,hours:0,minutes:0,seconds:0}),
-            {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0}, 'Normalize date');
+            {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 6,
+            "timestamp": 1392408000,"timezoneOffset": -14400}, 'Normalize date');
         deepEqual(tempus.normalizeDate({day:32,month:-5,year:2013,hours:55,minutes:0,seconds:-2}),
-            {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58}, 'Normalize date');
+            {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58, "dayOfWeek": 5,"timestamp": 1343962798,
+            "timezoneOffset": -14400}, 'Normalize date');
         deepEqual(tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}),
-            {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}, 'Normalize date');
+            {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0,"dayOfWeek": 2,"timestamp": 1363719600,
+            "timezoneOffset": -14400}, 'Normalize date');
         equal(typeof tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}), 'object', 'Type is object');
     });
 
@@ -160,4 +178,5 @@
     test('tempus.setLocale', function () {
         equal(setLocaleTest({year: 2013, month: 11, day: 7}, "ru_RU"), "2013, Ноябрь, 07, Четверг", 'setLocale');
     });
+
 })();
