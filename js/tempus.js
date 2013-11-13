@@ -154,6 +154,11 @@
         };
 
         return {
+            /**
+             * Get or set year.
+             * @param value {number|undefined} New year. If undefined, returns numeric value.
+             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             */
             year: function(value) {
                 if (value !== undefined) {
                     year = Number(value);
@@ -163,6 +168,11 @@
                 }
                 return this;
             },
+            /**
+             * Get or set month.
+             * @param value {number|undefined} New month. If undefined, returns numeric value.
+             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             */
             month: function(value) {
                 if (value !== undefined) {
                     month = Number(value);
@@ -172,6 +182,11 @@
                 }
                 return this;
             },
+            /**
+             * Get or set day.
+             * @param value {number|undefined} New day. If undefined, returns numeric value.
+             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             */
             day: function(value) {
                 if (value !== undefined) {
                     day = Number(value);
@@ -181,6 +196,11 @@
                 }
                 return this;
             },
+            /**
+             * Get or set hours.
+             * @param value {number|undefined} New hours. If undefined, returns numeric value.
+             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             */
             hours: function(value) {
                 if (value !== undefined) {
                     hours = Number(value);
@@ -190,6 +210,11 @@
                 }
                 return this;
             },
+            /**
+             * Get or set minutes.
+             * @param value {number|undefined} New minutes. If undefined, returns numeric value.
+             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             */
             minutes: function(value) {
                 if (value !== undefined) {
                     minutes = Number(value);
@@ -199,6 +224,11 @@
                 }
                 return this;
             },
+            /**
+             * Get or set seconds.
+             * @param value {number|undefined} New seconds. If undefined, returns numeric value.
+             * @returns {Tempus|number} If setter - Tempus, if getter - number.
+             */
             seconds: function(value) {
                 if (value !== undefined) {
                     seconds = Number(value);
@@ -208,12 +238,16 @@
                 }
                 return this;
             },
+            /**
+             * Get day of week.
+             * @returns {number} Numeric value of day of week.
+             */
             dayOfWeek: function() {
                 return dayOfWeek;
             },
             /**
              * Releases TP variable from global scope.
-             * @param all {boolean} If true, Tempus variable also will been released.
+             * @param all {boolean} If true, Tempus variable also will be released.
              * @returns {Tempus} Tempus object.
              * @example
              * // returns Tempus object
