@@ -596,6 +596,8 @@
 
         /**
          * Returns integer of date between from [dateFrom] to [dateTo] as [type].
+         *
+         * Live Demo: http://plnkr.co/edit/BaPSNOdUbbiazYeqO9KA?p=preview
          * @param dateFrom {object} Tempus date object (see {@link date}).
          * @param dateTo {object} Tempus date object (see {@link date}).
          * @param type {string} Type. Can be 'seconds', 'minutes', 'hours', 'day', 'month', 'year'.
@@ -843,6 +845,8 @@
 
         /**
          * Alarms at [date]. After alarming self-destructs.
+         *
+         * Live Demo: http://plnkr.co/edit/lORJQp?p=preview
          * @param date {object} Tempus date object (see {@link date}).
          * @param callback {function} Callback.
          * @returns {number} Default setInterval identify.
