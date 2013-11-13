@@ -1,10 +1,105 @@
 /**
  * @author Aleksey Kuznetsov me@akuzn.com
- * @version 0.1.30
+ * @version 0.1.31
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods
  */
 (function () {
+    /**
+     * Tempus Date Object. Base object, date objects convert to it.
+     * @param date {object|number|undefined} Date as {year: number, month: number, day: number,
+     *     hours: number, minutes: number, seconds: number}, numeric timestamp or undefined for current time.
+     *     Always must be a local date/time.
+     *     Timestamp is ALWAYS in UTC.
+     * @class TempusDate
+     */
+    window.TempusDate = function(date) {
+        // obj
+        var innerDate; // It's local date
+        if (date === undefined) {
+            innerDate = new Date((new Date()).getTime()*1000);
+        } else if (typeof date === 'number') {
+            innerDate = new Date(date*1000);
+        } else if (typeof date === 'object') {
+            innerDate = new Date(
+                date.year !== undefined ? date.year : 1970,
+                date.month !== undefined ? date.month-1 : 0,
+                date.day !== undefined ? date.day : 1,
+                date.hours !== undefined ? date.hours : 0,
+                date.minutes !== undefined ? date.minutes : 0,
+                date.seconds !== undefined ? date.seconds : 0
+            );
+        }
+        // timezone
+        var now = new Date().toString();
+        var timezoneId = now.indexOf('(') > -1 ? now.match(/\([^\)]+\)/)[0].match(/[A-Z]/g).join('') : now.match(/[A-Z]{3,4}/)[0];
+        if (timezoneId == "GMT" && /(GMT\W*\d{4})/.test(now)) {
+            timezoneId = RegExp.$1;
+        }
+        var timezoneOffset, timezoneOffsetFix;
+        if (timezoneId === 'MSK') { // No time conversion
+            timezoneOffset = -14400; // -240 * 60
+            if (innerDate.getTimezoneOffset() === -300) {
+                timezoneOffsetFix = 3600;
+            } else {
+                timezoneOffsetFix = 0;
+            }
+        } else {
+            timezoneOffset = Math.floor(innerDate.getTimezoneOffset()*60);
+            timezoneOffsetFix = 0;
+        }
+        // current date
+        if (date === undefined) {
+            innerDate = new Date((new Date()).getTime() - (timezoneOffset + timezoneOffsetFix)*1000);
+        }
+
+        this.getDateOriginal = function() {
+            return {
+                year: date.year !== undefined ? date.year : 1970,
+                month: date.month !== undefined ? date.month : 1,
+                day: date.day !== undefined ? date.day : 1,
+                hours: date.hours !== undefined ? date.hours : 0,
+                minutes: date.minutes !== undefined ? date.minutes : 0,
+                seconds: date.seconds !== undefined ? date.seconds : 0
+            };
+        };
+        /**
+         * Returns date at local time.
+         * @memberof TempusDate
+         * @returns {{year: number, month: number, day: (number|*), hours: number, minutes: number, seconds: number, timestamp: number, timezoneOffset: number, dayOfWeek: number}}
+         */
+        this.getDate = function() {
+            return {
+                year: innerDate.getFullYear(),
+                month: innerDate.getMonth()+1,
+                day: innerDate.getDate(),
+                hours: innerDate.getHours(),
+                minutes: innerDate.getMinutes(),
+                seconds: innerDate.getSeconds(),
+                timestamp: Math.floor(innerDate.getTime()/1000) + timezoneOffsetFix,
+                timezoneOffset: timezoneOffset,
+                dayOfWeek: innerDate.getDay()
+            };
+        };
+        /**
+         * Returns date at UTC.
+         * @memberof TempusDate
+         * @returns {{year: number, month: number, day: number, hours: number, minutes: number, seconds: number, timestamp: number, timezoneOffset: number, dayOfWeek: number}}
+         */
+        this.getDateUTC = function() {
+            return {
+                year: innerDate.getUTCFullYear(),
+                month: innerDate.getUTCMonth()+1,
+                day: innerDate.getUTCDate(),
+                hours: innerDate.getUTCHours(),
+                minutes: innerDate.getUTCMinutes(),
+                seconds: innerDate.getUTCSeconds(),
+                timestamp: Number(Math.floor(innerDate.getTime()/1000) + timezoneOffset + timezoneOffsetFix),
+                timezoneOffset: timezoneOffset,
+                dayOfWeek: innerDate.getUTCDay()
+            };
+        }
+    };
     /**
      * TempusJS constructor.
      * @constructor
@@ -13,10 +108,11 @@
     var TempusJS = function () {
         // private
         var that = this;
-        var version = '0.1.30';
+        var version = '0.1.31';
         var locale = 'en_US';
         var weekStartsFromMonday = false;
         var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        var timezoneOffset = new TempusDate().getDate().timezoneOffset; // seconds
         var locales = {
             "en_US": {
                 "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -150,7 +246,7 @@
                 },
                 parse: function(value) {
                     var v = Number(value);
-                    var date = new Date(Number(v*1000));
+                    var date = new TempusDate(Number(v));
                     var obj = that.date(v);
                     return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
                 },
@@ -222,20 +318,14 @@
                 if (typeof date === 'string') {
                     date = this.parse(date, format);
                 }
-                return Math.floor((Date.UTC(
-                        date.year !== undefined ? date.year : 1970,
-                        date.month !== undefined ? date.month-1 : 0,
-                        date.day !== undefined ? date.day : 1,
-                        date.hours !== undefined ? date.hours : 0,
-                        date.minutes !== undefined ? date.minutes : 0,
-                        date.seconds !== undefined ? date.seconds : 0)) / 1000);
+                return (new TempusDate(date)).getDate().timestamp;
             } else {
-                return Math.floor(new Date().getTime() / 1000);
+                return (new TempusDate()).getDateUTC().timestamp;
             }
         };
 
         /**
-         * Returns date object from timestamp (UTC). Or fix received object to default tempus date object.
+         * Returns dump of tempus date object (see {@link TempusDate}) from timestamp (UTC) or received object.
          * @param date {number|object} Date as timestamp or object.
          * @param options {object|undefined} Options object.
          * @param options.week {bool} Add to response number of week. Default is false.
@@ -256,40 +346,14 @@
          * @example
          * // returns {"year":2013,"month":10,"day":5,
          * //     "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
-         * tempus.date({year:2013, month:10, day:5}, {week: true, dayOfWeek: true});
+         * tempus.date({year:2013, month:10, day:5}, {week: true});
          */
         this.date = function(date, options) {
             var d;
-            if (typeof date === "number") {
-                var jsDate = new Date(date*1000);
-                d = {
-                    year: jsDate.getUTCFullYear(),
-                    month: jsDate.getUTCMonth() + 1, // js default months beginning from 0.
-                    day: jsDate.getUTCDate(),
-                    hours: jsDate.getUTCHours(),
-                    minutes: jsDate.getUTCMinutes(),
-                    seconds: jsDate.getUTCSeconds()
-                };
+            if ((typeof date === "number")||(typeof date === "object")) {
+                d = new TempusDate(date).getDate();
                 if (options && options.week === true) {
                     d.week = that.getWeekNumber(d);
-                }
-                if (options && options.dayOfWeek === true) {
-                    d.dayOfWeek = that.getDayOfWeek(d);
-                }
-            } else if (typeof date === "object") {
-                d = {
-                    year: date.year !== undefined ? date.year : 1970,
-                    month: date.month !== undefined ? date.month : 1,
-                    day: date.day !== undefined ? date.day : 1,
-                    hours: date.hours !== undefined ? date.hours : 0,
-                    minutes: date.minutes !== undefined ? date.minutes : 0,
-                    seconds: date.seconds !== undefined ? date.seconds : 0
-                };
-                if (options && options.week === true) {
-                    d.week = that.getWeekNumber(d);
-                }
-                if (options && options.dayOfWeek === true) {
-                    d.dayOfWeek = that.getDayOfWeek(d);
                 }
             } else {
                 d = undefined;
@@ -309,18 +373,8 @@
          * tempus.now('%d.%m.%Y');
          */
         this.now = function (format) {
-            var currentDate = new Date();
-            var obj = {
-                year: currentDate.getFullYear(),
-                month: currentDate.getMonth() + 1, // js default months beginning from 0.
-                day: currentDate.getDate(),
-                dayOfWeek: currentDate.getDay(),
-                hours: currentDate.getHours(),
-                minutes: currentDate.getMinutes(),
-                seconds: currentDate.getSeconds(),
-                timestamp: Math.floor((currentDate.getTime() - currentDate.getTimezoneOffset() * 60000) / 1000)
-            };
-            return format === undefined ? obj : this.format(obj, format);
+            var currentDate = new TempusDate().getDate();
+            return format === undefined ? currentDate : this.format(currentDate, format);
         };
 
         /**
@@ -710,6 +764,7 @@
          * Returns date object from parsed string.
          * @param str {string} Formatted date string.
          * @param format {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
+         * @param original {boolean|undefined} If true, returns not normalized date.
          * @returns {object|undefined} Tempus date object (see {@link date}).
          * @example
          * // returns {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}
@@ -735,8 +790,11 @@
          * @example
          * // returns {"year":2013,"month":3,"day":5,"hours":12,"minutes":31,"seconds":0}
          * tempus.parse('2013-03-05 12:31');
+         * @example
+         * // returns {"year":2013,"month":3,"day":5,"hours":0,"minutes":0,"seconds":0}
+         * tempus.parse('2013-03-05', undefined, true);
          */
-        this.parse = function(str, format) {
+        this.parse = function(str, format, original) {
             var key;
             var litsarr = [];
             if (format === undefined) {
@@ -779,7 +837,11 @@
                     };
                 }
             }
-            return this.date(resultdate);
+            if (original === true) {
+                return new TempusDate(resultdate).getDateOriginal();
+            } else {
+                return that.date(resultdate);
+            }
         };
 
         /**
@@ -915,7 +977,7 @@
          */
         this.validate = function(date, format) {
             if (typeof date === 'string') {
-                date = this.parse(date, format);
+                date = this.parse(date, format, true);
             }
             var normalizedDate = this.normalizeDate(date);
             return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
@@ -1259,8 +1321,33 @@
             } else {
                 currentTime = that.time(date)*1000;
             }
-            var startOfYear = new Date(date.year,0,1);
-            return Math.ceil((((currentTime - startOfYear) / 86400000) + startOfYear.getDay()+1)/7);
+            var startOfYear = new TempusDate({year: date.year, month: 1, day: 1}).getDate().dayOfWeek;
+            return Math.ceil((((currentTime - startOfYear) / 86400000) + startOfYear+1)/7);
+        };
+
+        /**
+         * Returns current timezone offset.
+         * @param type {string|undefined} Type. Can be 'hours', 'minutes' or undefined. If undefined, returns in seconds.
+         * @returns {number} Current timezone offset value.
+         * @example
+         * // returns -14400
+         * tempus.getTimezoneOffset();
+         * @example
+         * // returns -4
+         * tempus.getTimezoneOffset('hours');
+         * @example
+         * // returns -240
+         * tempus.getTimezoneOffset('minutes');
+         */
+        this.getTimezoneOffset = function(type) {
+            switch (type) {
+                case 'hours':
+                    return Math.floor(timezoneOffset / 3600);
+                case 'minutes':
+                    return (timezoneOffset / 60);
+                default:
+                    return timezoneOffset
+            }
         };
 
         // *** HELPERS ***
