@@ -321,15 +321,15 @@
          * // returns 2
          * tempus.getDayOfWeek(tempus.now());
          */
-        this.getDayOfWeek = function (date) {
-            date = that.date(date);
-            var year = date.year;
-            var month = date.month;
-            var day = date.day;
-            var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-            year -= month < 3;
-            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
-        };
+//        this.getDayOfWeek = function (date) {
+//            date = that.date(date);
+//            var year = date.year;
+//            var month = date.month;
+//            var day = date.day;
+//            var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+//            year -= month < 3;
+//            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
+//        };
 
         var calcDate = function(date, value, type, modif) {
             if (typeof date !== 'object') {
@@ -600,55 +600,55 @@
          * // returns {"year":2013,"month":3,"day":5,"hours":0,"minutes":0,"seconds":0}
          * tempus.parse('2013-03-05', undefined, true);
          */
-        this.parse = function(str, format, original) {
-            var key;
-            var litsarr = [];
-            if (format === undefined) {
-                format = that.detectFormat(str);
-            }
-            format = '^'+format+'$';
-            var format_re = format;
-            for (key in registeredFormats) {
-                if (registeredFormats.hasOwnProperty(key)) {
-                    litsarr.push(key);
-                    format_re = format_re.replace(new RegExp('('+key+')', 'g'), '('+registeredFormats[key].parseLit+')');
-                }
-            }
-            var litsstr = new RegExp('('+litsarr.join('|')+')', 'g');
-            var lits = format.match(litsstr);
-            var re = new RegExp(format_re, 'g');
-            var result = re.exec(str);
-            var result2 = [];
-            try {
-                for (var i=1; i < result.length; i++) {
-                    if (typeof result[i] === 'string') {
-                        result2.push(result[i]);
-                    }
-                }
-            } catch(e) {
-                return undefined;
-            }
-            var resultdate = {};
-            var tmpdate;
-            for(key in lits) {
-                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))&&!isNaN(Number(key))) {
-                    tmpdate = registeredFormats[lits[key]].parse(result2[key]);
-                    resultdate = {
-                        year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
-                        month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
-                        day: tmpdate.day != undefined ? tmpdate.day : resultdate.day,
-                        hours: tmpdate.hours != undefined ? tmpdate.hours : resultdate.hours,
-                        minutes: tmpdate.minutes != undefined ? tmpdate.minutes : resultdate.minutes,
-                        seconds: tmpdate.seconds != undefined ? tmpdate.seconds : resultdate.seconds
-                    };
-                }
-            }
-            if (original === true) {
-                return new TempusDate(resultdate, timezoneOffset).getDateOriginal();
-            } else {
-                return that.date(resultdate);
-            }
-        };
+//        this.parse = function(str, format, original) {
+//            var key;
+//            var litsarr = [];
+//            if (format === undefined) {
+//                format = that.detectFormat(str);
+//            }
+//            format = '^'+format+'$';
+//            var format_re = format;
+//            for (key in registeredFormats) {
+//                if (registeredFormats.hasOwnProperty(key)) {
+//                    litsarr.push(key);
+//                    format_re = format_re.replace(new RegExp('('+key+')', 'g'), '('+registeredFormats[key].parseLit+')');
+//                }
+//            }
+//            var litsstr = new RegExp('('+litsarr.join('|')+')', 'g');
+//            var lits = format.match(litsstr);
+//            var re = new RegExp(format_re, 'g');
+//            var result = re.exec(str);
+//            var result2 = [];
+//            try {
+//                for (var i=1; i < result.length; i++) {
+//                    if (typeof result[i] === 'string') {
+//                        result2.push(result[i]);
+//                    }
+//                }
+//            } catch(e) {
+//                return undefined;
+//            }
+//            var resultdate = {};
+//            var tmpdate;
+//            for(key in lits) {
+//                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))&&!isNaN(Number(key))) {
+//                    tmpdate = registeredFormats[lits[key]].parse(result2[key]);
+//                    resultdate = {
+//                        year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
+//                        month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
+//                        day: tmpdate.day != undefined ? tmpdate.day : resultdate.day,
+//                        hours: tmpdate.hours != undefined ? tmpdate.hours : resultdate.hours,
+//                        minutes: tmpdate.minutes != undefined ? tmpdate.minutes : resultdate.minutes,
+//                        seconds: tmpdate.seconds != undefined ? tmpdate.seconds : resultdate.seconds
+//                    };
+//                }
+//            }
+//            if (original === true) {
+//                return new TempusDate(resultdate, timezoneOffset).getDateOriginal();
+//            } else {
+//                return that.date(resultdate);
+//            }
+//        };
 
 
         /**

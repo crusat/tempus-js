@@ -588,6 +588,74 @@
                 }
                 return result;
             },
+            // returns "2012-01-01"
+            // TP.parse('01.01.2010').year(2012).format('%Y-%m-%d');
+            parse: function(str, format) {
+                var key;
+                var litsarr = [];
+                if (format === undefined) {
+                    format = this.detectFormat(str);
+                }
+                format = '^'+format+'$';
+                var format_re = format;
+                for (key in registeredFormats) {
+                    if (registeredFormats.hasOwnProperty(key)) {
+                        litsarr.push(key);
+                        format_re = format_re.replace(new RegExp('('+key+')', 'g'), '('+registeredFormats[key].parseLit+')');
+                    }
+                }
+                var litsstr = new RegExp('('+litsarr.join('|')+')', 'g');
+                var lits = format.match(litsstr);
+                var re = new RegExp(format_re, 'g');
+                var result = re.exec(str);
+                var result2 = [];
+                try {
+                    for (var i=1; i < result.length; i++) {
+                        if (typeof result[i] === 'string') {
+                            result2.push(result[i]);
+                        }
+                    }
+                } catch(e) {
+                    return undefined;
+                }
+                var resultdate = {};
+                var tmpdate;
+                for(key in lits) {
+                    if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))&&!isNaN(Number(key))) {
+                        tmpdate = registeredFormats[lits[key]].parse(result2[key]);
+                        resultdate = {
+                            year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
+                            month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
+                            day: tmpdate.day != undefined ? tmpdate.day : resultdate.day,
+                            hours: tmpdate.hours != undefined ? tmpdate.hours : resultdate.hours,
+                            minutes: tmpdate.minutes != undefined ? tmpdate.minutes : resultdate.minutes,
+                            seconds: tmpdate.seconds != undefined ? tmpdate.seconds : resultdate.seconds
+                        };
+                    }
+                }
+                this.year(resultdate.year);
+                this.month(resultdate.month);
+                this.day(resultdate.day);
+                this.hours(resultdate.hours);
+                this.minutes(resultdate.minutes);
+                this.seconds(resultdate.seconds);
+                return this;
+            },
+            detectFormat: function(str) {
+                var defaultFormats = [
+                    '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
+                    '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
+                    '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
+                    '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
+                    '^%Y$', '^%H:%M:%S$', '^%H:%M$'
+                ];
+                for (var i=0; i < defaultFormats.length; i++) {
+                    if (this.parse(str, defaultFormats[i]) !== undefined) {
+                        return defaultFormats[i].slice(1,-1);
+                    }
+                }
+                return undefined;
+            },
             /**
              * Globally set or get language.
              * @param value {string} Language's code.
