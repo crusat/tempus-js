@@ -52,11 +52,11 @@
             1384387200, 'Timestamp UTC: 2013-11-14 00:00:00');
     });
 
-    test('Test base get() method', function () {
+    test('Test base set() method', function () {
         equal(typeof TP().get(), 'object', 'Type is object');
     });
 
-    test('Test get() year ranges', function () {
+    test('Test set() year ranges', function () {
         for (year = 100; year <= 3000; year++) {
             equal(TP().set({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
         }
@@ -69,7 +69,7 @@
         equal(TP().set({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
     });
 
-    test('Test get() months ranges', function () {
+    test('Test set() months ranges', function () {
         for (month = 1; month <= 12; month++) {
             equal(TP().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
         }
@@ -82,7 +82,7 @@
         equal(TP().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
     });
 
-    test('Test get() day ranges', function () {
+    test('Test set() day ranges', function () {
         // Not leap year check
         var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (month = 1; month <= 12; month++) {
@@ -112,7 +112,7 @@
         equal(TP().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
     });
 
-    test('Test get() hours ranges', function () {
+    test('Test set() hours ranges', function () {
         for (hours = 0; hours <= 23; hours++) {
             equal(TP().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
         }
@@ -125,7 +125,7 @@
         equal(TP().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
     });
 
-    test('Test get() minutes ranges', function () {
+    test('Test set() minutes ranges', function () {
         for (minutes = 0; minutes <= 59; minutes++) {
             equal(TP().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
         }
@@ -138,7 +138,7 @@
         equal(TP().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
     });
 
-    test('Test get() seconds ranges', function () {
+    test('Test set() seconds ranges', function () {
         for (seconds = 0; seconds <= 59; seconds++) {
             equal(TP().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
         }
