@@ -596,7 +596,20 @@
             // TP.parse('20130101', '%Y%m%d', TP.now().calc({month: -1})).format('%Y-%m-%d')
             // returns "2013-06-01"
             // TP.parse(undefined, '%Y%m%d', TP.date({year: 2013, month: 06, day: 1})).format('%Y-%m-%d');
+            //
+            // Can be set "str" as Date object.
+            // TP.parse(new Date()).date()
             parse: function(str, format, defaults) {
+                if (str instanceof Date) {
+                    this.year(str.getFullYear());
+                    this.month(str.getMonth() + (monthFromZero ? 0 : 1));
+                    this.day(str.getDate());
+                    this.hours(str.getHours());
+                    this.minutes(str.getMinutes());
+                    this.seconds(str.getSeconds());
+                    this.milliseconds(str.getMilliseconds());
+                    return this;
+                }
                 var key;
                 var litsarr = [];
                 if (format === undefined) {
@@ -629,6 +642,7 @@
                         this.hours(defaults.hours() || defaults.hours);
                         this.minutes(defaults.minutes() || defaults.minutes);
                         this.seconds(defaults.seconds() || defaults.seconds);
+                        this.milliseconds(defaults.milliseconds() || defaults.milliseconds);
                         return this;
                     } else {
                         return undefined;
@@ -740,6 +754,17 @@
             iLoveMonthFromZero: function(value) {
                 monthFromZero = value !== false;
                 return this;
+            },
+            asVanillaDate: function() {
+                return new Date(
+                    this.year() !== undefined ? this.year() : 1970,
+                    this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
+                    this.day() !== undefined ? this.day() : 1,
+                    this.hours() !== undefined ? this.hours() : 0,
+                    this.minutes() !== undefined ? this.minutes() : 0,
+                    this.seconds() !== undefined ? this.seconds() : 0,
+                    this.milliseconds() !== undefined ? this.milliseconds() : 0
+                );
             }
 
 
