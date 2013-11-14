@@ -206,6 +206,7 @@
         return v;
     };
 
+
     Tempus = (function() {
         var year = undefined,
             month = undefined,
@@ -362,7 +363,7 @@
                 if (arguments.length !== 0) {
                     var d = new Date(Number(value)*(useMilliseconds ? 1 : 1000));
                     this.year(d.getFullYear());
-                    this.month(d.getMonth() + 1);
+                    this.month(d.getMonth() + (monthFromZero ? 0 : 1));
                     this.day(d.getDate());
                     this.hours(d.getHours());
                     this.minutes(d.getMinutes());
@@ -371,7 +372,7 @@
                 } else {
                     return Math.floor(new Date(
                         this.year() !== undefined ? this.year() : 1970,
-                        this.month() !== undefined ? this.month() - 1 : 0,
+                        this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
                         this.day() !== undefined ? this.day() : 1,
                         this.hours() !== undefined ? this.hours() : 0,
                         this.minutes() !== undefined ? this.minutes() : 0,
@@ -385,7 +386,7 @@
                 if (arguments.length !== 0) {
                     var d = new Date(Number(value)*(useMilliseconds ? 1 : 1000));
                     this.year(d.getUTCFullYear());
-                    this.month(d.getUTCMonth() + 1);
+                    this.month(d.getUTCMonth() + (monthFromZero ? 0 : 1));
                     this.day(d.getUTCDate());
                     this.hours(d.getUTCHours());
                     this.minutes(d.getUTCMinutes());
@@ -394,7 +395,7 @@
                 } else {
                     return Math.floor(new Date(Date.UTC(
                         this.year() !== undefined ? this.year() : 1970,
-                        this.month() !== undefined ? this.month() - 1 : 0,
+                        this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
                         this.day() !== undefined ? this.day() : 1,
                         this.hours() !== undefined ? this.hours() : 0,
                         this.minutes() !== undefined ? this.minutes() : 0,
@@ -590,7 +591,12 @@
             },
             // returns "2012-01-01"
             // TP.parse('01.01.2010').year(2012).format('%Y-%m-%d');
-            parse: function(str, format) {
+            // If parse failed, defaults returns.
+            // returns "2013-01-01"
+            // TP.parse('20130101', '%Y%m%d', TP.now().calc({month: -1})).format('%Y-%m-%d')
+            // returns "2013-06-01"
+            // TP.parse(undefined, '%Y%m%d', TP.date({year: 2013, month: 06, day: 1})).format('%Y-%m-%d');
+            parse: function(str, format, defaults) {
                 var key;
                 var litsarr = [];
                 if (format === undefined) {
@@ -616,7 +622,17 @@
                         }
                     }
                 } catch(e) {
-                    return undefined;
+                    if (defaults !== undefined) {
+                        this.year(defaults.year() || defaults.year);
+                        this.month(defaults.month() || defaults.month);
+                        this.day(defaults.day() || defaults.day);
+                        this.hours(defaults.hours() || defaults.hours);
+                        this.minutes(defaults.minutes() || defaults.minutes);
+                        this.seconds(defaults.seconds() || defaults.seconds);
+                        return this;
+                    } else {
+                        return undefined;
+                    }
                 }
                 var resultdate = {};
                 var tmpdate;
@@ -655,6 +671,25 @@
                     }
                 }
                 return undefined;
+            },
+            calc: function(delta) {
+                var d = new Date(
+                    this.year() + (delta.year || 0),
+                    this.month() + (delta.month || 0) - (monthFromZero ? 0 : 1),
+                    this.day() + (delta.day || 0),
+                    this.hours() + (delta.hours || 0),
+                    this.minutes() + (delta.minutes || 0),
+                    this.seconds() + (delta.seconds || 0),
+                    this.milliseconds() + (delta.milliseconds || 0)
+                );
+                this.year(d.getFullYear());
+                this.month(d.getMonth() + (monthFromZero ? 0 : 1));
+                this.day(d.getDate());
+                this.hours(d.getHours());
+                this.minutes(d.getMinutes());
+                this.seconds(d.getSeconds());
+                this.milliseconds(d.getMilliseconds());
+                return this;
             },
             /**
              * Globally set or get language.

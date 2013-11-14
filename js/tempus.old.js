@@ -331,47 +331,47 @@
 //            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
 //        };
 
-        var calcDate = function(date, value, type, modif) {
-            if (typeof date !== 'object') {
-                return undefined;
-            }
-
-            var newDate = clone(date);
-
-            if (typeof value === 'object') {
-                newDate = that.date(newDate);
-                return that.normalizeDate({
-                    year: newDate.year + modif*(value.year !== undefined ? value.year : 0),
-                    month: newDate.month + modif*(value.month !== undefined ? value.month : 0),
-                    day: newDate.day + modif*(value.day !== undefined ? value.day : 0),
-                    hours: newDate.hours + modif*(value.hours !== undefined ? value.hours : 0),
-                    minutes: newDate.minutes + modif*(value.minutes !== undefined ? value.minutes : 0),
-                    seconds: newDate.seconds + modif*(value.seconds !== undefined ? value.seconds : 0)
-                });
-            } else if (typeof value === 'number') {
-                if (type === 'seconds') {
-                    newDate.seconds += modif*Number(value);
-                }
-                if (type === 'minutes') {
-                    newDate.minutes += modif*Number(value);
-                }
-                if (type === 'hours') {
-                    newDate.hours += modif*Number(value);
-                }
-                if (type === 'day') {
-                    newDate.day += modif*Number(value);
-                }
-                if (type === 'month') {
-                    newDate.month += modif*Number(value);
-                }
-                if (type === 'year') {
-                    newDate.year += modif*Number(value);
-                }
-                return that.normalizeDate(newDate);
-            } else {
-                return undefined;
-            }
-        };
+//        var calcDate = function(date, value, type, modif) {
+//            if (typeof date !== 'object') {
+//                return undefined;
+//            }
+//
+//            var newDate = clone(date);
+//
+//            if (typeof value === 'object') {
+//                newDate = that.date(newDate);
+//                return that.normalizeDate({
+//                    year: newDate.year + modif*(value.year !== undefined ? value.year : 0),
+//                    month: newDate.month + modif*(value.month !== undefined ? value.month : 0),
+//                    day: newDate.day + modif*(value.day !== undefined ? value.day : 0),
+//                    hours: newDate.hours + modif*(value.hours !== undefined ? value.hours : 0),
+//                    minutes: newDate.minutes + modif*(value.minutes !== undefined ? value.minutes : 0),
+//                    seconds: newDate.seconds + modif*(value.seconds !== undefined ? value.seconds : 0)
+//                });
+//            } else if (typeof value === 'number') {
+//                if (type === 'seconds') {
+//                    newDate.seconds += modif*Number(value);
+//                }
+//                if (type === 'minutes') {
+//                    newDate.minutes += modif*Number(value);
+//                }
+//                if (type === 'hours') {
+//                    newDate.hours += modif*Number(value);
+//                }
+//                if (type === 'day') {
+//                    newDate.day += modif*Number(value);
+//                }
+//                if (type === 'month') {
+//                    newDate.month += modif*Number(value);
+//                }
+//                if (type === 'year') {
+//                    newDate.year += modif*Number(value);
+//                }
+//                return that.normalizeDate(newDate);
+//            } else {
+//                return undefined;
+//            }
+//        };
 
         /**
          * Returns date object, increased on [value] [type].
@@ -519,22 +519,22 @@
          * // returns '20131105'
          * tempus.format(tempus.time(), '%Y%m%d');
          */
-        this.format = function(date, format) {
-            var result = format;
-            var d;
-            if ((typeof date === 'number')||(typeof date === 'object')) {
-                d = this.date(date);
-            } else {
-                return undefined;
-            }
-            // formatting
-            for (var key in registeredFormats) {
-                if (registeredFormats.hasOwnProperty(key)) {
-                    result = result.replace(key, registeredFormats[key].format(d));
-                }
-            }
-            return result;
-        };
+//        this.format = function(date, format) {
+//            var result = format;
+//            var d;
+//            if ((typeof date === 'number')||(typeof date === 'object')) {
+//                d = this.date(date);
+//            } else {
+//                return undefined;
+//            }
+//            // formatting
+//            for (var key in registeredFormats) {
+//                if (registeredFormats.hasOwnProperty(key)) {
+//                    result = result.replace(key, registeredFormats[key].format(d));
+//                }
+//            }
+//            return result;
+//        };
 
         /**
          * Detecting format of date  as string.
@@ -550,21 +550,21 @@
          * // returns "%d.%m.%Y"
          * tempus.detectFormat('01/02/2013');
          */
-        this.detectFormat = function(str) {
-            var defaultFormats = [
-                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
-                '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
-                '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
-                '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
-                '^%Y$', '^%H:%M:%S$', '^%H:%M$'
-            ];
-            for (var i=0; i < defaultFormats.length; i++) {
-                if (that.parse(str, defaultFormats[i]) !== undefined) {
-                    return defaultFormats[i].slice(1,-1);
-                }
-            }
-            return undefined;
-        };
+//        this.detectFormat = function(str) {
+//            var defaultFormats = [
+//                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
+//                '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
+//                '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
+//                '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
+//                '^%Y$', '^%H:%M:%S$', '^%H:%M$'
+//            ];
+//            for (var i=0; i < defaultFormats.length; i++) {
+//                if (that.parse(str, defaultFormats[i]) !== undefined) {
+//                    return defaultFormats[i].slice(1,-1);
+//                }
+//            }
+//            return undefined;
+//        };
 
         /**
          * Returns date object from parsed string.
