@@ -83,7 +83,7 @@
             },
             '%b': {
                 format: function(date) {
-                    return translations[lang]["monthShortNames"][(date.month() || date.constants().MIN_MONTH) -1];
+                    return translations[lang]["monthShortNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
                 },
                 parse: function(value) {
                     var month = that.getMonthNames().indexOf(value)+1;
@@ -93,7 +93,7 @@
             },
             '%B': {
                 format: function(date) {
-                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH)-1];
+                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH)-(monthFromZero ? 0 : 1)];
                 },
                 parse: function(value) {
                     var month = that.getMonthNames(true).indexOf(value)+1;
@@ -179,7 +179,9 @@
                 },
                 parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
             }
-        };
+        },
+        useMilliseconds = false,
+        monthFromZero = false;
 
     var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
@@ -217,8 +219,8 @@
                 return {
                     MIN_YEAR: 100,
                     MAX_YEAR: 3000,
-                    MIN_MONTH: 1,
-                    MAX_MONTH: 12,
+                    MIN_MONTH: monthFromZero ? 0 : 1,
+                    MAX_MONTH: monthFromZero ? 11 : 12,
                     MIN_DAY: 1,
                     MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
                     MIN_DAY_OF_WEEK: 0,
@@ -471,7 +473,7 @@
             now: function () {
                 var d = new Date();
                 this.year(d.getFullYear());
-                this.month(d.getMonth() + 1);
+                this.month(d.getMonth() + (monthFromZero ? 0 : 1));
                 this.day(d.getDate());
                 this.hours(d.getHours());
                 this.minutes(d.getMinutes());
@@ -542,7 +544,7 @@
             },
             dayCount: function() {
                 var m = this.month();
-                var dc = this.constants().MAX_DAY_IN_MONTHS[m - 1];
+                var dc = this.constants().MAX_DAY_IN_MONTHS[m - (monthFromZero ? 0 : 1)];
                 if (this.leapYear() && m === 2) {
                     dc += 1;
                 }
@@ -577,6 +579,23 @@
                     return lang;
                 }
                 return this;
+            },
+            iWantUseMilliseconds: function(value) {
+                useMilliseconds = value !== false;
+            },
+            /**
+             * Month started from zero. By default is False.
+             * @param value {boolean} False to disabling it.
+             * @example
+             * TP.iLoveMonthFromZero();
+             * // returns "14 December 2013"
+             * TP.date({year: 2013, month: 11, day: 14}).format('%d %B %Y');
+             * TP.iLoveMonthFromZero(false);
+             * // returns "14 November 2013"
+             * TP.date({year: 2013, month: 11, day: 14}).format('%d %B %Y');
+             */
+            iLoveMonthFromZero: function(value) {
+                monthFromZero = value !== false;
             }
 
 
