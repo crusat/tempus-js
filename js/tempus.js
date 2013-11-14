@@ -391,11 +391,11 @@
                         (d = this.day()) !== undefined) {
                     switch(type) {
                         case 'long':
-                            return translations[lang]["daysLongNames"][getDayOfWeek(year, month, day)];
+                            return translations[lang]["daysLongNames"][getDayOfWeek(y, m, d)];
                         case 'short':
-                            return translations[lang]["daysShortNames"][getDayOfWeek(year, month, day)];
+                            return translations[lang]["daysShortNames"][getDayOfWeek(y, m, d)];
                         default:
-                            return getDayOfWeek(year, month, day);
+                            return getDayOfWeek(y, m, d);
                     }
                 }
                 return undefined;
