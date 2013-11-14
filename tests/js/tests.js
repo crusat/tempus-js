@@ -38,45 +38,69 @@
         equal(typeof TP.now().timestamp(), 'number', 'Type is number');
     });
 
-    test('date', function () {
-        // check types
+    test('Test base date() method', function () {
         equal(typeof TP.date(), 'object', 'Type is object');
     });
 
-    test('year', function () {
-        // check types
-        equal(typeof TP.year(2000).year(), 'number', 'Type is number');
-        equal(typeof TP.year(0).year(), 'undefined', 'Type is undefined');
-        // year can be from 100 to 3000
+    test('Test date() year ranges', function () {
         for (year = 100; year <= 3000; year++) {
-            equal(TP.year(year).year(), year, 'Year test: ' + year);
+            equal(TP.date({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
         }
-        // month can not be 99 or less
         for (year = -100; year <= 99; year++) {
-            equal(TP.year(year).year(), undefined, 'Year test: ' + year);
+            equal(TP.date({year: year}).year(), 100, 'Year can not be 99 or less, else MIN_YEAR. Year: ' + year);
         }
-        // year can not be 3001 or more
         for (year = 3001; year <= 4000; year++) {
-            equal(TP.year(year).year(), undefined, 'Year test: ' + year);
+            equal(TP.date({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
         }
+        equal(TP.date({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
     });
 
-    test('month', function () {
+    test('Test date() months ranges', function () {
+        for (month = 1; month <= 12; month++) {
+            equal(TP.date({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
+        }
+        for (month = -100; month <= 0; month++) {
+            equal(TP.date({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
+        }
+        for (month = 13; month <= 100; month++) {
+            equal(TP.date({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
+        }
+        equal(TP.date({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
+    });
+
+
+    test('Test year() method', function () {
+        // values
+        equal(TP.year(2000).year(), 2000, 'Test value: 2000');
+        equal(TP.year('0').year(), 0, 'Test value: \'0\'');
+        equal(TP.year({foo: 'bar'}).year(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(TP.year([1,2,3]).year(), undefined, 'Test value: [1,2,3]');
+        equal(TP.year(undefined).year(), undefined, 'Test value: undefined');
+        equal(TP.year(null).year(), undefined, 'Test value: null');
+        equal(TP.year(true).year(), undefined, 'Test value: true');
+        equal(TP.year(false).year(), undefined, 'Test value: false');
+        // check types
+        equal(typeof TP.year(2000).year(), 'number', 'Type is number');
+    });
+
+    test('Test month() method', function () {
+        // values
+        equal(TP.month(100).month(), 100, 'Test value: 100');
+        equal(TP.month(12).month(), 12, 'Test value: 12');
+        equal(TP.month('0').month(), 0, 'Test value: \'0\'');
+        equal(TP.month({foo: 'bar'}).month(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(TP.month([1,2,3]).month(), undefined, 'Test value: [1,2,3]');
+        equal(TP.month(undefined).month(), undefined, 'Test value: undefined');
+        equal(TP.month(null).month(), undefined, 'Test value: null');
+        equal(TP.month(true).month(), undefined, 'Test value: true');
+        equal(TP.month(false).month(), undefined, 'Test value: false');
         // check types
         equal(typeof TP.month(1).month(), 'number', 'Type is number');
-        equal(typeof TP.month(-1).month(), 'undefined', 'Type is undefined');
-        // month can be from 1 to 12
-        for (month = 1; month <= 12; month++) {
-            equal(TP.month(month).month(), month, 'Month test: ' + month);
-        }
-        // month can not be 0 or less
-        for (month = -100; month <= 0; month++) {
-            equal(TP.month(month).month(), undefined, 'Month test: ' + month);
-        }
-        // month can not be 13 or more
-        for (month = 13; month <= 100; month++) {
-            equal(TP.month(month).month(), undefined, 'Month test: ' + month);
-        }
+    });
+
+    test('day', function () {
+        // check types
+        equal(typeof TP.day(1).day(), 'number', 'Type is number');
     });
 
     // tests

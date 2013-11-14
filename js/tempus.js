@@ -3,7 +3,6 @@
         _Tempus = window.Tempus,
         Tempus,
         version = '0.2.0',
-        daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
         lang = 'en',
         translations = {
             "en": {
@@ -180,7 +179,9 @@
         MIN_YEAR = 100,
         MAX_YEAR = 3000,
         MIN_MONTH = 1,
-        MAX_MONTH = 12;
+        MAX_MONTH = 12,
+        MIN_DAY = 1,
+        MAX_DAY_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
     var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
@@ -220,8 +221,9 @@
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             year: function(value) {
-                if (value !== undefined) {
-                    if (value >= MIN_YEAR && value <= MAX_YEAR) {
+                if (arguments.length !== 0) {
+                    // no value range checking, because can be used for delta times
+                    if (typeof value === 'number' || typeof value === 'string') {
                         year = Number(value);
                     } else {
                         year = undefined;
@@ -237,8 +239,8 @@
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             month: function(value) {
-                if (value !== undefined) {
-                    if (value >= MIN_MONTH && value <= MAX_MONTH) {
+                if (arguments.length !== 0) {
+                    if (typeof value === 'number' || typeof value === 'string') {
                         month = Number(value);
                     } else {
                         month = undefined;
@@ -435,8 +437,16 @@
                     }
                 }
                 if (typeof newDate === 'object') {
-                    this.year(newDate.year);
-                    this.month(newDate.month);
+                    if (newDate.year !== undefined && newDate.year >= MIN_YEAR && newDate.year <= MAX_YEAR) {
+                        this.year(Number(newDate.year));
+                    } else {
+                        this.year(MIN_YEAR);
+                    }
+                    if (newDate.month !== undefined && newDate.month >= MIN_MONTH && newDate.month <= MAX_MONTH) {
+                        this.month(Number(newDate.month));
+                    } else {
+                        this.month(MIN_MONTH);
+                    }
                     this.day(newDate.day);
                     this.hours(newDate.hours);
                     this.minutes(newDate.minutes);
