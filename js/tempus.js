@@ -755,6 +755,13 @@
                 monthFromZero = value !== false;
                 return this;
             },
+            /**
+             * Returns Date object.
+             * @returns {Date} Date object with data from this Tempus object.
+             * @example
+             * // returns Date obj
+             * TP.now().calc({month: -1}).asVanillaDate();
+             */
             asVanillaDate: function() {
                 return new Date(
                     this.year() !== undefined ? this.year() : 1970,
@@ -766,6 +773,13 @@
                     this.milliseconds() !== undefined ? this.milliseconds() : 0
                 );
             },
+            /**
+             * Returns UTC Date object.
+             * @returns {Date} Date object with data from this Tempus object.
+             * @example
+             * // returns Date obj
+             * TP.now().calc({month: -1}).asVanillaDateUTC();
+             */
             asVanillaDateUTC: function() {
                 return new Date(Date.UTC(
                     this.year() !== undefined ? this.year() : 1970,
