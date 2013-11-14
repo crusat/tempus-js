@@ -696,14 +696,13 @@
                     this.seconds() + (delta.seconds || 0),
                     this.milliseconds() + (delta.milliseconds || 0)
                 );
-                this.year(d.getFullYear());
-                this.month(d.getMonth() + (monthFromZero ? 0 : 1));
-                this.day(d.getDate());
-                this.hours(d.getHours());
-                this.minutes(d.getMinutes());
-                this.seconds(d.getSeconds());
-                this.milliseconds(d.getMilliseconds());
-                return this;
+                return this.year(d.getFullYear()).
+                    month(d.getMonth() + (monthFromZero ? 0 : 1)).
+                    day(d.getDate()).
+                    hours(d.getHours()).
+                    minutes(d.getMinutes()).
+                    seconds(d.getSeconds()).
+                    milliseconds(d.getMilliseconds());
             },
             /**
              * Globally set or get language.
