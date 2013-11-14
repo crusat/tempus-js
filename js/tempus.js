@@ -349,16 +349,50 @@
                 }
                 return this;
             },
+            UTC: function(value) {
+                if (arguments.length !== 0) {
+                    var d = new Date(Number(value)*1000);
+                    this.year(d.getUTCFullYear());
+                    this.month(d.getUTCMonth() + 1);
+                    this.day(d.getUTCDate());
+                    this.hours(d.getUTCHours());
+                    this.minutes(d.getUTCMinutes());
+                    this.seconds(d.getUTCSeconds());
+                } else {
+                    return Math.floor(new Date(Date.UTC(
+                        this.year() !== undefined ? this.year() : 1970,
+                        this.month() !== undefined ? this.month() - 1 : 0,
+                        this.day() !== undefined ? this.day() : 1,
+                        this.hours() !== undefined ? this.hours() : 0,
+                        this.minutes() !== undefined ? this.minutes() : 0,
+                        this.seconds() !== undefined ? this.seconds() : 0
+                    )).getTime()/1000);
+                }
+                return this;
+            },
             /**
              * Get day of week.
+             * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
              * @returns {number|undefined} Numeric value of day of week.
              * @example
              * // returns current day of week
              * TP.now().dayOfWeek();
              */
-            dayOfWeek: function() {
-                return this.year() !== undefined && this.month() !== undefined &&
-                    this.day() !== undefined ? getDayOfWeek(year, month, day) : undefined;
+            dayOfWeek: function(type) {
+                var y, m, d;
+                if ((y = this.year()) !== undefined &&
+                        (m = this.month()) !== undefined &&
+                        (d = this.day()) !== undefined) {
+                    switch(type) {
+                        case 'long':
+                            return translations[lang]["daysLongNames"][getDayOfWeek(year, month, day)];
+                        case 'short':
+                            return translations[lang]["daysShortNames"][getDayOfWeek(year, month, day)];
+                        default:
+                            return getDayOfWeek(year, month, day);
+                    }
+                }
+                return undefined;
             },
             /**
              * Is year leap?
@@ -460,7 +494,10 @@
                         minutes: this.minutes(),
                         seconds: this.seconds(),
                         dayOfWeek: this.dayOfWeek(),
-                        timestamp: this.timestamp()
+                        dayOfWeekShort: this.dayOfWeek('short'),
+                        dayOfWeekLong: this.dayOfWeek('long'),
+                        timestamp: this.timestamp(),
+                        UTC: this.UTC()
                     }
                 }
                 if (typeof newDate === 'object') {
@@ -474,12 +511,24 @@
                     } else {
                         this.month(MIN_MONTH);
                     }
-                    this.day(newDate.day);
+                    if (newDate.day !== undefined && newDate.day >= MIN_DAY && newDate.day <= this.dayCount()) {
+                        this.day(Number(newDate.day));
+                    } else {
+                        this.day(MIN_MONTH);
+                    }
                     this.hours(newDate.hours);
                     this.minutes(newDate.minutes);
                     this.seconds(newDate.seconds);
                 }
                 return this;
+            },
+            dayCount: function() {
+                var m = this.month();
+                var dc = MAX_DAY_IN_MONTHS[m - 1];
+                if (this.leapYear() && m === 2) {
+                    dc += 1;
+                }
+                return dc;
             },
             format: function (format) {
                 var result = format;

@@ -23,7 +23,7 @@
 
 
 
-    test('now', function () {
+    test('Test now() method', function () {
         // check current date/time
         equal(TP.now().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
         equal(TP.now().year(), new Date().getFullYear(), 'Full year');
@@ -45,6 +45,13 @@
         equal(typeof TP.now().timestamp(), 'number', 'Type is number');
     });
 
+    test('Test timestamps', function() {
+        equal(TP.date({year: 2013, month: 11, day: 14}).timestamp(),
+            new Date(2013, 10, 14).getTime() / 1000, 'Timestamp local: 2013-11-14 00:00:00');
+        equal(TP.date({year: 2013, month: 11, day: 14}).UTC(),
+            1384387200, 'Timestamp UTC: 2013-11-14 00:00:00');
+    });
+
     test('Test base date() method', function () {
         equal(typeof TP.date(), 'object', 'Type is object');
     });
@@ -60,6 +67,51 @@
             equal(TP.date({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
         }
         equal(TP.date({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
+    });
+
+    test('Test date() months ranges', function () {
+        for (month = 1; month <= 12; month++) {
+            equal(TP.date({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
+        }
+        for (month = -100; month <= 0; month++) {
+            equal(TP.date({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
+        }
+        for (month = 13; month <= 100; month++) {
+            equal(TP.date({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
+        }
+        equal(TP.date({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
+    });
+
+    test('Test date() day ranges', function () {
+        // Not leap year check
+        var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        for (month = 1; month <= 12; month++) {
+            for (day = 1; day <= dayInMonth[month - 1]; day++) {
+                equal(TP.date({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+            }
+            for (day = -10; day <= 0; day++) {
+                equal(TP.date({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+            for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
+                equal(TP.date({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+        }
+        // leap year check
+        dayInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        for (month = 1; month <= 12; month++) {
+            for (day = 1; day <= dayInMonth[month - 1]; day++) {
+                equal(TP.date({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+            }
+            for (day = -10; day <= 0; day++) {
+                equal(TP.date({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+            for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
+                equal(TP.date({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+        }
+
+
+        equal(TP.date({}).day(), 1, 'If day is not setted, setting MIN_DAY');
     });
 
     test('Test date() months ranges', function () {
