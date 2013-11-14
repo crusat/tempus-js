@@ -129,43 +129,6 @@
                 "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
             }
         };
-        /**
-         * Returns current timestamp (UTC) in seconds. If "date" parameter is not undefined, timestamp was received from this.
-         * If date is object, {@link date} will apply for it.
-         * @param date {object|string} Date as object (see {@link date}) or string (any formatted date, see examples)
-         * @param format {string|undefined} Date format as string (see formats doc) or undefined for autodetect format.
-         * @returns {number} UTC in seconds.
-         * @example
-         * // get current UTC
-         * // returns 1384252977
-         * tempus.time();
-         * @example
-         * // parse date and get UTC
-         * // returns 1381795200
-         * tempus.time('15.10.2013', '%d.%m.%Y');
-         * @example
-         * // returns 1381795200
-         * tempus.time('15.10.2013');
-         * @example
-         * // returns 1383609600
-         * tempus.time({year: 2013, month: 11, day: 5});
-         * @example
-         * // returns 1363046400
-         * tempus.time('2013-03-12', '%Y-%m-%d');
-         * @example
-         * // returns 1363360860
-         * tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');
-         */
-        this.time = function (date, format) {
-            if (date !== undefined) {
-                if (typeof date === 'string') {
-                    date = this.parse(date, format);
-                }
-                return (new TempusDate(date, timezoneOffset)).getDate().timestamp;
-            } else {
-                return (new TempusDate(undefined, timezoneOffset)).getDateUTC().timestamp;
-            }
-        };
 
         /**
          * Returns dump of tempus date object (see {@link TempusDate}) from timestamp (UTC) or received object.

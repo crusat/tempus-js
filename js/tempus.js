@@ -23,7 +23,7 @@
         registeredFormats = {
             '%d': {
                 format: function (date) {
-                    return formattingWithNulls(date.day() || MIN_DAY, 2);
+                    return formattingWithNulls(date.day() || date.constants().MIN_DAY, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -33,7 +33,7 @@
             },
             '%m': {
                 format: function (date) {
-                    return formattingWithNulls(date.month() || MIN_MONTH, 2);
+                    return formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -43,7 +43,7 @@
             },
             '%Y': {
                 format: function (date) {
-                    return formattingWithNulls(date.year() || MIN_YEAR, 4);
+                    return formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -53,7 +53,7 @@
             },
             '%w': {
                 format: function (date) {
-                    return date.dayOfWeek() || MIN_DAY_OF_WEEK;
+                    return date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK;
                 },
                 parse: function (value) {
                     // impossible
@@ -63,7 +63,7 @@
             },
             '%a': {
                 format: function (date) {
-                    return translations[lang]["daysShortNames"][date.dayOfWeek() || MIN_DAY_OF_WEEK];
+                    return translations[lang]["daysShortNames"][date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
@@ -73,7 +73,7 @@
             },
             '%A': {
                 format: function (date) {
-                    return translations[lang]["daysLongNames"][date.dayOfWeek() || MIN_DAY_OF_WEEK];
+                    return translations[lang]["daysLongNames"][date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
@@ -83,7 +83,7 @@
             },
             '%b': {
                 format: function(date) {
-                    return translations[lang]["monthShortNames"][(date.month() || MIN_MONTH) -1];
+                    return translations[lang]["monthShortNames"][(date.month() || date.constants().MIN_MONTH) -1];
                 },
                 parse: function(value) {
                     var month = that.getMonthNames().indexOf(value)+1;
@@ -93,7 +93,7 @@
             },
             '%B': {
                 format: function(date) {
-                    return translations[lang]["monthLongNames"][(date.month() || MIN_MONTH)-1];
+                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH)-1];
                 },
                 parse: function(value) {
                     var month = that.getMonthNames(true).indexOf(value)+1;
@@ -103,7 +103,7 @@
             },
             '%H': {
                 format: function (date) {
-                    return formattingWithNulls(date.hours() || MIN_HOURS, 2);
+                    return formattingWithNulls(date.hours() || date.constants().MIN_HOURS, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -113,7 +113,7 @@
             },
             '%M': {
                 format: function (date) {
-                    return formattingWithNulls(date.minutes() || MIN_MINUTES, 2);
+                    return formattingWithNulls(date.minutes() || date.constants().MIN_MINUTES, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -123,7 +123,7 @@
             },
             '%S': {
                 format: function (date) {
-                    return formattingWithNulls(date.seconds() || MIN_SECONDS, 2);
+                    return formattingWithNulls(date.seconds() || date.constants().MIN_SECONDS, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -145,14 +145,14 @@
             },
             '%F': {
                 format: function (date) {
-                    return formattingWithNulls(date.year() || MIN_YEAR, 4) + '-' +
-                        formattingWithNulls(date.month() || MIN_MONTH, 2) + '-' +
-                        formattingWithNulls(date.day() || MIN_DAY, 2);
+                    return formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4) + '-' +
+                        formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2) + '-' +
+                        formattingWithNulls(date.day() || date.constants().MIN_DAY, 2);
                 },
                 parse: function (value) {
-                    var year = Number(value.slice(0, 4)) || MIN_YEAR;
-                    var month = Number(value.slice(6, 7)) || MIN_MONTH;
-                    var day = Number(value.slice(9, 10)) || MIN_DAY;
+                    var year = Number(value.slice(0, 4));
+                    var month = Number(value.slice(6, 7));
+                    var day = Number(value.slice(9, 10));
                     return {
                         year: year,
                         month: month,
@@ -163,7 +163,9 @@
             },
             '%D': {
                 format: function (date) {
-                    return formattingWithNulls(date.month() || MIN_MONTH, 2) + '/' + formattingWithNulls(date.day() || MIN_DAY, 2) + '/' + formattingWithNulls(date.year() || MIN_YEAR, 4)
+                    return formattingWithNulls(date.month() || this.constants().MIN_MONTH, 2) +
+                        '/' + formattingWithNulls(date.day() || this.constants().MIN_DAY, 2) +
+                        '/' + formattingWithNulls(date.year() || this.constants().MIN_YEAR, 4)
                 },
                 parse: function (value) {
                     var month = Number(value.slice(0, 2));
@@ -177,21 +179,7 @@
                 },
                 parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
             }
-        },
-        MIN_YEAR = 100,
-        MAX_YEAR = 3000,
-        MIN_MONTH = 1,
-        MAX_MONTH = 12,
-        MIN_DAY = 1,
-        MAX_DAY_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-        MIN_DAY_OF_WEEK = 0,
-        MAX_DAY_OF_WEEK = 6,
-        MIN_HOURS = 0,
-        MAX_HOURS = 23,
-        MIN_MINUTES = 0,
-        MAX_MINUTES = 59,
-        MIN_SECONDS = 0,
-        MAX_SECONDS = 59;
+        };
 
     var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
@@ -225,6 +213,24 @@
             seconds = undefined;
 
         return {
+            constants: function() {
+                return {
+                    MIN_YEAR: 100,
+                    MAX_YEAR: 3000,
+                    MIN_MONTH: 1,
+                    MAX_MONTH: 12,
+                    MIN_DAY: 1,
+                    MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+                    MIN_DAY_OF_WEEK: 0,
+                    MAX_DAY_OF_WEEK: 6,
+                    MIN_HOURS: 0,
+                    MAX_HOURS: 23,
+                    MIN_MINUTES: 0,
+                    MAX_MINUTES: 59,
+                    MIN_SECONDS: 0,
+                    MAX_SECONDS: 59
+                }
+            },
             /**
              * Get or set year.
              * @param value {number} New year. If undefined, returns numeric value.
@@ -501,42 +507,42 @@
                     }
                 }
                 if (typeof newDate === 'object') {
-                    if (newDate.year !== undefined && newDate.year >= MIN_YEAR && newDate.year <= MAX_YEAR) {
+                    if (newDate.year !== undefined && newDate.year >= this.constants().MIN_YEAR && newDate.year <= this.constants().MAX_YEAR) {
                         this.year(Number(newDate.year));
                     } else {
-                        this.year(MIN_YEAR);
+                        this.year(this.constants().MIN_YEAR);
                     }
-                    if (newDate.month !== undefined && newDate.month >= MIN_MONTH && newDate.month <= MAX_MONTH) {
+                    if (newDate.month !== undefined && newDate.month >= this.constants().MIN_MONTH && newDate.month <= this.constants().MAX_MONTH) {
                         this.month(Number(newDate.month));
                     } else {
-                        this.month(MIN_MONTH);
+                        this.month(this.constants().MIN_MONTH);
                     }
-                    if (newDate.day !== undefined && newDate.day >= MIN_DAY && newDate.day <= this.dayCount()) {
+                    if (newDate.day !== undefined && newDate.day >= this.constants().MIN_DAY && newDate.day <= this.dayCount()) {
                         this.day(Number(newDate.day));
                     } else {
-                        this.day(MIN_DAY);
+                        this.day(this.constants().MIN_DAY);
                     }
-                    if (newDate.hours !== undefined && newDate.hours >= MIN_HOURS && newDate.hours <= MAX_HOURS) {
+                    if (newDate.hours !== undefined && newDate.hours >= this.constants().MIN_HOURS && newDate.hours <= this.constants().MAX_HOURS) {
                         this.hours(Number(newDate.hours));
                     } else {
-                        this.hours(MIN_HOURS);
+                        this.hours(this.constants().MIN_HOURS);
                     }
-                    if (newDate.minutes !== undefined && newDate.minutes >= MIN_MINUTES && newDate.minutes <= MAX_MINUTES) {
+                    if (newDate.minutes !== undefined && newDate.minutes >= this.constants().MIN_MINUTES && newDate.minutes <= this.constants().MAX_MINUTES) {
                         this.minutes(Number(newDate.minutes));
                     } else {
-                        this.minutes(MIN_MINUTES);
+                        this.minutes(this.constants().MIN_MINUTES);
                     }
-                    if (newDate.seconds !== undefined && newDate.seconds >= MIN_SECONDS && newDate.seconds <= MAX_SECONDS) {
+                    if (newDate.seconds !== undefined && newDate.seconds >= this.constants().MIN_SECONDS && newDate.seconds <= this.constants().MAX_SECONDS) {
                         this.seconds(Number(newDate.seconds));
                     } else {
-                        this.seconds(MIN_SECONDS);
+                        this.seconds(this.constants().MIN_SECONDS);
                     }
                 }
                 return this;
             },
             dayCount: function() {
                 var m = this.month();
-                var dc = MAX_DAY_IN_MONTHS[m - 1];
+                var dc = this.constants().MAX_DAY_IN_MONTHS[m - 1];
                 if (this.leapYear() && m === 2) {
                     dc += 1;
                 }
