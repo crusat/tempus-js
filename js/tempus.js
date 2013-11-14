@@ -514,11 +514,23 @@
                     if (newDate.day !== undefined && newDate.day >= MIN_DAY && newDate.day <= this.dayCount()) {
                         this.day(Number(newDate.day));
                     } else {
-                        this.day(MIN_MONTH);
+                        this.day(MIN_DAY);
                     }
-                    this.hours(newDate.hours);
-                    this.minutes(newDate.minutes);
-                    this.seconds(newDate.seconds);
+                    if (newDate.hours !== undefined && newDate.hours >= MIN_HOURS && newDate.hours <= MAX_HOURS) {
+                        this.hours(Number(newDate.hours));
+                    } else {
+                        this.hours(MIN_HOURS);
+                    }
+                    if (newDate.minutes !== undefined && newDate.minutes >= MIN_MINUTES && newDate.minutes <= MAX_MINUTES) {
+                        this.minutes(Number(newDate.minutes));
+                    } else {
+                        this.minutes(MIN_MINUTES);
+                    }
+                    if (newDate.seconds !== undefined && newDate.seconds >= MIN_SECONDS && newDate.seconds <= MAX_SECONDS) {
+                        this.seconds(Number(newDate.seconds));
+                    } else {
+                        this.seconds(MIN_SECONDS);
+                    }
                 }
                 return this;
             },
