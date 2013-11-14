@@ -217,7 +217,7 @@
         return {
             /**
              * Get or set year.
-             * @param value {number|undefined} New year. If undefined, returns numeric value.
+             * @param value {number} New year. If undefined, returns numeric value.
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             year: function(value) {
@@ -235,7 +235,7 @@
             },
             /**
              * Get or set month.
-             * @param value {number|undefined} New month. If undefined, returns numeric value.
+             * @param value {number} New month. If undefined, returns numeric value.
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             month: function(value) {
@@ -252,12 +252,16 @@
             },
             /**
              * Get or set day.
-             * @param value {number|undefined} New day. If undefined, returns numeric value.
+             * @param value {number} New day. If undefined, returns numeric value.
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             day: function(value) {
-                if (value !== undefined) {
-                    day = Number(value);
+                if (arguments.length !== 0) {
+                    if (typeof value === 'number' || typeof value === 'string') {
+                        day = Number(value);
+                    } else {
+                        day = undefined;
+                    }
                 } else {
                     return day;
                 }
@@ -265,11 +269,11 @@
             },
             /**
              * Get or set hours.
-             * @param value {number|undefined} New hours. If undefined, returns numeric value.
+             * @param value {number} New hours. If undefined, returns numeric value.
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             hours: function(value) {
-                if (value !== undefined) {
+                if (arguments.length !== 0) {
                     hours = Number(value);
                 } else {
                     return hours;
@@ -278,11 +282,11 @@
             },
             /**
              * Get or set minutes.
-             * @param value {number|undefined} New minutes. If undefined, returns numeric value.
+             * @param value {number} New minutes. If undefined, returns numeric value.
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             minutes: function(value) {
-                if (value !== undefined) {
+                if (arguments.length !== 0) {
                     minutes = Number(value);
                 } else {
                     return minutes;
@@ -291,11 +295,11 @@
             },
             /**
              * Get or set seconds.
-             * @param value {number|undefined} New seconds. If undefined, returns numeric value.
+             * @param value {number} New seconds. If undefined, returns numeric value.
              * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
              */
             seconds: function(value) {
-                if (value !== undefined) {
+                if (arguments.length !== 0) {
                     seconds = Number(value);
                 } else {
                     return seconds;
@@ -303,7 +307,7 @@
                 return this;
             },
             timestamp: function(value) {
-                if (value !== undefined) {
+                if (arguments.length !== 0) {
                     var d = new Date(Number(value)*1000);
                     this.year(d.getFullYear());
                     this.month(d.getMonth() + 1);
@@ -360,8 +364,9 @@
              * TP.now().leapYear();
              */
             leapYear: function() {
-                if (year !== undefined) {
-                    return isLeapYear(newValue);
+                var y;
+                if ((y = this.year()) !== undefined) {
+                    return isLeapYear(y);
                 } else {
                     return undefined;
                 }

@@ -26,6 +26,13 @@
     test('now', function () {
         // check current date/time
         equal(TP.now().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
+        equal(TP.now().year(), new Date().getFullYear(), 'Full year');
+        equal(TP.now().month(), new Date().getMonth() + 1, 'Month');
+        equal(TP.now().day(), new Date().getDate(), 'Day');
+        equal(TP.now().hours(), new Date().getHours(), 'Hours');
+        equal(TP.now().minutes(), new Date().getMinutes(), 'Minutes');
+        equal(TP.now().seconds(), new Date().getSeconds(), 'Seconds');
+        equal(TP.now().dayOfWeek(), new Date().getDay(), 'Day of week');
         // check types
         equal(typeof TP.now(), 'object', 'Type is object');
         equal(typeof TP.now().year(), 'number', 'Type is number');
@@ -72,6 +79,8 @@
     test('Test year() method', function () {
         // values
         equal(TP.year(2000).year(), 2000, 'Test value: 2000');
+        equal(TP.year(1).year(), 1, 'Test value: 1');
+        equal(TP.year(-15).year(), -15, 'Test value: -15');
         equal(TP.year('0').year(), 0, 'Test value: \'0\'');
         equal(TP.year({foo: 'bar'}).year(), undefined, 'Test value: {foo: \'bar\'}');
         equal(TP.year([1,2,3]).year(), undefined, 'Test value: [1,2,3]');
@@ -87,6 +96,7 @@
         // values
         equal(TP.month(100).month(), 100, 'Test value: 100');
         equal(TP.month(12).month(), 12, 'Test value: 12');
+        equal(TP.month(-5).month(), -5, 'Test value: -5');
         equal(TP.month('0').month(), 0, 'Test value: \'0\'');
         equal(TP.month({foo: 'bar'}).month(), undefined, 'Test value: {foo: \'bar\'}');
         equal(TP.month([1,2,3]).month(), undefined, 'Test value: [1,2,3]');
@@ -98,30 +108,24 @@
         equal(typeof TP.month(1).month(), 'number', 'Type is number');
     });
 
-    test('day', function () {
+    test('Test day() method', function () {
         // check types
         equal(typeof TP.day(1).day(), 'number', 'Type is number');
     });
 
-    // tests
-//    test('tempus.time', function () {
-//        equal(tempus.time(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
-//        equal(typeof tempus.time(), 'number', 'Type is number');
-//    });
-//
-//    test('tempus.isLeapYear', function () {
-//        equal(tempus.isLeapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
-//        equal(tempus.isLeapYear(2013), false, '2013 is not leap year');
-//        equal(tempus.isLeapYear(2012), true, '2012 is leap year');
-//        equal(tempus.isLeapYear(2000), true, '2000 is leap year');
-//        equal(tempus.isLeapYear(1900), false, '1900 is not leap year');
-//        equal(tempus.isLeapYear(1904), true, '1904 is leap year');
-//        equal(tempus.isLeapYear(1905), false, '1905 is not leap year');
-//        equal(typeof tempus.isLeapYear(), 'boolean', 'Type is boolean');
-//        for (var year = 1800; year <= yyyy; year++) {
-//            equal(tempus.isLeapYear(year), isLeapYear(year), 'Dynamic test, year: ' + year);
-//        }
-//    });
+    test('tempus.isLeapYear', function () {
+        equal(TP.now().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
+        equal(TP.year(2013).leapYear(), false, '2013 is not leap year');
+        equal(TP.year(2012).leapYear(), true, '2012 is leap year');
+        equal(TP.year(2000).leapYear(), true, '2000 is leap year');
+        equal(TP.year(1900).leapYear(), false, '1900 is not leap year');
+        equal(TP.year(1904).leapYear(), true, '1904 is leap year');
+        equal(TP.year(1905).leapYear(), false, '1905 is not leap year');
+        equal(typeof TP.now().leapYear(), 'boolean', 'Type is boolean');
+        for (var year = 1800; year <= yyyy; year++) {
+            equal(TP.year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
+        }
+    });
 //
 //    test('tempus.format', function () {
 //        equal(tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'), '05.11.2013', 'Date format');
