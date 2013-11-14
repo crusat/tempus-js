@@ -233,32 +233,32 @@
          * tempus.setLocale('ru_RU');
          * tempus.getDaysCountInMonth('Март');
          */
-        this.getDaysCountInMonth = function (month, year) {
-            var leapYear = year === undefined ? false : this.isLeapYear(year);
-            if (typeof month === 'number') {
-                if (month === 2) {
-                    return daysInMonth[month - 1] + (leapYear ? 1 : 0);
-                } else {
-                    return daysInMonth[month - 1]
-                }
-            }
-            if (typeof month === 'string') {
-                var month_int = locales[locale]["monthShortNames"].indexOf(month);
-                if (month_int === -1) {
-                    month_int = locales[locale]["monthLongNames"].indexOf(month);
-                }
-                if (month_int === -1) {
-                    return undefined;
-                }
-                month = month_int;
-                if (month === 2) {
-                    return daysInMonth[month] + (leapYear ? 1 : 0);
-                } else {
-                    return daysInMonth[month]
-                }
-            }
-            return undefined;
-        };
+//        this.getDaysCountInMonth = function (month, year) {
+//            var leapYear = year === undefined ? false : this.isLeapYear(year);
+//            if (typeof month === 'number') {
+//                if (month === 2) {
+//                    return daysInMonth[month - 1] + (leapYear ? 1 : 0);
+//                } else {
+//                    return daysInMonth[month - 1]
+//                }
+//            }
+//            if (typeof month === 'string') {
+//                var month_int = locales[locale]["monthShortNames"].indexOf(month);
+//                if (month_int === -1) {
+//                    month_int = locales[locale]["monthLongNames"].indexOf(month);
+//                }
+//                if (month_int === -1) {
+//                    return undefined;
+//                }
+//                month = month_int;
+//                if (month === 2) {
+//                    return daysInMonth[month] + (leapYear ? 1 : 0);
+//                } else {
+//                    return daysInMonth[month]
+//                }
+//            }
+//            return undefined;
+//        };
 
         /**
          * Returns array of month names. If longNames is undefined, short names was returned.
@@ -299,13 +299,13 @@
          * tempus.setLocale('ru_RU');
          * tempus.getDayNames();
          */
-        this.getDayNames = function (longNames) {
-            if (longNames === true) {
-                return locales[locale]["daysLongNames"];
-            } else {
-                return locales[locale]["daysShortNames"];
-            }
-        };
+//        this.getDayNames = function (longNames) {
+//            if (longNames === true) {
+//                return locales[locale]["daysLongNames"];
+//            } else {
+//                return locales[locale]["daysShortNames"];
+//            }
+//        };
 
         /**
          * Get day of week by Tomohiko Sakamoto's algorithm, 1993.
@@ -399,9 +399,9 @@
          * tempus.incDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
          *     hours: 15, minutes: 10, seconds: 1});
          */
-        this.incDate = function (date, value, type) {
-            return calcDate(date, value, type, 1);
-        };
+//        this.incDate = function (date, value, type) {
+//            return calcDate(date, value, type, 1);
+//        };
 
         /**
          * Normalize date to valid.
@@ -420,9 +420,9 @@
          * // returns {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}
          * tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});
          */
-        this.normalizeDate = function(date) {
-            return clone(this.date(this.time(date)));
-        };
+//        this.normalizeDate = function(date) {
+//            return clone(this.date(this.time(date)));
+//        };
 
         /**
          * Returns date object, decreased on [value] [type].
@@ -450,9 +450,9 @@
          * tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
          *     hours: 15, minutes: 10, seconds: 1});
          */
-        this.decDate = function (date, value, type) {
-            return calcDate(date, value, type, -1);
-        };
+//        this.decDate = function (date, value, type) {
+//            return calcDate(date, value, type, -1);
+//        };
 
         /**
          * Returns integer of date between from [dateFrom] to [dateTo] as [type].

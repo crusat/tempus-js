@@ -1,4 +1,4 @@
-(function() {
+(function(window, undefined) {
     var _TP = window.TP,
         _Tempus = window.Tempus,
         Tempus,
@@ -183,6 +183,7 @@
         useMilliseconds = false,
         monthFromZero = false;
 
+
     var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
             year -= month < 3;
@@ -206,8 +207,7 @@
         return v;
     };
 
-
-    Tempus = (function() {
+    var TempusDate = function( options ) {
         var year = undefined,
             month = undefined,
             day = undefined,
@@ -508,6 +508,44 @@
                 this.milliseconds(d.getMilliseconds());
                 return this;
             },
+            monthNames: function(type) {
+                switch(type) {
+                    case 'long':
+                        return translations[lang]["monthLongNames"];
+                    default:
+                        return translations[lang]["monthShortNames"];
+                }
+            },
+            dayNames: function(type) {
+                switch(type) {
+                    case 'long':
+                        return translations[lang]["dayLongNames"];
+                    default:
+                        return translations[lang]["dayShortNames"];
+                }
+            },
+            between: function(dateTo, type) {
+                var from = this.timestamp();
+                console.log(from);
+                var to = dateTo.day();
+                console.log(to);
+                switch (type) {
+                    case 'year':
+                        return Math.floor((to - from) / 31556952); // 365.2425 - average days in year. Here in seconds
+                    case 'month':
+                        return Math.floor((to - from) / 2629746);
+                    case 'day':
+                        return Math.floor((to - from) / 86400);
+                    case 'hours':
+                        return Math.floor((to - from) / 3600);
+                    case 'minutes':
+                        return Math.floor((to - from) / 60);
+                    case 'seconds':
+                        return to - from;
+                    default:
+                        return undefined;
+                }
+            },
             /**
              * Set new date.
              * @param newDate {object|undefined} New date as object {year: number, month: number, day: number,
@@ -793,6 +831,16 @@
 
 
         };
-    })();
-    window.Tempus = window.TP = Tempus;
-})();
+    };
+
+    // Factory
+    function TempusFactory() {}
+    TempusFactory.prototype.createDate = function ( options ) {
+        return new TempusDate( options );
+    };
+    var tempusFactory = new TempusFactory();
+    Tempus = function( options ) {
+        return tempusFactory.createDate( options );
+    };
+    window.TP = window.Tempus = Tempus;
+})(window);
