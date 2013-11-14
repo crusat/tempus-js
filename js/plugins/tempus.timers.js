@@ -16,7 +16,7 @@
      * }, 0.5);
      */
     TP.setTimeout = function(callback, timeout) {
-        return setTimeout(callback, Number(timeout)*1000);
+        return setTimeout(callback, Number(timeout)*(useMilliseconds ? 1 : 1000));
     };
 
     /**
@@ -36,7 +36,7 @@
      * }, 2);
      */
     TP.setInterval = function(callback, timeout) {
-        return setInterval(callback, Number(timeout)*1000);
+        return setInterval(callback, Number(timeout)*(useMilliseconds ? 1 : 1000));
     };
 
     /**
@@ -57,7 +57,7 @@
         callback(TP.now());
         return TP.setInterval(function() {
             callback(TP.now());
-        }, 1);
+        }, (useMilliseconds ? 1000 : 1));
     };
 
     /**
@@ -81,7 +81,7 @@
 //                callback(this);
 //                clearInterval(a);
 //            }
-//        }, 1);
+//        }, (useMilliseconds ? 1000 : 1));
 //        return a;
 //    };
 })(Tempus);

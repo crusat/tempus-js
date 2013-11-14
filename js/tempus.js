@@ -212,7 +212,8 @@
             day = undefined,
             hours = undefined,
             minutes = undefined,
-            seconds = undefined;
+            seconds = undefined,
+            milliseconds = undefined;
 
         return {
             constants: function() {
@@ -230,7 +231,16 @@
                     MIN_MINUTES: 0,
                     MAX_MINUTES: 59,
                     MIN_SECONDS: 0,
-                    MAX_SECONDS: 59
+                    MAX_SECONDS: 59,
+                    MIN_MILLISECONDS: 0,
+                    MAX_MILLISECONDS: 999
+                }
+            },
+            options: function() {
+                return {
+                    useMilliseconds: useMilliseconds,
+                    monthFromZero: monthFromZero,
+                    lang: lang
                 }
             },
             /**
@@ -336,15 +346,28 @@
                 }
                 return this;
             },
+            milliseconds: function(value) {
+                if (arguments.length !== 0) {
+                    if (typeof value === 'number' || typeof value === 'string') {
+                        milliseconds = Number(value);
+                    } else {
+                        milliseconds = undefined;
+                    }
+                } else {
+                    return milliseconds;
+                }
+                return this;
+            },
             timestamp: function(value) {
                 if (arguments.length !== 0) {
-                    var d = new Date(Number(value)*1000);
+                    var d = new Date(Number(value)*(useMilliseconds ? 1 : 1000));
                     this.year(d.getFullYear());
                     this.month(d.getMonth() + 1);
                     this.day(d.getDate());
                     this.hours(d.getHours());
                     this.minutes(d.getMinutes());
                     this.seconds(d.getSeconds());
+                    this.milliseconds(d.getMilliseconds());
                 } else {
                     return Math.floor(new Date(
                         this.year() !== undefined ? this.year() : 1970,
@@ -352,20 +375,22 @@
                         this.day() !== undefined ? this.day() : 1,
                         this.hours() !== undefined ? this.hours() : 0,
                         this.minutes() !== undefined ? this.minutes() : 0,
-                        this.seconds() !== undefined ? this.seconds() : 0
-                    ).getTime()/1000);
+                        this.seconds() !== undefined ? this.seconds() : 0,
+                        this.milliseconds() !== undefined ? this.milliseconds() : 0
+                    ).getTime()/(useMilliseconds ? 1 : 1000));
                 }
                 return this;
             },
             UTC: function(value) {
                 if (arguments.length !== 0) {
-                    var d = new Date(Number(value)*1000);
+                    var d = new Date(Number(value)*(useMilliseconds ? 1 : 1000));
                     this.year(d.getUTCFullYear());
                     this.month(d.getUTCMonth() + 1);
                     this.day(d.getUTCDate());
                     this.hours(d.getUTCHours());
                     this.minutes(d.getUTCMinutes());
                     this.seconds(d.getUTCSeconds());
+                    this.milliseconds(d.getUTCMilliseconds());
                 } else {
                     return Math.floor(new Date(Date.UTC(
                         this.year() !== undefined ? this.year() : 1970,
@@ -373,8 +398,9 @@
                         this.day() !== undefined ? this.day() : 1,
                         this.hours() !== undefined ? this.hours() : 0,
                         this.minutes() !== undefined ? this.minutes() : 0,
-                        this.seconds() !== undefined ? this.seconds() : 0
-                    )).getTime()/1000);
+                        this.seconds() !== undefined ? this.seconds() : 0,
+                        this.milliseconds() !== undefined ? this.milliseconds() : 0
+                    )).getTime()/(useMilliseconds ? 1 : 1000));
                 }
                 return this;
             },
@@ -478,6 +504,7 @@
                 this.hours(d.getHours());
                 this.minutes(d.getMinutes());
                 this.seconds(d.getSeconds());
+                this.milliseconds(d.getMilliseconds());
                 return this;
             },
             /**
@@ -505,7 +532,8 @@
                         dayOfWeekShort: this.dayOfWeek('short'),
                         dayOfWeekLong: this.dayOfWeek('long'),
                         timestamp: this.timestamp(),
-                        UTC: this.UTC()
+                        UTC: this.UTC(),
+                        milliseconds: this.milliseconds()
                     }
                 }
                 if (typeof newDate === 'object') {
@@ -580,12 +608,24 @@
                 }
                 return this;
             },
+            /**
+             * All work with timestamps and timeouts will be in milliseconds.
+             * @param value {boolean} False to disabling it.
+             * @returns {Tempus}
+             * @example
+             * // returns {"year":2013,"month":11,"day":14,"hours":12,"minutes":38,"seconds":54,"dayOfWeek":4,
+             * //    "dayOfWeekShort":"Thu","dayOfWeekLong":"Thursday","timestamp":1384418334445,"UTC":1384432734445,
+             * //    "milliseconds":445}
+             * TP.iWantUseMilliseconds().now().date();
+             */
             iWantUseMilliseconds: function(value) {
                 useMilliseconds = value !== false;
+                return this;
             },
             /**
              * Month started from zero. By default is False.
              * @param value {boolean} False to disabling it.
+             * @returns {Tempus}
              * @example
              * TP.iLoveMonthFromZero();
              * // returns "14 December 2013"
@@ -596,6 +636,7 @@
              */
             iLoveMonthFromZero: function(value) {
                 monthFromZero = value !== false;
+                return this;
             }
 
 
