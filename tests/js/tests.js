@@ -46,109 +46,109 @@
     });
 
     test('Test timestamps', function() {
-        equal(TP().date({year: 2013, month: 11, day: 14}).timestamp(),
+        equal(TP().set({year: 2013, month: 11, day: 14}).timestamp(),
             new Date(2013, 10, 14).getTime() / 1000, 'Timestamp local: 2013-11-14 00:00:00');
-        equal(TP().date({year: 2013, month: 11, day: 14}).UTC(),
+        equal(TP().set({year: 2013, month: 11, day: 14}).UTC(),
             1384387200, 'Timestamp UTC: 2013-11-14 00:00:00');
     });
 
-    test('Test base date() method', function () {
-        equal(typeof TP().date(), 'object', 'Type is object');
+    test('Test base get() method', function () {
+        equal(typeof TP().get(), 'object', 'Type is object');
     });
 
-    test('Test date() year ranges', function () {
+    test('Test get() year ranges', function () {
         for (year = 100; year <= 3000; year++) {
-            equal(TP().date({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
+            equal(TP().set({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
         }
         for (year = -100; year <= 99; year++) {
-            equal(TP().date({year: year}).year(), 100, 'Year can not be 99 or less, else MIN_YEAR. Year: ' + year);
+            equal(TP().set({year: year}).year(), 100, 'Year can not be 99 or less, else MIN_YEAR. Year: ' + year);
         }
         for (year = 3001; year <= 4000; year++) {
-            equal(TP().date({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
+            equal(TP().set({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
         }
-        equal(TP().date({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
+        equal(TP().set({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
     });
 
-    test('Test date() months ranges', function () {
+    test('Test get() months ranges', function () {
         for (month = 1; month <= 12; month++) {
-            equal(TP().date({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
+            equal(TP().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
         }
         for (month = -100; month <= 0; month++) {
-            equal(TP().date({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
+            equal(TP().set({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
         }
         for (month = 13; month <= 100; month++) {
-            equal(TP().date({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
+            equal(TP().set({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
         }
-        equal(TP().date({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
+        equal(TP().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
     });
 
-    test('Test date() day ranges', function () {
+    test('Test get() day ranges', function () {
         // Not leap year check
         var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (month = 1; month <= 12; month++) {
             for (day = 1; day <= dayInMonth[month - 1]; day++) {
-                equal(TP().date({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+                equal(TP().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(TP().date({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(TP().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(TP().date({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(TP().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
         // leap year check
         dayInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (month = 1; month <= 12; month++) {
             for (day = 1; day <= dayInMonth[month - 1]; day++) {
-                equal(TP().date({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+                equal(TP().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(TP().date({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(TP().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(TP().date({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(TP().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
-        equal(TP().date({}).day(), 1, 'If day is not setted, setting MIN_DAY');
+        equal(TP().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
     });
 
-    test('Test date() hours ranges', function () {
+    test('Test get() hours ranges', function () {
         for (hours = 0; hours <= 23; hours++) {
-            equal(TP().date({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
+            equal(TP().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
         }
         for (hours = -100; hours < 0; hours++) {
-            equal(TP().date({hours: hours}).hours(), 0, 'Hours can not be 0 or less. Month: ' + hours);
+            equal(TP().set({hours: hours}).hours(), 0, 'Hours can not be 0 or less. Month: ' + hours);
         }
         for (hours = 24; hours <= 100; hours++) {
-            equal(TP().date({hours: hours}).hours(), 0, 'Hours can not be 24 or more. Month: ' + hours);
+            equal(TP().set({hours: hours}).hours(), 0, 'Hours can not be 24 or more. Month: ' + hours);
         }
-        equal(TP().date({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
+        equal(TP().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
     });
 
-    test('Test date() minutes ranges', function () {
+    test('Test get() minutes ranges', function () {
         for (minutes = 0; minutes <= 59; minutes++) {
-            equal(TP().date({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
+            equal(TP().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
         }
         for (minutes = -100; minutes < 0; minutes++) {
-            equal(TP().date({minutes: minutes}).minutes(), 0, 'Minutes can not be 0 or less. Minutes: ' + minutes);
+            equal(TP().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 0 or less. Minutes: ' + minutes);
         }
         for (minutes = 60; minutes <= 100; minutes++) {
-            equal(TP().date({minutes: minutes}).minutes(), 0, 'Minutes can not be 59 or more. Minutes: ' + minutes);
+            equal(TP().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 59 or more. Minutes: ' + minutes);
         }
-        equal(TP().date({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
+        equal(TP().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
     });
 
-    test('Test date() seconds ranges', function () {
+    test('Test get() seconds ranges', function () {
         for (seconds = 0; seconds <= 59; seconds++) {
-            equal(TP().date({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
+            equal(TP().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
         }
         for (seconds = -100; seconds < 0; seconds++) {
-            equal(TP().date({seconds: seconds}).seconds(), 0, 'Seconds can not be 0 or less. Minutes: ' + seconds);
+            equal(TP().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 0 or less. Minutes: ' + seconds);
         }
         for (seconds = 60; seconds <= 100; seconds++) {
-            equal(TP().date({seconds: seconds}).seconds(), 0, 'Seconds can not be 59 or more. Minutes: ' + seconds);
+            equal(TP().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 59 or more. Minutes: ' + seconds);
         }
-        equal(TP().date({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
+        equal(TP().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
 
     test('Test year() method', function () {
@@ -255,8 +255,8 @@
         equal(TP().year(1900).leapYear(), false, '1900 is not leap year');
         equal(TP().year(1904).leapYear(), true, '1904 is leap year');
         equal(TP().year(1905).leapYear(), false, '1905 is not leap year');
-        equal(TP().date({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
-        equal(TP().date({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
+        equal(TP().set({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
+        equal(TP().set({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
         equal(typeof TP().now().leapYear(), 'boolean', 'Type is boolean');
         for (var year = 1800; year <= yyyy; year++) {
             equal(TP().year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
@@ -264,20 +264,20 @@
     });
 
     test('Test format() method', function () {
-        equal(TP().date({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
-        equal(TP().date({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
+        equal(TP().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
+        equal(TP().set({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
             '2000-10-01 10:00:00', 'Date and time format');
-        equal(TP().date({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
-        equal(typeof TP().date({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
+        equal(TP().set({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
+        equal(typeof TP().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
     });
 
     test('Test instances', function() {
         var resultTest1 = function() {
-            var a = TP().date({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
+            var a = TP().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
             return a.format('%Y-%m-%d %H:%M:%S');
         };
         var resultTest2 = function() {
-            var a = TP().date({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
+            var a = TP().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
             var b = TP().now();
             return a.format('%Y-%m-%d %H:%M:%S');
         };
