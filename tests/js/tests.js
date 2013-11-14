@@ -180,6 +180,8 @@
         equal(TP.year(1900).leapYear(), false, '1900 is not leap year');
         equal(TP.year(1904).leapYear(), true, '1904 is leap year');
         equal(TP.year(1905).leapYear(), false, '1905 is not leap year');
+        equal(TP.date({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
+        equal(TP.date({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
         equal(typeof TP.now().leapYear(), 'boolean', 'Type is boolean');
         for (var year = 1800; year <= yyyy; year++) {
             equal(TP.year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
