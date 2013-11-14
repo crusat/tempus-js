@@ -176,7 +176,11 @@
                 },
                 parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
             }
-        };
+        },
+        MIN_YEAR = 100,
+        MAX_YEAR = 3000,
+        MIN_MONTH = 1,
+        MAX_MONTH = 12;
 
     var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
@@ -217,7 +221,11 @@
              */
             year: function(value) {
                 if (value !== undefined) {
-                    year = Number(value);
+                    if (value >= MIN_YEAR && value <= MAX_YEAR) {
+                        year = Number(value);
+                    } else {
+                        year = undefined;
+                    }
                 } else {
                     return year;
                 }
@@ -230,7 +238,11 @@
              */
             month: function(value) {
                 if (value !== undefined) {
-                    month = Number(value);
+                    if (value >= MIN_MONTH && value <= MAX_MONTH) {
+                        month = Number(value);
+                    } else {
+                        month = undefined;
+                    }
                 } else {
                     return month;
                 }
@@ -290,9 +302,22 @@
             },
             timestamp: function(value) {
                 if (value !== undefined) {
-                    seconds = Number(value);
+                    var d = new Date(Number(value)*1000);
+                    this.year(d.getFullYear());
+                    this.month(d.getMonth() + 1);
+                    this.day(d.getDate());
+                    this.hours(d.getHours());
+                    this.minutes(d.getMinutes());
+                    this.seconds(d.getSeconds());
                 } else {
-                    return seconds;
+                    return Math.floor(new Date(
+                        this.year() !== undefined ? this.year() : 1970,
+                        this.month() !== undefined ? this.month() - 1 : 0,
+                        this.day() !== undefined ? this.day() : 1,
+                        this.hours() !== undefined ? this.hours() : 0,
+                        this.minutes() !== undefined ? this.minutes() : 0,
+                        this.seconds() !== undefined ? this.seconds() : 0
+                    ).getTime()/1000);
                 }
                 return this;
             },
@@ -399,13 +424,14 @@
             date: function(newDate) {
                 if (newDate === undefined) {
                     return {
-                        year: year,
-                        month: month,
-                        day: day,
-                        hours: hours,
-                        minutes: minutes,
-                        seconds: seconds,
-                        dayOfWeek: dayOfWeek
+                        year: this.year(),
+                        month: this.month(),
+                        day: this.day(),
+                        hours: this.hours(),
+                        minutes: this.minutes(),
+                        seconds: this.seconds(),
+                        dayOfWeek: this.dayOfWeek(),
+                        timestamp: this.timestamp()
                     }
                 }
                 if (typeof newDate === 'object') {
@@ -435,6 +461,10 @@
              * @example
              * // returns "Ноябрь, 14"
              * TP.lang('ru').date({year: 2013, month: 11, day: 14}).format('%B, %d');
+             * @example
+             * TP.lang('ru');
+             * // returns "Ноябрь"
+             * TP.month(11).format('%B');
              */
             lang: function(value) {
                 if (value !== undefined) {
