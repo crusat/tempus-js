@@ -172,7 +172,7 @@
         equal(typeof TP.seconds(1).seconds(), 'number', 'Type is number');
     });
 
-    test('tempus.isLeapYear', function () {
+    test('Test isLeapYear() method', function () {
         equal(TP.now().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
         equal(TP.year(2013).leapYear(), false, '2013 is not leap year');
         equal(TP.year(2012).leapYear(), true, '2012 is leap year');
@@ -187,13 +187,14 @@
             equal(TP.year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
         }
     });
-//
-//    test('tempus.format', function () {
-//        equal(tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'), '05.11.2013', 'Date format');
-//        equal(tempus.format({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}, '%Y-%m-%d %H:%M:%S'), '2000-10-01 10:00:00', 'Date and time format');
-//        equal(tempus.format({year: 2000}, '%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
-//        equal(typeof tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y'), 'string', 'Type is string');
-//    });
+
+    test('Test format() method', function () {
+        equal(TP.date({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
+        equal(TP.date({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
+            '2000-10-01 10:00:00', 'Date and time format');
+        equal(TP.date({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
+        equal(typeof TP.date({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
+    });
 //
 //    test('tempus.getDaysCountInMonth', function () {
 //        equal(tempus.getDaysCountInMonth(11, 2013), 30, 'Days count - november 2013');

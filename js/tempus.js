@@ -23,7 +23,7 @@
         registeredFormats = {
             '%d': {
                 format: function (date) {
-                    return formattingWithNulls(date.day(), 2);
+                    return formattingWithNulls(date.day() || MIN_DAY, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -33,7 +33,7 @@
             },
             '%m': {
                 format: function (date) {
-                    return formattingWithNulls(date.month(), 2);
+                    return formattingWithNulls(date.month() || MIN_MONTH, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -43,7 +43,7 @@
             },
             '%Y': {
                 format: function (date) {
-                    return formattingWithNulls(date.year(), 4);
+                    return formattingWithNulls(date.year() || MIN_YEAR, 4);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -53,7 +53,7 @@
             },
             '%w': {
                 format: function (date) {
-                    return date.dayOfWeek();
+                    return date.dayOfWeek() || MIN_DAY_OF_WEEK;
                 },
                 parse: function (value) {
                     // impossible
@@ -63,7 +63,7 @@
             },
             '%a': {
                 format: function (date) {
-                    return translations[lang]["daysShortNames"][date.dayOfWeek()];
+                    return translations[lang]["daysShortNames"][date.dayOfWeek() || MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
@@ -73,7 +73,7 @@
             },
             '%A': {
                 format: function (date) {
-                    return translations[lang]["daysLongNames"][date.dayOfWeek()];
+                    return translations[lang]["daysLongNames"][date.dayOfWeek() || MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
@@ -83,7 +83,7 @@
             },
             '%b': {
                 format: function(date) {
-                    return translations[lang]["monthShortNames"][date.month()-1];
+                    return translations[lang]["monthShortNames"][(date.month() || MIN_MONTH) -1];
                 },
                 parse: function(value) {
                     var month = that.getMonthNames().indexOf(value)+1;
@@ -93,7 +93,7 @@
             },
             '%B': {
                 format: function(date) {
-                    return translations[lang]["monthLongNames"][date.month()-1];
+                    return translations[lang]["monthLongNames"][(date.month() || MIN_MONTH)-1];
                 },
                 parse: function(value) {
                     var month = that.getMonthNames(true).indexOf(value)+1;
@@ -103,7 +103,7 @@
             },
             '%H': {
                 format: function (date) {
-                    return formattingWithNulls(date.hours(), 2);
+                    return formattingWithNulls(date.hours() || MIN_HOURS, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -113,7 +113,7 @@
             },
             '%M': {
                 format: function (date) {
-                    return formattingWithNulls(date.minutes(), 2);
+                    return formattingWithNulls(date.minutes() || MIN_MINUTES, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -123,7 +123,7 @@
             },
             '%S': {
                 format: function (date) {
-                    return formattingWithNulls(date.seconds(), 2);
+                    return formattingWithNulls(date.seconds() || MIN_SECONDS, 2);
                 },
                 parse: function (value) {
                     var v = Number(value);
@@ -145,12 +145,14 @@
             },
             '%F': {
                 format: function (date) {
-                    return formattingWithNulls(date.year(), 4) + '-' + formattingWithNulls(date.month(), 2) + '-' + formattingWithNulls(date.day(), 2);
+                    return formattingWithNulls(date.year() || MIN_YEAR, 4) + '-' +
+                        formattingWithNulls(date.month() || MIN_MONTH, 2) + '-' +
+                        formattingWithNulls(date.day() || MIN_DAY, 2);
                 },
                 parse: function (value) {
-                    var year = Number(value.slice(0, 4));
-                    var month = Number(value.slice(6, 7));
-                    var day = Number(value.slice(9, 10));
+                    var year = Number(value.slice(0, 4)) || MIN_YEAR;
+                    var month = Number(value.slice(6, 7)) || MIN_MONTH;
+                    var day = Number(value.slice(9, 10)) || MIN_DAY;
                     return {
                         year: year,
                         month: month,
@@ -161,7 +163,7 @@
             },
             '%D': {
                 format: function (date) {
-                    return formattingWithNulls(date.month(), 2) + '/' + formattingWithNulls(date.day(), 2) + '/' + formattingWithNulls(date.year(), 4)
+                    return formattingWithNulls(date.month() || MIN_MONTH, 2) + '/' + formattingWithNulls(date.day() || MIN_DAY, 2) + '/' + formattingWithNulls(date.year() || MIN_YEAR, 4)
                 },
                 parse: function (value) {
                     var month = Number(value.slice(0, 2));
@@ -181,7 +183,15 @@
         MIN_MONTH = 1,
         MAX_MONTH = 12,
         MIN_DAY = 1,
-        MAX_DAY_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        MAX_DAY_IN_MONTHS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+        MIN_DAY_OF_WEEK = 0,
+        MAX_DAY_OF_WEEK = 6,
+        MIN_HOURS = 0,
+        MAX_HOURS = 23,
+        MIN_MINUTES = 0,
+        MAX_MINUTES = 59,
+        MIN_SECONDS = 0,
+        MAX_SECONDS = 59;
 
     var getDayOfWeek = function (year, month, day) {
             var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
