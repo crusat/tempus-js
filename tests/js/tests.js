@@ -109,8 +109,67 @@
     });
 
     test('Test day() method', function () {
+        // values
+        equal(TP.day(100).day(), 100, 'Test value: 100');
+        equal(TP.day(12).day(), 12, 'Test value: 12');
+        equal(TP.day(-5).day(), -5, 'Test value: -5');
+        equal(TP.day('0').day(), 0, 'Test value: \'0\'');
+        equal(TP.day({foo: 'bar'}).day(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(TP.day([1,2,3]).day(), undefined, 'Test value: [1,2,3]');
+        equal(TP.day(undefined).day(), undefined, 'Test value: undefined');
+        equal(TP.day(null).day(), undefined, 'Test value: null');
+        equal(TP.day(true).day(), undefined, 'Test value: true');
+        equal(TP.day(false).day(), undefined, 'Test value: false');
         // check types
         equal(typeof TP.day(1).day(), 'number', 'Type is number');
+    });
+
+    test('Test hours() method', function () {
+        // values
+        equal(TP.hours(100).hours(), 100, 'Test value: 100');
+        equal(TP.hours(12).hours(), 12, 'Test value: 12');
+        equal(TP.hours(-5).hours(), -5, 'Test value: -5');
+        equal(TP.hours('0').hours(), 0, 'Test value: \'0\'');
+        equal(TP.hours({foo: 'bar'}).hours(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(TP.hours([1,2,3]).hours(), undefined, 'Test value: [1,2,3]');
+        equal(TP.hours(undefined).hours(), undefined, 'Test value: undefined');
+        equal(TP.hours(null).hours(), undefined, 'Test value: null');
+        equal(TP.hours(true).hours(), undefined, 'Test value: true');
+        equal(TP.hours(false).hours(), undefined, 'Test value: false');
+        // check types
+        equal(typeof TP.hours(1).hours(), 'number', 'Type is number');
+    });
+
+    test('Test minutes() method', function () {
+        // values
+        equal(TP.minutes(100).minutes(), 100, 'Test value: 100');
+        equal(TP.minutes(12).minutes(), 12, 'Test value: 12');
+        equal(TP.minutes(-5).minutes(), -5, 'Test value: -5');
+        equal(TP.minutes('0').minutes(), 0, 'Test value: \'0\'');
+        equal(TP.minutes({foo: 'bar'}).minutes(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(TP.minutes([1,2,3]).minutes(), undefined, 'Test value: [1,2,3]');
+        equal(TP.minutes(undefined).minutes(), undefined, 'Test value: undefined');
+        equal(TP.minutes(null).minutes(), undefined, 'Test value: null');
+        equal(TP.minutes(true).minutes(), undefined, 'Test value: true');
+        equal(TP.minutes(false).minutes(), undefined, 'Test value: false');
+        // check types
+        equal(typeof TP.minutes(1).minutes(), 'number', 'Type is number');
+    });
+
+    test('Test seconds() method', function () {
+        // values
+        equal(TP.seconds(100).seconds(), 100, 'Test value: 100');
+        equal(TP.seconds(12).seconds(), 12, 'Test value: 12');
+        equal(TP.seconds(-5).seconds(), -5, 'Test value: -5');
+        equal(TP.seconds('0').seconds(), 0, 'Test value: \'0\'');
+        equal(TP.seconds({foo: 'bar'}).seconds(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(TP.seconds([1,2,3]).seconds(), undefined, 'Test value: [1,2,3]');
+        equal(TP.seconds(undefined).seconds(), undefined, 'Test value: undefined');
+        equal(TP.seconds(null).seconds(), undefined, 'Test value: null');
+        equal(TP.seconds(true).seconds(), undefined, 'Test value: true');
+        equal(TP.seconds(false).seconds(), undefined, 'Test value: false');
+        // check types
+        equal(typeof TP.seconds(1).seconds(), 'number', 'Type is number');
     });
 
     test('tempus.isLeapYear', function () {

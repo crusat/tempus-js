@@ -274,7 +274,11 @@
              */
             hours: function(value) {
                 if (arguments.length !== 0) {
-                    hours = Number(value);
+                    if (typeof value === 'number' || typeof value === 'string') {
+                        hours = Number(value);
+                    } else {
+                        hours = undefined;
+                    }
                 } else {
                     return hours;
                 }
@@ -287,7 +291,11 @@
              */
             minutes: function(value) {
                 if (arguments.length !== 0) {
-                    minutes = Number(value);
+                    if (typeof value === 'number' || typeof value === 'string') {
+                        minutes = Number(value);
+                    } else {
+                        minutes = undefined;
+                    }
                 } else {
                     return minutes;
                 }
@@ -300,7 +308,11 @@
              */
             seconds: function(value) {
                 if (arguments.length !== 0) {
-                    seconds = Number(value);
+                    if (typeof value === 'number' || typeof value === 'string') {
+                        seconds = Number(value);
+                    } else {
+                        seconds = undefined;
+                    }
                 } else {
                     return seconds;
                 }
