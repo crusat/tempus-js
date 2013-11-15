@@ -1,6 +1,6 @@
 (function(window, undefined) {
-    var _TP = window.TP,
-        _Tempus = window.Tempus,
+    var _TP = window.tp,
+        _Tempus = window.tempus,
         Tempus,
         version = '0.2.0',
         lang = 'en',
@@ -163,9 +163,9 @@
             },
             '%D': {
                 format: function (date) {
-                    return formattingWithNulls(date.month() || this.constants().MIN_MONTH, 2) +
-                        '/' + formattingWithNulls(date.day() || this.constants().MIN_DAY, 2) +
-                        '/' + formattingWithNulls(date.year() || this.constants().MIN_YEAR, 4)
+                    return formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2) +
+                        '/' + formattingWithNulls(date.day() || date.constants().MIN_DAY, 2) +
+                        '/' + formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4)
                 },
                 parse: function (value) {
                     var month = Number(value.slice(0, 2));
@@ -218,7 +218,7 @@
         this._seconds = undefined;
         this._milliseconds = undefined;
 
-        if (arguments.length === 0) {
+        if (options === undefined) {
             this.now();
         } else if (typeof options === 'object') {
             this.set(options);
