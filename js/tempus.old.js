@@ -721,14 +721,14 @@
          * // returns false
          * tempus.validate('29.02.2013 23:00');
          */
-        this.validate = function(date, format) {
-            if (typeof date === 'string') {
-                date = this.parse(date, format, true);
-            }
-            var normalizedDate = this.normalizeDate(date);
-            return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
-                    (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
-        };
+//        this.validate = function(date, format) {
+//            if (typeof date === 'string') {
+//                date = this.parse(date, format, true);
+//            }
+//            var normalizedDate = this.normalizeDate(date);
+//            return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
+//                    (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
+//        };
 
         /**
          * Reformats date from one to other format.
