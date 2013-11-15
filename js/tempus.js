@@ -1,4 +1,4 @@
-(function(window, undefined) {
+(function (window, undefined) {
     var _TP = window.tp,
         _Tempus = window.tempus,
         Tempus,
@@ -29,7 +29,9 @@
                     var v = Number(value);
                     return {day: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%m': {
                 format: function (date) {
@@ -39,7 +41,9 @@
                     var v = Number(value);
                     return {month: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%Y': {
                 format: function (date) {
@@ -49,7 +53,9 @@
                     var v = Number(value);
                     return {year: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{4}'
+                minLength: 3,
+                maxLength: 5,
+                type: "number"
             },
             '%w': {
                 format: function (date) {
@@ -59,7 +65,9 @@
                     // impossible
                     return {};
                 },
-                parseLit: '\\d{1}'
+                minLength: 1,
+                maxLength: 1,
+                type: "number"
             },
             '%a': {
                 format: function (date) {
@@ -69,7 +77,9 @@
                     // impossible
                     return {};
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%A': {
                 format: function (date) {
@@ -79,27 +89,33 @@
                     // impossible
                     return {};
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%b': {
-                format: function(date) {
+                format: function (date) {
                     return translations[lang]["monthShortNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
                 },
-                parse: function(value) {
-                    var month = that.getMonthNames().indexOf(value)+1;
+                parse: function (value) {
+                    var month = that.getMonthNames().indexOf(value) + 1;
                     return {month: month !== -1 ? month : undefined}
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%B': {
-                format: function(date) {
-                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH)-(monthFromZero ? 0 : 1)];
+                format: function (date) {
+                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
                 },
-                parse: function(value) {
-                    var month = that.getMonthNames(true).indexOf(value)+1;
+                parse: function (value) {
+                    var month = that.getMonthNames(true).indexOf(value) + 1;
                     return {month: month !== -1 ? month : undefined}
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%H': {
                 format: function (date) {
@@ -109,7 +125,9 @@
                     var v = Number(value);
                     return {hours: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%M': {
                 format: function (date) {
@@ -119,7 +137,9 @@
                     var v = Number(value);
                     return {minutes: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%S': {
                 format: function (date) {
@@ -129,19 +149,23 @@
                     var v = Number(value);
                     return {seconds: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%s': {
-                format: function(date) {
+                format: function (date) {
                     return date.timestamp();
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     var date = new TempusDate(Number(v), timezoneOffset);
                     var obj = that.date(v);
                     return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
                 },
-                parseLit: '\\d{1,10}'
+                minLength: 1,
+                maxLength: 20,
+                type: "number"
             },
             '%F': {
                 format: function (date) {
@@ -159,7 +183,9 @@
                         day: day
                     }
                 },
-                parseLit: '\\d{4}-\\d{2}-\\d{2}'
+                minLength: 10,
+                maxLength: 10,
+                type: "string"
             },
             '%D': {
                 format: function (date) {
@@ -177,7 +203,9 @@
                         day: day
                     }
                 },
-                parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
+                minLength: 10,
+                maxLength: 10,
+                type: "string"
             }
         },
         useMilliseconds = false,
@@ -185,10 +213,10 @@
 
 
     var getDayOfWeek = function (year, month, day) {
-            var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-            year -= month < 3;
-            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
-        };
+        var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+        year -= month < 3;
+        return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
+    };
 
     var isLeapYear = function (year) {
         if (year % 4 == 0) {
@@ -207,9 +235,12 @@
         return v;
     };
 
+    function escapeRegExp(str) {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+    }
 
 
-    var TempusDate = function( options ) {
+    var TempusDate = function (options, format) {
         this._year = undefined;
         this._month = undefined;
         this._day = undefined;
@@ -222,12 +253,14 @@
             this.now();
         } else if (typeof options === 'object') {
             this.set(options);
+        } else if (typeof options === 'string') {
+            this.parse(options, format);
         }
 
         return this;
     };
 
-    TempusDate.prototype.constants = function() {
+    TempusDate.prototype.constants = function () {
         return {
             MIN_YEAR: 100,
             MAX_YEAR: 3000,
@@ -253,7 +286,7 @@
      * @param value {number} New year. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.prototype.year = function(value) {
+    TempusDate.prototype.year = function (value) {
         if (arguments.length !== 0) {
             // no value range checking, because can be used for delta times
             if (typeof value === 'number' || typeof value === 'string') {
@@ -271,7 +304,7 @@
      * @param value {number} New month. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.prototype.month = function(value) {
+    TempusDate.prototype.month = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
                 this._month = Number(value);
@@ -288,7 +321,7 @@
      * @param value {number} New day. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.prototype.day = function(value) {
+    TempusDate.prototype.day = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
                 this._day = Number(value);
@@ -305,7 +338,7 @@
      * @param value {number} New hours. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.prototype.hours = function(value) {
+    TempusDate.prototype.hours = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
                 this._hours = Number(value);
@@ -322,7 +355,7 @@
      * @param value {number} New minutes. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.prototype.minutes = function(value) {
+    TempusDate.prototype.minutes = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
                 this._minutes = Number(value);
@@ -339,7 +372,7 @@
      * @param value {number} New seconds. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.prototype.seconds = function(value) {
+    TempusDate.prototype.seconds = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
                 this._seconds = Number(value);
@@ -351,7 +384,7 @@
         }
         return this;
     };
-    TempusDate.prototype.milliseconds = function(value) {
+    TempusDate.prototype.milliseconds = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
                 this._milliseconds = Number(value);
@@ -384,9 +417,9 @@
         this.milliseconds(d.getMilliseconds());
         return this;
     };
-    TempusDate.prototype.timestamp = function(value) {
+    TempusDate.prototype.timestamp = function (value) {
         if (arguments.length !== 0) {
-            var d = new Date(Number(value)*(useMilliseconds ? 1 : 1000));
+            var d = new Date(Number(value) * (useMilliseconds ? 1 : 1000));
             this.year(d.getFullYear());
             this.month(d.getMonth() + (monthFromZero ? 0 : 1));
             this.day(d.getDate());
@@ -403,13 +436,13 @@
                 this.minutes() !== undefined ? this.minutes() : 0,
                 this.seconds() !== undefined ? this.seconds() : 0,
                 this.milliseconds() !== undefined ? this.milliseconds() : 0
-            ).getTime()/(useMilliseconds ? 1 : 1000));
+            ).getTime() / (useMilliseconds ? 1 : 1000));
         }
         return this;
     };
-    TempusDate.prototype.UTC = function(value) {
+    TempusDate.prototype.UTC = function (value) {
         if (arguments.length !== 0) {
-            var d = new Date(Number(value)*(useMilliseconds ? 1 : 1000));
+            var d = new Date(Number(value) * (useMilliseconds ? 1 : 1000));
             this.year(d.getUTCFullYear());
             this.month(d.getUTCMonth() + (monthFromZero ? 0 : 1));
             this.day(d.getUTCDate());
@@ -426,7 +459,7 @@
                 this.minutes() !== undefined ? this.minutes() : 0,
                 this.seconds() !== undefined ? this.seconds() : 0,
                 this.milliseconds() !== undefined ? this.milliseconds() : 0
-            )).getTime()/(useMilliseconds ? 1 : 1000));
+            )).getTime() / (useMilliseconds ? 1 : 1000));
         }
         return this;
     };
@@ -438,12 +471,12 @@
      * // returns current day of week
      * TP.now().dayOfWeek();
      */
-    TempusDate.prototype.dayOfWeek = function(type) {
+    TempusDate.prototype.dayOfWeek = function (type) {
         var y, m, d;
         if ((y = this.year()) !== undefined &&
-                (m = this.month()) !== undefined &&
-                (d = this.day()) !== undefined) {
-            switch(type) {
+            (m = this.month()) !== undefined &&
+            (d = this.day()) !== undefined) {
+            switch (type) {
                 case 'long':
                     return translations[lang]["daysLongNames"][getDayOfWeek(y, m, d)];
                 case 'short':
@@ -479,7 +512,7 @@
      * // check current year
      * TP.now().leapYear();
      */
-    TempusDate.prototype.leapYear = function() {
+    TempusDate.prototype.leapYear = function () {
         var y;
         if ((y = this.year()) !== undefined) {
             return isLeapYear(y);
@@ -495,8 +528,8 @@
      * // returns Tempus constructor
      * var T = tempus().noConflict(true);
      * var t = T().format('%d.%m.%Y');
-    */
-    TempusDate.prototype.noConflict = function(all) {
+     */
+    TempusDate.prototype.noConflict = function (all) {
         window.TP = _TP;
         if (all === true) {
             window.Tempus = _Tempus
@@ -510,26 +543,26 @@
      * // returns current version
      * TP.getVersion();
      */
-    TempusDate.prototype.getVersion = function() {
+    TempusDate.prototype.getVersion = function () {
         return version;
     };
-    TempusDate.prototype.monthNames = function(type) {
-        switch(type) {
+    TempusDate.prototype.monthNames = function (type) {
+        switch (type) {
             case 'long':
                 return translations[lang]["monthLongNames"];
             default:
                 return translations[lang]["monthShortNames"];
         }
     };
-    TempusDate.prototype.dayNames = function(type) {
-        switch(type) {
+    TempusDate.prototype.dayNames = function (type) {
+        switch (type) {
             case 'long':
                 return translations[lang]["dayLongNames"];
             default:
                 return translations[lang]["dayShortNames"];
         }
     };
-    TempusDate.prototype.between = function(dateTo, type) {
+    TempusDate.prototype.between = function (dateTo, type) {
         var from = this.timestamp();
         var to = dateTo.timestamp();
         switch (type) {
@@ -549,7 +582,7 @@
                 return undefined;
         }
     };
-    TempusDate.prototype.get = function() {
+    TempusDate.prototype.get = function () {
         return {
             year: this.year(),
             month: this.month(),
@@ -582,7 +615,7 @@
      * // or
      * // tp(new Date()).get();
      */
-    TempusDate.prototype.set = function(newDate) {
+    TempusDate.prototype.set = function (newDate) {
         if (newDate instanceof Date) {
             this.year(newDate.getFullYear());
             this.month(newDate.getMonth() + (monthFromZero ? 0 : 1));
@@ -633,7 +666,7 @@
         }
         return this;
     };
-    TempusDate.prototype.dayCount = function() {
+    TempusDate.prototype.dayCount = function () {
         var m = this.month();
         var dc = this.constants().MAX_DAY_IN_MONTHS[m - (monthFromZero ? 0 : 1)];
         if (this.leapYear() && m === 2) {
@@ -651,6 +684,22 @@
         }
         return result;
     };
+
+    var parseBadFormat = function(date, defaults) {
+        if (defaults !== undefined) {
+            date.year(defaults.year() || defaults.year);
+            date.month(defaults.month() || defaults.month);
+            date.day(defaults.day() || defaults.day);
+            date.hours(defaults.hours() || defaults.hours);
+            date.minutes(defaults.minutes() || defaults.minutes);
+            date.seconds(defaults.seconds() || defaults.seconds);
+            date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
+            return date;
+        } else {
+            return undefined;
+        }
+    };
+
     // returns "2012-01-01"
     // TP.parse('01.01.2010').year(2012).format('%Y-%m-%d');
     // If parse failed, defaults returns.
@@ -658,50 +707,70 @@
     // TP.parse('20130101', '%Y%m%d', TP.now().calc({month: -1})).format('%Y-%m-%d')
     // returns "2013-06-01"
     // TP.parse(undefined, '%Y%m%d', TP.date({year: 2013, month: 06, day: 1})).format('%Y-%m-%d');
-    TempusDate.prototype.parse = function(str, format, defaults) {
+    TempusDate.prototype.parse = function (str, format, defaults) {
         var key;
-        var litsarr = [];
+        var lits = [];
         if (format === undefined) {
             format = this.detectFormat(str);
         }
-        format = '^'+format+'$';
-        var format_re = format;
-        for (key in registeredFormats) {
-            if (registeredFormats.hasOwnProperty(key)) {
-                litsarr.push(key);
-                format_re = format_re.replace(new RegExp('('+key+')', 'g'), '('+registeredFormats[key].parseLit+')');
-            }
-        }
-        var litsstr = new RegExp('('+litsarr.join('|')+')', 'g');
-        var lits = format.match(litsstr);
-        var re = new RegExp(format_re, 'g');
-        var result = re.exec(str);
-        var result2 = [];
-        try {
-            for (var i=1; i < result.length; i++) {
-                if (typeof result[i] === 'string') {
-                    result2.push(result[i]);
+        var format_re;
+
+
+        var regex = '';
+        var directive;
+        var res = [];
+
+        var i = 0,
+            j = 0,
+            k;
+        while (i < format.length) {
+            if (format.charAt(i) === '%') {
+                directive = format.charAt(i) + format.charAt(i + 1);
+                k = 0;
+                var shortString = '';
+                switch(registeredFormats[directive].type) {
+                    case 'number':
+                        while (k <= registeredFormats[directive].maxLength && !isNaN(Number(str.charAt(j + k)))) {
+                            shortString += str.charAt(j + k);
+                            k++;
+                        }
+                        break;
+                    case 'word':
+                        while (k <= registeredFormats[directive].maxLength && /^\w+$/.test(str.charAt(j + k))) {
+                            shortString += str.charAt(j + k);
+                            k++;
+                        }
+                        break;
+                    case 'string':
+                        while (k <= registeredFormats[directive].maxLength) {
+                            shortString += str.charAt(j + k);
+                            k++;
+                        }
+                        break;
+                }
+
+                if (k < registeredFormats[directive].minLength) {
+                    return parseBadFormat(this, defaults);
+                }
+                lits.push(directive);
+                res.push(shortString);
+                j += --k;
+                i++;
+            } else {
+                regex += format.charAt(i);
+                if (str.charAt(j) !== format.charAt(i)) {
+                    return parseBadFormat(this, defaults);
                 }
             }
-        } catch(e) {
-            if (defaults !== undefined) {
-                this.year(defaults.year() || defaults.year);
-                this.month(defaults.month() || defaults.month);
-                this.day(defaults.day() || defaults.day);
-                this.hours(defaults.hours() || defaults.hours);
-                this.minutes(defaults.minutes() || defaults.minutes);
-                this.seconds(defaults.seconds() || defaults.seconds);
-                this.milliseconds(defaults.milliseconds() || defaults.milliseconds);
-                return this;
-            } else {
-                return undefined;
-            }
+            i++;
+            j++;
         }
+
         var resultdate = {};
         var tmpdate;
         for(key in lits) {
-            if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))&&!isNaN(Number(key))) {
-                tmpdate = registeredFormats[lits[key]].parse(result2[key]);
+            if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
+                tmpdate = registeredFormats[lits[key]].parse(res[key]);
                 resultdate = {
                     year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
                     month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
@@ -720,23 +789,23 @@
         this.seconds(resultdate.seconds);
         return this;
     };
-    TempusDate.prototype.detectFormat = function(str) {
+    TempusDate.prototype.detectFormat = function (str) {
         var defaultFormats = [
-            '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
-            '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
-            '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
-            '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
-            '^%Y$', '^%H:%M:%S$', '^%H:%M$'
+            '%d.%m.%Y', '%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%dT%H:%M:%S',
+            '%d.%m.%Y %H:%M:%S', '%d.%m.%Y %H:%M', '%d.%m.%Y %H',
+            '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d %H',
+            '%m/%d/%Y %H:%M:%S', '%m/%d/%Y %H:%M', '%m/%d/%Y %H',
+            '%Y', '%H:%M:%S', '%H:%M'
         ];
-        for (var i=0; i < defaultFormats.length; i++) {
+        for (var i = 0; i < defaultFormats.length; i++) {
             if (this.parse(str, defaultFormats[i]) !== undefined) {
-                return defaultFormats[i].slice(1,-1);
+                return defaultFormats[i];
             }
         }
         return undefined;
     };
 
-    TempusDate.prototype.calc = function(delta) {
+    TempusDate.prototype.calc = function (delta) {
         var d = new Date(
             this.year() + (delta.year || 0),
             this.month() + (delta.month || 0) - (monthFromZero ? 0 : 1),
@@ -755,7 +824,7 @@
             milliseconds(d.getMilliseconds());
     };
 
-    TempusDate.prototype.options = function() {
+    TempusDate.prototype.options = function () {
         return {
             useMilliseconds: useMilliseconds,
             monthFromZero: monthFromZero,
@@ -770,7 +839,7 @@
      * // returns Date obj
      * TP.now().calc({month: -1}).asVanillaDate();
      */
-    TempusDate.prototype.asVanillaDate = function() {
+    TempusDate.prototype.asVanillaDate = function () {
         return new Date(
             this.year() !== undefined ? this.year() : 1970,
             this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
@@ -789,7 +858,7 @@
      * // returns Date obj
      * TP.now().calc({month: -1}).asVanillaDateUTC();
      */
-    TempusDate.prototype.asVanillaDateUTC = function() {
+    TempusDate.prototype.asVanillaDateUTC = function () {
         return new Date(Date.UTC(
             this.year() !== undefined ? this.year() : 1970,
             this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
@@ -812,7 +881,7 @@
      * // returns "Ноябрь"
      * TP.month(11).format('%B');
      */
-    TempusDate.prototype.lang = function(value) {
+    TempusDate.prototype.lang = function (value) {
         if (value !== undefined) {
             lang = value;
         } else {
@@ -830,7 +899,7 @@
      * //    "milliseconds":445}
      * TP.iWantUseMilliseconds().now().get();
      */
-    TempusDate.prototype.iWantUseMilliseconds = function(value) {
+    TempusDate.prototype.iWantUseMilliseconds = function (value) {
         useMilliseconds = value !== false;
         return this;
     };
@@ -846,20 +915,22 @@
      * // returns "14 November 2013"
      * TP.set({year: 2013, month: 11, day: 14}).format('%d %B %Y');
      */
-    TempusDate.prototype.iLoveMonthFromZero = function(value) {
+    TempusDate.prototype.iLoveMonthFromZero = function (value) {
         monthFromZero = value !== false;
         return this;
     };
 
 
     // Factory
-    function TempusFactory() {}
-    TempusFactory.prototype.createDate = function ( options ) {
-        return new TempusDate( options );
+    function TempusFactory() {
+    }
+
+    TempusFactory.prototype.createDate = function (options, format) {
+        return new TempusDate(options, format);
     };
     var tempusFactory = new TempusFactory();
-    Tempus = function( options ) {
-        return tempusFactory.createDate( options );
+    Tempus = function (options, format) {
+        return tempusFactory.createDate(options, format);
     };
     window.tp = window.tempus = Tempus;
 })(window);
