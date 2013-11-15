@@ -52,8 +52,8 @@
                     var v = Number(value);
                     return {year: (isNaN(v) ? undefined : v) };
                 },
-                minLength: 3,
-                maxLength: 5,
+                minLength: 4,
+                maxLength: 4,
                 type: "number"
             },
             '%w': {
@@ -261,7 +261,7 @@
 
     TempusDate.prototype.constants = function () {
         return {
-            MIN_YEAR: 100,
+            MIN_YEAR: 1000,
             MAX_YEAR: 3000,
             MIN_MONTH: monthFromZero ? 0 : 1,
             MAX_MONTH: monthFromZero ? 11 : 12,
