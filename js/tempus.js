@@ -290,10 +290,10 @@
     TempusDate.prototype.month = function (value) {
         if (arguments.length !== 0) {
             if (typeof value === 'number' || typeof value === 'string') {
-                this._date.setMonth(monthFromZero ? Number(value) : Number(value) + 1);
+                this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
             }
         } else {
-            return monthFromZero ? this._date.getMonth() : (this._date.getMonth() + 1);
+            return monthFromZero ? this._date.getMonth() : (this._date.getMonth() +  1);
         }
         return this;
     };
@@ -406,9 +406,9 @@
             return this;
         } else {
             if (useMilliseconds) {
-                return this._date.getTime() + this._date.getTimezoneOffset()*60000;
+                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
             } else {
-                return Math.floor(this._date.getTime() / 1000) + this._date.getTimezoneOffset()*60;
+                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60;
             }
         }
     };
@@ -560,7 +560,7 @@
      */
     TempusDate.prototype.set = function (newDate) {
         if (newDate instanceof Date) {
-            this.date(newDate);
+            this._date = newDate;
             return this;
         }
         if (typeof newDate === 'object') {

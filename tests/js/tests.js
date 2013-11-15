@@ -59,16 +59,16 @@
     });
 
     test('Test set() year ranges', function () {
-        for (year = 100; year <= 3000; year++) {
-            equal(tempus().set({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
+        for (year = 1000; year <= 3000; year++) {
+            equal(tempus().set({year: year}).year(), year, 'Year can be from 1000 to 3000, else MIN_YEAR. Year: ' + year);
         }
-        for (year = -100; year <= 99; year++) {
-            equal(tempus().set({year: year}).year(), 100, 'Year can not be 99 or less, else MIN_YEAR. Year: ' + year);
+        for (year = -100; year <= 999; year++) {
+            equal(tempus().set({year: year}).year(), 1000, 'Year can not be 999 or less, else MIN_YEAR. Year: ' + year);
         }
         for (year = 3001; year <= 4000; year++) {
-            equal(tempus().set({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
+            equal(tempus().set({year: year}).year(), 1000, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
         }
-        equal(tempus().set({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
+        equal(tempus().set({}).year(), 1000, 'If year is not setted, setting MIN_YEAR');
     });
 
     test('Test set() months ranges', function () {
@@ -159,28 +159,29 @@
         equal(tempus().year(1).year(), 1, 'Test value: 1');
         equal(tempus().year(-15).year(), -15, 'Test value: -15');
         equal(tempus().year('0').year(), 0, 'Test value: \'0\'');
-        equal(tempus().year({foo: 'bar'}).year(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(tempus().year([1,2,3]).year(), undefined, 'Test value: [1,2,3]');
-        equal(tempus().year(undefined).year(), undefined, 'Test value: undefined');
-        equal(tempus().year(null).year(), undefined, 'Test value: null');
-        equal(tempus().year(true).year(), undefined, 'Test value: true');
-        equal(tempus().year(false).year(), undefined, 'Test value: false');
+        equal(tempus().year({foo: 'bar'}).year(), new Date().getFullYear(), 'Test value: {foo: \'bar\'}');
+        equal(tempus().year([1,2,3]).year(), new Date().getFullYear(), 'Test value: [1,2,3]');
+        equal(tempus().year(undefined).year(), new Date().getFullYear(), 'Test value: undefined');
+        equal(tempus().year(null).year(), new Date().getFullYear(), 'Test value: null');
+        equal(tempus().year(true).year(), new Date().getFullYear(), 'Test value: true');
+        equal(tempus().year(false).year(), new Date().getFullYear(), 'Test value: false');
         // check types
         equal(typeof tempus().year(2000).year(), 'number', 'Type is number');
     });
 
     test('Test month() method', function () {
         // values
-        equal(tempus().month(100).month(), 100, 'Test value: 100');
+        equal(tempus().month(100).month(), new Date().getMonth() + 1, 'Test value: 100');
         equal(tempus().month(12).month(), 12, 'Test value: 12');
-        equal(tempus().month(-5).month(), -5, 'Test value: -5');
-        equal(tempus().month('0').month(), 0, 'Test value: \'0\'');
-        equal(tempus().month({foo: 'bar'}).month(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(tempus().month([1,2,3]).month(), undefined, 'Test value: [1,2,3]');
-        equal(tempus().month(undefined).month(), undefined, 'Test value: undefined');
-        equal(tempus().month(null).month(), undefined, 'Test value: null');
-        equal(tempus().month(true).month(), undefined, 'Test value: true');
-        equal(tempus().month(false).month(), undefined, 'Test value: false');
+        equal(tempus().month(1).month(), 1, 'Test value: 12');
+        equal(tempus().month(-5).month(), new Date().getMonth() + 1, 'Test value: -5');
+        equal(tempus().month('0').month(), new Date().getMonth() + 1, 'Test value: \'0\'');
+        equal(tempus().month({foo: 'bar'}).month(), new Date().getMonth() + 1, 'Test value: {foo: \'bar\'}');
+        equal(tempus().month([1,2,3]).month(), new Date().getMonth() + 1, 'Test value: [1,2,3]');
+        equal(tempus().month(undefined).month(), new Date().getMonth() + 1, 'Test value: undefined');
+        equal(tempus().month(null).month(), new Date().getMonth() + 1, 'Test value: null');
+        equal(tempus().month(true).month(), new Date().getMonth() + 1, 'Test value: true');
+        equal(tempus().month(false).month(), new Date().getMonth() + 1, 'Test value: false');
         // check types
         equal(typeof tempus().month(1).month(), 'number', 'Type is number');
     });
