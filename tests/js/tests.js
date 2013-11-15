@@ -25,61 +25,63 @@
 
     test('Test now() method', function () {
         // check current date/time
-        equal(TP().now().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
-        equal(TP().now().year(), new Date().getFullYear(), 'Full year');
-        equal(TP().now().month(), new Date().getMonth() + 1, 'Month');
-        equal(TP().now().day(), new Date().getDate(), 'Day');
-        equal(TP().now().hours(), new Date().getHours(), 'Hours');
-        equal(TP().now().minutes(), new Date().getMinutes(), 'Minutes');
-        equal(TP().now().seconds(), new Date().getSeconds(), 'Seconds');
-        equal(TP().now().dayOfWeek(), new Date().getDay(), 'Day of week');
+        equal(tp().now().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
+        equal(tp().now().year(), new Date().getFullYear(), 'Full year');
+        equal(tp().now().month(), new Date().getMonth() + 1, 'Month');
+        equal(tp().now().day(), new Date().getDate(), 'Day');
+        equal(tp().now().hours(), new Date().getHours(), 'Hours');
+        equal(tp().now().minutes(), new Date().getMinutes(), 'Minutes');
+        equal(tp().now().seconds(), new Date().getSeconds(), 'Seconds');
+        equal(tp().now().dayOfWeek(), new Date().getDay(), 'Day of week');
         // check types
-        equal(typeof TP().now(), 'object', 'Type is object');
-        equal(typeof TP().now().year(), 'number', 'Type is number');
-        equal(typeof TP().now().month(), 'number', 'Type is number');
-        equal(typeof TP().now().day(), 'number', 'Type is number');
-        equal(typeof TP().now().hours(), 'number', 'Type is number');
-        equal(typeof TP().now().minutes(), 'number', 'Type is number');
-        equal(typeof TP().now().seconds(), 'number', 'Type is number');
-        equal(typeof TP().now().dayOfWeek(), 'number', 'Type is number');
-        equal(typeof TP().now().timestamp(), 'number', 'Type is number');
+        equal(typeof tp().now(), 'object', 'Type is object');
+        equal(typeof tp().now().year(), 'number', 'Type is number');
+        equal(typeof tp().now().month(), 'number', 'Type is number');
+        equal(typeof tp().now().day(), 'number', 'Type is number');
+        equal(typeof tp().now().hours(), 'number', 'Type is number');
+        equal(typeof tp().now().minutes(), 'number', 'Type is number');
+        equal(typeof tp().now().seconds(), 'number', 'Type is number');
+        equal(typeof tp().now().dayOfWeek(), 'number', 'Type is number');
+        equal(typeof tp().now().timestamp(), 'number', 'Type is number');
     });
 
     test('Test timestamps', function() {
-        equal(TP().set({year: 2013, month: 11, day: 14}).timestamp(),
+        equal(tp().set({year: 2013, month: 11, day: 14}).timestamp(),
             new Date(2013, 10, 14).getTime() / 1000, 'Timestamp local: 2013-11-14 00:00:00');
-        equal(TP().set({year: 2013, month: 11, day: 14}).UTC(),
+        equal(tp().set({year: 2013, month: 11, day: 14}).UTC(),
             1384387200, 'Timestamp UTC: 2013-11-14 00:00:00');
     });
 
     test('Test base set() method', function () {
-        equal(typeof TP().get(), 'object', 'Type is object');
+        deepEqual(tp(new Date(2013, 0, 1, 0, 0, 0, 0)).get(), tp({year: 2013, month: 1, day: 1, hours: 0, minutes: 0,
+            seconds:0, milliseconds:0}).get(), 'Set new Date().');
+        equal(typeof tp().get(), 'object', 'Type is object');
     });
 
     test('Test set() year ranges', function () {
         for (year = 100; year <= 3000; year++) {
-            equal(TP().set({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
+            equal(tp().set({year: year}).year(), year, 'Year can be from 100 to 3000, else MIN_YEAR. Year: ' + year);
         }
         for (year = -100; year <= 99; year++) {
-            equal(TP().set({year: year}).year(), 100, 'Year can not be 99 or less, else MIN_YEAR. Year: ' + year);
+            equal(tp().set({year: year}).year(), 100, 'Year can not be 99 or less, else MIN_YEAR. Year: ' + year);
         }
         for (year = 3001; year <= 4000; year++) {
-            equal(TP().set({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
+            equal(tp().set({year: year}).year(), 100, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
         }
-        equal(TP().set({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
+        equal(tp().set({}).year(), 100, 'If year is not setted, setting MIN_YEAR');
     });
 
     test('Test set() months ranges', function () {
         for (month = 1; month <= 12; month++) {
-            equal(TP().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
+            equal(tp().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
         }
         for (month = -100; month <= 0; month++) {
-            equal(TP().set({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
+            equal(tp().set({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
         }
         for (month = 13; month <= 100; month++) {
-            equal(TP().set({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
+            equal(tp().set({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
         }
-        equal(TP().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
+        equal(tp().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
     });
 
     test('Test set() day ranges', function () {
@@ -87,203 +89,207 @@
         var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (month = 1; month <= 12; month++) {
             for (day = 1; day <= dayInMonth[month - 1]; day++) {
-                equal(TP().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+                equal(tp().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(TP().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tp().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(TP().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tp().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
         // leap year check
         dayInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         for (month = 1; month <= 12; month++) {
             for (day = 1; day <= dayInMonth[month - 1]; day++) {
-                equal(TP().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+                equal(tp().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(TP().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tp().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(TP().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tp().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
-        equal(TP().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
+        equal(tp().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
     });
 
     test('Test set() hours ranges', function () {
         for (hours = 0; hours <= 23; hours++) {
-            equal(TP().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
+            equal(tp().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
         }
         for (hours = -100; hours < 0; hours++) {
-            equal(TP().set({hours: hours}).hours(), 0, 'Hours can not be 0 or less. Month: ' + hours);
+            equal(tp().set({hours: hours}).hours(), 0, 'Hours can not be 0 or less. Month: ' + hours);
         }
         for (hours = 24; hours <= 100; hours++) {
-            equal(TP().set({hours: hours}).hours(), 0, 'Hours can not be 24 or more. Month: ' + hours);
+            equal(tp().set({hours: hours}).hours(), 0, 'Hours can not be 24 or more. Month: ' + hours);
         }
-        equal(TP().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
+        equal(tp().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
     });
 
     test('Test set() minutes ranges', function () {
         for (minutes = 0; minutes <= 59; minutes++) {
-            equal(TP().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
+            equal(tp().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
         }
         for (minutes = -100; minutes < 0; minutes++) {
-            equal(TP().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 0 or less. Minutes: ' + minutes);
+            equal(tp().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 0 or less. Minutes: ' + minutes);
         }
         for (minutes = 60; minutes <= 100; minutes++) {
-            equal(TP().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 59 or more. Minutes: ' + minutes);
+            equal(tp().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 59 or more. Minutes: ' + minutes);
         }
-        equal(TP().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
+        equal(tp().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
     });
 
     test('Test set() seconds ranges', function () {
         for (seconds = 0; seconds <= 59; seconds++) {
-            equal(TP().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
+            equal(tp().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
         }
         for (seconds = -100; seconds < 0; seconds++) {
-            equal(TP().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 0 or less. Minutes: ' + seconds);
+            equal(tp().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 0 or less. Minutes: ' + seconds);
         }
         for (seconds = 60; seconds <= 100; seconds++) {
-            equal(TP().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 59 or more. Minutes: ' + seconds);
+            equal(tp().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 59 or more. Minutes: ' + seconds);
         }
-        equal(TP().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
+        equal(tp().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
 
     test('Test year() method', function () {
         // values
-        equal(TP().year(2000).year(), 2000, 'Test value: 2000');
-        equal(TP().year(1).year(), 1, 'Test value: 1');
-        equal(TP().year(-15).year(), -15, 'Test value: -15');
-        equal(TP().year('0').year(), 0, 'Test value: \'0\'');
-        equal(TP().year({foo: 'bar'}).year(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(TP().year([1,2,3]).year(), undefined, 'Test value: [1,2,3]');
-        equal(TP().year(undefined).year(), undefined, 'Test value: undefined');
-        equal(TP().year(null).year(), undefined, 'Test value: null');
-        equal(TP().year(true).year(), undefined, 'Test value: true');
-        equal(TP().year(false).year(), undefined, 'Test value: false');
+        equal(tp().year(2000).year(), 2000, 'Test value: 2000');
+        equal(tp().year(1).year(), 1, 'Test value: 1');
+        equal(tp().year(-15).year(), -15, 'Test value: -15');
+        equal(tp().year('0').year(), 0, 'Test value: \'0\'');
+        equal(tp().year({foo: 'bar'}).year(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(tp().year([1,2,3]).year(), undefined, 'Test value: [1,2,3]');
+        equal(tp().year(undefined).year(), undefined, 'Test value: undefined');
+        equal(tp().year(null).year(), undefined, 'Test value: null');
+        equal(tp().year(true).year(), undefined, 'Test value: true');
+        equal(tp().year(false).year(), undefined, 'Test value: false');
         // check types
-        equal(typeof TP().year(2000).year(), 'number', 'Type is number');
+        equal(typeof tp().year(2000).year(), 'number', 'Type is number');
     });
 
     test('Test month() method', function () {
         // values
-        equal(TP().month(100).month(), 100, 'Test value: 100');
-        equal(TP().month(12).month(), 12, 'Test value: 12');
-        equal(TP().month(-5).month(), -5, 'Test value: -5');
-        equal(TP().month('0').month(), 0, 'Test value: \'0\'');
-        equal(TP().month({foo: 'bar'}).month(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(TP().month([1,2,3]).month(), undefined, 'Test value: [1,2,3]');
-        equal(TP().month(undefined).month(), undefined, 'Test value: undefined');
-        equal(TP().month(null).month(), undefined, 'Test value: null');
-        equal(TP().month(true).month(), undefined, 'Test value: true');
-        equal(TP().month(false).month(), undefined, 'Test value: false');
+        equal(tp().month(100).month(), 100, 'Test value: 100');
+        equal(tp().month(12).month(), 12, 'Test value: 12');
+        equal(tp().month(-5).month(), -5, 'Test value: -5');
+        equal(tp().month('0').month(), 0, 'Test value: \'0\'');
+        equal(tp().month({foo: 'bar'}).month(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(tp().month([1,2,3]).month(), undefined, 'Test value: [1,2,3]');
+        equal(tp().month(undefined).month(), undefined, 'Test value: undefined');
+        equal(tp().month(null).month(), undefined, 'Test value: null');
+        equal(tp().month(true).month(), undefined, 'Test value: true');
+        equal(tp().month(false).month(), undefined, 'Test value: false');
         // check types
-        equal(typeof TP().month(1).month(), 'number', 'Type is number');
+        equal(typeof tp().month(1).month(), 'number', 'Type is number');
     });
 
     test('Test day() method', function () {
         // values
-        equal(TP().day(100).day(), 100, 'Test value: 100');
-        equal(TP().day(12).day(), 12, 'Test value: 12');
-        equal(TP().day(-5).day(), -5, 'Test value: -5');
-        equal(TP().day('0').day(), 0, 'Test value: \'0\'');
-        equal(TP().day({foo: 'bar'}).day(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(TP().day([1,2,3]).day(), undefined, 'Test value: [1,2,3]');
-        equal(TP().day(undefined).day(), undefined, 'Test value: undefined');
-        equal(TP().day(null).day(), undefined, 'Test value: null');
-        equal(TP().day(true).day(), undefined, 'Test value: true');
-        equal(TP().day(false).day(), undefined, 'Test value: false');
+        equal(tp().day(100).day(), 100, 'Test value: 100');
+        equal(tp().day(12).day(), 12, 'Test value: 12');
+        equal(tp().day(-5).day(), -5, 'Test value: -5');
+        equal(tp().day('0').day(), 0, 'Test value: \'0\'');
+        equal(tp().day({foo: 'bar'}).day(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(tp().day([1,2,3]).day(), undefined, 'Test value: [1,2,3]');
+        equal(tp().day(undefined).day(), undefined, 'Test value: undefined');
+        equal(tp().day(null).day(), undefined, 'Test value: null');
+        equal(tp().day(true).day(), undefined, 'Test value: true');
+        equal(tp().day(false).day(), undefined, 'Test value: false');
         // check types
-        equal(typeof TP().day(1).day(), 'number', 'Type is number');
+        equal(typeof tp().day(1).day(), 'number', 'Type is number');
     });
 
     test('Test hours() method', function () {
         // values
-        equal(TP().hours(100).hours(), 100, 'Test value: 100');
-        equal(TP().hours(12).hours(), 12, 'Test value: 12');
-        equal(TP().hours(-5).hours(), -5, 'Test value: -5');
-        equal(TP().hours('0').hours(), 0, 'Test value: \'0\'');
-        equal(TP().hours({foo: 'bar'}).hours(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(TP().hours([1,2,3]).hours(), undefined, 'Test value: [1,2,3]');
-        equal(TP().hours(undefined).hours(), undefined, 'Test value: undefined');
-        equal(TP().hours(null).hours(), undefined, 'Test value: null');
-        equal(TP().hours(true).hours(), undefined, 'Test value: true');
-        equal(TP().hours(false).hours(), undefined, 'Test value: false');
+        equal(tp().hours(100).hours(), 100, 'Test value: 100');
+        equal(tp().hours(12).hours(), 12, 'Test value: 12');
+        equal(tp().hours(-5).hours(), -5, 'Test value: -5');
+        equal(tp().hours('0').hours(), 0, 'Test value: \'0\'');
+        equal(tp().hours({foo: 'bar'}).hours(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(tp().hours([1,2,3]).hours(), undefined, 'Test value: [1,2,3]');
+        equal(tp().hours(undefined).hours(), undefined, 'Test value: undefined');
+        equal(tp().hours(null).hours(), undefined, 'Test value: null');
+        equal(tp().hours(true).hours(), undefined, 'Test value: true');
+        equal(tp().hours(false).hours(), undefined, 'Test value: false');
         // check types
-        equal(typeof TP().hours(1).hours(), 'number', 'Type is number');
+        equal(typeof tp().hours(1).hours(), 'number', 'Type is number');
     });
 
     test('Test minutes() method', function () {
         // values
-        equal(TP().minutes(100).minutes(), 100, 'Test value: 100');
-        equal(TP().minutes(12).minutes(), 12, 'Test value: 12');
-        equal(TP().minutes(-5).minutes(), -5, 'Test value: -5');
-        equal(TP().minutes('0').minutes(), 0, 'Test value: \'0\'');
-        equal(TP().minutes({foo: 'bar'}).minutes(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(TP().minutes([1,2,3]).minutes(), undefined, 'Test value: [1,2,3]');
-        equal(TP().minutes(undefined).minutes(), undefined, 'Test value: undefined');
-        equal(TP().minutes(null).minutes(), undefined, 'Test value: null');
-        equal(TP().minutes(true).minutes(), undefined, 'Test value: true');
-        equal(TP().minutes(false).minutes(), undefined, 'Test value: false');
+        equal(tp().minutes(100).minutes(), 100, 'Test value: 100');
+        equal(tp().minutes(12).minutes(), 12, 'Test value: 12');
+        equal(tp().minutes(-5).minutes(), -5, 'Test value: -5');
+        equal(tp().minutes('0').minutes(), 0, 'Test value: \'0\'');
+        equal(tp().minutes({foo: 'bar'}).minutes(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(tp().minutes([1,2,3]).minutes(), undefined, 'Test value: [1,2,3]');
+        equal(tp().minutes(undefined).minutes(), undefined, 'Test value: undefined');
+        equal(tp().minutes(null).minutes(), undefined, 'Test value: null');
+        equal(tp().minutes(true).minutes(), undefined, 'Test value: true');
+        equal(tp().minutes(false).minutes(), undefined, 'Test value: false');
         // check types
-        equal(typeof TP().minutes(1).minutes(), 'number', 'Type is number');
+        equal(typeof tp().minutes(1).minutes(), 'number', 'Type is number');
     });
 
     test('Test seconds() method', function () {
         // values
-        equal(TP().seconds(100).seconds(), 100, 'Test value: 100');
-        equal(TP().seconds(12).seconds(), 12, 'Test value: 12');
-        equal(TP().seconds(-5).seconds(), -5, 'Test value: -5');
-        equal(TP().seconds('0').seconds(), 0, 'Test value: \'0\'');
-        equal(TP().seconds({foo: 'bar'}).seconds(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(TP().seconds([1,2,3]).seconds(), undefined, 'Test value: [1,2,3]');
-        equal(TP().seconds(undefined).seconds(), undefined, 'Test value: undefined');
-        equal(TP().seconds(null).seconds(), undefined, 'Test value: null');
-        equal(TP().seconds(true).seconds(), undefined, 'Test value: true');
-        equal(TP().seconds(false).seconds(), undefined, 'Test value: false');
+        equal(tp().seconds(100).seconds(), 100, 'Test value: 100');
+        equal(tp().seconds(12).seconds(), 12, 'Test value: 12');
+        equal(tp().seconds(-5).seconds(), -5, 'Test value: -5');
+        equal(tp().seconds('0').seconds(), 0, 'Test value: \'0\'');
+        equal(tp().seconds({foo: 'bar'}).seconds(), undefined, 'Test value: {foo: \'bar\'}');
+        equal(tp().seconds([1,2,3]).seconds(), undefined, 'Test value: [1,2,3]');
+        equal(tp().seconds(undefined).seconds(), undefined, 'Test value: undefined');
+        equal(tp().seconds(null).seconds(), undefined, 'Test value: null');
+        equal(tp().seconds(true).seconds(), undefined, 'Test value: true');
+        equal(tp().seconds(false).seconds(), undefined, 'Test value: false');
         // check types
-        equal(typeof TP().seconds(1).seconds(), 'number', 'Type is number');
+        equal(typeof tp().seconds(1).seconds(), 'number', 'Type is number');
     });
 
     test('Test isLeapYear() method', function () {
-        equal(TP().now().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
-        equal(TP().year(2013).leapYear(), false, '2013 is not leap year');
-        equal(TP().year(2012).leapYear(), true, '2012 is leap year');
-        equal(TP().year(2000).leapYear(), true, '2000 is leap year');
-        equal(TP().year(1900).leapYear(), false, '1900 is not leap year');
-        equal(TP().year(1904).leapYear(), true, '1904 is leap year');
-        equal(TP().year(1905).leapYear(), false, '1905 is not leap year');
-        equal(TP().set({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
-        equal(TP().set({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
-        equal(typeof TP().now().leapYear(), 'boolean', 'Type is boolean');
+        equal(tp().now().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
+        equal(tp().year(2013).leapYear(), false, '2013 is not leap year');
+        equal(tp().year(2012).leapYear(), true, '2012 is leap year');
+        equal(tp().year(2000).leapYear(), true, '2000 is leap year');
+        equal(tp().year(1900).leapYear(), false, '1900 is not leap year');
+        equal(tp().year(1904).leapYear(), true, '1904 is leap year');
+        equal(tp().year(1905).leapYear(), false, '1905 is not leap year');
+        equal(tp().set({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
+        equal(tp().set({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
+        equal(typeof tp().now().leapYear(), 'boolean', 'Type is boolean');
         for (var year = 1800; year <= yyyy; year++) {
-            equal(TP().year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
+            equal(tp().year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
         }
     });
 
     test('Test format() method', function () {
-        equal(TP().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
-        equal(TP().set({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
+        equal(tp().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
+        equal(tp().set({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
             '2000-10-01 10:00:00', 'Date and time format');
-        equal(TP().set({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
-        equal(typeof TP().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
+        equal(tp().set({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
+        equal(typeof tp().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
     });
 
     test('Test instances', function() {
         var resultTest1 = function() {
-            var a = TP().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
+            var a = tp().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
             return a.format('%Y-%m-%d %H:%M:%S');
         };
         var resultTest2 = function() {
-            var a = TP().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
-            var b = TP().now();
+            var a = tp().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
+            var b = tp().now();
             return a.format('%Y-%m-%d %H:%M:%S');
         };
 
         equal(resultTest1(), '2013-05-05 12:41:36', 'Test 1');
         equal(resultTest2(), '2013-05-05 12:41:36', 'Test 2');
+    });
+
+    test('Test calc()', function() {
+        equal(tp({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y'), '01.05.2013', 'Easy test');
     });
 //
 //    test('tempus.getDaysCountInMonth', function () {
