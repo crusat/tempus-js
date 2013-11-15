@@ -156,9 +156,11 @@
     test('Test year() method', function () {
         // values
         equal(tempus().year(2000).year(), 2000, 'Test value: 2000');
-        equal(tempus().year(1).year(), 1, 'Test value: 1');
-        equal(tempus().year(-15).year(), -15, 'Test value: -15');
-        equal(tempus().year('0').year(), 0, 'Test value: \'0\'');
+        equal(tempus().year(1000).year(), 1000, 'Test value: 1000');
+        equal(tempus().year(3000).year(), 3000, 'Test value: 3000');
+        equal(tempus().year(1).year(), new Date().getFullYear(), 'Test value: 1');
+        equal(tempus().year(-15).year(), new Date().getFullYear(), 'Test value: -15');
+        equal(tempus().year('0').year(), new Date().getFullYear(), 'Test value: \'0\'');
         equal(tempus().year({foo: 'bar'}).year(), new Date().getFullYear(), 'Test value: {foo: \'bar\'}');
         equal(tempus().year([1,2,3]).year(), new Date().getFullYear(), 'Test value: [1,2,3]');
         equal(tempus().year(undefined).year(), new Date().getFullYear(), 'Test value: undefined');
@@ -188,64 +190,64 @@
 
     test('Test day() method', function () {
         // values
-        equal(tempus().day(100).day(), 100, 'Test value: 100');
+        equal(tempus().day(100).day(), new Date().getDate(), 'Test value: 100');
         equal(tempus().day(12).day(), 12, 'Test value: 12');
-        equal(tempus().day(-5).day(), -5, 'Test value: -5');
-        equal(tempus().day('0').day(), 0, 'Test value: \'0\'');
-        equal(tempus().day({foo: 'bar'}).day(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(tempus().day([1,2,3]).day(), undefined, 'Test value: [1,2,3]');
-        equal(tempus().day(undefined).day(), undefined, 'Test value: undefined');
-        equal(tempus().day(null).day(), undefined, 'Test value: null');
-        equal(tempus().day(true).day(), undefined, 'Test value: true');
-        equal(tempus().day(false).day(), undefined, 'Test value: false');
+        equal(tempus().day(-5).day(), new Date().getDate(), 'Test value: -5');
+        equal(tempus().day('0').day(), new Date().getDate(), 'Test value: \'0\'');
+        equal(tempus().day({foo: 'bar'}).day(), new Date().getDate(), 'Test value: {foo: \'bar\'}');
+        equal(tempus().day([1,2,3]).day(), new Date().getDate(), 'Test value: [1,2,3]');
+        equal(tempus().day(undefined).day(), new Date().getDate(), 'Test value: undefined');
+        equal(tempus().day(null).day(), new Date().getDate(), 'Test value: null');
+        equal(tempus().day(true).day(), new Date().getDate(), 'Test value: true');
+        equal(tempus().day(false).day(), new Date().getDate(), 'Test value: false');
         // check types
         equal(typeof tempus().day(1).day(), 'number', 'Type is number');
     });
 
     test('Test hours() method', function () {
         // values
-        equal(tempus().hours(100).hours(), 100, 'Test value: 100');
+        equal(tempus().hours(100).hours(), new Date().getHours(), 'Test value: 100');
         equal(tempus().hours(12).hours(), 12, 'Test value: 12');
-        equal(tempus().hours(-5).hours(), -5, 'Test value: -5');
+        equal(tempus().hours(-5).hours(), new Date().getHours(), 'Test value: -5');
         equal(tempus().hours('0').hours(), 0, 'Test value: \'0\'');
-        equal(tempus().hours({foo: 'bar'}).hours(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(tempus().hours([1,2,3]).hours(), undefined, 'Test value: [1,2,3]');
-        equal(tempus().hours(undefined).hours(), undefined, 'Test value: undefined');
-        equal(tempus().hours(null).hours(), undefined, 'Test value: null');
-        equal(tempus().hours(true).hours(), undefined, 'Test value: true');
-        equal(tempus().hours(false).hours(), undefined, 'Test value: false');
+        equal(tempus().hours({foo: 'bar'}).hours(), new Date().getHours(), 'Test value: {foo: \'bar\'}');
+        equal(tempus().hours([1,2,3]).hours(), new Date().getHours(), 'Test value: [1,2,3]');
+        equal(tempus().hours(undefined).hours(), new Date().getHours(), 'Test value: undefined');
+        equal(tempus().hours(null).hours(), new Date().getHours(), 'Test value: null');
+        equal(tempus().hours(true).hours(), new Date().getHours(), 'Test value: true');
+        equal(tempus().hours(false).hours(), new Date().getHours(), 'Test value: false');
         // check types
         equal(typeof tempus().hours(1).hours(), 'number', 'Type is number');
     });
 
     test('Test minutes() method', function () {
         // values
-        equal(tempus().minutes(100).minutes(), 100, 'Test value: 100');
+        equal(tempus().minutes(100).minutes(), new Date().getMinutes(), 'Test value: 100');
         equal(tempus().minutes(12).minutes(), 12, 'Test value: 12');
-        equal(tempus().minutes(-5).minutes(), -5, 'Test value: -5');
+        equal(tempus().minutes(-5).minutes(), new Date().getMinutes(), 'Test value: -5');
         equal(tempus().minutes('0').minutes(), 0, 'Test value: \'0\'');
-        equal(tempus().minutes({foo: 'bar'}).minutes(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(tempus().minutes([1,2,3]).minutes(), undefined, 'Test value: [1,2,3]');
-        equal(tempus().minutes(undefined).minutes(), undefined, 'Test value: undefined');
-        equal(tempus().minutes(null).minutes(), undefined, 'Test value: null');
-        equal(tempus().minutes(true).minutes(), undefined, 'Test value: true');
-        equal(tempus().minutes(false).minutes(), undefined, 'Test value: false');
+        equal(tempus().minutes({foo: 'bar'}).minutes(), new Date().getMinutes(), 'Test value: {foo: \'bar\'}');
+        equal(tempus().minutes([1,2,3]).minutes(), new Date().getMinutes(), 'Test value: [1,2,3]');
+        equal(tempus().minutes(undefined).minutes(), new Date().getMinutes(), 'Test value: undefined');
+        equal(tempus().minutes(null).minutes(), new Date().getMinutes(), 'Test value: null');
+        equal(tempus().minutes(true).minutes(), new Date().getMinutes(), 'Test value: true');
+        equal(tempus().minutes(false).minutes(), new Date().getMinutes(), 'Test value: false');
         // check types
         equal(typeof tempus().minutes(1).minutes(), 'number', 'Type is number');
     });
 
     test('Test seconds() method', function () {
         // values
-        equal(tempus().seconds(100).seconds(), 100, 'Test value: 100');
+        equal(tempus().seconds(100).seconds(), new Date().getSeconds(), 'Test value: 100');
         equal(tempus().seconds(12).seconds(), 12, 'Test value: 12');
-        equal(tempus().seconds(-5).seconds(), -5, 'Test value: -5');
+        equal(tempus().seconds(-5).seconds(), new Date().getSeconds(), 'Test value: -5');
         equal(tempus().seconds('0').seconds(), 0, 'Test value: \'0\'');
-        equal(tempus().seconds({foo: 'bar'}).seconds(), undefined, 'Test value: {foo: \'bar\'}');
-        equal(tempus().seconds([1,2,3]).seconds(), undefined, 'Test value: [1,2,3]');
-        equal(tempus().seconds(undefined).seconds(), undefined, 'Test value: undefined');
-        equal(tempus().seconds(null).seconds(), undefined, 'Test value: null');
-        equal(tempus().seconds(true).seconds(), undefined, 'Test value: true');
-        equal(tempus().seconds(false).seconds(), undefined, 'Test value: false');
+        equal(tempus().seconds({foo: 'bar'}).seconds(), new Date().getSeconds(), 'Test value: {foo: \'bar\'}');
+        equal(tempus().seconds([1,2,3]).seconds(), new Date().getSeconds(), 'Test value: [1,2,3]');
+        equal(tempus().seconds(undefined).seconds(), new Date().getSeconds(), 'Test value: undefined');
+        equal(tempus().seconds(null).seconds(), new Date().getSeconds(), 'Test value: null');
+        equal(tempus().seconds(true).seconds(), new Date().getSeconds(), 'Test value: true');
+        equal(tempus().seconds(false).seconds(), new Date().getSeconds(), 'Test value: false');
         // check types
         equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
     });

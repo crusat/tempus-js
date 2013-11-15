@@ -274,7 +274,7 @@
     TempusDate.prototype.year = function (value) {
         if (arguments.length !== 0) {
             // no value range checking, because can be used for delta times
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
                 this._date.setFullYear(Number(value));
             }
         } else {
@@ -289,7 +289,7 @@
      */
     TempusDate.prototype.month = function (value) {
         if (arguments.length !== 0) {
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
                 this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
             }
         } else {
@@ -304,7 +304,7 @@
      */
     TempusDate.prototype.day = function (value) {
         if (arguments.length !== 0) {
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_DAY && Number(value) <= this.dayCount()) {
                 this._date.setDate(Number(value));
             }
         } else {
@@ -319,7 +319,7 @@
      */
     TempusDate.prototype.hours = function (value) {
         if (arguments.length !== 0) {
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_HOURS && Number(value) <= this.constants().MAX_HOURS) {
                 this._date.setHours(Number(value));
             }
         } else {
@@ -334,7 +334,7 @@
      */
     TempusDate.prototype.minutes = function (value) {
         if (arguments.length !== 0) {
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MINUTES && Number(value) <= this.constants().MAX_MINUTES) {
                 this._date.setMinutes(Number(value));
             }
         } else {
@@ -349,7 +349,7 @@
      */
     TempusDate.prototype.seconds = function (value) {
         if (arguments.length !== 0) {
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_SECONDS && Number(value) <= this.constants().MAX_SECONDS) {
                 this._date.setSeconds(Number(value));
             }
         } else {
@@ -359,7 +359,7 @@
     };
     TempusDate.prototype.milliseconds = function (value) {
         if (arguments.length !== 0) {
-            if (typeof value === 'number' || typeof value === 'string') {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
                 this._date.setMilliseconds(Number(value));
             }
         } else {
@@ -379,13 +379,6 @@
      */
     TempusDate.prototype.now = function () {
         this._date = new Date();
-//        this.year(d.getFullYear());
-//        this.month(d.getMonth() + (monthFromZero ? 0 : 1));
-//        this.day(d.getDate());
-//        this.hours(d.getHours());
-//        this.minutes(d.getMinutes());
-//        this.seconds(d.getSeconds());
-//        this.milliseconds(d.getMilliseconds());
         return this;
     };
     TempusDate.prototype.timestamp = function (value) {
