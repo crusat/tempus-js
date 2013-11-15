@@ -291,6 +291,9 @@
     test('Test calc()', function() {
         equal(tp({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y'), '01.05.2013', 'Easy test');
     });
+
+    // parse test
+    //tempus('2010%01%05', '%Y%%%m%%%d');
 //
 //    test('tempus.getDaysCountInMonth', function () {
 //        equal(tempus.getDaysCountInMonth(11, 2013), 30, 'Days count - november 2013');

@@ -707,16 +707,15 @@
     // TP.parse('20130101', '%Y%m%d', TP.now().calc({month: -1})).format('%Y-%m-%d')
     // returns "2013-06-01"
     // TP.parse(undefined, '%Y%m%d', TP.date({year: 2013, month: 06, day: 1})).format('%Y-%m-%d');
+    // Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
+    // Two percent chars (%%) not allowed to directives. This replaced to single percent (%) on parsing.
     TempusDate.prototype.parse = function (str, format, defaults) {
         var key;
         var lits = [];
         if (format === undefined) {
             format = this.detectFormat(str);
         }
-        var format_re;
 
-
-        var regex = '';
         var directive;
         var res = [];
 
@@ -725,39 +724,42 @@
             k;
         while (i < format.length) {
             if (format.charAt(i) === '%') {
-                directive = format.charAt(i) + format.charAt(i + 1);
-                k = 0;
-                var shortString = '';
-                switch(registeredFormats[directive].type) {
-                    case 'number':
-                        while (k <= registeredFormats[directive].maxLength && !isNaN(Number(str.charAt(j + k)))) {
-                            shortString += str.charAt(j + k);
-                            k++;
-                        }
-                        break;
-                    case 'word':
-                        while (k <= registeredFormats[directive].maxLength && /^\w+$/.test(str.charAt(j + k))) {
-                            shortString += str.charAt(j + k);
-                            k++;
-                        }
-                        break;
-                    case 'string':
-                        while (k <= registeredFormats[directive].maxLength) {
-                            shortString += str.charAt(j + k);
-                            k++;
-                        }
-                        break;
-                }
+                if (format.charAt(i+1) === '%') {
+                    i++;
+                } else {
+                    directive = format.charAt(i) + format.charAt(i + 1);
+                    k = 0;
+                    var shortString = '';
+                    switch(registeredFormats[directive].type) {
+                        case 'number':
+                            while (k <= registeredFormats[directive].maxLength && !isNaN(Number(str.charAt(j + k)))) {
+                                shortString += str.charAt(j + k);
+                                k++;
+                            }
+                            break;
+                        case 'word':
+                            while (k <= registeredFormats[directive].maxLength && /^\w+$/.test(str.charAt(j + k))) {
+                                shortString += str.charAt(j + k);
+                                k++;
+                            }
+                            break;
+                        case 'string':
+                            while (k <= registeredFormats[directive].maxLength) {
+                                shortString += str.charAt(j + k);
+                                k++;
+                            }
+                            break;
+                    }
 
-                if (k < registeredFormats[directive].minLength) {
-                    return parseBadFormat(this, defaults);
+                    if (k < registeredFormats[directive].minLength) {
+                        return parseBadFormat(this, defaults);
+                    }
+                    lits.push(directive);
+                    res.push(shortString);
+                    j += --k;
+                    i++;
                 }
-                lits.push(directive);
-                res.push(shortString);
-                j += --k;
-                i++;
             } else {
-                regex += format.charAt(i);
                 if (str.charAt(j) !== format.charAt(i)) {
                     return parseBadFormat(this, defaults);
                 }
