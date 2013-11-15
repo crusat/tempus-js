@@ -605,12 +605,23 @@
         return dc;
     };
     TempusDate.prototype.format = function (format) {
-        var result = format;
-        // formatting
-        for (var key in registeredFormats) {
-            if (registeredFormats.hasOwnProperty(key)) {
-                result = result.replace(key, registeredFormats[key].format(this));
+        var i = 0,
+            result = '',
+            directive;
+        while (i < format.length) {
+            if (format.charAt(i) === '%') {
+                if (format.charAt(i+1) === '%') {
+                    i++;
+                    result += '%';
+                } else {
+                    directive = format.charAt(i) + format.charAt(i + 1);
+                    result += registeredFormats[directive].format(this);
+                    i++;
+                }
+            } else {
+                result += format.charAt(i);
             }
+            i++;
         }
         return result;
     };
