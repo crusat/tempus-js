@@ -1011,13 +1011,13 @@
          * // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
          * tempus.parse('10.2.2013', '%d.%q.%Y');
          */
-        this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
-            registeredFormats[value] = {
-                format: formatFunc,
-                parse: parseFunc,
-                parseLit: parseLit
-            }
-        };
+//        this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
+//            registeredFormats[value] = {
+//                format: formatFunc,
+//                parse: parseFunc,
+//                parseLit: parseLit
+//            }
+//        };
 
         /**
          * Unregistering a format.
@@ -1029,9 +1029,9 @@
          * // returns "%d.01.2013"
          * tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
          */
-        this.unregisterFormat = function(value) {
-            delete registeredFormats[value];
-        };
+//        this.unregisterFormat = function(value) {
+//            delete registeredFormats[value];
+//        };
 
         /**
          * Get week number.

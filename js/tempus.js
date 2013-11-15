@@ -1,6 +1,5 @@
 (function (window, undefined) {
-    var _TP = window.tp,
-        _Tempus = window.tempus,
+    var _Tempus = window.tempus,
         Tempus,
         version = '0.2.0',
         lang = 'en',
@@ -922,10 +921,23 @@
         return this;
     };
 
+    TempusDate.prototype.registerFormat = function(value, formatFunc, parseFunc, minLength, maxLength, type) {
+        registeredFormats[value] = {
+            format: formatFunc,
+            parse: parseFunc,
+            minLength: minLength,
+            maxLength: maxLength,
+            type: type
+        }
+    };
+
+    TempusDate.prototype.unregisterFormat = function(value) {
+        delete registeredFormats[value];
+    };
+
 
     // Factory
-    function TempusFactory() {
-    }
+    function TempusFactory() {}
 
     TempusFactory.prototype.createDate = function (options, format) {
         return new TempusDate(options, format);
@@ -934,5 +946,5 @@
     Tempus = function (options, format) {
         return tempusFactory.createDate(options, format);
     };
-    window.tp = window.tempus = Tempus;
+    window.tempus = Tempus;
 })(window);
