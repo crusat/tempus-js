@@ -731,19 +731,19 @@
                     var shortString = '';
                     switch(registeredFormats[directive].type) {
                         case 'number':
-                            while (k <= registeredFormats[directive].maxLength && !isNaN(Number(str.charAt(j + k)))) {
+                            while ((k < registeredFormats[directive].maxLength) && !isNaN(Number(str.charAt(j + k))) && (j + k < str.length)) {
                                 shortString += str.charAt(j + k);
                                 k++;
                             }
                             break;
                         case 'word':
-                            while (k <= registeredFormats[directive].maxLength && /^\w+$/.test(str.charAt(j + k))) {
+                            while ((k < registeredFormats[directive].maxLength) && /^\w+$/.test(str.charAt(j + k))&& (j + k < str.length)) {
                                 shortString += str.charAt(j + k);
                                 k++;
                             }
                             break;
                         case 'string':
-                            while (k <= registeredFormats[directive].maxLength) {
+                            while ((k < registeredFormats[directive].maxLength) && (j + k < str.length)) {
                                 shortString += str.charAt(j + k);
                                 k++;
                             }
