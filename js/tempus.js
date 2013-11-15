@@ -492,8 +492,9 @@
      * @param all {boolean} If true, Tempus variable also will be released.
      * @returns {Tempus} Tempus object.
      * @example
-     * // returns Tempus object
-     * var myTempusObj = Tempus.noConflict(true);
+     * // returns Tempus constructor
+     * var T = tempus().noConflict(true);
+     * var t = T().format('%d.%m.%Y');
     */
     TempusDate.prototype.noConflict = function(all) {
         window.TP = _TP;
