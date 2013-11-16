@@ -735,19 +735,83 @@
         this.seconds(resultdate.seconds);
         return this;
     };
-    TempusDate.prototype.detectFormat = function (str) {
-        var defaultFormats = [
-            '%d.%m.%Y', '%Y-%m-%d', '%m/%d/%Y', '%Y-%m-%dT%H:%M:%S',
-            '%d.%m.%Y %H:%M:%S', '%d.%m.%Y %H:%M', '%d.%m.%Y %H',
-            '%Y-%m-%d %H:%M:%S', '%Y-%m-%d %H:%M', '%Y-%m-%d %H',
-            '%m/%d/%Y %H:%M:%S', '%m/%d/%Y %H:%M', '%m/%d/%Y %H',
-            '%Y', '%H:%M:%S', '%H:%M'
-        ];
-        for (var i = 0; i < defaultFormats.length; i++) {
-            if (this.parse(str, defaultFormats[i]) !== undefined) {
-                return defaultFormats[i];
-            }
+
+    var detectTimeFormat = function(str, startFrom) {
+        var tmpChars, format = '';
+        tmpChars = str.slice(startFrom, startFrom+1);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%H';
         }
+        tmpChars = str.charAt(startFrom+2);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+3, startFrom+4);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%M';
+        }
+        tmpChars = str.charAt(startFrom+5);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+6, startFrom+7);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%S';
+        }
+        return format;
+    };
+
+    TempusDate.prototype.detectFormat = function (str) {
+        var format, tmpChars;
+        var part1 = [
+            str.slice(0, 1),
+            str.charAt(2),
+            str.slice(3, 4),
+            str.charAt(5),
+            str.slice(6, 9)
+        ];
+
+        if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
+            if (part1[1] === '.' && part1[3] === '.') {
+                format = '%d.%m.%Y';
+            } else if (part1[1] === '-' && part1[3] === '-') {
+                format = '%m-%d-%Y';
+            } else if (part1[1] === '/' && part1[3] === '/') {
+                format = '%m/%d/%Y';
+            }
+            tmpChars = str.charAt(10);
+            if (tmpChars === 'T' || tmpChars === ' ') {
+                format += tmpChars;
+            }
+            format += detectTimeFormat(str, 11);
+            return format;
+        }
+
+        var part2 = [
+            str.slice(0, 3),
+            str.charAt(4),
+            str.slice(5, 6),
+            str.charAt(7),
+            str.slice(8, 9)
+        ];
+
+        if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
+            if (part2[1] === '-' && part2[3] === '-') {
+                format = '%Y-%m-%d';
+            }
+            tmpChars = str.charAt(10);
+            if (tmpChars === 'T' || tmpChars === ' ') {
+                format += tmpChars;
+            }
+            format += detectTimeFormat(str, 11);
+            return format;
+        }
+
+//        for (var i = 0; i < defaultFormats.length; i++) {
+//            if (this.parse(str, defaultFormats[i]) !== undefined) {
+//                return defaultFormats[i];
+//            }
+//        }
         return undefined;
     };
 
