@@ -287,6 +287,7 @@
             // no value range checking, because can be used for delta times
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
                 this._date.setFullYear(Number(value));
+                this._incorrect.year = false;
             } else {
                 this._incorrect.year = Number(value);
             }
@@ -304,6 +305,7 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
                 this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
+                this._incorrect.month = false;
             } else {
                 this._incorrect.month = Number(value);
             }
@@ -321,6 +323,7 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_DAY && Number(value) <= this.dayCount()) {
                 this._date.setDate(Number(value));
+                this._incorrect.day = false;
             } else {
                 this._incorrect.day = Number(value);
             }
@@ -338,6 +341,7 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_HOURS && Number(value) <= this.constants().MAX_HOURS) {
                 this._date.setHours(Number(value));
+                this._incorrect.hours = false;
             } else {
                 this._incorrect.hours = Number(value);
             }
@@ -355,6 +359,7 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MINUTES && Number(value) <= this.constants().MAX_MINUTES) {
                 this._date.setMinutes(Number(value));
+                this._incorrect.minutes = false;
             } else {
                 this._incorrect.minutes = Number(value);
             }
@@ -372,6 +377,7 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_SECONDS && Number(value) <= this.constants().MAX_SECONDS) {
                 this._date.setSeconds(Number(value));
+                this._incorrect.seconds = false;
             } else {
                 this._incorrect.seconds = Number(value);
             }
@@ -384,6 +390,7 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
                 this._date.setMilliseconds(Number(value));
+                this._incorrect.milliseconds = false;
             } else {
                 this._incorrect.milliseconds = Number(value);
             }
