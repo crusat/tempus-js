@@ -288,6 +288,9 @@
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
                 this._date.setFullYear(Number(value));
                 this._incorrect.year = false;
+            } else if (value === undefined) {
+                this._date.setFullYear(this.constants().MIN_YEAR);
+                this._incorrect.year = false;
             } else {
                 this._incorrect.year = Number(value);
             }
@@ -305,6 +308,9 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
                 this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
+                this._incorrect.month = false;
+            } else if (value === undefined) {
+                this._date.setMonth(monthFromZero ? this.constants().MIN_MONTH : this.constants().MIN_MONTH - 1);
                 this._incorrect.month = false;
             } else {
                 this._incorrect.month = Number(value);
@@ -324,6 +330,9 @@
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_DAY && Number(value) <= this.dayCount()) {
                 this._date.setDate(Number(value));
                 this._incorrect.day = false;
+            } else if (value === undefined) {
+                this._date.setDate(this.constants().MIN_DAY);
+                this._incorrect.day = false;
             } else {
                 this._incorrect.day = Number(value);
             }
@@ -341,6 +350,9 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_HOURS && Number(value) <= this.constants().MAX_HOURS) {
                 this._date.setHours(Number(value));
+                this._incorrect.hours = false;
+            } else if (value === undefined) {
+                this._date.setHours(this.constants().MIN_HOURS);
                 this._incorrect.hours = false;
             } else {
                 this._incorrect.hours = Number(value);
@@ -360,6 +372,9 @@
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MINUTES && Number(value) <= this.constants().MAX_MINUTES) {
                 this._date.setMinutes(Number(value));
                 this._incorrect.minutes = false;
+            } else if (value === undefined) {
+                this._date.setMinutes(this.constants().MIN_MINUTES);
+                this._incorrect.minutes = false;
             } else {
                 this._incorrect.minutes = Number(value);
             }
@@ -378,6 +393,9 @@
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_SECONDS && Number(value) <= this.constants().MAX_SECONDS) {
                 this._date.setSeconds(Number(value));
                 this._incorrect.seconds = false;
+            } else if (value === undefined) {
+                this._date.setSeconds(this.constants().MIN_SECONDS);
+                this._incorrect.seconds = false;
             } else {
                 this._incorrect.seconds = Number(value);
             }
@@ -390,6 +408,9 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
                 this._date.setMilliseconds(Number(value));
+                this._incorrect.milliseconds = false;
+            } else if (value === undefined) {
+                this._date.setMilliseconds(this.constants().MIN_MILLISECONDS);
                 this._incorrect.milliseconds = false;
             } else {
                 this._incorrect.milliseconds = Number(value);
@@ -590,12 +611,12 @@
         }
         if (typeof newDate === 'object') {
             this.year(newDate.year);
-            this.month(Number(newDate.month));
-            this.day(Number(newDate.day));
-            this.hours(Number(newDate.hours));
-            this.minutes(Number(newDate.minutes));
-            this.seconds(Number(newDate.seconds));
-            this.milliseconds(Number(newDate.milliseconds));
+            this.month(newDate.month);
+            this.day(newDate.day);
+            this.hours(newDate.hours);
+            this.minutes(newDate.minutes);
+            this.seconds(newDate.seconds);
+            this.milliseconds(newDate.milliseconds);
         }
         return this;
     };
@@ -730,13 +751,13 @@
                 };
             }
         }
-        this.year(resultdate.year !== undefined ? resultdate.year : this.constants().MIN_YEAR);
-        this.month(resultdate.month !== undefined ? resultdate.month : this.constants().MIN_MONTH);
-        this.day(resultdate.day !== undefined ? resultdate.day : this.constants().MIN_DAY);
-        this.hours(resultdate.hours !== undefined ? resultdate.hours : this.constants().MIN_HOURS);
-        this.minutes(resultdate.minutes !== undefined ? resultdate.minutes : this.constants().MIN_MINUTES);
-        this.seconds(resultdate.seconds !== undefined ? resultdate.seconds : this.constants().MIN_SECONDS);
-        this.milliseconds(resultdate.milliseconds !== undefined ? resultdate.milliseconds : this.constants().MIN_MILLISECONDS);
+        this.year(resultdate.year);
+        this.month(resultdate.month);
+        this.day(resultdate.day);
+        this.hours(resultdate.hours);
+        this.minutes(resultdate.minutes);
+        this.seconds(resultdate.seconds);
+        this.milliseconds(resultdate.milliseconds);
         return this;
     };
 
