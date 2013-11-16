@@ -76,10 +76,10 @@
             equal(tempus().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
         }
         for (month = -100; month <= 0; month++) {
-            equal(tempus().set({month: month}).month(), 1, 'Month can not be 0 or less. Month: ' + month);
+            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 0 or less. Month: ' + month);
         }
         for (month = 13; month <= 100; month++) {
-            equal(tempus().set({month: month}).month(), 1, 'Month can not be 13 or more. Month: ' + month);
+            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 13 or more. Month: ' + month);
         }
         equal(tempus().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
     });
@@ -92,10 +92,10 @@
                 equal(tempus().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), 1, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
         // leap year check
@@ -105,10 +105,10 @@
                 equal(tempus().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), 1, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
         equal(tempus().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
@@ -119,10 +119,10 @@
             equal(tempus().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
         }
         for (hours = -100; hours < 0; hours++) {
-            equal(tempus().set({hours: hours}).hours(), 0, 'Hours can not be 0 or less. Month: ' + hours);
+            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hours);
         }
         for (hours = 24; hours <= 100; hours++) {
-            equal(tempus().set({hours: hours}).hours(), 0, 'Hours can not be 24 or more. Month: ' + hours);
+            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hours);
         }
         equal(tempus().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
     });
@@ -132,10 +132,10 @@
             equal(tempus().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
         }
         for (minutes = -100; minutes < 0; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 0 or less. Minutes: ' + minutes);
+            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 0 or less. Minutes: ' + minutes);
         }
         for (minutes = 60; minutes <= 100; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), 0, 'Minutes can not be 59 or more. Minutes: ' + minutes);
+            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 59 or more. Minutes: ' + minutes);
         }
         equal(tempus().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
     });
@@ -145,10 +145,10 @@
             equal(tempus().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
         }
         for (seconds = -100; seconds < 0; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 0 or less. Minutes: ' + seconds);
+            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 0 or less. Minutes: ' + seconds);
         }
         for (seconds = 60; seconds <= 100; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), 0, 'Seconds can not be 59 or more. Minutes: ' + seconds);
+            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 59 or more. Minutes: ' + seconds);
         }
         equal(tempus().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
@@ -163,7 +163,7 @@
         equal(tempus().year('0').year(), new Date().getFullYear(), 'Test value: \'0\'');
         equal(tempus().year({foo: 'bar'}).year(), new Date().getFullYear(), 'Test value: {foo: \'bar\'}');
         equal(tempus().year([1,2,3]).year(), new Date().getFullYear(), 'Test value: [1,2,3]');
-        equal(tempus().year(undefined).year(), new Date().getFullYear(), 'Test value: undefined');
+        equal(tempus().year(undefined).year(), 1000, 'Test value: undefined');
         equal(tempus().year(null).year(), new Date().getFullYear(), 'Test value: null');
         equal(tempus().year(true).year(), new Date().getFullYear(), 'Test value: true');
         equal(tempus().year(false).year(), new Date().getFullYear(), 'Test value: false');
@@ -180,7 +180,7 @@
         equal(tempus().month('0').month(), new Date().getMonth() + 1, 'Test value: \'0\'');
         equal(tempus().month({foo: 'bar'}).month(), new Date().getMonth() + 1, 'Test value: {foo: \'bar\'}');
         equal(tempus().month([1,2,3]).month(), new Date().getMonth() + 1, 'Test value: [1,2,3]');
-        equal(tempus().month(undefined).month(), new Date().getMonth() + 1, 'Test value: undefined');
+        equal(tempus().month(undefined).month(), 1, 'Test value: undefined');
         equal(tempus().month(null).month(), new Date().getMonth() + 1, 'Test value: null');
         equal(tempus().month(true).month(), new Date().getMonth() + 1, 'Test value: true');
         equal(tempus().month(false).month(), new Date().getMonth() + 1, 'Test value: false');
@@ -196,7 +196,7 @@
         equal(tempus().day('0').day(), new Date().getDate(), 'Test value: \'0\'');
         equal(tempus().day({foo: 'bar'}).day(), new Date().getDate(), 'Test value: {foo: \'bar\'}');
         equal(tempus().day([1,2,3]).day(), new Date().getDate(), 'Test value: [1,2,3]');
-        equal(tempus().day(undefined).day(), new Date().getDate(), 'Test value: undefined');
+        equal(tempus().day(undefined).day(), 1, 'Test value: undefined');
         equal(tempus().day(null).day(), new Date().getDate(), 'Test value: null');
         equal(tempus().day(true).day(), new Date().getDate(), 'Test value: true');
         equal(tempus().day(false).day(), new Date().getDate(), 'Test value: false');
@@ -212,7 +212,7 @@
         equal(tempus().hours('0').hours(), 0, 'Test value: \'0\'');
         equal(tempus().hours({foo: 'bar'}).hours(), new Date().getHours(), 'Test value: {foo: \'bar\'}');
         equal(tempus().hours([1,2,3]).hours(), new Date().getHours(), 'Test value: [1,2,3]');
-        equal(tempus().hours(undefined).hours(), new Date().getHours(), 'Test value: undefined');
+        equal(tempus().hours(undefined).hours(), 0, 'Test value: undefined');
         equal(tempus().hours(null).hours(), new Date().getHours(), 'Test value: null');
         equal(tempus().hours(true).hours(), new Date().getHours(), 'Test value: true');
         equal(tempus().hours(false).hours(), new Date().getHours(), 'Test value: false');
@@ -228,7 +228,7 @@
         equal(tempus().minutes('0').minutes(), 0, 'Test value: \'0\'');
         equal(tempus().minutes({foo: 'bar'}).minutes(), new Date().getMinutes(), 'Test value: {foo: \'bar\'}');
         equal(tempus().minutes([1,2,3]).minutes(), new Date().getMinutes(), 'Test value: [1,2,3]');
-        equal(tempus().minutes(undefined).minutes(), new Date().getMinutes(), 'Test value: undefined');
+        equal(tempus().minutes(undefined).minutes(), 0, 'Test value: undefined');
         equal(tempus().minutes(null).minutes(), new Date().getMinutes(), 'Test value: null');
         equal(tempus().minutes(true).minutes(), new Date().getMinutes(), 'Test value: true');
         equal(tempus().minutes(false).minutes(), new Date().getMinutes(), 'Test value: false');
@@ -244,7 +244,7 @@
         equal(tempus().seconds('0').seconds(), 0, 'Test value: \'0\'');
         equal(tempus().seconds({foo: 'bar'}).seconds(), new Date().getSeconds(), 'Test value: {foo: \'bar\'}');
         equal(tempus().seconds([1,2,3]).seconds(), new Date().getSeconds(), 'Test value: [1,2,3]');
-        equal(tempus().seconds(undefined).seconds(), new Date().getSeconds(), 'Test value: undefined');
+        equal(tempus().seconds(undefined).seconds(), 0, 'Test value: undefined');
         equal(tempus().seconds(null).seconds(), new Date().getSeconds(), 'Test value: null');
         equal(tempus().seconds(true).seconds(), new Date().getSeconds(), 'Test value: true');
         equal(tempus().seconds(false).seconds(), new Date().getSeconds(), 'Test value: false');
