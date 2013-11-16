@@ -761,14 +761,14 @@
         return format;
     };
 
-    TempusDate.prototype.detectFormat = function (str) {
-        var format, tmpChars;
+    var detectDateFormat = function(str, startFrom) {
+        var tmpChars, format;
         var part1 = [
-            str.slice(0, 1),
-            str.charAt(2),
-            str.slice(3, 4),
-            str.charAt(5),
-            str.slice(6, 9)
+            str.slice(startFrom, startFrom+1),
+            str.charAt(startFrom+2),
+            str.slice(startFrom+3, startFrom+4),
+            str.charAt(startFrom+5),
+            str.slice(startFrom+6, startFrom+9)
         ];
 
         if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
@@ -779,40 +779,40 @@
             } else if (part1[1] === '/' && part1[3] === '/') {
                 format = '%m/%d/%Y';
             }
-            tmpChars = str.charAt(10);
-            if (tmpChars === 'T' || tmpChars === ' ') {
-                format += tmpChars;
-            }
-            format += detectTimeFormat(str, 11);
+
             return format;
         }
 
         var part2 = [
-            str.slice(0, 3),
-            str.charAt(4),
-            str.slice(5, 6),
-            str.charAt(7),
-            str.slice(8, 9)
+            str.slice(startFrom, startFrom+3),
+            str.charAt(startFrom+4),
+            str.slice(startFrom+5, startFrom+6),
+            str.charAt(startFrom+7),
+            str.slice(startFrom+8, startFrom+9)
         ];
 
         if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
             if (part2[1] === '-' && part2[3] === '-') {
                 format = '%Y-%m-%d';
             }
-            tmpChars = str.charAt(10);
-            if (tmpChars === 'T' || tmpChars === ' ') {
-                format += tmpChars;
-            }
-            format += detectTimeFormat(str, 11);
             return format;
         }
+        return '';
+    };
 
-//        for (var i = 0; i < defaultFormats.length; i++) {
-//            if (this.parse(str, defaultFormats[i]) !== undefined) {
-//                return defaultFormats[i];
-//            }
-//        }
-        return undefined;
+    TempusDate.prototype.detectFormat = function (str) {
+        var format, tmpChars, len;
+        format = detectDateFormat(str, 0);
+        if (format !== '') {
+            len = 10;
+        }
+        tmpChars = str.charAt(len);
+        if (tmpChars === 'T' || tmpChars === ' ') {
+            format += tmpChars;
+            len++;
+        }
+        format += detectTimeFormat(str, len);
+        return format;
     };
 
     TempusDate.prototype.calc = function (delta) {
