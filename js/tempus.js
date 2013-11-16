@@ -476,6 +476,27 @@
                 return this._date.getDay();
         }
     };
+
+    TempusDate.prototype.timezone = function (type) {
+        switch (type) {
+            case 'hours':
+                return Math.floor(this._date.getTimezoneOffset() / 60);
+            case 'minutes':
+                return this._date.getTimezoneOffset();
+            default:
+                return this._date.getTimezoneOffset()*60;
+        }
+    };
+
+    TempusDate.prototype.week = function () {
+        var onejan = new Date(this.year(), 0, 1);
+        var nowDate = this.asVanillaDate();
+        return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay()+1)/7);
+    };
+
+
+
+
     /**
      * Is year leap?
      * @returns {boolean|undefined} If true year is leap else not leap.
@@ -985,6 +1006,105 @@
         return this._incorrect;
     };
 
+    TempusDate.prototype.getAvailableLangs = function() {
+        return Object.keys(translations);
+    };
+
+//    this.generate = function(options) {
+//        var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
+//        // timestamp "from"
+//        if (typeof options.dateFrom === 'string') {
+//            tsFrom = that.parse(options.dateFrom, options.formatFrom);
+//        }
+//        tsFrom = that.time(tsFrom);
+//        // timestamp "to"
+//        if (typeof options.dateTo === 'string') {
+//            tsTo = that.parse(options.dateTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom));
+//        }
+//        tsTo = that.time(tsTo);
+//        // period
+//        if (typeof options.period === 'number') {
+//            period = {
+//                year: 0,
+//                month: 0,
+//                day: 0,
+//                hours: 0,
+//                minutes: 0,
+//                seconds: options.period
+//            }
+//        } else if (typeof options.period === 'string') {
+//            period = {
+//                year: options.period === 'year' ? 1 : 0,
+//                month: options.period === 'month' ? 1 : 0,
+//                day: options.period === 'day' ? 1 : 0,
+//                hours: options.period === 'hours' ? 1 : 0,
+//                minutes: options.period === 'minutes' ? 1 : 0,
+//                seconds: options.period === 'seconds' ? 1 : 0
+//            }
+//        } else if (typeof options.period === 'object') {
+//            period = {
+//                year: options.period.year !== undefined ? options.period.year : 0,
+//                month: options.period.month !== undefined ? options.period.month : 0,
+//                day: options.period.day !== undefined ? options.period.day : 0,
+//                hours: options.period.hours !== undefined ? options.period.hours : 0,
+//                minutes: options.period.minutes !== undefined ? options.period.minutes : 0,
+//                seconds: options.period.seconds !== undefined ? options.period.seconds : 0
+//            }
+//        }
+//
+//        // result
+//        if (options.groupBy === undefined) {
+//            result = options.asObject === true ? {} : [];
+//        } else {
+//            result = [];
+//            result.push([]);
+//            var prevValue = that.date(tsFrom, {week:true})[options.groupBy];
+//        }
+//        var addTo = function(array, value) {
+//            if (options.asObject === true) {
+//                if (options.format !== undefined) {
+//                    array[that.format(value, options.format)] = {};
+//                } else {
+//                    array[that.format(value, '%F %H:%M:%S')] = {};
+//                }
+//            } else {
+//                if (options.format !== undefined) {
+//                    array.push(that.format(value, options.format));
+//                } else {
+//                    array.push(value);
+//                }
+//            }
+//            return array;
+//        };
+//
+//        for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
+//            if (options.groupBy === undefined) {
+//                addTo(result, tsFrom);
+//            } else {
+//                if (that.date(tsFrom, {week:true})[options.groupBy] === prevValue) {
+//                    addTo(result[result.length-1], tsFrom);
+//                } else {
+//                    result.push([]);
+//                    addTo(result[result.length-1], tsFrom);
+//                    prevValue = that.date(tsFrom, {week:true})[options.groupBy];
+//                }
+//            }
+//        }
+//        return result;
+//    };
+
+
+
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function(obj, start) {
+            for (var i = (start || 0), j = this.length; i < j; i++) {
+                if (this[i] === obj) { return i; }
+            }
+            return -1;
+        }
+    }
+
+
 
     // Factory
     function TempusFactory() {}
@@ -996,5 +1116,6 @@
     Tempus = function (options, format) {
         return tempusFactory.createDate(options, format);
     };
+    window.TempusDate = TempusDate;
     window.tempus = Tempus;
 })(window);

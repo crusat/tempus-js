@@ -1,4 +1,4 @@
-(function (TP) {
+(function (TempusDate) {
     /**
      * Generate random date.
      * @returns {Tempus}
@@ -7,7 +7,7 @@
      *     "dayOfWeekShort":"Wed","dayOfWeekLong":"Wednesday","timestamp":5548368407,"UTC":5548382807}
      * TP.random().date();
      */
-    TP.random = function() {
+    TempusDate.prototype.random = function() {
         this.year(Math.floor((Math.random()*(this.constants().MAX_YEAR - this.constants().MIN_YEAR)) + this.constants().MIN_YEAR));
         this.month(Math.floor((Math.random()*(this.constants().MAX_MONTH - this.constants().MIN_MONTH)) + this.constants().MIN_MONTH));
         this.day(Math.floor((Math.random()*(this.dayCount() - this.constants().MIN_DAY)) + this.constants().MIN_DAY));
@@ -18,4 +18,4 @@
             this.constants().MIN_SECONDS));
         return this;
     };
-})(Tempus);
+})(TempusDate);

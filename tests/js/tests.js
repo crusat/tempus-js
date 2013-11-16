@@ -60,15 +60,15 @@
 
     test('Test set() year ranges', function () {
         for (year = 1000; year <= 3000; year++) {
-            equal(tempus().set({year: year}).year(), year, 'Year can be from 1000 to 3000, else MIN_YEAR. Year: ' + year);
+            equal(tempus({year: year}).year(), year, 'Year can be from 1000 to 3000, else MIN_YEAR. Year: ' + year);
         }
         for (year = -100; year <= 999; year++) {
-            equal(tempus().set({year: year}).year(), 1000, 'Year can not be 999 or less, else MIN_YEAR. Year: ' + year);
+            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 999 or less, else current and set incorrect. Year: ' + year);
         }
         for (year = 3001; year <= 4000; year++) {
-            equal(tempus().set({year: year}).year(), 1000, 'Year can not be 3001 or more, else MIN_YEAR. Year: ' + year);
+            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 3001 or more, else current and set incorrect. Year: ' + year);
         }
-        equal(tempus().set({}).year(), 1000, 'If year is not setted, setting MIN_YEAR');
+        equal(tempus({}).year(), 1000, 'If year is not setted, setting MIN_YEAR');
     });
 
     test('Test set() months ranges', function () {

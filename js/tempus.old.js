@@ -749,9 +749,10 @@
          * // returns "2012-05-15"
          * tempus.reformat('15.05.2012', undefined, '%Y-%m-%d');
          */
-        this.reformat = function(date, formatFrom, formatTo) {
-            return this.format(this.parse(date, formatFrom), formatTo);
-        };
+        // remove it
+//        this.reformat = function(date, formatFrom, formatTo) {
+//            return this.format(this.parse(date, formatFrom), formatTo);
+//        };
 
         /**
          * Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
@@ -763,9 +764,10 @@
          * tempus.setLocale("ru_RU");
          * tempus.now('%Y, %B, %d, %A');
          */
-        this.setLocale = function(loc) {
-            locale = loc || "en_US";
-        };
+        // use lang()
+//        this.setLocale = function(loc) {
+//            locale = loc || "en_US";
+//        };
 
         /**
          * Gets current value of locale.
@@ -774,17 +776,18 @@
          * // returns "en_US"
          * tempus.getLocale();
          */
-        this.getLocale = function() {
-            return locale;
-        };
+        // use lang
+//        this.getLocale = function() {
+//            return locale;
+//        };
 
-        this.setWeekStartsFromMonday = function(v) {
-            weekStartsFromMonday = v ? true : false;
-            return weekStartsFromMonday;
-        };
-        this.getWeekStartsFromMonday = function() {
-            return weekStartsFromMonday;
-        };
+//        this.setWeekStartsFromMonday = function(v) {
+//            weekStartsFromMonday = v ? true : false;
+//            return weekStartsFromMonday;
+//        };
+//        this.getWeekStartsFromMonday = function() {
+//            return weekStartsFromMonday;
+//        };
 
         /**
          * Get available locales list.
@@ -793,9 +796,9 @@
          * // returns ["en_US", "ru_RU"]
          * tempus.getAvailableLocales();
          */
-        this.getAvailableLocales = function() {
-            return Object.keys(locales);
-        };
+//        this.getAvailableLocales = function() {
+//            return Object.keys(locales);
+//        };
 
 
         /**
@@ -1048,18 +1051,18 @@
          * // returns 1
          * tempus.getWeekNumber('1999-01-01');
          */
-        this.getWeekNumber = function(date, format) {
-            var currentTime;
-            if (typeof date === 'string') {
-                currentTime = that.time(date, format);
-                date = that.date(currentTime);
-                currentTime *= 1000;
-            } else {
-                currentTime = that.time(date)*1000;
-            }
-            var startOfYear = new TempusDate({year: date.year, month: 1, day: 1}, timezoneOffset).getDate().dayOfWeek;
-            return Math.ceil((((currentTime - startOfYear) / 86400000) + startOfYear+1)/7);
-        };
+//        this.getWeekNumber = function(date, format) {
+//            var currentTime;
+//            if (typeof date === 'string') {
+//                currentTime = that.time(date, format);
+//                date = that.date(currentTime);
+//                currentTime *= 1000;
+//            } else {
+//                currentTime = that.time(date)*1000;
+//            }
+//            var startOfYear = new TempusDate({year: date.year, month: 1, day: 1}, timezoneOffset).getDate().dayOfWeek;
+//            return Math.ceil((((currentTime - startOfYear) / 86400000) + startOfYear+1)/7);
+//        };
 
         /**
          * Returns current timezone offset.
@@ -1075,33 +1078,33 @@
          * // returns -240
          * tempus.getTimezoneOffset('minutes');
          */
-        this.getTimezoneOffset = function(type) {
-            switch (type) {
-                case 'hours':
-                    return Math.floor(timezoneOffset / 3600);
-                case 'minutes':
-                    return (timezoneOffset / 60);
-                default:
-                    return timezoneOffset
-            }
-        };
+//        this.getTimezoneOffset = function(type) {
+//            switch (type) {
+//                case 'hours':
+//                    return Math.floor(timezoneOffset / 3600);
+//                case 'minutes':
+//                    return (timezoneOffset / 60);
+//                default:
+//                    return timezoneOffset
+//            }
+//        };
 
-        this.setTimezoneOffset = function(value, type) {
-            switch (type) {
-                case 'hours':
-                    timezoneOffset = value * 3600;
-                    break;
-                case 'minutes':
-                    timezoneOffset = value * 60;
-                    break;
-                default:
-                    if (value === undefined) {
-                        timezoneOffset = timezoneOffsetDefault;
-                    } else {
-                        timezoneOffset = Number(value);
-                    }
-            }
-        };
+//        this.setTimezoneOffset = function(value, type) {
+//            switch (type) {
+//                case 'hours':
+//                    timezoneOffset = value * 3600;
+//                    break;
+//                case 'minutes':
+//                    timezoneOffset = value * 60;
+//                    break;
+//                default:
+//                    if (value === undefined) {
+//                        timezoneOffset = timezoneOffsetDefault;
+//                    } else {
+//                        timezoneOffset = Number(value);
+//                    }
+//            }
+//        };
 
         // *** HELPERS ***
         var formattingWithNulls = function(val, symb_count) {
