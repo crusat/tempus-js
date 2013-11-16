@@ -234,7 +234,18 @@
 
 
     var TempusDate = function (options, format) {
+        // always valid date
         this._date = new Date();
+        // if some errors, write here values.
+        this._incorrect = {
+            year: false,
+            month: false,
+            day: false,
+            hours: false,
+            minutes: false,
+            seconds: false,
+            milliseconds: false
+        };
 
         if (typeof options === 'object') {
             this.set(options);
@@ -276,6 +287,8 @@
             // no value range checking, because can be used for delta times
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
                 this._date.setFullYear(Number(value));
+            } else {
+                this._incorrect.year = Number(value);
             }
         } else {
             return this._date.getFullYear();
@@ -291,6 +304,8 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
                 this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
+            } else {
+                this._incorrect.month = Number(value);
             }
         } else {
             return monthFromZero ? this._date.getMonth() : (this._date.getMonth() +  1);
@@ -306,6 +321,8 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_DAY && Number(value) <= this.dayCount()) {
                 this._date.setDate(Number(value));
+            } else {
+                this._incorrect.day = Number(value);
             }
         } else {
             return this._date.getDate();
@@ -321,6 +338,8 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_HOURS && Number(value) <= this.constants().MAX_HOURS) {
                 this._date.setHours(Number(value));
+            } else {
+                this._incorrect.hours = Number(value);
             }
         } else {
             return this._date.getHours();
@@ -336,6 +355,8 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MINUTES && Number(value) <= this.constants().MAX_MINUTES) {
                 this._date.setMinutes(Number(value));
+            } else {
+                this._incorrect.minutes = Number(value);
             }
         } else {
             return this._date.getMinutes();
@@ -351,6 +372,8 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_SECONDS && Number(value) <= this.constants().MAX_SECONDS) {
                 this._date.setSeconds(Number(value));
+            } else {
+                this._incorrect.seconds = Number(value);
             }
         } else {
             return this._date.getSeconds();
@@ -361,6 +384,8 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
                 this._date.setMilliseconds(Number(value));
+            } else {
+                this._incorrect.milliseconds = Number(value);
             }
         } else {
             return this._date.getMilliseconds();
@@ -557,42 +582,13 @@
             return this;
         }
         if (typeof newDate === 'object') {
-            if (newDate.year !== undefined && newDate.year >= this.constants().MIN_YEAR && newDate.year <= this.constants().MAX_YEAR) {
-                this.year(Number(newDate.year));
-            } else {
-                this.year(this.constants().MIN_YEAR);
-            }
-            if (newDate.month !== undefined && newDate.month >= this.constants().MIN_MONTH && newDate.month <= this.constants().MAX_MONTH) {
-                this.month(Number(newDate.month));
-            } else {
-                this.month(this.constants().MIN_MONTH);
-            }
-            if (newDate.day !== undefined && newDate.day >= this.constants().MIN_DAY && newDate.day <= this.dayCount()) {
-                this.day(Number(newDate.day));
-            } else {
-                this.day(this.constants().MIN_DAY);
-            }
-            if (newDate.hours !== undefined && newDate.hours >= this.constants().MIN_HOURS && newDate.hours <= this.constants().MAX_HOURS) {
-                this.hours(Number(newDate.hours));
-            } else {
-                this.hours(this.constants().MIN_HOURS);
-            }
-            if (newDate.minutes !== undefined && newDate.minutes >= this.constants().MIN_MINUTES && newDate.minutes <= this.constants().MAX_MINUTES) {
-                this.minutes(Number(newDate.minutes));
-            } else {
-                this.minutes(this.constants().MIN_MINUTES);
-            }
-            if (newDate.seconds !== undefined && newDate.seconds >= this.constants().MIN_SECONDS && newDate.seconds <= this.constants().MAX_SECONDS) {
-                this.seconds(Number(newDate.seconds));
-            } else {
-                this.seconds(this.constants().MIN_SECONDS);
-            }
-            if (newDate.milliseconds !== undefined && newDate.milliseconds >= this.constants().MIN_MILLISECONDS &&
-                newDate.milliseconds <= this.constants().MAX_MILLISECONDS) {
-                this.milliseconds(Number(newDate.milliseconds));
-            } else {
-                this.milliseconds(this.constants().MIN_MILLISECONDS);
-            }
+            this.year(newDate.year);
+            this.month(Number(newDate.month));
+            this.day(Number(newDate.day));
+            this.hours(Number(newDate.hours));
+            this.minutes(Number(newDate.minutes));
+            this.seconds(Number(newDate.seconds));
+            this.milliseconds(Number(newDate.milliseconds));
         }
         return this;
     };
@@ -950,13 +946,14 @@
         delete registeredFormats[value];
     };
 
-    TempusDate.prototype.validate = function(format) {
-        if (typeof date === 'string') {
-            this.parse(date, format);
-        }
-        var normalizedDate = getDate(date);
-        return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
-                (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
+    TempusDate.prototype.validate = function() {
+        return (this._incorrect.year === false && this._incorrect.month === false && this._incorrect.day === false &&
+            this._incorrect.hours === false && this._incorrect.minutes === false && this._incorrect.seconds === false &&
+            this._incorrect.milliseconds === false);
+    };
+
+    TempusDate.prototype.getErrors = function() {
+        return this._incorrect;
     };
 
 
