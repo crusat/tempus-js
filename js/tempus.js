@@ -721,21 +721,22 @@
             if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
                 tmpdate = registeredFormats[lits[key]].parse(res[key]);
                 resultdate = {
-                    year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
-                    month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
-                    day: tmpdate.day != undefined ? tmpdate.day : resultdate.day,
-                    hours: tmpdate.hours != undefined ? tmpdate.hours : resultdate.hours,
-                    minutes: tmpdate.minutes != undefined ? tmpdate.minutes : resultdate.minutes,
-                    seconds: tmpdate.seconds != undefined ? tmpdate.seconds : resultdate.seconds
+                    year: tmpdate.year !== undefined ? tmpdate.year : resultdate.year,
+                    month: tmpdate.month !== undefined ? tmpdate.month : resultdate.month,
+                    day: tmpdate.day !== undefined ? tmpdate.day : resultdate.day,
+                    hours: tmpdate.hours !== undefined ? tmpdate.hours : resultdate.hours,
+                    minutes: tmpdate.minutes !== undefined ? tmpdate.minutes : resultdate.minutes,
+                    seconds: tmpdate.seconds !== undefined ? tmpdate.seconds : resultdate.seconds
                 };
             }
         }
-        this.year(resultdate.year);
-        this.month(resultdate.month);
-        this.day(resultdate.day);
-        this.hours(resultdate.hours);
-        this.minutes(resultdate.minutes);
-        this.seconds(resultdate.seconds);
+        this.year(resultdate.year !== undefined ? resultdate.year : this.constants().MIN_YEAR);
+        this.month(resultdate.month !== undefined ? resultdate.month : this.constants().MIN_MONTH);
+        this.day(resultdate.day !== undefined ? resultdate.day : this.constants().MIN_DAY);
+        this.hours(resultdate.hours !== undefined ? resultdate.hours : this.constants().MIN_HOURS);
+        this.minutes(resultdate.minutes !== undefined ? resultdate.minutes : this.constants().MIN_MINUTES);
+        this.seconds(resultdate.seconds !== undefined ? resultdate.seconds : this.constants().MIN_SECONDS);
+        this.milliseconds(resultdate.milliseconds !== undefined ? resultdate.milliseconds : this.constants().MIN_MILLISECONDS);
         return this;
     };
 
