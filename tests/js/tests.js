@@ -308,7 +308,11 @@
         equal(tempus({year: 2013, month: 1, day: 15}).get('Date').valueOf(), new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
         equal(tempus([2000, 6, 1, 12, 1, 15]).get('Date').valueOf(), new Date(2000, 5, 1, 12, 1, 15).valueOf(),
-            'Checking constructor with Array value');
+            'Checking constructor with array value');
+        equal(tempus('2001-05-10 05:30:00').get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+            'Checking constructor with string value');
+        equal(tempus(989454600).get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+            'Checking constructor with numeric value');
     });
 
 
