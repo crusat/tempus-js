@@ -1165,6 +1165,12 @@
         return result;
     };
 
+    // *************************************************
+    // *                                               *
+    // *                  EXPORTS                      *
+    // *                                               *
+    // *************************************************
+
     window.TempusDate = TempusDate;
     window.tempus = tempus;
 })(window);
