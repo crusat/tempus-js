@@ -1099,6 +1099,7 @@
      * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
      * @returns {Array|object} Array or object from dates.
+     * @example
      * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
      * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
      * tempus.generate({
@@ -1107,6 +1108,7 @@
      *     period: 'day',
      *     format: '%d.%m.%Y'
      * });
+     *
      */
     tempus.generate = function(options) {
         var tsFrom = options.dateFrom,
