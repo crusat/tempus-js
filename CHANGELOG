@@ -3,6 +3,8 @@
 - Supports modular structure.
 - Changed tempus to Tempus and TP, added method noConflict().
 - Autodetect user language.
+- parse() and set() methods merget to set().
+- Can be set date as Array.
 
 0.1.31
 - Added TempusDate constructor.

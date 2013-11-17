@@ -295,6 +295,23 @@
         equal(tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y'), '01.05.2013', 'Easy test');
     });
 
+
+    // *************************************************
+    // *                                               *
+    // *                  FACTORY                      *
+    // *                                               *
+    // *************************************************
+
+    test('Tests constructor of TempusDate', function() {
+        equal(Math.floor(tempus().get('Date').valueOf()/1000), Math.floor(new Date().valueOf()/1000),
+            'This test may be not completed and it be right, because here checking two NOW dates');
+        equal(tempus({year: 2013, month: 1, day: 15}).get('Date').valueOf(), new Date(2013, 0, 15).valueOf(),
+            'Checking constructor with some object value');
+        equal(tempus([2000, 6, 1, 12, 1, 15]).get('Date').valueOf(), new Date(2000, 5, 1, 12, 1, 15).valueOf(),
+            'Checking constructor with Array value');
+    });
+
+
     // parse test
     //tempus('2010%01%05', '%Y%%%m%%%d');
 //

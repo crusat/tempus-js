@@ -1,6 +1,6 @@
 (function (window, undefined) {
     var _Tempus = window.tempus,
-        tempusConstructor,
+        tempus,
         version = '0.2.0',
         lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
         translations = {
@@ -228,8 +228,87 @@
         return v;
     };
 
+    var parseBadFormat = function(date, defaults) {
+        if (defaults !== undefined) {
+            date.year(defaults.year() || defaults.year);
+            date.month(defaults.month() || defaults.month);
+            date.day(defaults.day() || defaults.day);
+            date.hours(defaults.hours() || defaults.hours);
+            date.minutes(defaults.minutes() || defaults.minutes);
+            date.seconds(defaults.seconds() || defaults.seconds);
+            date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
+            return date;
+        } else {
+            return undefined;
+        }
+    };
 
-    var TempusDate = function (options, format) {
+    var detectTimeFormat = function(str, startFrom) {
+        var tmpChars, format = '';
+        tmpChars = str.slice(startFrom, startFrom+1);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%H';
+        }
+        tmpChars = str.charAt(startFrom+2);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+3, startFrom+4);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%M';
+        }
+        tmpChars = str.charAt(startFrom+5);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+6, startFrom+7);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%S';
+        }
+        return format;
+    };
+
+    var detectDateFormat = function(str, startFrom) {
+        var tmpChars, format;
+        var part1 = [
+            str.slice(startFrom, startFrom+1),
+            str.charAt(startFrom+2),
+            str.slice(startFrom+3, startFrom+4),
+            str.charAt(startFrom+5),
+            str.slice(startFrom+6, startFrom+9)
+        ];
+
+        if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
+            if (part1[1] === '.' && part1[3] === '.') {
+                format = '%d.%m.%Y';
+            } else if (part1[1] === '-' && part1[3] === '-') {
+                format = '%m-%d-%Y';
+            } else if (part1[1] === '/' && part1[3] === '/') {
+                format = '%m/%d/%Y';
+            }
+
+            return format;
+        }
+
+        var part2 = [
+            str.slice(startFrom, startFrom+3),
+            str.charAt(startFrom+4),
+            str.slice(startFrom+5, startFrom+6),
+            str.charAt(startFrom+7),
+            str.slice(startFrom+8, startFrom+9)
+        ];
+
+        if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
+            if (part2[1] === '-' && part2[3] === '-') {
+                format = '%Y-%m-%d';
+            }
+            return format;
+        }
+        return '';
+    };
+
+
+    var TempusDate = function (options, format, defaults) {
         // always valid date
         this._date = new Date();
         // if some errors, write here values.
@@ -243,12 +322,9 @@
             milliseconds: false
         };
 
-        if (typeof options === 'object' || typeof options === 'number') {
-            this.set(options);
-        } else if (typeof options === 'string') {
-            this.parse(options, format);
+        if (options !== undefined) {
+            this.set(options, format, defaults);
         }
-
         return this;
     };
 
@@ -488,12 +564,9 @@
 
     TempusDate.fn.week = function () {
         var onejan = new Date(this.year(), 0, 1);
-        var nowDate = this.asVanillaDate();
+        var nowDate = this.get('Date');
         return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay()+1)/7);
     };
-
-
-
 
     /**
      * Is year leap?
@@ -590,20 +663,26 @@
                 return undefined;
         }
     };
-    TempusDate.fn.get = function () {
-        return {
-            year: this.year(),
-            month: this.month(),
-            day: this.day(),
-            hours: this.hours(),
-            minutes: this.minutes(),
-            seconds: this.seconds(),
-            dayOfWeek: this.dayOfWeek(),
-            dayOfWeekShort: this.dayOfWeek('short'),
-            dayOfWeekLong: this.dayOfWeek('long'),
-            timestamp: this.timestamp(),
-            UTC: this.UTC(),
-            milliseconds: this.milliseconds()
+    TempusDate.fn.get = function (type) {
+        switch (type) {
+            case 'Date':
+                return this._date;
+            default:
+                return {
+                    year: this.year(),
+                    month: this.month(),
+                    week: this.week(),
+                    day: this.day(),
+                    hours: this.hours(),
+                    minutes: this.minutes(),
+                    seconds: this.seconds(),
+                    milliseconds: this.milliseconds(),
+                    UTC: this.UTC(),
+                    dayOfWeek: this.dayOfWeek(),
+                    dayOfWeekShort: this.dayOfWeek('short'),
+                    dayOfWeekLong: this.dayOfWeek('long'),
+                    timestamp: this.timestamp()
+                }
         }
     };
     /**
@@ -623,7 +702,16 @@
      * // or
      * // tp(new Date()).get();
      */
-    TempusDate.fn.set = function (newDate) {
+    // returns "2012-01-01"
+    // TP.parse('01.01.2010').year(2012).format('%Y-%m-%d');
+    // If parse failed, defaults returns.
+    // returns "2013-01-01"
+    // TP.parse('20130101', '%Y%m%d', TP.now().calc({month: -1})).format('%Y-%m-%d')
+    // returns "2013-06-01"
+    // TP.parse(undefined, '%Y%m%d', TP.date({year: 2013, month: 06, day: 1})).format('%Y-%m-%d');
+    // Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
+    // Two percent chars (%%) not allowed to directives. This replaced to single percent (%) on parsing.
+    TempusDate.fn.set = function (newDate, format, defaults) {
         if (newDate instanceof Date) {
             this._date = newDate;
             return this;
@@ -633,13 +721,109 @@
             return this;
         }
         if (typeof newDate === 'object') {
-            this.year(newDate.year);
-            this.month(newDate.month);
-            this.day(newDate.day);
-            this.hours(newDate.hours);
-            this.minutes(newDate.minutes);
-            this.seconds(newDate.seconds);
-            this.milliseconds(newDate.milliseconds);
+            if (newDate instanceof Array) {
+                this.year(newDate[0]);
+                this.month(newDate[1]);
+                this.day(newDate[2]);
+                this.hours(newDate[3]);
+                this.minutes(newDate[4]);
+                this.seconds(newDate[5]);
+                this.milliseconds(newDate[6]);
+            } else {
+                this.year(newDate.year);
+                this.month(newDate.month);
+                this.day(newDate.day);
+                this.hours(newDate.hours);
+                this.minutes(newDate.minutes);
+                this.seconds(newDate.seconds);
+                this.milliseconds(newDate.milliseconds);
+            }
+        }
+        // parse date
+        if (typeof newDate === 'string') {
+            var key;
+            var lits = [];
+            if (newDate === undefined) {
+                return parseBadFormat(this, defaults);
+            }
+            if (format === undefined) {
+                format = this.detectFormat(newDate);
+            }
+
+            var directive;
+            var res = [];
+
+            var i = 0,
+                j = 0,
+                k;
+            while (i < format.length) {
+                if (format.charAt(i) === '%') {
+                    if (format.charAt(i+1) === '%') {
+                        i++;
+                    } else {
+                        directive = format.charAt(i) + format.charAt(i + 1);
+                        k = 0;
+                        var shortString = '';
+                        switch(registeredFormats[directive].type) {
+                            case 'number':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && !isNaN(Number(newDate.charAt(j + k)))) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                            case 'word':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && /^\w+$/.test(newDate.charAt(j + k))) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                            case 'string':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length)) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                        }
+
+                        if (k < registeredFormats[directive].minLength) {
+                            return parseBadFormat(this, defaults);
+                        }
+                        lits.push(directive);
+                        res.push(shortString);
+                        j += --k;
+                        i++;
+                    }
+                } else {
+                    if (newDate.charAt(j) !== format.charAt(i)) {
+                        return parseBadFormat(this, defaults);
+                    }
+                }
+                i++;
+                j++;
+            }
+
+            var resultdate = {};
+            var tmpdate;
+            for(key in lits) {
+                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
+                    tmpdate = registeredFormats[lits[key]].parse(res[key]);
+                    resultdate = {
+                        year: tmpdate.year !== undefined ? tmpdate.year : resultdate.year,
+                        month: tmpdate.month !== undefined ? tmpdate.month : resultdate.month,
+                        day: tmpdate.day !== undefined ? tmpdate.day : resultdate.day,
+                        hours: tmpdate.hours !== undefined ? tmpdate.hours : resultdate.hours,
+                        minutes: tmpdate.minutes !== undefined ? tmpdate.minutes : resultdate.minutes,
+                        seconds: tmpdate.seconds !== undefined ? tmpdate.seconds : resultdate.seconds
+                    };
+                }
+            }
+            this.year(resultdate.year);
+            this.month(resultdate.month);
+            this.day(resultdate.day);
+            this.hours(resultdate.hours);
+            this.minutes(resultdate.minutes);
+            this.seconds(resultdate.seconds);
+            this.milliseconds(resultdate.milliseconds);
         }
         return this;
     };
@@ -673,180 +857,8 @@
         return result;
     };
 
-    var parseBadFormat = function(date, defaults) {
-        if (defaults !== undefined) {
-            date.year(defaults.year() || defaults.year);
-            date.month(defaults.month() || defaults.month);
-            date.day(defaults.day() || defaults.day);
-            date.hours(defaults.hours() || defaults.hours);
-            date.minutes(defaults.minutes() || defaults.minutes);
-            date.seconds(defaults.seconds() || defaults.seconds);
-            date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
-            return date;
-        } else {
-            return undefined;
-        }
-    };
 
-    // returns "2012-01-01"
-    // TP.parse('01.01.2010').year(2012).format('%Y-%m-%d');
-    // If parse failed, defaults returns.
-    // returns "2013-01-01"
-    // TP.parse('20130101', '%Y%m%d', TP.now().calc({month: -1})).format('%Y-%m-%d')
-    // returns "2013-06-01"
-    // TP.parse(undefined, '%Y%m%d', TP.date({year: 2013, month: 06, day: 1})).format('%Y-%m-%d');
-    // Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
-    // Two percent chars (%%) not allowed to directives. This replaced to single percent (%) on parsing.
-    TempusDate.fn.parse = function (str, format, defaults) {
-        var key;
-        var lits = [];
-        if (str === undefined) {
-            return parseBadFormat(this, defaults);
-        }
-        if (format === undefined) {
-            format = this.detectFormat(str);
-        }
 
-        var directive;
-        var res = [];
-
-        var i = 0,
-            j = 0,
-            k;
-        while (i < format.length) {
-            if (format.charAt(i) === '%') {
-                if (format.charAt(i+1) === '%') {
-                    i++;
-                } else {
-                    directive = format.charAt(i) + format.charAt(i + 1);
-                    k = 0;
-                    var shortString = '';
-                    switch(registeredFormats[directive].type) {
-                        case 'number':
-                            while ((k < registeredFormats[directive].maxLength) && (j + k < str.length) && !isNaN(Number(str.charAt(j + k)))) {
-                                shortString += str.charAt(j + k);
-                                k++;
-                            }
-                            break;
-                        case 'word':
-                            while ((k < registeredFormats[directive].maxLength) && (j + k < str.length) && /^\w+$/.test(str.charAt(j + k))) {
-                                shortString += str.charAt(j + k);
-                                k++;
-                            }
-                            break;
-                        case 'string':
-                            while ((k < registeredFormats[directive].maxLength) && (j + k < str.length)) {
-                                shortString += str.charAt(j + k);
-                                k++;
-                            }
-                            break;
-                    }
-
-                    if (k < registeredFormats[directive].minLength) {
-                        return parseBadFormat(this, defaults);
-                    }
-                    lits.push(directive);
-                    res.push(shortString);
-                    j += --k;
-                    i++;
-                }
-            } else {
-                if (str.charAt(j) !== format.charAt(i)) {
-                    return parseBadFormat(this, defaults);
-                }
-            }
-            i++;
-            j++;
-        }
-
-        var resultdate = {};
-        var tmpdate;
-        for(key in lits) {
-            if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
-                tmpdate = registeredFormats[lits[key]].parse(res[key]);
-                resultdate = {
-                    year: tmpdate.year !== undefined ? tmpdate.year : resultdate.year,
-                    month: tmpdate.month !== undefined ? tmpdate.month : resultdate.month,
-                    day: tmpdate.day !== undefined ? tmpdate.day : resultdate.day,
-                    hours: tmpdate.hours !== undefined ? tmpdate.hours : resultdate.hours,
-                    minutes: tmpdate.minutes !== undefined ? tmpdate.minutes : resultdate.minutes,
-                    seconds: tmpdate.seconds !== undefined ? tmpdate.seconds : resultdate.seconds
-                };
-            }
-        }
-        this.year(resultdate.year);
-        this.month(resultdate.month);
-        this.day(resultdate.day);
-        this.hours(resultdate.hours);
-        this.minutes(resultdate.minutes);
-        this.seconds(resultdate.seconds);
-        this.milliseconds(resultdate.milliseconds);
-        return this;
-    };
-
-    var detectTimeFormat = function(str, startFrom) {
-        var tmpChars, format = '';
-        tmpChars = str.slice(startFrom, startFrom+1);
-        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
-            format += '%H';
-        }
-        tmpChars = str.charAt(startFrom+2);
-        if (tmpChars !=='' && tmpChars === ':') {
-            format += tmpChars;
-        }
-        tmpChars = str.slice(startFrom+3, startFrom+4);
-        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
-            format += '%M';
-        }
-        tmpChars = str.charAt(startFrom+5);
-        if (tmpChars !=='' && tmpChars === ':') {
-            format += tmpChars;
-        }
-        tmpChars = str.slice(startFrom+6, startFrom+7);
-        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
-            format += '%S';
-        }
-        return format;
-    };
-
-    var detectDateFormat = function(str, startFrom) {
-        var tmpChars, format;
-        var part1 = [
-            str.slice(startFrom, startFrom+1),
-            str.charAt(startFrom+2),
-            str.slice(startFrom+3, startFrom+4),
-            str.charAt(startFrom+5),
-            str.slice(startFrom+6, startFrom+9)
-        ];
-
-        if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
-            if (part1[1] === '.' && part1[3] === '.') {
-                format = '%d.%m.%Y';
-            } else if (part1[1] === '-' && part1[3] === '-') {
-                format = '%m-%d-%Y';
-            } else if (part1[1] === '/' && part1[3] === '/') {
-                format = '%m/%d/%Y';
-            }
-
-            return format;
-        }
-
-        var part2 = [
-            str.slice(startFrom, startFrom+3),
-            str.charAt(startFrom+4),
-            str.slice(startFrom+5, startFrom+6),
-            str.charAt(startFrom+7),
-            str.slice(startFrom+8, startFrom+9)
-        ];
-
-        if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
-            if (part2[1] === '-' && part2[3] === '-') {
-                format = '%Y-%m-%d';
-            }
-            return format;
-        }
-        return '';
-    };
 
     TempusDate.fn.detectFormat = function (str) {
         var format, tmpChars, len;
@@ -903,17 +915,17 @@
      * // returns Date obj
      * TP.now().calc({month: -1}).asVanillaDate();
      */
-    TempusDate.fn.asVanillaDate = function () {
-        return new Date(
-            this.year() !== undefined ? this.year() : 1970,
-            this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
-            this.day() !== undefined ? this.day() : 1,
-            this.hours() !== undefined ? this.hours() : 0,
-            this.minutes() !== undefined ? this.minutes() : 0,
-            this.seconds() !== undefined ? this.seconds() : 0,
-            this.milliseconds() !== undefined ? this.milliseconds() : 0
-        );
-    };
+//    TempusDate.fn.asVanillaDate = function () {
+//        return new Date(
+//            this.year() !== undefined ? this.year() : 1970,
+//            this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
+//            this.day() !== undefined ? this.day() : 1,
+//            this.hours() !== undefined ? this.hours() : 0,
+//            this.minutes() !== undefined ? this.minutes() : 0,
+//            this.seconds() !== undefined ? this.seconds() : 0,
+//            this.milliseconds() !== undefined ? this.milliseconds() : 0
+//        );
+//    };
 
     /**
      * Returns UTC Date object.
@@ -1013,7 +1025,13 @@
     };
 
 
+    // *************************************************
+    // *                                               *
+    // *               COMPATIBILITY                   *
+    // *                                               *
+    // *************************************************
 
+    // fix Array.indexOf for old browsers
     if (!Array.prototype.indexOf) {
         Array.prototype.indexOf = function(obj, start) {
             for (var i = (start || 0), j = this.length; i < j; i++) {
@@ -1024,19 +1042,49 @@
     }
 
 
+    // *************************************************
+    // *                                               *
+    // *                  FACTORY                      *
+    // *                                               *
+    // *************************************************
 
-    // Factory
     function TempusFactory() {}
 
-    TempusFactory.prototype.createDate = function (options, format) {
-        return new TempusDate(options, format);
-    };
-    var tempusFactory = new TempusFactory();
-    tempusConstructor = function (options, format) {
-        return tempusFactory.createDate(options, format);
+    TempusFactory.prototype.createDate = function (options, format, defaults) {
+        return new TempusDate(options, format, defaults);
     };
 
-    tempusConstructor.generate = function(options) {
+    var tempusFactory = new TempusFactory();
+
+
+    /**
+     * Constructor for TempusDate. You can set initial value, for more info, {@see set}.
+     * @param options {undefined|object|Array|string|number} {@see set}
+     * @param format {undefined|string} {@see set}
+     * @param defaults {undefined|TempusDate|object} {@see set}
+     * @returns {TempusDate} Instance of TempusDate.
+     * @example
+     * // returns TempusDate with current date.
+     * tempus();
+     * @example
+     * // returns TempusDate with date 2013-01-15.
+     * tempus({year: 2013, month: 1, day: 15});
+     * @example
+     * // returns TempusDate with date 2000-06-01 and time 12:01:15
+     * tempus([2000, 6, 1, 12, 1, 15]);
+     * @example
+     * // returns TempusDate with date 2001-05-10 and time 05:30:00
+     * tempus('2001-05-10 05:30:00');
+     * @example
+     * // returns TempusDate with date 2001-05-10 and time 05:30:00
+     * tempus(989454600);
+     */
+    tempus = function (options, format, defaults) {
+        return tempusFactory.createDate(options, format, defaults);
+    };
+
+
+    tempus.generate = function(options) {
         var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
         // timestamp "from"
         if (typeof options.dateFrom === 'string') {
@@ -1118,5 +1166,5 @@
     };
 
     window.TempusDate = TempusDate;
-    window.tempus = tempusConstructor;
+    window.tempus = tempus;
 })(window);
