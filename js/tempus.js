@@ -243,7 +243,7 @@
             milliseconds: false
         };
 
-        if (typeof options === 'object') {
+        if (typeof options === 'object' || typeof options === 'number') {
             this.set(options);
         } else if (typeof options === 'string') {
             this.parse(options, format);
@@ -628,6 +628,10 @@
             this._date = newDate;
             return this;
         }
+        if (typeof newDate === 'number') {
+            this._date = new Date(newDate * (useMilliseconds ? 1 : 1000));
+            return this;
+        }
         if (typeof newDate === 'object') {
             this.year(newDate.year);
             this.month(newDate.month);
@@ -1010,18 +1014,39 @@
 
 
 
-    var generateDates = function(options) {
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function(obj, start) {
+            for (var i = (start || 0), j = this.length; i < j; i++) {
+                if (this[i] === obj) { return i; }
+            }
+            return -1;
+        }
+    }
+
+
+
+    // Factory
+    function TempusFactory() {}
+
+    TempusFactory.prototype.createDate = function (options, format) {
+        return new TempusDate(options, format);
+    };
+    var tempusFactory = new TempusFactory();
+    tempusConstructor = function (options, format) {
+        return tempusFactory.createDate(options, format);
+    };
+
+    tempusConstructor.generate = function(options) {
         var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
         // timestamp "from"
         if (typeof options.dateFrom === 'string') {
-            tsFrom = that.parse(options.dateFrom, options.formatFrom);
+            tsFrom = tempusFactory.createDate(options.dateFrom, options.formatFrom).timestamp();
         }
-        tsFrom = that.time(tsFrom);
         // timestamp "to"
         if (typeof options.dateTo === 'string') {
-            tsTo = that.parse(options.dateTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom));
+            tsTo = tempusFactory.createDate(options.dateTo,
+                (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).timestamp();
         }
-        tsTo = that.time(tsTo);
         // period
         if (typeof options.period === 'number') {
             period = {
@@ -1051,33 +1076,32 @@
                 seconds: options.period.seconds !== undefined ? options.period.seconds : 0
             }
         }
-
         // result
         if (options.groupBy === undefined) {
             result = options.asObject === true ? {} : [];
         } else {
             result = [];
             result.push([]);
-            var prevValue = that.date(tsFrom, {week:true})[options.groupBy];
+            var prevValue = tempusFactory.createDate(tsFrom).get()[options.groupBy];
         }
         var addTo = function(array, value) {
             if (options.asObject === true) {
                 if (options.format !== undefined) {
-                    array[that.format(value, options.format)] = {};
+                    array[tempusFactory.createDate(value).format(options.format)] = {};
                 } else {
-                    array[that.format(value, '%F %H:%M:%S')] = {};
+                    array[tempusFactory.createDate(value).format('%F %H:%M:%S')] = {};
                 }
             } else {
                 if (options.format !== undefined) {
-                    array.push(that.format(value, options.format));
+                    array.push(tempusFactory.createDate(value).format(options.format));
                 } else {
-                    array.push(value);
+                    array.push(tempusFactory.createDate(value));
                 }
             }
             return array;
         };
 
-        for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
+        for (; tsFrom <= tsTo; tsFrom = tempusFactory.createDate(tsFrom).calc(period).timestamp()) {
             if (options.groupBy === undefined) {
                 addTo(result, tsFrom);
             } else {
@@ -1086,40 +1110,12 @@
                 } else {
                     result.push([]);
                     addTo(result[result.length-1], tsFrom);
-                    prevValue = that.date(tsFrom, {week:true})[options.groupBy];
+                    prevValue = tempusFactory.createDate(tsFrom).get()[options.groupBy];
                 }
             }
         }
         return result;
     };
-
-
-
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(obj, start) {
-            for (var i = (start || 0), j = this.length; i < j; i++) {
-                if (this[i] === obj) { return i; }
-            }
-            return -1;
-        }
-    }
-
-
-
-    // Factory
-    function TempusFactory() {}
-
-    TempusFactory.prototype.createDate = function (options, format) {
-        return new TempusDate(options, format);
-    };
-    var tempusFactory = new TempusFactory();
-    tempusConstructor = function (options, format) {
-        return tempusFactory.createDate(options, format);
-    };
-
-
-
-    tempusConstructor.prototype.generate = generateDates;
 
     window.TempusDate = TempusDate;
     window.tempus = tempusConstructor;

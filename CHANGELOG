@@ -2,6 +2,7 @@
 - Supports chains.
 - Supports modular structure.
 - Changed tempus to Tempus and TP, added method noConflict().
+- Autodetect user language.
 
 0.1.31
 - Added TempusDate constructor.
