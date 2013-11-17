@@ -1056,7 +1056,6 @@
 
     var tempusFactory = new TempusFactory();
 
-
     /**
      * Constructor for TempusDate. You can set initial value, for more info, {@see set}.
      * @param options {undefined|object|Array|string|number} {@see set}
@@ -1083,17 +1082,44 @@
         return tempusFactory.createDate(options, format, defaults);
     };
 
-
+    /**
+     * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
+     * @param options {object|undefined} Options object.
+     * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
+     *     any other value ({@see tempus}).
+     * @param options.formatFrom {string|undefined} Format. If undefined, tempus will be auto detect format.
+     * @param options.dateTo {TempusDate|undefined|object|Array|string|number} TempusDate object or
+     *     any other value ({@see tempus}).
+     * @param options.formatTo {string|undefined} Format. If undefined, will use formatFrom.
+     * @param options.period {number|string|object} Step size for dates, can be 'seconds', 'minutes', 'hours',
+     *     'day', 'month', 'year', number value (seconds) or object alike {year: number, month: number, day: number,
+     *     hours: number, minutes: number, seconds: number}.
+     * @param options.format {string|undefined} Results format. If undefined, returns TempusDate.
+     * @param options.asObject {boolean|undefined} If true, dates will be keys for objects in result array.
+     * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
+     *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
+     * @returns {Array|object} Array or object from dates.
+     */
     tempus.generate = function(options) {
-        var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
+        var tsFrom = options.dateFrom,
+            tsTo = options.dateTo,
+            period,
+            result;
         // timestamp "from"
-        if (typeof options.dateFrom === 'string') {
-            tsFrom = tempusFactory.createDate(options.dateFrom, options.formatFrom).timestamp();
+        if (typeof options.dateFrom !== 'number') {
+            if (options.dateFrom instanceof TempusDate) {
+                tsFrom = tsFrom.timestamp();
+            } else {
+                tsFrom = tempus(tsFrom, options.formatFrom).timestamp();
+            }
         }
         // timestamp "to"
-        if (typeof options.dateTo === 'string') {
-            tsTo = tempusFactory.createDate(options.dateTo,
-                (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).timestamp();
+        if (typeof options.dateTo !== 'number') {
+            if (options.dateTo instanceof TempusDate) {
+                tsTo = tsTo.timestamp();
+            } else {
+                tsTo = tempus(tsTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).timestamp();
+            }
         }
         // period
         if (typeof options.period === 'number') {
