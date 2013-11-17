@@ -315,6 +315,15 @@
             'Checking constructor with numeric value');
     });
 
+    test('Tests generator of many TempusDate', function() {
+        deepEqual(tempus.generate({dateFrom: '01.01.2013',dateTo: '10.01.2013',period: 'day',format: '%d.%m.%Y'}),
+            ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+             "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"],
+            'Tests simply generation of dates');
+    });
+
+
+
 
     // parse test
     //tempus('2010%01%05', '%Y%%%m%%%d');
