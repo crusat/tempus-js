@@ -816,17 +816,6 @@
          *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
          * @returns {Array|object} Array or object from dates.
          * @example
-         * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
-         * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
-         * tempus.generateDates({
-         *     dateFrom: '01.01.2013',
-         *     formatFrom: '%d.%m.%Y',
-         *     dateTo: '10.01.2013',
-         *     formatTo: '%d.%m.%Y',
-         *     period: {day: 1},
-         *     format: '%d.%m.%Y'
-         * });
-         * @example
          * // returns [1356998400,1357084800,1357171200,1357257600,1357344000,
          * //     1357430400,1357516800,1357603200,1357689600,1357776000];
          * tempus.generateDates({

@@ -1108,6 +1108,15 @@
      *     period: 'day',
      *     format: '%d.%m.%Y'
      * });
+     * @example
+     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     * tempus.generate({
+     *     dateFrom: '20130329',
+     *     formatFrom: '%Y%m%d',
+     *     dateTo: '20130402',
+     *     period: {day: 1},
+     *     format: '%d.%m.%Y'
+     * });
      *
      */
     tempus.generate = function(options) {

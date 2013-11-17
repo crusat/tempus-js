@@ -320,6 +320,9 @@
             ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
              "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"],
             'Tests simply generation of dates');
+        deepEqual(tempus.generate({dateFrom: '20130329',formatFrom: '%Y%m%d',dateTo: '20130402',period: {day: 1},format: '%d.%m.%Y'}),
+            ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"],
+            'Tests generation of dates with custom format and period as object');
     });
 
 
