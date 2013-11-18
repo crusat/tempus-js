@@ -451,11 +451,76 @@
             if (this._incorrect.year === false) {
                 return monthFromZero ? this._date.getMonth() : (this._date.getMonth() +  1);
             } else {
-                return this._incorrect.year;
+                return this._incorrect.month;
             }
         }
         return this;
     };
 
+    /**
+     * Get or set day of month.
+     *
+     *     @example
+     *     // returns current day
+     *     tempus().day();
+     *
+     *     // returns 100
+     *     tempus().day(100).day();
+     *
+     *     // returns 12
+     *     tempus().day(12).day();
+     *
+     *     // returns 1
+     *     tempus().day(1).day();
+     *
+     *     // returns -5
+     *     tempus().day(-5).day();
+     *
+     *     // returns 0
+     *     tempus().day('0').day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(undefined).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day({foo: 'bar'}).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day([1,2,3]).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(null).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(true).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(false).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(NaN).day();
+     *
+     *
+     * @param {number} value Set new day. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.day = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= this.constants().MIN_DAY && Number(value) <= this.dayCount()) {
+                    this._date.setDate(Number(value));
+                    this._incorrect.day = false;
+                } else {
+                    this._incorrect.day = Number(value);
+                }
+            } else {
+                this._date.setDate(this.constants().MIN_DAY);
+                this._incorrect.day = false;
+            }
+        } else {
+            return this._incorrect.day === false ? this._date.getDate() : this._incorrect.day;
+        }
+        return this;
+    };
 
 })();

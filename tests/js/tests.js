@@ -157,21 +157,7 @@
 
 
 
-    test('Test day() method', function () {
-        // values
-        equal(tempus().day(100).day(), new Date().getDate(), 'Test value: 100');
-        equal(tempus().day(12).day(), 12, 'Test value: 12');
-        equal(tempus().day(-5).day(), new Date().getDate(), 'Test value: -5');
-        equal(tempus().day('0').day(), new Date().getDate(), 'Test value: \'0\'');
-        equal(tempus().day({foo: 'bar'}).day(), new Date().getDate(), 'Test value: {foo: \'bar\'}');
-        equal(tempus().day([1,2,3]).day(), new Date().getDate(), 'Test value: [1,2,3]');
-        equal(tempus().day(undefined).day(), 1, 'Test value: undefined');
-        equal(tempus().day(null).day(), new Date().getDate(), 'Test value: null');
-        equal(tempus().day(true).day(), new Date().getDate(), 'Test value: true');
-        equal(tempus().day(false).day(), new Date().getDate(), 'Test value: false');
-        // check types
-        equal(typeof tempus().day(1).day(), 'number', 'Type is number');
-    });
+
 
     test('Test hours() method', function () {
         // values
@@ -289,7 +275,7 @@
 
     test('Test year() method', function () {
         // values
-        equal(tempus().year(), new Date().getFullYear(), 'Test value: 2000');
+        equal(tempus().year(), new Date().getFullYear(), 'Test value: Current');
         equal(tempus().year(2000).year(), 2000, 'Test value: 2000');
         equal(tempus().year(1000).year(), 1000, 'Test value: 1000');
         equal(tempus().year(3000).year(), 3000, 'Test value: 3000');
@@ -309,7 +295,7 @@
 
     test('Test month() method', function () {
         // values
-        equal(tempus().month(), new Date().getMonth() + 1, 'Test value: 100');
+        equal(tempus().month(), new Date().getMonth() + 1, 'Test value: Current');
         equal(tempus().month(100).month(), 100, 'Test value: 100');
         equal(tempus().month(12).month(), 12, 'Test value: 12');
         equal(tempus().month(1).month(), 1, 'Test value: 12');
@@ -324,6 +310,24 @@
         equal(tempus().month(NaN).month(), tempus().constants().MIN_MONTH, 'Test value: false');
         // check types
         equal(typeof tempus().month(1).month(), 'number', 'Type is number');
+    });
+
+    test('Test day() method', function () {
+        // values
+        equal(tempus().day(), new Date().getDate(), 'Test value: Current');
+        equal(tempus().day(100).day(), 100, 'Test value: 100');
+        equal(tempus().day(12).day(), 12, 'Test value: 12');
+        equal(tempus().day(-5).day(), -5, 'Test value: -5');
+        equal(tempus().day('0').day(), 0, 'Test value: \'0\'');
+        equal(tempus().day({foo: 'bar'}).day(), tempus().constants().MIN_DAY, 'Test value: {foo: \'bar\'}');
+        equal(tempus().day([1,2,3]).day(), tempus().constants().MIN_DAY, 'Test value: [1,2,3]');
+        equal(tempus().day(undefined).day(), tempus().constants().MIN_DAY, 'Test value: undefined');
+        equal(tempus().day(null).day(), tempus().constants().MIN_DAY, 'Test value: null');
+        equal(tempus().day(true).day(), tempus().constants().MIN_DAY, 'Test value: true');
+        equal(tempus().day(false).day(), tempus().constants().MIN_DAY, 'Test value: false');
+        equal(tempus().day(NaN).day(), tempus().constants().MIN_DAY, 'Test value: false');
+        // check types
+        equal(typeof tempus().day(1).day(), 'number', 'Type is number');
     });
 
 
