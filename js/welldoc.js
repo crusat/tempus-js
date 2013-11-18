@@ -1047,6 +1047,43 @@
         return this;
     };
 
+    /**
+     * Is year leap?
+     *
+     *    @example
+     *    // returns false
+     *    tempus([2014]).leapYear();
+     *
+     *    // returns true
+     *    tempus({year: 2012}).leapYear();
+     *
+     *    // returns true
+     *    tempus(947698701).leapYear(); // 2012 year
+     *
+     *    // returns false
+     *    tempus([1900]).leapYear();
+     *
+     *    // returns false
+     *    tempus({year: 1941, day: 22, month: 6}).leapYear();
+     *
+     *    // returns true
+     *    tempus({year: 2008, day: 1, month: 1}).leapYear();
+     *
+     *    // check current year
+     *    tempus().leapYear();
+     *
+     * @returns {boolean} If true year is leap else not leap.
+     */
+    TempusDate.fn.leapYear = function () {
+        var year = this.year();
+        if (year % 4 == 0) {
+            if (year % 100 == 0) {
+                return year % 400 == 0;
+            } else return true;
+        }
+        return false;
+    };
+
     // *************************************************
     // *                                               *
     // *                    FACTORY                    *

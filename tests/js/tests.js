@@ -43,21 +43,7 @@
 
 
 
-    test('Test isLeapYear() method', function () {
-        equal(tempus().now().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
-        equal(tempus().year(2013).leapYear(), false, '2013 is not leap year');
-        equal(tempus().year(2012).leapYear(), true, '2012 is leap year');
-        equal(tempus().year(2000).leapYear(), true, '2000 is leap year');
-        equal(tempus().year(1900).leapYear(), false, '1900 is not leap year');
-        equal(tempus().year(1904).leapYear(), true, '1904 is leap year');
-        equal(tempus().year(1905).leapYear(), false, '1905 is not leap year');
-        equal(tempus().set({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
-        equal(tempus().set({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
-        equal(typeof tempus().now().leapYear(), 'boolean', 'Type is boolean');
-        for (var year = 1800; year <= yyyy; year++) {
-            equal(tempus().year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
-        }
-    });
+
 
     test('Test format() method', function () {
         equal(tempus().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
@@ -218,6 +204,22 @@
         equal(tempus().seconds(NaN).seconds(), tempus().constants().MIN_SECONDS, 'Test value: false');
         // check types
         equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
+    });
+
+    test('Tests leapYear() method', function () {
+        equal(tempus().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
+        equal(tempus([2013]).leapYear(), false, '2013 is not leap year');
+        equal(tempus([2012]).leapYear(), true, '2012 is leap year');
+        equal(tempus([2000]).leapYear(), true, '2000 is leap year');
+        equal(tempus([1900]).leapYear(), false, '1900 is not leap year');
+        equal(tempus([1904]).leapYear(), true, '1904 is leap year');
+        equal(tempus([1905]).leapYear(), false, '1905 is not leap year');
+        equal(tempus({year: 1941, day: 22, month: 6}).leapYear(), false, '1941 is not leap year');
+        equal(tempus({year: 2008, day: 1, month: 1}).leapYear(), true, '2008 is not leap year');
+        equal(typeof tempus().leapYear(), 'boolean', 'Type is boolean');
+        for (var year = 1800; year <= yyyy; year++) {
+            equal(tempus().year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
+        }
     });
 
     // *************************************************

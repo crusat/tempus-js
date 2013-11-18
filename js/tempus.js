@@ -3,14 +3,6 @@
  */
 (function (window, undefined) {
 
-    var isLeapYear = function (year) {
-        if (year % 4 == 0) {
-            if (year % 100 == 0) {
-                return year % 400 == 0;
-            } else return true;
-        }
-        return false;
-    };
 
 
 
@@ -69,41 +61,6 @@
         }
     };
 
-
-
-    /**
-     * Is year leap?
-     * @returns {boolean|undefined} If true year is leap else not leap.
-     * @example
-     * // returns false
-     * TP.year(2013).leapYear();
-     * @example
-     * // returns true
-     * TP.year(2012).leapYear();
-     * @example
-     * // returns true
-     * TP.year(2000).leapYear();
-     * @example
-     * // returns false
-     * TP.year(1900).leapYear();
-     * @example
-     * // returns false
-     * TP.set({year: 1941, day: 22, month: 6}).leapYear();
-     * @example
-     * // returns true
-     * TP.set({year: 2008, day: 1, month: 1}).leapYear();
-     * @example
-     * // check current year
-     * TP.now().leapYear();
-     */
-    TempusDate.fn.leapYear = function () {
-        var y;
-        if ((y = this.year()) !== undefined) {
-            return isLeapYear(y);
-        } else {
-            return undefined;
-        }
-    };
     /**
      * Releases TP variable from global scope.
      * @param all {boolean} If true, Tempus variable also will be released.
