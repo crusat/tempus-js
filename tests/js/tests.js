@@ -221,6 +221,12 @@
         equal(tempus([2013, 11, 18]).dayOfWeek(), new Date(2013, 11, 18).getDay(), 'Test');
     });
 
+    test('Test timezone() method', function () {
+        equal(tempus().timezone(), new Date().getTimezoneOffset()*60, 'Test');
+        equal(tempus().timezone('minutes'), new Date().getTimezoneOffset(), 'Test');
+        equal(tempus().timezone('hours'), new Date().getTimezoneOffset()/60, 'Test');
+    });
+
     test('Tests leapYear() method', function () {
         equal(tempus().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
         equal(tempus([2013]).leapYear(), false, '2013 is not leap year');

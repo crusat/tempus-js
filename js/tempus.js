@@ -13,16 +13,7 @@
 
 
 
-    TempusDate.fn.timezone = function (type) {
-        switch (type) {
-            case 'hours':
-                return Math.floor(this._date.getTimezoneOffset() / 60);
-            case 'minutes':
-                return this._date.getTimezoneOffset();
-            default:
-                return this._date.getTimezoneOffset()*60;
-        }
-    };
+
 
     /**
      * Releases TP variable from global scope.

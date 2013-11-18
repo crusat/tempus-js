@@ -1160,6 +1160,30 @@
         }
     };
 
+    /**
+     * Get timezone offset.
+     *
+     *     @example
+     *     // returns your timezone offset in seconds
+     *     tempus().timezone();
+     *
+     *     // returns your timezone offset in hours
+     *     tempus().timezone('hours');
+     *
+     * @param {string} type If type is 'hours', returns offset in hours, 'minutes' for minutes and default in seconds.
+     * @returns {number} Timezone offset value
+     */
+    TempusDate.fn.timezone = function (type) {
+        switch (type) {
+            case 'hours':
+                return Math.floor(this._date.getTimezoneOffset() / 60);
+            case 'minutes':
+                return this._date.getTimezoneOffset();
+            default:
+                return this._date.getTimezoneOffset()*60;
+        }
+    };
+
 
 
     // *************************************************
