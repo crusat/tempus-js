@@ -210,6 +210,93 @@
         useMilliseconds = false,
         monthFromZero = false;
 
+    var formattingWithNulls = function (val, symb_count) {
+        var v = val.toString();
+        while (v.length < symb_count) {
+            v = '0' + v;
+        }
+        return v;
+    };
+
+    var parseBadFormat = function(date, defaults) {
+        if (defaults !== undefined) {
+            date.year(defaults.year() || defaults.year);
+            date.month(defaults.month() || defaults.month);
+            date.day(defaults.day() || defaults.day);
+            date.hours(defaults.hours() || defaults.hours);
+            date.minutes(defaults.minutes() || defaults.minutes);
+            date.seconds(defaults.seconds() || defaults.seconds);
+            date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
+            return date;
+        } else {
+            return undefined;
+        }
+    };
+
+    var detectTimeFormat = function(str, startFrom) {
+        var tmpChars, format = '';
+        tmpChars = str.slice(startFrom, startFrom+1);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%H';
+        }
+        tmpChars = str.charAt(startFrom+2);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+3, startFrom+4);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%M';
+        }
+        tmpChars = str.charAt(startFrom+5);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+6, startFrom+7);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%S';
+        }
+        return format;
+    };
+
+    var detectDateFormat = function(str, startFrom) {
+        var tmpChars, format;
+        var part1 = [
+            str.slice(startFrom, startFrom+1),
+            str.charAt(startFrom+2),
+            str.slice(startFrom+3, startFrom+4),
+            str.charAt(startFrom+5),
+            str.slice(startFrom+6, startFrom+9)
+        ];
+
+        if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
+            if (part1[1] === '.' && part1[3] === '.') {
+                format = '%d.%m.%Y';
+            } else if (part1[1] === '-' && part1[3] === '-') {
+                format = '%m-%d-%Y';
+            } else if (part1[1] === '/' && part1[3] === '/') {
+                format = '%m/%d/%Y';
+            }
+
+            return format;
+        }
+
+        var part2 = [
+            str.slice(startFrom, startFrom+3),
+            str.charAt(startFrom+4),
+            str.slice(startFrom+5, startFrom+6),
+            str.charAt(startFrom+7),
+            str.slice(startFrom+8, startFrom+9)
+        ];
+
+        if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
+            if (part2[1] === '-' && part2[3] === '-') {
+                format = '%Y-%m-%d';
+            }
+            return format;
+        }
+        return '';
+    };
+
     /**
      * A **TempusDate** class. Store information about some date and can be use
      * for working with it date.
@@ -741,6 +828,21 @@
     };
 
     /**
+     * Returns week number.
+     *
+     *     @example
+     *     // returns 18
+     *     tempus([2013, 5, 1]).week();
+     *
+     * @returns {number} Week number.
+     */
+    TempusDate.fn.week = function () {
+        var onejan = new Date(this.year(), 0, 1);
+        var nowDate = this.get('Date');
+        return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay()+1)/7);
+    };
+
+    /**
      * Set new date. If **undefined**, set now date. If instance of **Date** - set it date.
      * If **object**, set date from {year: number, month: number, day: number, hours: number, minutes: number,
      * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
@@ -1167,6 +1269,22 @@
         }
         return result;
     };
+
+    // *************************************************
+    // *                                               *
+    // *               COMPATIBILITY                   *
+    // *                                               *
+    // *************************************************
+
+    // fix Array.indexOf for old browsers
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function(obj, start) {
+            for (var i = (start || 0), j = this.length; i < j; i++) {
+                if (this[i] === obj) { return i; }
+            }
+            return -1;
+        }
+    }
 
     // *************************************************
     // *                                               *
