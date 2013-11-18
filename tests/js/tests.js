@@ -19,31 +19,11 @@
     var dd = today.getDate(); // day. Begin from 1.
     var mm = today.getMonth()+1; // month. Begin from 0.
     var yyyy = today.getFullYear();
-    var day, month, year, hourss, minutes, seconds;
+    var day, month, year, hours, minutes, seconds;
 
 
 
-    test('Test now() method', function () {
-        // check current date/time
-        equal(tempus().now().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
-        equal(tempus().now().year(), new Date().getFullYear(), 'Full year');
-        equal(tempus().now().month(), new Date().getMonth() + 1, 'Month');
-        equal(tempus().now().day(), new Date().getDate(), 'Day');
-        equal(tempus().now().hourss(), new Date().getHours(), 'Hours');
-        equal(tempus().now().minutes(), new Date().getMinutes(), 'Minutes');
-        equal(tempus().now().seconds(), new Date().getSeconds(), 'Seconds');
-        equal(tempus().now().dayOfWeek(), new Date().getDay(), 'Day of week');
-        // check types
-        equal(typeof tempus().now(), 'object', 'Type is object');
-        equal(typeof tempus().now().year(), 'number', 'Type is number');
-        equal(typeof tempus().now().month(), 'number', 'Type is number');
-        equal(typeof tempus().now().day(), 'number', 'Type is number');
-        equal(typeof tempus().now().hourss(), 'number', 'Type is number');
-        equal(typeof tempus().now().minutes(), 'number', 'Type is number');
-        equal(typeof tempus().now().seconds(), 'number', 'Type is number');
-        equal(typeof tempus().now().dayOfWeek(), 'number', 'Type is number');
-        equal(typeof tempus().now().timestamp(), 'number', 'Type is number');
-    });
+
 
     test('Test timestamps', function() {
         equal(tempus({year: 2013, month: 11, day: 14}).timestamp(),
@@ -58,139 +38,10 @@
         equal(typeof tempus().get(), 'object', 'Type is object');
     });
 
-    test('Test set() year ranges', function () {
-        for (year = 1000; year <= 3000; year++) {
-            equal(tempus({year: year}).year(), year, 'Year can be from 1000 to 3000, else MIN_YEAR. Year: ' + year);
-        }
-        for (year = -100; year <= 999; year++) {
-            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 999 or less, else current and set incorrect. Year: ' + year);
-        }
-        for (year = 3001; year <= 4000; year++) {
-            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 3001 or more, else current and set incorrect. Year: ' + year);
-        }
-        equal(tempus({}).year(), 1000, 'If year is not setted, setting MIN_YEAR');
-    });
-
-    test('Test set() months ranges', function () {
-        for (month = 1; month <= 12; month++) {
-            equal(tempus().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
-        }
-        for (month = -100; month <= 0; month++) {
-            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 0 or less. Month: ' + month);
-        }
-        for (month = 13; month <= 100; month++) {
-            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 13 or more. Month: ' + month);
-        }
-        equal(tempus().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
-    });
-
-    test('Test set() day ranges', function () {
-        // Not leap year check
-        var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        for (month = 1; month <= 12; month++) {
-            for (day = 1; day <= dayInMonth[month - 1]; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
-            }
-            for (day = -10; day <= 0; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
-            }
-            for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
-            }
-        }
-        // leap year check
-        dayInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        for (month = 1; month <= 12; month++) {
-            for (day = 1; day <= dayInMonth[month - 1]; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
-            }
-            for (day = -10; day <= 0; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
-            }
-            for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
-            }
-        }
-        equal(tempus().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
-    });
-
-    test('Test set() hourss ranges', function () {
-        for (hourss = 0; hourss <= 23; hourss++) {
-            equal(tempus().set({hourss: hourss}).hourss(), hourss, 'Hours can be from 0 to 23. Hours: ' + hourss);
-        }
-        for (hourss = -100; hourss < 0; hourss++) {
-            equal(tempus().set({hourss: hourss}).hourss(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hourss);
-        }
-        for (hourss = 24; hourss <= 100; hourss++) {
-            equal(tempus().set({hourss: hourss}).hourss(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hourss);
-        }
-        equal(tempus().set({}).hourss(), 0, 'If hourss is not setted, setting MIN_HOURS');
-    });
-
-    test('Test set() minutes ranges', function () {
-        for (minutes = 0; minutes <= 59; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
-        }
-        for (minutes = -100; minutes < 0; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 0 or less. Minutes: ' + minutes);
-        }
-        for (minutes = 60; minutes <= 100; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 59 or more. Minutes: ' + minutes);
-        }
-        equal(tempus().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
-    });
-
-    test('Test set() seconds ranges', function () {
-        for (seconds = 0; seconds <= 59; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
-        }
-        for (seconds = -100; seconds < 0; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 0 or less. Minutes: ' + seconds);
-        }
-        for (seconds = 60; seconds <= 100; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 59 or more. Minutes: ' + seconds);
-        }
-        equal(tempus().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
-    });
 
 
 
 
-
-
-
-
-    test('Test minutes() method', function () {
-        // values
-        equal(tempus().minutes(100).minutes(), new Date().getMinutes(), 'Test value: 100');
-        equal(tempus().minutes(12).minutes(), 12, 'Test value: 12');
-        equal(tempus().minutes(-5).minutes(), new Date().getMinutes(), 'Test value: -5');
-        equal(tempus().minutes('0').minutes(), 0, 'Test value: \'0\'');
-        equal(tempus().minutes({foo: 'bar'}).minutes(), new Date().getMinutes(), 'Test value: {foo: \'bar\'}');
-        equal(tempus().minutes([1,2,3]).minutes(), new Date().getMinutes(), 'Test value: [1,2,3]');
-        equal(tempus().minutes(undefined).minutes(), 0, 'Test value: undefined');
-        equal(tempus().minutes(null).minutes(), new Date().getMinutes(), 'Test value: null');
-        equal(tempus().minutes(true).minutes(), new Date().getMinutes(), 'Test value: true');
-        equal(tempus().minutes(false).minutes(), new Date().getMinutes(), 'Test value: false');
-        // check types
-        equal(typeof tempus().minutes(1).minutes(), 'number', 'Type is number');
-    });
-
-    test('Test seconds() method', function () {
-        // values
-        equal(tempus().seconds(100).seconds(), new Date().getSeconds(), 'Test value: 100');
-        equal(tempus().seconds(12).seconds(), 12, 'Test value: 12');
-        equal(tempus().seconds(-5).seconds(), new Date().getSeconds(), 'Test value: -5');
-        equal(tempus().seconds('0').seconds(), 0, 'Test value: \'0\'');
-        equal(tempus().seconds({foo: 'bar'}).seconds(), new Date().getSeconds(), 'Test value: {foo: \'bar\'}');
-        equal(tempus().seconds([1,2,3]).seconds(), new Date().getSeconds(), 'Test value: [1,2,3]');
-        equal(tempus().seconds(undefined).seconds(), 0, 'Test value: undefined');
-        equal(tempus().seconds(null).seconds(), new Date().getSeconds(), 'Test value: null');
-        equal(tempus().seconds(true).seconds(), new Date().getSeconds(), 'Test value: true');
-        equal(tempus().seconds(false).seconds(), new Date().getSeconds(), 'Test value: false');
-        // check types
-        equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
-    });
 
     test('Test isLeapYear() method', function () {
         equal(tempus().now().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
@@ -367,6 +218,142 @@
         equal(tempus().seconds(NaN).seconds(), tempus().constants().MIN_SECONDS, 'Test value: false');
         // check types
         equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
+    });
+
+    // *************************************************
+    // *                                               *
+    // *                    SET                        *
+    // *                                               *
+    // *************************************************
+
+    test('Tests set() method', function() {
+        equal(Math.floor(tempus().set().get('Date').valueOf()/1000), Math.floor(new Date().valueOf()/1000),
+            'This test may be not completed and it be right, because here checking two NOW dates');
+        equal(tempus().set({year: 2013, month: 1, day: 15}).get('Date').valueOf(), new Date(2013, 0, 15).valueOf(),
+            'Checking constructor with some object value');
+        equal(tempus().set([2000, 6, 1, 12, 1, 15]).get('Date').valueOf(), new Date(2000, 5, 1, 12, 1, 15).valueOf(),
+            'Checking constructor with array value');
+        equal(tempus().set('2001-05-10 05:30:00').get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+            'Checking constructor with string value');
+        equal(tempus().set(989454600).get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+            'Checking constructor with numeric value');
+    });
+
+    test('Test now date', function () {
+        // check current date/time
+        equal(tempus().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
+        equal(tempus().year(), new Date().getFullYear(), 'Full year');
+        equal(tempus().month(), new Date().getMonth() + 1, 'Month');
+        equal(tempus().day(), new Date().getDate(), 'Day');
+        equal(tempus().hours(), new Date().getHours(), 'Hours');
+        equal(tempus().minutes(), new Date().getMinutes(), 'Minutes');
+        equal(tempus().seconds(), new Date().getSeconds(), 'Seconds');
+        equal(tempus().dayOfWeek(), new Date().getDay(), 'Day of week');
+        // check types
+        equal(typeof tempus().now(), 'object', 'Type is object');
+        equal(typeof tempus().year(), 'number', 'Type is number');
+        equal(typeof tempus().month(), 'number', 'Type is number');
+        equal(typeof tempus().day(), 'number', 'Type is number');
+        equal(typeof tempus().hours(), 'number', 'Type is number');
+        equal(typeof tempus().minutes(), 'number', 'Type is number');
+        equal(typeof tempus().seconds(), 'number', 'Type is number');
+        equal(typeof tempus().dayOfWeek(), 'number', 'Type is number');
+        equal(typeof tempus().timestamp(), 'number', 'Type is number');
+    });
+
+    test('Test set() year ranges', function () {
+        for (year = 1000; year <= 3000; year++) {
+            equal(tempus({year: year}).year(), year, 'Year can be from 1000 to 3000, else MIN_YEAR. Year: ' + year);
+        }
+        for (year = -100; year <= 999; year++) {
+            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 999 or less, else current and set incorrect. Year: ' + year);
+        }
+        for (year = 3001; year <= 4000; year++) {
+            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 3001 or more, else current and set incorrect. Year: ' + year);
+        }
+        equal(tempus({}).year(), 1000, 'If year is not setted, setting MIN_YEAR');
+    });
+
+    test('Test set() months ranges', function () {
+        for (month = 1; month <= 12; month++) {
+            equal(tempus().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
+        }
+        for (month = -100; month <= 0; month++) {
+            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 0 or less. Month: ' + month);
+        }
+        for (month = 13; month <= 100; month++) {
+            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 13 or more. Month: ' + month);
+        }
+        equal(tempus().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
+    });
+
+    test('Test set() day ranges', function () {
+        // Not leap year check
+        var dayInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        for (month = 1; month <= 12; month++) {
+            for (day = 1; day <= dayInMonth[month - 1]; day++) {
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+            }
+            for (day = -10; day <= 0; day++) {
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+            for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+        }
+        // leap year check
+        dayInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+        for (month = 1; month <= 12; month++) {
+            for (day = 1; day <= dayInMonth[month - 1]; day++) {
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
+            }
+            for (day = -10; day <= 0; day++) {
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+            for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+            }
+        }
+        equal(tempus().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
+    });
+
+    test('Test set() hours ranges', function () {
+        for (hours = 0; hours <= 23; hours++) {
+            equal(tempus().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
+        }
+        for (hours = -100; hours < 0; hours++) {
+            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hours);
+        }
+        for (hourss = 24; hours <= 100; hours++) {
+            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hours);
+        }
+        equal(tempus().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
+    });
+
+    test('Test set() minutes ranges', function () {
+        for (minutes = 0; minutes <= 59; minutes++) {
+            equal(tempus().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
+        }
+        for (minutes = -100; minutes < 0; minutes++) {
+            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 0 or less. Minutes: ' + minutes);
+        }
+        for (minutes = 60; minutes <= 100; minutes++) {
+            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 59 or more. Minutes: ' + minutes);
+        }
+        equal(tempus().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
+    });
+
+    test('Test set() seconds ranges', function () {
+        for (seconds = 0; seconds <= 59; seconds++) {
+            equal(tempus().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
+        }
+        for (seconds = -100; seconds < 0; seconds++) {
+            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 0 or less. Minutes: ' + seconds);
+        }
+        for (seconds = 60; seconds <= 100; seconds++) {
+            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 59 or more. Minutes: ' + seconds);
+        }
+        equal(tempus().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
 
 
