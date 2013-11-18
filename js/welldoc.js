@@ -213,9 +213,9 @@
     /**
      * A **TempusDate** class. Store information about some date and can be use
      * for working with it date.
-     * @param {string} options Some date.
+     * @param {undefined|Date|object|Array|number|string} options Some date.
      * @param {undefined|string} format String for getting date from string or undefined else.
-     * @param {TempusDate} defaults This object was returning, if options is **undefined**.
+     * @param {TempusDate} defaults This object was returning, if parsing failed.
      * @returns {TempusDate}
      * @constructor
      */
@@ -781,6 +781,184 @@
             }
         } else {
             return this._incorrect.milliseconds === false ? this._date.getMilliseconds() : this._incorrect.milliseconds;
+        }
+        return this;
+    };
+
+    /**
+     * Set new date. If **undefined**, set now date. If instance of **Date** - set it date.
+     * If **object**, set date from {year: number, month: number, day: number, hours: number, minutes: number,
+     * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
+     * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or autodetect)
+     * format.
+     * @param {undefined|Date|object|Array|number|string} newDate Some date.
+     * @param {undefined|string} format String for getting date from string or undefined else.
+     * @param {TempusDate} defaults This object was returning, if parsing failed.
+     * @returns {TempusDate}
+     */
+    TempusDate.fn.set = function (newDate, format, defaults) {
+        this._incorrect = {
+            year: false,
+            month: false,
+            day: false,
+            hours: false,
+            minutes: false,
+            seconds: false,
+            milliseconds: false
+        };
+        if (newDate === undefined) {
+            this._date = new Date();
+            return this;
+        }
+        if (newDate instanceof Date) {
+            this._date = newDate;
+            return this;
+        }
+        if (typeof newDate === 'number') {
+            this._date = new Date(newDate * (useMilliseconds ? 1 : 1000));
+            return this;
+        }
+        if (typeof newDate === 'object') {
+            if (newDate instanceof Array) {
+                this.year(newDate[0]);
+                this.month(newDate[1]);
+                this.day(newDate[2]);
+                this.hours(newDate[3]);
+                this.minutes(newDate[4]);
+                this.seconds(newDate[5]);
+                this.milliseconds(newDate[6]);
+            } else {
+                this.year(newDate.year);
+                this.month(newDate.month);
+                this.day(newDate.day);
+                this.hours(newDate.hours);
+                this.minutes(newDate.minutes);
+                this.seconds(newDate.seconds);
+                this.milliseconds(newDate.milliseconds);
+            }
+        }
+        // parse date
+        if (typeof newDate === 'string') {
+            var key,
+                lits = [],
+                parseResult;
+            if (newDate === undefined) {
+                parseResult = parseBadFormat(this, defaults);
+                if (parseResult === undefined) {
+                    this._incorrect = {
+                        year: -1,
+                        month: -1,
+                        day: -1,
+                        hours: -1,
+                        minutes: -1,
+                        seconds: -1,
+                        milliseconds: -1
+                    };
+                }
+                return parseResult;
+            }
+            if (format === undefined) {
+                format = this.detectFormat(newDate);
+            }
+
+            var directive;
+            var res = [];
+
+            var i = 0,
+                j = 0,
+                k;
+            while (i < format.length) {
+                if (format.charAt(i) === '%') {
+                    if (format.charAt(i+1) === '%') {
+                        i++;
+                    } else {
+                        directive = format.charAt(i) + format.charAt(i + 1);
+                        k = 0;
+                        var shortString = '';
+                        switch(registeredFormats[directive].type) {
+                            case 'number':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && !isNaN(Number(newDate.charAt(j + k)))) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                            case 'word':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && /^\w+$/.test(newDate.charAt(j + k))) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                            case 'string':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length)) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                        }
+
+                        if (k < registeredFormats[directive].minLength) {
+                            parseResult = parseBadFormat(this, defaults);
+                            if (parseResult === undefined) {
+                                this._incorrect = {
+                                    year: -1,
+                                    month: -1,
+                                    day: -1,
+                                    hours: -1,
+                                    minutes: -1,
+                                    seconds: -1,
+                                    milliseconds: -1
+                                };
+                            }
+                            return parseResult;
+                        }
+                        lits.push(directive);
+                        res.push(shortString);
+                        j += --k;
+                        i++;
+                    }
+                } else {
+                    if (newDate.charAt(j) !== format.charAt(i)) {
+                        parseResult = parseBadFormat(this, defaults);
+                        if (parseResult === undefined) {
+                            this._incorrect = {
+                                year: -1,
+                                month: -1,
+                                day: -1,
+                                hours: -1,
+                                minutes: -1,
+                                seconds: -1,
+                                milliseconds: -1
+                            };
+                        }
+                        return parseResult;
+                    }
+                }
+                i++;
+                j++;
+            }
+
+            var resultdate = {};
+            var tmpdate;
+            for(key in lits) {
+                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
+                    tmpdate = registeredFormats[lits[key]].parse(res[key]);
+                    resultdate = {
+                        year: tmpdate.year !== undefined ? tmpdate.year : resultdate.year,
+                        month: tmpdate.month !== undefined ? tmpdate.month : resultdate.month,
+                        day: tmpdate.day !== undefined ? tmpdate.day : resultdate.day,
+                        hours: tmpdate.hours !== undefined ? tmpdate.hours : resultdate.hours,
+                        minutes: tmpdate.minutes !== undefined ? tmpdate.minutes : resultdate.minutes,
+                        seconds: tmpdate.seconds !== undefined ? tmpdate.seconds : resultdate.seconds
+                    };
+                }
+            }
+            this.year(resultdate.year);
+            this.month(resultdate.month);
+            this.day(resultdate.day);
+            this.hours(resultdate.hours);
+            this.minutes(resultdate.minutes);
+            this.seconds(resultdate.seconds);
+            this.milliseconds(resultdate.milliseconds);
         }
         return this;
     };
