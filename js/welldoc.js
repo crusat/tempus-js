@@ -789,8 +789,28 @@
      * Set new date. If **undefined**, set now date. If instance of **Date** - set it date.
      * If **object**, set date from {year: number, month: number, day: number, hours: number, minutes: number,
      * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
-     * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or autodetect)
-     * format.
+     * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or auto detect
+     * format).
+     *
+     *     @example
+     *     // returns TempusDate with current date
+     *     tempus().set();
+     *
+     *     // returns TempusDate with date "2013-11-18 20:14:23.918"
+     *     tempus().set({year: 2013, month: 11, day: 18, hours: 20, minutes: 14, seconds: 23, milliseconds: 918});
+     *
+     *     // returns TempusDate with date "2013-11-18 20:15:38"
+     *     tempus().set(1384791338);
+     *
+     *     // returns TempusDate with date "2013-01-01 12:00:03"
+     *     tempus().set([2013, 1, 1, 12, 0, 3]);
+     *
+     *     // returns TempusDate with date "2013-01-01"
+     *     tempus().set(new Date(2012, 0, 1));
+     *
+     *     // returns TempusDate with date "2013-11-18"
+     *     tempus().set('18.11.2013');
+     *
      * @param {undefined|Date|object|Array|number|string} newDate Some date.
      * @param {undefined|string} format String for getting date from string or undefined else.
      * @param {TempusDate} defaults This object was returning, if parsing failed.
