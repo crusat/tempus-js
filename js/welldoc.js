@@ -365,7 +365,7 @@
      *     // returns 1000 (MIN_YEAR)
      *     tempus().year(NaN).year();
      *
-     * @param {number} value Set new year. If undefined, returns numeric value. If wrong value, old value was saved.
+     * @param {number} value Set new year. If no arguments, returns numeric value.
      * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
      */
     TempusDate.fn.year = function (value) {
@@ -381,7 +381,75 @@
                 this._incorrect.year = Number(value);
             }
         } else {
-            return this._date.getFullYear();
+            return this._incorrect.year === false ? this._date.getFullYear() : this._incorrect.year;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set month.
+     *
+     *     @example
+     *     // returns current month
+     *     tempus().month();
+     *
+     *     // returns 100
+     *     tempus().month(100).month();
+     *
+     *     // returns 12
+     *     tempus().month(12).month();
+     *
+     *     // returns 1
+     *     tempus().month(1).month();
+     *
+     *     // returns -5
+     *     tempus().month(-5).month();
+     *
+     *     // returns 0
+     *     tempus().month('0').month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(undefined).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month({foo: 'bar'}).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month([1,2,3]).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(null).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(true).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(false).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(NaN).month();
+     *
+     *
+     * @param {number} value Set new month. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.month = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
+                this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
+                this._incorrect.month = false;
+            } else if (value === undefined) {
+                this._date.setMonth(monthFromZero ? this.constants().MIN_MONTH : this.constants().MIN_MONTH - 1);
+                this._incorrect.month = false;
+            } else {
+                this._incorrect.month = Number(value);
+            }
+        } else {
+            if (this._incorrect.year === false) {
+                return monthFromZero ? this._date.getMonth() : (this._date.getMonth() +  1);
+            } else {
+                return this._incorrect.year;
+            }
         }
         return this;
     };

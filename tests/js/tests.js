@@ -155,22 +155,7 @@
 
 
 
-    test('Test month() method', function () {
-        // values
-        equal(tempus().month(100).month(), new Date().getMonth() + 1, 'Test value: 100');
-        equal(tempus().month(12).month(), 12, 'Test value: 12');
-        equal(tempus().month(1).month(), 1, 'Test value: 12');
-        equal(tempus().month(-5).month(), new Date().getMonth() + 1, 'Test value: -5');
-        equal(tempus().month('0').month(), new Date().getMonth() + 1, 'Test value: \'0\'');
-        equal(tempus().month({foo: 'bar'}).month(), new Date().getMonth() + 1, 'Test value: {foo: \'bar\'}');
-        equal(tempus().month([1,2,3]).month(), new Date().getMonth() + 1, 'Test value: [1,2,3]');
-        equal(tempus().month(undefined).month(), 1, 'Test value: undefined');
-        equal(tempus().month(null).month(), new Date().getMonth() + 1, 'Test value: null');
-        equal(tempus().month(true).month(), new Date().getMonth() + 1, 'Test value: true');
-        equal(tempus().month(false).month(), new Date().getMonth() + 1, 'Test value: false');
-        // check types
-        equal(typeof tempus().month(1).month(), 'number', 'Type is number');
-    });
+
 
     test('Test day() method', function () {
         // values
@@ -320,6 +305,25 @@
         equal(tempus().year(NaN).year(), tempus().constants().MIN_YEAR, 'Test value: false');
         // check types
         equal(typeof tempus().year(2000).year(), 'number', 'Type is number');
+    });
+
+    test('Test month() method', function () {
+        // values
+        equal(tempus().month(), new Date().getMonth() + 1, 'Test value: 100');
+        equal(tempus().month(100).month(), 100, 'Test value: 100');
+        equal(tempus().month(12).month(), 12, 'Test value: 12');
+        equal(tempus().month(1).month(), 1, 'Test value: 12');
+        equal(tempus().month(-5).month(), -5, 'Test value: -5');
+        equal(tempus().month('0').month(), 0, 'Test value: \'0\'');
+        equal(tempus().month(undefined).month(), tempus().constants().MIN_MONTH, 'Test value: undefined');
+        equal(tempus().month({foo: 'bar'}).month(), tempus().constants().MIN_MONTH, 'Test value: {foo: \'bar\'}');
+        equal(tempus().month([1,2,3]).month(), tempus().constants().MIN_MONTH, 'Test value: [1,2,3]');
+        equal(tempus().month(null).month(), tempus().constants().MIN_MONTH, 'Test value: null');
+        equal(tempus().month(true).month(), tempus().constants().MIN_MONTH, 'Test value: true');
+        equal(tempus().month(false).month(), tempus().constants().MIN_MONTH, 'Test value: false');
+        equal(tempus().month(NaN).month(), tempus().constants().MIN_MONTH, 'Test value: false');
+        // check types
+        equal(typeof tempus().month(1).month(), 'number', 'Type is number');
     });
 
 

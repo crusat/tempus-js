@@ -381,28 +381,6 @@
 //    };
 
     /**
-     * Get or set year.
-     * @param value {number} New year. If undefined, returns numeric value.
-     * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
-     */
-//    TempusDate.fn.year = function (value) {
-//        if (arguments.length !== 0) {
-//            // no value range checking, because can be used for delta times
-//            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
-//                this._date.setFullYear(Number(value));
-//                this._incorrect.year = false;
-//            } else if (value === undefined) {
-//                this._date.setFullYear(this.constants().MIN_YEAR);
-//                this._incorrect.year = false;
-//            } else {
-//                this._incorrect.year = Number(value);
-//            }
-//        } else {
-//            return this._date.getFullYear();
-//        }
-//        return this;
-//    };
-    /**
      * Get or set month.
      * @param value {number} New month. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
