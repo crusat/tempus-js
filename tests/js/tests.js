@@ -25,12 +25,6 @@
 
 
 
-    test('Test timestamps', function() {
-        equal(tempus({year: 2013, month: 11, day: 14}).timestamp(),
-            new Date(2013, 10, 14).getTime() / 1000, 'Timestamp local: 2013-11-14 00:00:00');
-        equal(tempus().set({year: 2013, month: 11, day: 14}).UTC(),
-            1384387200, 'Timestamp UTC: 2013-11-14 00:00:00');
-    });
 
     test('Test base set() method', function () {
         deepEqual(tempus(new Date(2013, 0, 1, 0, 0, 0, 0)).get(), tempus({year: 2013, month: 1, day: 1, hourss: 0, minutes: 0,
@@ -53,20 +47,7 @@
         equal(typeof tempus().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
     });
 
-    test('Test instances', function() {
-        var resultTest1 = function() {
-            var a = tempus().set({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
-            return a.format('%Y-%m-%d %H:%M:%S');
-        };
-        var resultTest2 = function() {
-            var a = tempus().set({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
-            var b = tempus().now();
-            return a.format('%Y-%m-%d %H:%M:%S');
-        };
 
-        equal(resultTest1(), '2013-05-05 12:41:36', 'Test 1');
-        equal(resultTest2(), '2013-05-05 12:41:36', 'Test 2');
-    });
 
     test('Test calc()', function() {
         equal(tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y'), '01.05.2013', 'Easy test');
@@ -227,6 +208,16 @@
         equal(tempus().timezone('hours'), new Date().getTimezoneOffset()/60, 'Test');
     });
 
+    test('Tests get() method', function() {
+        equal(Math.floor(tempus().get('Date').valueOf()/1000), Math.floor(new Date().valueOf()/1000), 'Test');
+        equal(tempus().get().year, new Date().getFullYear(), 'Test');
+        equal(tempus().get().month, new Date().getMonth()+1, 'Test');
+        equal(tempus().get().day, new Date().getDate(), 'Test');
+        equal(tempus().get().hours, new Date().getHours(), 'Test');
+        equal(tempus().get().minutes, new Date().getMinutes(), 'Test');
+        equal(tempus().get().seconds, new Date().getSeconds(), 'Test');
+    });
+
     test('Tests leapYear() method', function () {
         equal(tempus().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
         equal(tempus([2013]).leapYear(), false, '2013 is not leap year');
@@ -241,6 +232,21 @@
         for (var year = 1800; year <= yyyy; year++) {
             equal(tempus().year(year).leapYear(), isLeapYear(year), 'Dynamic test. Year: ' + year);
         }
+    });
+
+    test('Test instances', function() {
+        var resultTest1 = function() {
+            var a = tempus({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
+            return a.format('%Y-%m-%d %H:%M:%S');
+        };
+        var resultTest2 = function() {
+            var a = tempus({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
+            var b = tempus();
+            return a.format('%Y-%m-%d %H:%M:%S');
+        };
+
+        equal(resultTest1(), '2013-05-05 12:41:36', 'Test 1');
+        equal(resultTest2(), '2013-05-05 12:41:36', 'Test 2');
     });
 
     // *************************************************

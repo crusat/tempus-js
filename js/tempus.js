@@ -69,28 +69,7 @@
                 return undefined;
         }
     };
-    TempusDate.fn.get = function (type) {
-        switch (type) {
-            case 'Date':
-                return this._date;
-            default:
-                return {
-                    year: this.year(),
-                    month: this.month(),
-                    week: this.week(),
-                    day: this.day(),
-                    hours: this.hours(),
-                    minutes: this.minutes(),
-                    seconds: this.seconds(),
-                    milliseconds: this.milliseconds(),
-                    UTC: this.UTC(),
-                    dayOfWeek: this.dayOfWeek(),
-                    dayOfWeekShort: this.dayOfWeek('short'),
-                    dayOfWeekLong: this.dayOfWeek('long'),
-                    timestamp: this.timestamp()
-                }
-        }
-    };
+
 
 
     TempusDate.fn.format = function (format) {
@@ -158,26 +137,6 @@
         return this;
     };
 
-
-
-    /**
-     * Returns Date object.
-     * @returns {Date} Date object with data from this Tempus object.
-     * @example
-     * // returns Date obj
-     * TP.now().calc({month: -1}).asVanillaDate();
-     */
-//    TempusDate.fn.asVanillaDate = function () {
-//        return new Date(
-//            this.year() !== undefined ? this.year() : 1970,
-//            this.month() !== undefined ? this.month() - (monthFromZero ? 0 : 1) : 0,
-//            this.day() !== undefined ? this.day() : 1,
-//            this.hours() !== undefined ? this.hours() : 0,
-//            this.minutes() !== undefined ? this.minutes() : 0,
-//            this.seconds() !== undefined ? this.seconds() : 0,
-//            this.milliseconds() !== undefined ? this.milliseconds() : 0
-//        );
-//    };
 
     /**
      * Returns UTC Date object.

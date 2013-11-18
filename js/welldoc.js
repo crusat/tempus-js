@@ -1185,6 +1185,42 @@
     };
 
 
+    /**
+     * Get info about date.
+     *
+     *     @example
+     *     // returns Date object
+     *     tempus().get('Date');
+     *
+     *     // returns object with more info
+     *     tempus().get();
+     *
+     * @param {string} type Can be 'Date' for returns Date object, 'DateUTC' for returns Date in UTC or default
+     *     for returns default object.
+     * @returns {Date|Object} Date or default object.
+     */
+    TempusDate.fn.get = function (type) {
+        switch (type) {
+            case 'Date':
+                return this._date;
+            default:
+                return {
+                    year: this.year(),
+                    month: this.month(),
+                    week: this.week(),
+                    day: this.day(),
+                    hours: this.hours(),
+                    minutes: this.minutes(),
+                    seconds: this.seconds(),
+                    milliseconds: this.milliseconds(),
+                    UTC: this.UTC(),
+                    dayOfWeek: this.dayOfWeek(),
+                    dayOfWeekShort: this.dayOfWeek('short'),
+                    dayOfWeekLong: this.dayOfWeek('long'),
+                    timestamp: this.timestamp()
+                }
+        }
+    };
 
 
 
@@ -1409,26 +1445,26 @@
         } else {
             result = [];
             result.push([]);
-            var prevValue = tempusFactory.createDate(tsFrom).get()[options.groupBy];
+            var prevValue = tempus(tsFrom).get()[options.groupBy];
         }
         var addTo = function(array, value) {
             if (options.asObject === true) {
                 if (options.format !== undefined) {
-                    array[tempusFactory.createDate(value).format(options.format)] = {};
+                    array[tempus(value).format(options.format)] = {};
                 } else {
-                    array[tempusFactory.createDate(value).format('%F %H:%M:%S')] = {};
+                    array[tempus(value).format('%F %H:%M:%S')] = {};
                 }
             } else {
                 if (options.format !== undefined) {
-                    array.push(tempusFactory.createDate(value).format(options.format));
+                    array.push(tempus(value).format(options.format));
                 } else {
-                    array.push(tempusFactory.createDate(value));
+                    array.push(tempus(value));
                 }
             }
             return array;
         };
 
-        for (; tsFrom <= tsTo; tsFrom = tempusFactory.createDate(tsFrom).calc(period).timestamp()) {
+        for (; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).timestamp()) {
             if (options.groupBy === undefined) {
                 addTo(result, tsFrom);
             } else {
@@ -1437,7 +1473,7 @@
                 } else {
                     result.push([]);
                     addTo(result[result.length-1], tsFrom);
-                    prevValue = tempusFactory.createDate(tsFrom).get()[options.groupBy];
+                    prevValue = tempus(tsFrom).get()[options.groupBy];
                 }
             }
         }
