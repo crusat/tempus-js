@@ -370,15 +370,16 @@
      */
     TempusDate.fn.year = function (value) {
         if (arguments.length !== 0) {
-            // no value range checking, because can be used for delta times
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
-                this._date.setFullYear(Number(value));
-                this._incorrect.year = false;
-            } else if (value === undefined) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
+                    this._date.setFullYear(Number(value));
+                    this._incorrect.year = false;
+                } else {
+                    this._incorrect.year = Number(value);
+                }
+            } else {
                 this._date.setFullYear(this.constants().MIN_YEAR);
                 this._incorrect.year = false;
-            } else {
-                this._incorrect.year = Number(value);
             }
         } else {
             return this._incorrect.year === false ? this._date.getFullYear() : this._incorrect.year;

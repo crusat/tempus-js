@@ -380,27 +380,7 @@
 //        }
 //    };
 
-    /**
-     * Get or set month.
-     * @param value {number} New month. If undefined, returns numeric value.
-     * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
-     */
-    TempusDate.fn.month = function (value) {
-        if (arguments.length !== 0) {
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
-                this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
-                this._incorrect.month = false;
-            } else if (value === undefined) {
-                this._date.setMonth(monthFromZero ? this.constants().MIN_MONTH : this.constants().MIN_MONTH - 1);
-                this._incorrect.month = false;
-            } else {
-                this._incorrect.month = Number(value);
-            }
-        } else {
-            return monthFromZero ? this._date.getMonth() : (this._date.getMonth() +  1);
-        }
-        return this;
-    };
+
     /**
      * Get or set day.
      * @param value {number} New day. If undefined, returns numeric value.
