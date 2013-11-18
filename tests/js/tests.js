@@ -333,7 +333,41 @@
         equal(typeof tempus().hours(1).hours(), 'number', 'Type is number');
     });
 
+    test('Test minutes() method', function () {
+        // values
+        equal(tempus().minutes(), new Date().getMinutes(), 'Test value: Current');
+        equal(tempus().minutes(100).minutes(), 100, 'Test value: 100');
+        equal(tempus().minutes(12).minutes(), 12, 'Test value: 12');
+        equal(tempus().minutes(-5).minutes(), -5, 'Test value: -5');
+        equal(tempus().minutes('0').minutes(), 0, 'Test value: \'0\'');
+        equal(tempus().minutes({foo: 'bar'}).minutes(), tempus().constants().MIN_MINUTES, 'Test value: {foo: \'bar\'}');
+        equal(tempus().minutes([1,2,3]).minutes(), tempus().constants().MIN_MINUTES, 'Test value: [1,2,3]');
+        equal(tempus().minutes(undefined).minutes(), tempus().constants().MIN_MINUTES, 'Test value: undefined');
+        equal(tempus().minutes(null).minutes(), tempus().constants().MIN_MINUTES, 'Test value: null');
+        equal(tempus().minutes(true).minutes(), tempus().constants().MIN_MINUTES, 'Test value: true');
+        equal(tempus().minutes(false).minutes(), tempus().constants().MIN_MINUTES, 'Test value: false');
+        equal(tempus().minutes(NaN).minutes(), tempus().constants().MIN_MINUTES, 'Test value: false');
+        // check types
+        equal(typeof tempus().minutes(1).minutes(), 'number', 'Type is number');
+    });
 
+    test('Test seconds() method', function () {
+        // values
+        equal(tempus().seconds(), new Date().getSeconds(), 'Test value: Current');
+        equal(tempus().seconds(100).seconds(), 100, 'Test value: 100');
+        equal(tempus().seconds(12).seconds(), 12, 'Test value: 12');
+        equal(tempus().seconds(-5).seconds(), -5, 'Test value: -5');
+        equal(tempus().seconds('0').seconds(), 0, 'Test value: \'0\'');
+        equal(tempus().seconds({foo: 'bar'}).seconds(), tempus().constants().MIN_SECONDS, 'Test value: {foo: \'bar\'}');
+        equal(tempus().seconds([1,2,3]).seconds(), tempus().constants().MIN_SECONDS, 'Test value: [1,2,3]');
+        equal(tempus().seconds(undefined).seconds(), tempus().constants().MIN_SECONDS, 'Test value: undefined');
+        equal(tempus().seconds(null).seconds(), tempus().constants().MIN_SECONDS, 'Test value: null');
+        equal(tempus().seconds(true).seconds(), tempus().constants().MIN_SECONDS, 'Test value: true');
+        equal(tempus().seconds(false).seconds(), tempus().constants().MIN_SECONDS, 'Test value: false');
+        equal(tempus().seconds(NaN).seconds(), tempus().constants().MIN_SECONDS, 'Test value: false');
+        // check types
+        equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
+    });
 
 
     // *************************************************

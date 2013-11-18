@@ -567,7 +567,7 @@
      *     tempus().hours(NaN).hours();
      *
      *
-     * @param {number} value Set new day. If no arguments, returns numeric value.
+     * @param {number} value Set new hours. If no arguments, returns numeric value.
      * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
      */
     TempusDate.fn.hours = function (value) {
@@ -585,6 +585,138 @@
             }
         } else {
             return this._incorrect.hours === false ? this._date.getHours() : this._incorrect.hours;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set minutes.
+     *
+     *     @example
+     *     // returns current minutes
+     *     tempus().minutes();
+     *
+     *     // returns 100
+     *     tempus().minutes(100).minutes();
+     *
+     *     // returns 12
+     *     tempus().minutes(12).minutes();
+     *
+     *     // returns 1
+     *     tempus().minutes(1).minutes();
+     *
+     *     // returns -5
+     *     tempus().minutes(-5).minutes();
+     *
+     *     // returns 0
+     *     tempus().minutes('0').minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(undefined).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes({foo: 'bar'}).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes([1,2,3]).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(null).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(true).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(false).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(NaN).minutes();
+     *
+     *
+     * @param {number} value Set new minutes. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.minutes = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= this.constants().MIN_MINUTES && Number(value) <= this.constants().MAX_MINUTES) {
+                    this._date.setMinutes(Number(value));
+                    this._incorrect.minutes = false;
+                } else {
+                    this._incorrect.minutes = Number(value);
+                }
+            } else {
+                this._date.setMinutes(this.constants().MIN_MINUTES);
+                this._incorrect.minutes = false;
+            }
+        } else {
+            return this._incorrect.minutes === false ? this._date.getMinutes() : this._incorrect.minutes;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set seconds.
+     *
+     *     @example
+     *     // returns current seconds
+     *     tempus().seconds();
+     *
+     *     // returns 100
+     *     tempus().seconds(100).seconds();
+     *
+     *     // returns 12
+     *     tempus().seconds(12).seconds();
+     *
+     *     // returns 1
+     *     tempus().seconds(1).seconds();
+     *
+     *     // returns -5
+     *     tempus().seconds(-5).seconds();
+     *
+     *     // returns 0
+     *     tempus().seconds('0').seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(undefined).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds({foo: 'bar'}).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds([1,2,3]).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(null).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(true).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(false).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(NaN).seconds();
+     *
+     *
+     * @param {number} value Set new seconds. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.seconds = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= this.constants().MIN_SECONDS && Number(value) <= this.constants().MAX_SECONDS) {
+                    this._date.setSeconds(Number(value));
+                    this._incorrect.seconds = false;
+                } else {
+                    this._incorrect.seconds = Number(value);
+                }
+            } else {
+                this._date.setSeconds(this.constants().MIN_SECONDS);
+                this._incorrect.seconds = false;
+            }
+        } else {
+            return this._incorrect.seconds === false ? this._date.getSeconds() : this._incorrect.seconds;
         }
         return this;
     };

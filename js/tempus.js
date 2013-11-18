@@ -311,53 +311,11 @@
     };
 
     /**
-     * Get or set hours.
-     * @param value {number} New hours. If undefined, returns numeric value.
-     * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
-     */
-
-    /**
-     * Get or set minutes.
-     * @param value {number} New minutes. If undefined, returns numeric value.
-     * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
-     */
-    TempusDate.fn.minutes = function (value) {
-        if (arguments.length !== 0) {
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MINUTES && Number(value) <= this.constants().MAX_MINUTES) {
-                this._date.setMinutes(Number(value));
-                this._incorrect.minutes = false;
-            } else if (value === undefined) {
-                this._date.setMinutes(this.constants().MIN_MINUTES);
-                this._incorrect.minutes = false;
-            } else {
-                this._incorrect.minutes = Number(value);
-            }
-        } else {
-            return this._date.getMinutes();
-        }
-        return this;
-    };
-    /**
      * Get or set seconds.
      * @param value {number} New seconds. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.fn.seconds = function (value) {
-        if (arguments.length !== 0) {
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_SECONDS && Number(value) <= this.constants().MAX_SECONDS) {
-                this._date.setSeconds(Number(value));
-                this._incorrect.seconds = false;
-            } else if (value === undefined) {
-                this._date.setSeconds(this.constants().MIN_SECONDS);
-                this._incorrect.seconds = false;
-            } else {
-                this._incorrect.seconds = Number(value);
-            }
-        } else {
-            return this._date.getSeconds();
-        }
-        return this;
-    };
+
     TempusDate.fn.milliseconds = function (value) {
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
