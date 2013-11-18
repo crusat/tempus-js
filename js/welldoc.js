@@ -213,7 +213,7 @@
     /**
      * A **TempusDate** class. Store information about some date and can be use
      * for working with it date.
-     * @param {undefined|Date|object|Array|number|string} options Some date.
+     * @param {undefined|Date|Object|Array|number|string} options Some date.
      * @param {undefined|string} format String for getting date from string or undefined else.
      * @param {TempusDate} defaults This object was returning, if parsing failed.
      * @returns {TempusDate}
@@ -773,7 +773,7 @@
      *     // returns TempusDate with date "2013-01-01"
      *     tempus().set('123', '%d.%m.%Y', tempus([2013, 1, 1]));
      *
-     * @param {undefined|Date|object|Array|number|string} newDate Some date.
+     * @param {undefined|Date|Object|Array|number|string} newDate Some date.
      * @param {undefined|string} format String for getting date from string or undefined else.
      * @param {TempusDate} defaults This object was returning, if parsing failed.
      * @returns {TempusDate}
@@ -970,7 +970,7 @@
      *     // returns TempusDate with date 2001-05-10 and time 05:30:00
      *     tempus(989454600);
      *
-     * @param {undefined|Date|object|Array|number|string} options Some date. See {@link #set}
+     * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link #set}
      * @param {undefined|string} format See {@link #set}
      * @param {undefined|TempusDate} defaults See {@link #set}
      * @returns {TempusDate} Instance of TempusDate.
@@ -1028,6 +1028,36 @@
 
     /**
      * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
+     *
+     *     @example
+     *     // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+     *     //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
+     *     tempus.generate({
+     *         dateFrom: '01.01.2013',
+     *         dateTo: '10.01.2013',
+     *         period: 'day',
+     *         format: '%d.%m.%Y'
+     *     });
+     *
+     *     // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     *     tempus.generate({
+     *         dateFrom: '20130329',
+     *         formatFrom: '%Y%m%d',
+     *         dateTo: '20130402',
+     *         period: {day: 1},
+     *         format: '%d.%m.%Y'
+     *     });
+     *
+     *     // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     *     tempus.generate({
+     *         dateFrom: '20130329',
+     *         formatFrom: '%s',
+     *         dateTo: '20130402',
+     *         period: {day: 1},
+     *         format: '%s'
+     *     });
+     *
+     *
      * @param options {object|undefined} Options object.
      * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
      *     any other value ({@see tempus}).
@@ -1042,35 +1072,7 @@
      * @param options.asObject {boolean|undefined} If true, dates will be keys for objects in result array.
      * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
-     * @returns {Array|object} Array or object from dates.
-     * @example
-     * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
-     * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
-     * tempus.generate({
-     *     dateFrom: '01.01.2013',
-     *     dateTo: '10.01.2013',
-     *     period: 'day',
-     *     format: '%d.%m.%Y'
-     * });
-     * @example
-     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
-     * tempus.generate({
-     *     dateFrom: '20130329',
-     *     formatFrom: '%Y%m%d',
-     *     dateTo: '20130402',
-     *     period: {day: 1},
-     *     format: '%d.%m.%Y'
-     * });
-     * @example
-     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
-     * tempus.generate({
-     *     dateFrom: '20130329',
-     *     formatFrom: '%s',
-     *     dateTo: '20130402',
-     *     period: {day: 1},
-     *     format: '%s'
-     * });
-     *
+     * @returns {Array|Object} Array or object from dates.
      */
     tempus.generate = function(options) {
         var tsFrom = options.dateFrom,
