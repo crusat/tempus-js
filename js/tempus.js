@@ -18,15 +18,6 @@
 
 
 
-
-    TempusDate.fn.monthNames = function (type) {
-        switch (type) {
-            case 'long':
-                return translations[lang]["monthLongNames"];
-            default:
-                return translations[lang]["monthShortNames"];
-        }
-    };
     TempusDate.fn.dayNames = function (type) {
         switch (type) {
             case 'long':

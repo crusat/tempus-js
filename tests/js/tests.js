@@ -388,6 +388,31 @@
 
     // *************************************************
     // *                                               *
+    // *                   LANGS                       *
+    // *                                               *
+    // *************************************************
+
+    test('Tests getMonthNames()', function () {
+        deepEqual(tempus.getMonthNames(),
+            ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+            'Test');
+        deepEqual(tempus.getMonthNames(true),
+            ["January","February","March","April","May","June",
+             "July","August","September","October","November","December"],
+            'Test');
+        deepEqual(function() {
+                var names;
+                tempus.setLang('ru');
+                names = tempus.getMonthNames();
+                tempus.setLang();
+                return names;
+            },
+            ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+            'Test');
+    });
+
+    // *************************************************
+    // *                                               *
     // *                  FACTORY                      *
     // *                                               *
     // *************************************************

@@ -1352,6 +1352,7 @@
      *     // returns TempusDate instance
      *     T.tempus();
      *
+     * @static
      * @returns {Object} Object with keys as default names and values as default functions.
      */
     tempus.noConflict = function () {
@@ -1498,6 +1499,34 @@
             }
         }
         return result;
+    };
+
+    /**
+     * Returns array of month names. If type is undefined, short names was returned.
+     *
+     *     @example
+     *     // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+     *     tempus.getMonthNames();
+     *
+     *     // returns ["January","February","March","April","May","June",
+     *     //     "July","August","September","October","November","December"];
+     *     tempus.getMonthNames(true);
+     *
+     *     // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+     *     tempus.setLang('ru');
+     *     tempus.getMonthNames();
+     *
+     * @static
+     * @param {boolean} type If true, long names was returning, else - short names.
+     * @returns {Array} Array of month names.
+     */
+    tempus.monthNames = function (type) {
+        switch (type) {
+            case 'long':
+                return translations[lang]["monthLongNames"];
+            default:
+                return translations[lang]["monthShortNames"];
+        }
     };
 
     // *************************************************
