@@ -153,23 +153,7 @@
         equal(tempus().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
 
-    test('Test year() method', function () {
-        // values
-        equal(tempus().year(2000).year(), 2000, 'Test value: 2000');
-        equal(tempus().year(1000).year(), 1000, 'Test value: 1000');
-        equal(tempus().year(3000).year(), 3000, 'Test value: 3000');
-        equal(tempus().year(1).year(), new Date().getFullYear(), 'Test value: 1');
-        equal(tempus().year(-15).year(), new Date().getFullYear(), 'Test value: -15');
-        equal(tempus().year('0').year(), new Date().getFullYear(), 'Test value: \'0\'');
-        equal(tempus().year({foo: 'bar'}).year(), new Date().getFullYear(), 'Test value: {foo: \'bar\'}');
-        equal(tempus().year([1,2,3]).year(), new Date().getFullYear(), 'Test value: [1,2,3]');
-        equal(tempus().year(undefined).year(), 1000, 'Test value: undefined');
-        equal(tempus().year(null).year(), new Date().getFullYear(), 'Test value: null');
-        equal(tempus().year(true).year(), new Date().getFullYear(), 'Test value: true');
-        equal(tempus().year(false).year(), new Date().getFullYear(), 'Test value: false');
-        // check types
-        equal(typeof tempus().year(2000).year(), 'number', 'Type is number');
-    });
+
 
     test('Test month() method', function () {
         // values
@@ -303,7 +287,7 @@
     // *************************************************
 
     test('Tests constants()', function() {
-        equal(tempus().constants(),
+        deepEqual(tempus().constants(),
             {MIN_YEAR: 1000,MAX_YEAR: 3000,MIN_MONTH: 1,MAX_MONTH: 12,
             MIN_DAY: 1,MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],MIN_DAY_OF_WEEK: 0,
             MAX_DAY_OF_WEEK: 6,MIN_HOURS: 0,MAX_HOURS: 23,MIN_MINUTES: 0,MAX_MINUTES: 59,MIN_SECONDS: 0,MAX_SECONDS: 59,
@@ -316,6 +300,26 @@
         equal(tempus([2012, 2]).dayCount(), 29, 'February leap year');
         equal(tempus([2013, 2]).dayCount(), 28, 'February not leap year');
         equal(tempus([2013, 1]).dayCount(), 31, 'January');
+    });
+
+    test('Test year() method', function () {
+        // values
+        equal(tempus().year(), new Date().getFullYear(), 'Test value: 2000');
+        equal(tempus().year(2000).year(), 2000, 'Test value: 2000');
+        equal(tempus().year(1000).year(), 1000, 'Test value: 1000');
+        equal(tempus().year(3000).year(), 3000, 'Test value: 3000');
+        equal(tempus().year(undefined).year(), tempus().constants().MIN_YEAR, 'Test value: undefined');
+        equal(tempus().year(1).year(), 1, 'Test value: 1');
+        equal(tempus().year(-15).year(), -15, 'Test value: -15');
+        equal(tempus().year('0').year(), 0, 'Test value: \'0\'');
+        equal(tempus().year({foo: 'bar'}).year(), tempus().constants().MIN_YEAR, 'Test value: {foo: \'bar\'}');
+        equal(tempus().year([1,2,3]).year(), tempus().constants().MIN_YEAR, 'Test value: [1,2,3]');
+        equal(tempus().year(null).year(), tempus().constants().MIN_YEAR, 'Test value: null');
+        equal(tempus().year(true).year(), tempus().constants().MIN_YEAR, 'Test value: true');
+        equal(tempus().year(false).year(), tempus().constants().MIN_YEAR, 'Test value: false');
+        equal(tempus().year(NaN).year(), tempus().constants().MIN_YEAR, 'Test value: false');
+        // check types
+        equal(typeof tempus().year(2000).year(), 'number', 'Type is number');
     });
 
 

@@ -321,6 +321,50 @@
 
     /**
      * Get or set year.
+     *
+     *     @example
+     *     // returns current year
+     *     tempus().year();
+     *
+     *     // returns 2000
+     *     tempus().year(2000).year();
+     *
+     *     // returns 1000
+     *     tempus().year(1000).year();
+     *
+     *     // returns 3000
+     *     tempus().year(3000).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(undefined).year();
+     *
+     *     // returns 1
+     *     tempus().year(1).year();
+     *
+     *     // returns -15
+     *     tempus().year(-15).year();
+     *
+     *     // returns 0
+     *     tempus().year('0').year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year({foo:"bar"}).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year([1,2,3]).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(null).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(true).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(false).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(NaN).year();
+     *
      * @param {number} value Set new year. If undefined, returns numeric value. If wrong value, old value was saved.
      * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
      */
