@@ -1,4 +1,7 @@
-(function (window, undefined) {
+/**
+ * @author Aleksey Kuznetsov aka crusat
+ */
+(function (window, navigator, undefined) {
     var _Tempus = window.tempus,
         tempus,
         version = '0.2.0',
@@ -308,48 +311,74 @@
     };
 
 
-    var TempusDate = function (options, format, defaults) {
-        // always valid date
-        this._date = new Date();
-        // if some errors, write here values.
-        this._incorrect = {
-            year: false,
-            month: false,
-            day: false,
-            hours: false,
-            minutes: false,
-            seconds: false,
-            milliseconds: false
-        };
+//    var TempusDate = function (options, format, defaults) {
+//        // always valid date
+//        this._date = new Date();
+//        // if some errors, write here values.
+//        this._incorrect = {
+//            year: false,
+//            month: false,
+//            day: false,
+//            hours: false,
+//            minutes: false,
+//            seconds: false,
+//            milliseconds: false
+//        };
+//
+//        if (options !== undefined) {
+//            this.set(options, format, defaults);
+//        }
+//        return this;
+//    };
 
-        if (options !== undefined) {
-            this.set(options, format, defaults);
-        }
-        return this;
-    };
+//    TempusDate.fn = TempusDate.prototype;
 
-    TempusDate.fn = TempusDate.prototype;
-
-    TempusDate.fn.constants = function () {
-        return {
-            MIN_YEAR: 1000,
-            MAX_YEAR: 3000,
-            MIN_MONTH: monthFromZero ? 0 : 1,
-            MAX_MONTH: monthFromZero ? 11 : 12,
-            MIN_DAY: 1,
-            MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-            MIN_DAY_OF_WEEK: 0,
-            MAX_DAY_OF_WEEK: 6,
-            MIN_HOURS: 0,
-            MAX_HOURS: 23,
-            MIN_MINUTES: 0,
-            MAX_MINUTES: 59,
-            MIN_SECONDS: 0,
-            MAX_SECONDS: 59,
-            MIN_MILLISECONDS: 0,
-            MAX_MILLISECONDS: 999
-        }
-    };
+    /**
+       Returns constant object. Some constants depends from year
+       (MAX_DAY_IN_MONTHS) or options (MIN_MONTH, MAX_MONTH).
+       @method constants
+       @return {object} Constants of Tempus.
+       @example
+           // returns {
+           //   "MIN_YEAR":1000,
+           //   "MAX_YEAR":3000,
+           //   "MIN_MONTH":1,
+           //   "MAX_MONTH":12,
+           //   "MIN_DAY":1,
+           //   "MAX_DAY_IN_MONTHS":[31,28,31,30,31,30,31,31,30,31,30,31],
+           //   "MIN_DAY_OF_WEEK":0,
+           //   "MAX_DAY_OF_WEEK":6,
+           //   "MIN_HOURS":0,
+           //   "MAX_HOURS":23,
+           //   "MIN_MINUTES":0,
+           //   "MAX_MINUTES":59,
+           //   "MIN_SECONDS":0,
+           //   "MAX_SECONDS":59,
+           //   "MIN_MILLISECONDS":0,
+           //   "MAX_MILLISECONDS":999
+           // }
+           tempus().constants();
+     */
+//    TempusDate.fn.constants = function () {
+//        return {
+//            MIN_YEAR: 1000,
+//            MAX_YEAR: 3000,
+//            MIN_MONTH: monthFromZero ? 0 : 1,
+//            MAX_MONTH: monthFromZero ? 11 : 12,
+//            MIN_DAY: 1,
+//            MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+//            MIN_DAY_OF_WEEK: 0,
+//            MAX_DAY_OF_WEEK: 6,
+//            MIN_HOURS: 0,
+//            MAX_HOURS: 23,
+//            MIN_MINUTES: 0,
+//            MAX_MINUTES: 59,
+//            MIN_SECONDS: 0,
+//            MAX_SECONDS: 59,
+//            MIN_MILLISECONDS: 0,
+//            MAX_MILLISECONDS: 999
+//        }
+//    };
 
     /**
      * Get or set year.
@@ -687,9 +716,11 @@
     };
     /**
      * Set new date.
+     * @method set
+     * @chainable
      * @param newDate {object|undefined} New date as object {year: number, month: number, day: number,
      *     hours: number, minutes: number, seconds: number} or part of it.
-     * @returns {Tempus|object} Tempus object or simply object with date info.
+     * @returns {Tempus} Tempus object.
      * @example
      * // returns Tempus object with date {year: 2013, month: 11, day: 13}.
      * TP.set({year: 2013, month: 11, day: 13});
@@ -827,14 +858,14 @@
         }
         return this;
     };
-    TempusDate.fn.dayCount = function () {
-        var m = this.month();
-        var dc = this.constants().MAX_DAY_IN_MONTHS[m - (monthFromZero ? 0 : 1)];
-        if (this.leapYear() && m === 2) {
-            dc += 1;
-        }
-        return dc;
-    };
+//    TempusDate.fn.dayCount = function () {
+//        var m = this.month();
+//        var dc = this.constants().MAX_DAY_IN_MONTHS[m - (monthFromZero ? 0 : 1)];
+//        if (this.leapYear() && m === 2) {
+//            dc += 1;
+//        }
+//        return dc;
+//    };
     TempusDate.fn.format = function (format) {
         var i = 0,
             result = '',
@@ -1044,23 +1075,16 @@
 
     // *************************************************
     // *                                               *
-    // *                  FACTORY                      *
+    // *       CONSTRUCTOR & NOT A DATE METHODS        *
     // *                                               *
     // *************************************************
 
-    function TempusFactory() {}
-
-    TempusFactory.prototype.createDate = function (options, format, defaults) {
-        return new TempusDate(options, format, defaults);
-    };
-
-    var tempusFactory = new TempusFactory();
-
     /**
-     * Constructor for TempusDate. You can set initial value, for more info, {@see set}.
-     * @param options {undefined|object|Array|string|number} {@see set}
-     * @param format {undefined|string} {@see set}
-     * @param defaults {undefined|TempusDate|object} {@see set}
+     * Constructor for TempusDate. You can set initial value, for more info, see {{#crossLink "TempusDate/set"}}{{/crossLink}}.
+     * @method tempus
+     * @param options {undefined|object|Array|string|number} See {{#crossLink "TempusDate/set"}}{{/crossLink}}
+     * @param format {undefined|string} See {{#crossLink "TempusDate/set"}}{{/crossLink}}
+     * @param defaults {undefined|TempusDate|object} See {{#crossLink "TempusDate/set"}}{{/crossLink}}
      * @returns {TempusDate} Instance of TempusDate.
      * @example
      * // returns TempusDate with current date.
@@ -1079,11 +1103,12 @@
      * tempus(989454600);
      */
     tempus = function (options, format, defaults) {
-        return tempusFactory.createDate(options, format, defaults);
+        return new TempusDate(options, format, defaults);
     };
 
     /**
      * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
+     * @method tempus.generate
      * @param options {object|undefined} Options object.
      * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
      *     any other value ({@see tempus}).
@@ -1116,6 +1141,15 @@
      *     dateTo: '20130402',
      *     period: {day: 1},
      *     format: '%d.%m.%Y'
+     * });
+     * @example
+     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     * tempus.generate({
+     *     dateFrom: '20130329',
+     *     formatFrom: '%s',
+     *     dateTo: '20130402',
+     *     period: {day: 1},
+     *     format: '%s'
      * });
      *
      */
@@ -1218,4 +1252,4 @@
 
     window.TempusDate = TempusDate;
     window.tempus = tempus;
-})(window);
+})(window, navigator);
