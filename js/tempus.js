@@ -1,217 +1,217 @@
 /**
  * @author Aleksey Kuznetsov aka crusat
  */
-(function (window, navigator, undefined) {
-    var _Tempus = window.tempus,
-        tempus,
-        version = '0.2.0',
-        lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
-        translations = {
-            "en": {
-                "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
-                    "September", "October", "November", "December"],
-                "daysShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                "daysLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-            },
-            "ru": {
-                "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
-                "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
-                    "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-                "daysShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
-            }
-        },
-        registeredFormats = {
-            '%d': {
-                format: function (date) {
-                    return formattingWithNulls(date.day() || date.constants().MIN_DAY, 2);
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    return {day: (isNaN(v) ? undefined : v) };
-                },
-                minLength: 2,
-                maxLength: 2,
-                type: "number"
-            },
-            '%m': {
-                format: function (date) {
-                    return formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2);
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    return {month: (isNaN(v) ? undefined : v) };
-                },
-                minLength: 2,
-                maxLength: 2,
-                type: "number"
-            },
-            '%Y': {
-                format: function (date) {
-                    return formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4);
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    return {year: (isNaN(v) ? undefined : v) };
-                },
-                minLength: 4,
-                maxLength: 4,
-                type: "number"
-            },
-            '%w': {
-                format: function (date) {
-                    return date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK;
-                },
-                parse: function (value) {
-                    // impossible
-                    return {};
-                },
-                minLength: 1,
-                maxLength: 1,
-                type: "number"
-            },
-            '%a': {
-                format: function (date) {
-                    return translations[lang]["daysShortNames"][date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK];
-                },
-                parse: function (value) {
-                    // impossible
-                    return {};
-                },
-                minLength: 1,
-                maxLength: 999,
-                type: "word"
-            },
-            '%A': {
-                format: function (date) {
-                    return translations[lang]["daysLongNames"][date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK];
-                },
-                parse: function (value) {
-                    // impossible
-                    return {};
-                },
-                minLength: 1,
-                maxLength: 999,
-                type: "word"
-            },
-            '%b': {
-                format: function (date) {
-                    return translations[lang]["monthShortNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
-                },
-                parse: function (value) {
-                    var month = that.getMonthNames().indexOf(value) + 1;
-                    return {month: month !== -1 ? month : undefined}
-                },
-                minLength: 1,
-                maxLength: 999,
-                type: "word"
-            },
-            '%B': {
-                format: function (date) {
-                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
-                },
-                parse: function (value) {
-                    var month = that.getMonthNames(true).indexOf(value) + 1;
-                    return {month: month !== -1 ? month : undefined}
-                },
-                minLength: 1,
-                maxLength: 999,
-                type: "word"
-            },
-            '%H': {
-                format: function (date) {
-                    return formattingWithNulls(date.hours() || date.constants().MIN_HOURS, 2);
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    return {hours: (isNaN(v) ? undefined : v) };
-                },
-                minLength: 2,
-                maxLength: 2,
-                type: "number"
-            },
-            '%M': {
-                format: function (date) {
-                    return formattingWithNulls(date.minutes() || date.constants().MIN_MINUTES, 2);
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    return {minutes: (isNaN(v) ? undefined : v) };
-                },
-                minLength: 2,
-                maxLength: 2,
-                type: "number"
-            },
-            '%S': {
-                format: function (date) {
-                    return formattingWithNulls(date.seconds() || date.constants().MIN_SECONDS, 2);
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    return {seconds: (isNaN(v) ? undefined : v) };
-                },
-                minLength: 2,
-                maxLength: 2,
-                type: "number"
-            },
-            '%s': {
-                format: function (date) {
-                    return date.timestamp();
-                },
-                parse: function (value) {
-                    var v = Number(value);
-                    var date = new TempusDate(Number(v), timezoneOffset);
-                    var obj = that.date(v);
-                    return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
-                },
-                minLength: 1,
-                maxLength: 20,
-                type: "number"
-            },
-            '%F': {
-                format: function (date) {
-                    return formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4) + '-' +
-                        formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2) + '-' +
-                        formattingWithNulls(date.day() || date.constants().MIN_DAY, 2);
-                },
-                parse: function (value) {
-                    var year = Number(value.slice(0, 4));
-                    var month = Number(value.slice(6, 7));
-                    var day = Number(value.slice(9, 10));
-                    return {
-                        year: year,
-                        month: month,
-                        day: day
-                    }
-                },
-                minLength: 10,
-                maxLength: 10,
-                type: "string"
-            },
-            '%D': {
-                format: function (date) {
-                    return formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2) +
-                        '/' + formattingWithNulls(date.day() || date.constants().MIN_DAY, 2) +
-                        '/' + formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4)
-                },
-                parse: function (value) {
-                    var month = Number(value.slice(0, 2));
-                    var day = Number(value.slice(3, 5));
-                    var year = Number(value.slice(6, 10));
-                    return {
-                        year: year,
-                        month: month,
-                        day: day
-                    }
-                },
-                minLength: 10,
-                maxLength: 10,
-                type: "string"
-            }
-        },
-        useMilliseconds = false,
-        monthFromZero = false;
+(function (window, undefined) {
+//    var _Tempus = window.tempus,
+//        tempus,
+//        version = '0.2.0',
+//        lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
+//        translations = {
+//            "en": {
+//                "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+//                "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
+//                    "September", "October", "November", "December"],
+//                "daysShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+//                "daysLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+//            },
+//            "ru": {
+//                "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+//                "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
+//                    "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+//                "daysShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+//                "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+//            }
+//        },
+//        registeredFormats = {
+//            '%d': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.day() || date.constants().MIN_DAY, 2);
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    return {day: (isNaN(v) ? undefined : v) };
+//                },
+//                minLength: 2,
+//                maxLength: 2,
+//                type: "number"
+//            },
+//            '%m': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2);
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    return {month: (isNaN(v) ? undefined : v) };
+//                },
+//                minLength: 2,
+//                maxLength: 2,
+//                type: "number"
+//            },
+//            '%Y': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4);
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    return {year: (isNaN(v) ? undefined : v) };
+//                },
+//                minLength: 4,
+//                maxLength: 4,
+//                type: "number"
+//            },
+//            '%w': {
+//                format: function (date) {
+//                    return date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK;
+//                },
+//                parse: function (value) {
+//                    // impossible
+//                    return {};
+//                },
+//                minLength: 1,
+//                maxLength: 1,
+//                type: "number"
+//            },
+//            '%a': {
+//                format: function (date) {
+//                    return translations[lang]["daysShortNames"][date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK];
+//                },
+//                parse: function (value) {
+//                    // impossible
+//                    return {};
+//                },
+//                minLength: 1,
+//                maxLength: 999,
+//                type: "word"
+//            },
+//            '%A': {
+//                format: function (date) {
+//                    return translations[lang]["daysLongNames"][date.dayOfWeek() || date.constants().MIN_DAY_OF_WEEK];
+//                },
+//                parse: function (value) {
+//                    // impossible
+//                    return {};
+//                },
+//                minLength: 1,
+//                maxLength: 999,
+//                type: "word"
+//            },
+//            '%b': {
+//                format: function (date) {
+//                    return translations[lang]["monthShortNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
+//                },
+//                parse: function (value) {
+//                    var month = that.getMonthNames().indexOf(value) + 1;
+//                    return {month: month !== -1 ? month : undefined}
+//                },
+//                minLength: 1,
+//                maxLength: 999,
+//                type: "word"
+//            },
+//            '%B': {
+//                format: function (date) {
+//                    return translations[lang]["monthLongNames"][(date.month() || date.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
+//                },
+//                parse: function (value) {
+//                    var month = that.getMonthNames(true).indexOf(value) + 1;
+//                    return {month: month !== -1 ? month : undefined}
+//                },
+//                minLength: 1,
+//                maxLength: 999,
+//                type: "word"
+//            },
+//            '%H': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.hours() || date.constants().MIN_HOURS, 2);
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    return {hours: (isNaN(v) ? undefined : v) };
+//                },
+//                minLength: 2,
+//                maxLength: 2,
+//                type: "number"
+//            },
+//            '%M': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.minutes() || date.constants().MIN_MINUTES, 2);
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    return {minutes: (isNaN(v) ? undefined : v) };
+//                },
+//                minLength: 2,
+//                maxLength: 2,
+//                type: "number"
+//            },
+//            '%S': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.seconds() || date.constants().MIN_SECONDS, 2);
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    return {seconds: (isNaN(v) ? undefined : v) };
+//                },
+//                minLength: 2,
+//                maxLength: 2,
+//                type: "number"
+//            },
+//            '%s': {
+//                format: function (date) {
+//                    return date.timestamp();
+//                },
+//                parse: function (value) {
+//                    var v = Number(value);
+//                    var date = new TempusDate(Number(v), timezoneOffset);
+//                    var obj = that.date(v);
+//                    return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
+//                },
+//                minLength: 1,
+//                maxLength: 20,
+//                type: "number"
+//            },
+//            '%F': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4) + '-' +
+//                        formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2) + '-' +
+//                        formattingWithNulls(date.day() || date.constants().MIN_DAY, 2);
+//                },
+//                parse: function (value) {
+//                    var year = Number(value.slice(0, 4));
+//                    var month = Number(value.slice(6, 7));
+//                    var day = Number(value.slice(9, 10));
+//                    return {
+//                        year: year,
+//                        month: month,
+//                        day: day
+//                    }
+//                },
+//                minLength: 10,
+//                maxLength: 10,
+//                type: "string"
+//            },
+//            '%D': {
+//                format: function (date) {
+//                    return formattingWithNulls(date.month() || date.constants().MIN_MONTH, 2) +
+//                        '/' + formattingWithNulls(date.day() || date.constants().MIN_DAY, 2) +
+//                        '/' + formattingWithNulls(date.year() || date.constants().MIN_YEAR, 4)
+//                },
+//                parse: function (value) {
+//                    var month = Number(value.slice(0, 2));
+//                    var day = Number(value.slice(3, 5));
+//                    var year = Number(value.slice(6, 10));
+//                    return {
+//                        year: year,
+//                        month: month,
+//                        day: day
+//                    }
+//                },
+//                minLength: 10,
+//                maxLength: 10,
+//                type: "string"
+//            }
+//        },
+//        useMilliseconds = false,
+//        monthFromZero = false;
 
 
     var isLeapYear = function (year) {
@@ -385,23 +385,23 @@
      * @param value {number} New year. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.fn.year = function (value) {
-        if (arguments.length !== 0) {
-            // no value range checking, because can be used for delta times
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
-                this._date.setFullYear(Number(value));
-                this._incorrect.year = false;
-            } else if (value === undefined) {
-                this._date.setFullYear(this.constants().MIN_YEAR);
-                this._incorrect.year = false;
-            } else {
-                this._incorrect.year = Number(value);
-            }
-        } else {
-            return this._date.getFullYear();
-        }
-        return this;
-    };
+//    TempusDate.fn.year = function (value) {
+//        if (arguments.length !== 0) {
+//            // no value range checking, because can be used for delta times
+//            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_YEAR && Number(value) <= this.constants().MAX_YEAR) {
+//                this._date.setFullYear(Number(value));
+//                this._incorrect.year = false;
+//            } else if (value === undefined) {
+//                this._date.setFullYear(this.constants().MIN_YEAR);
+//                this._incorrect.year = false;
+//            } else {
+//                this._incorrect.year = Number(value);
+//            }
+//        } else {
+//            return this._date.getFullYear();
+//        }
+//        return this;
+//    };
     /**
      * Get or set month.
      * @param value {number} New month. If undefined, returns numeric value.
@@ -1252,4 +1252,4 @@
 
     window.TempusDate = TempusDate;
     window.tempus = tempus;
-})(window, navigator);
+})(window);

@@ -298,6 +298,31 @@
 
     // *************************************************
     // *                                               *
+    // *                   BASE                        *
+    // *                                               *
+    // *************************************************
+
+    test('Tests constants()', function() {
+        equal(tempus().constants(),
+            {MIN_YEAR: 1000,MAX_YEAR: 3000,MIN_MONTH: 1,MAX_MONTH: 12,
+            MIN_DAY: 1,MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],MIN_DAY_OF_WEEK: 0,
+            MAX_DAY_OF_WEEK: 6,MIN_HOURS: 0,MAX_HOURS: 23,MIN_MINUTES: 0,MAX_MINUTES: 59,MIN_SECONDS: 0,MAX_SECONDS: 59,
+            MIN_MILLISECONDS: 0,MAX_MILLISECONDS: 999},
+            'Tests constants');
+    });
+
+    test('Tests dayCount()', function() {
+        equal(tempus([2013, 11, 18]).dayCount(), 30, 'November');
+        equal(tempus([2012, 2]).dayCount(), 29, 'February leap year');
+        equal(tempus([2013, 2]).dayCount(), 28, 'February not leap year');
+        equal(tempus([2013, 1]).dayCount(), 31, 'January');
+    });
+
+
+
+
+    // *************************************************
+    // *                                               *
     // *                  FACTORY                      *
     // *                                               *
     // *************************************************
