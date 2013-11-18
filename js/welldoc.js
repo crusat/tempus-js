@@ -1003,6 +1003,8 @@
      *     //   "MAX_MILLISECONDS":999
      *     // }
      *     tempus.constants();
+     *
+     * @static
      * @returns {Object} Object with all constants in Tempus.
      */
     tempus.constants = function () {
@@ -1072,6 +1074,7 @@
      * @param options.asObject {boolean|undefined} If true, dates will be keys for objects in result array.
      * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
+     * @static
      * @returns {Array|Object} Array or object from dates.
      */
     tempus.generate = function(options) {
