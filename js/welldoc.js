@@ -1,5 +1,6 @@
 (function(window, undefined) {
     var _tempus = window.tempus,
+        _TempusDate = window.TempusDate,
         tempus,
         version = '0.2.0',
         lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
@@ -1338,6 +1339,25 @@
             monthFromZero: monthFromZero,
             lang: lang
         }
+    };
+
+    /**
+     * Releases tempus variables from global scope.
+     *
+     *     @example
+     *     // returns object
+     *     var T = tempus.noConflict();
+     *     // returns options
+     *     T.tempus.options();
+     *     // returns TempusDate instance
+     *     T.tempus();
+     *
+     * @returns {Object} Object with keys as default names and values as default functions.
+     */
+    tempus.noConflict = function () {
+        window.tempus = _tempus;
+        window.TempusDate = _TempusDate;
+        return {tempus: tempus, TempusDate: TempusDate};
     };
 
     /**

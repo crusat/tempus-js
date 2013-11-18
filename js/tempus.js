@@ -15,22 +15,8 @@
 
 
 
-    /**
-     * Releases TP variable from global scope.
-     * @param all {boolean} If true, Tempus variable also will be released.
-     * @returns {Tempus} Tempus object.
-     * @example
-     * // returns Tempus constructor
-     * var T = tempus().noConflict(true);
-     * var t = T().format('%d.%m.%Y');
-     */
-    TempusDate.fn.noConflict = function (all) {
-        window.TP = _TP;
-        if (all === true) {
-            window.Tempus = _Tempus
-        }
-        return Tempus;
-    };
+
+
 
 
     TempusDate.fn.monthNames = function (type) {
