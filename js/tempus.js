@@ -31,16 +31,8 @@
         }
         return Tempus;
     };
-    /**
-     * Get a current version of TempusJS.
-     * @returns {string} Current version of TempusJS.
-     * @example
-     * // returns current version
-     * TP.getVersion();
-     */
-    TempusDate.fn.getVersion = function () {
-        return version;
-    };
+
+
     TempusDate.fn.monthNames = function (type) {
         switch (type) {
             case 'long':

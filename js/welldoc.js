@@ -1186,6 +1186,8 @@
 
 
 
+
+
     // *************************************************
     // *                                               *
     // *                    FACTORY                    *
@@ -1267,6 +1269,19 @@
             MIN_MILLISECONDS: 0,
             MAX_MILLISECONDS: 999
         }
+    };
+
+    /**
+     * Get a current version of Tempus.
+     *
+     *     @example
+     *     // returns current version
+     *     tempus.version();
+     *
+     * @returns {string} Current version of Tempus.
+     */
+    tempus.version = function () {
+        return version;
     };
 
     /**
