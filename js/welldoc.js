@@ -724,7 +724,7 @@
     TempusDate.fn.milliseconds = function (value) {
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
-                if (Number(value) >= tempus.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
+                if (Number(value) >= tempus.constants().MIN_MILLISECONDS && Number(value) <= tempus.constants().MAX_MILLISECONDS) {
                     this._date.setMilliseconds(Number(value));
                     this._incorrect.milliseconds = false;
                 } else {
