@@ -7,48 +7,11 @@
 
 
 
-    TempusDate.fn.timestamp = function (value) {
-        if (arguments.length !== 0) {
-            this.date(new Date(Number(value) * (useMilliseconds ? 1 : 1000)));
-            return this;
-        } else {
-            if (useMilliseconds) {
-                return this._date.getTime();
-            } else {
-                return Math.floor(this._date.getTime() / 1000)
-            }
-        }
-    };
-    TempusDate.fn.UTC = function (value) {
-        if (arguments.length !== 0) {
-            this.date(new Date(Number(value) * (useMilliseconds ? 1 : 1000)));
-            return this;
-        } else {
-            if (useMilliseconds) {
-                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
-            } else {
-                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60;
-            }
-        }
-    };
-    /**
-     * Get day of week.
-     * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
-     * @returns {number|undefined} Numeric value of day of week.
-     * @example
-     * // returns current day of week
-     * TP.now().dayOfWeek();
-     */
-    TempusDate.fn.dayOfWeek = function (type) {
-        switch (type) {
-            case 'long':
-                return translations[lang]["daysLongNames"][this._date.getDay()];
-            case 'short':
-                return translations[lang]["daysShortNames"][this._date.getDay()];
-            default:
-                return this._date.getDay();
-        }
-    };
+
+
+
+
+
 
     TempusDate.fn.timezone = function (type) {
         switch (type) {

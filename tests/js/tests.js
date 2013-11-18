@@ -206,6 +206,21 @@
         equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
     });
 
+    test('Test timestamp() method', function () {
+        equal(tempus([2013, 11, 18]).timestamp(), 1384718400, 'Test');
+        equal(tempus().timestamp(1384718400).get('Date'), new Date(1384718400), 'Test');
+    });
+
+    test('Test UTC() method', function () {
+        equal(tempus([2013, 11, 18]).timestamp(), 1384732800, 'Test');
+        equal(tempus().timestamp(1384732800).get('Date'), new Date(1384732800), 'Test');
+    });
+
+    test('Test dayOfWeek() method', function () {
+        equal(tempus().dayOfWeek(), new Date().getDay(), 'Test');
+        equal(tempus([2013, 11, 18]).dayOfWeek(), new Date(2013, 11, 18).getDay(), 'Test');
+    });
+
     test('Tests leapYear() method', function () {
         equal(tempus().leapYear(), isLeapYear(yyyy), 'Current year is leap or not leap');
         equal(tempus([2013]).leapYear(), false, '2013 is not leap year');

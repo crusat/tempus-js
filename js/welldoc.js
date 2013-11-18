@@ -1084,6 +1084,84 @@
         return false;
     };
 
+    /**
+     * Get or set timestamp.
+     *
+     *     @example
+     *     // returns 1384718400
+     *     tempus([2013, 11, 18]).timestamp();
+     *
+     *     // returns TempusDate with date '2013-11-18'
+     *     tempus().timestamp(1384718400);
+     *
+     * @param {none|number} value
+     * @returns {TempusDate|number} TempusDate or numeric timestamp.
+     */
+    TempusDate.fn.timestamp = function (value) {
+        if (arguments.length !== 0) {
+            this._date = new Date(Number(value) * (useMilliseconds ? 1 : 1000));
+            return this;
+        } else {
+            if (useMilliseconds) {
+                return this._date.getTime();
+            } else {
+                return Math.floor(this._date.getTime() / 1000)
+            }
+        }
+    };
+
+    /**
+     * Get or set timestamp in UTC.
+     *
+     *     @example
+     *     // returns 1384732800
+     *     tempus([2013, 11, 18]).UTC();
+     *
+     *     // returns TempusDate with date '2013-11-18'
+     *     tempus().UTC(1384732800);
+     *
+     * @param {none|number} value
+     * @returns {TempusDate|number} TempusDate or numeric timestamp.
+     */
+    TempusDate.fn.UTC = function (value) {
+        if (arguments.length !== 0) {
+            this.date(new Date(Number(value) * (useMilliseconds ? 1 : 1000)));
+            return this;
+        } else {
+            if (useMilliseconds) {
+                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
+            } else {
+                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60;
+            }
+        }
+    };
+
+    /**
+     * Get day of week.
+     *
+     *     @example
+     *     // returns current day of week
+     *     tempus().dayOfWeek();
+     *
+     *     // returns 1
+     *     tempus([2013, 11, 18]).dayOfWeek();
+     *
+     * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
+     * @returns {number} Numeric value of day of week.
+     */
+    TempusDate.fn.dayOfWeek = function (type) {
+        switch (type) {
+            case 'long':
+                return translations[lang]["daysLongNames"][this._date.getDay()];
+            case 'short':
+                return translations[lang]["daysShortNames"][this._date.getDay()];
+            default:
+                return this._date.getDay();
+        }
+    };
+
+
+
     // *************************************************
     // *                                               *
     // *                    FACTORY                    *
