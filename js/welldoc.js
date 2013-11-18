@@ -260,7 +260,7 @@
      *     //   "MIN_DAY_OF_WEEK":0,
      *     //   "MAX_DAY_OF_WEEK":6,
      *     //   "MIN_HOURS":0,
-     *     //   "MAX_HOURS":23,
+     *     //   "MAX_HOUR":23,
      *     //   "MIN_MINUTES":0,
      *     //   "MAX_MINUTES":59,
      *     //   "MIN_SECONDS":0,
@@ -282,7 +282,7 @@
             MIN_DAY_OF_WEEK: 0,
             MAX_DAY_OF_WEEK: 6,
             MIN_HOURS: 0,
-            MAX_HOURS: 23,
+            MAX_HOUR: 23,
             MIN_MINUTES: 0,
             MAX_MINUTES: 59,
             MIN_SECONDS: 0,
@@ -519,6 +519,72 @@
             }
         } else {
             return this._incorrect.day === false ? this._date.getDate() : this._incorrect.day;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set hours.
+     *
+     *     @example
+     *     // returns current hours
+     *     tempus().hours();
+     *
+     *     // returns 100
+     *     tempus().hours(100).hours();
+     *
+     *     // returns 12
+     *     tempus().hours(12).hours();
+     *
+     *     // returns 1
+     *     tempus().hours(1).hours();
+     *
+     *     // returns -5
+     *     tempus().hours(-5).hours();
+     *
+     *     // returns 0
+     *     tempus().hours('0').hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours(undefined).hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours({foo: 'bar'}).hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours([1,2,3]).hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours(null).hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours(true).hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours(false).hours();
+     *
+     *     // returns 1 (MIN_HOURS)
+     *     tempus().hours(NaN).hours();
+     *
+     *
+     * @param {number} value Set new day. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.hours = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= this.constants().MIN_HOURS && Number(value) <= this.constants().MAX_HOUR) {
+                    this._date.setHours(Number(value));
+                    this._incorrect.hours = false;
+                } else {
+                    this._incorrect.hours = Number(value);
+                }
+            } else {
+                this._date.setHours(this.constants().MIN_HOURS);
+                this._incorrect.hours = false;
+            }
+        } else {
+            return this._incorrect.hours === false ? this._date.getHours() : this._incorrect.hours;
         }
         return this;
     };

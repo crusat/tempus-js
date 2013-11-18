@@ -315,22 +315,7 @@
      * @param value {number} New hours. If undefined, returns numeric value.
      * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
      */
-    TempusDate.fn.hours = function (value) {
-        if (arguments.length !== 0) {
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_HOURS && Number(value) <= this.constants().MAX_HOURS) {
-                this._date.setHours(Number(value));
-                this._incorrect.hours = false;
-            } else if (value === undefined) {
-                this._date.setHours(this.constants().MIN_HOURS);
-                this._incorrect.hours = false;
-            } else {
-                this._incorrect.hours = Number(value);
-            }
-        } else {
-            return this._date.getHours();
-        }
-        return this;
-    };
+
     /**
      * Get or set minutes.
      * @param value {number} New minutes. If undefined, returns numeric value.

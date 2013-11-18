@@ -19,7 +19,7 @@
     var dd = today.getDate(); // day. Begin from 1.
     var mm = today.getMonth()+1; // month. Begin from 0.
     var yyyy = today.getFullYear();
-    var day, month, year, hours, minutes, seconds;
+    var day, month, year, hourss, minutes, seconds;
 
 
 
@@ -29,7 +29,7 @@
         equal(tempus().now().year(), new Date().getFullYear(), 'Full year');
         equal(tempus().now().month(), new Date().getMonth() + 1, 'Month');
         equal(tempus().now().day(), new Date().getDate(), 'Day');
-        equal(tempus().now().hours(), new Date().getHours(), 'Hours');
+        equal(tempus().now().hourss(), new Date().getHours(), 'Hours');
         equal(tempus().now().minutes(), new Date().getMinutes(), 'Minutes');
         equal(tempus().now().seconds(), new Date().getSeconds(), 'Seconds');
         equal(tempus().now().dayOfWeek(), new Date().getDay(), 'Day of week');
@@ -38,7 +38,7 @@
         equal(typeof tempus().now().year(), 'number', 'Type is number');
         equal(typeof tempus().now().month(), 'number', 'Type is number');
         equal(typeof tempus().now().day(), 'number', 'Type is number');
-        equal(typeof tempus().now().hours(), 'number', 'Type is number');
+        equal(typeof tempus().now().hourss(), 'number', 'Type is number');
         equal(typeof tempus().now().minutes(), 'number', 'Type is number');
         equal(typeof tempus().now().seconds(), 'number', 'Type is number');
         equal(typeof tempus().now().dayOfWeek(), 'number', 'Type is number');
@@ -53,7 +53,7 @@
     });
 
     test('Test base set() method', function () {
-        deepEqual(tempus(new Date(2013, 0, 1, 0, 0, 0, 0)).get(), tempus({year: 2013, month: 1, day: 1, hours: 0, minutes: 0,
+        deepEqual(tempus(new Date(2013, 0, 1, 0, 0, 0, 0)).get(), tempus({year: 2013, month: 1, day: 1, hourss: 0, minutes: 0,
             seconds:0, milliseconds:0}).get(), 'Set new Date().');
         equal(typeof tempus().get(), 'object', 'Type is object');
     });
@@ -114,17 +114,17 @@
         equal(tempus().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
     });
 
-    test('Test set() hours ranges', function () {
-        for (hours = 0; hours <= 23; hours++) {
-            equal(tempus().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
+    test('Test set() hourss ranges', function () {
+        for (hourss = 0; hourss <= 23; hourss++) {
+            equal(tempus().set({hourss: hourss}).hourss(), hourss, 'Hours can be from 0 to 23. Hours: ' + hourss);
         }
-        for (hours = -100; hours < 0; hours++) {
-            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hours);
+        for (hourss = -100; hourss < 0; hourss++) {
+            equal(tempus().set({hourss: hourss}).hourss(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hourss);
         }
-        for (hours = 24; hours <= 100; hours++) {
-            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hours);
+        for (hourss = 24; hourss <= 100; hourss++) {
+            equal(tempus().set({hourss: hourss}).hourss(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hourss);
         }
-        equal(tempus().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
+        equal(tempus().set({}).hourss(), 0, 'If hourss is not setted, setting MIN_HOURS');
     });
 
     test('Test set() minutes ranges', function () {
@@ -159,21 +159,6 @@
 
 
 
-    test('Test hours() method', function () {
-        // values
-        equal(tempus().hours(100).hours(), new Date().getHours(), 'Test value: 100');
-        equal(tempus().hours(12).hours(), 12, 'Test value: 12');
-        equal(tempus().hours(-5).hours(), new Date().getHours(), 'Test value: -5');
-        equal(tempus().hours('0').hours(), 0, 'Test value: \'0\'');
-        equal(tempus().hours({foo: 'bar'}).hours(), new Date().getHours(), 'Test value: {foo: \'bar\'}');
-        equal(tempus().hours([1,2,3]).hours(), new Date().getHours(), 'Test value: [1,2,3]');
-        equal(tempus().hours(undefined).hours(), 0, 'Test value: undefined');
-        equal(tempus().hours(null).hours(), new Date().getHours(), 'Test value: null');
-        equal(tempus().hours(true).hours(), new Date().getHours(), 'Test value: true');
-        equal(tempus().hours(false).hours(), new Date().getHours(), 'Test value: false');
-        // check types
-        equal(typeof tempus().hours(1).hours(), 'number', 'Type is number');
-    });
 
     test('Test minutes() method', function () {
         // values
@@ -225,7 +210,7 @@
 
     test('Test format() method', function () {
         equal(tempus().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
-        equal(tempus().set({year: 2000, month: 10, day:1, hours: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
+        equal(tempus().set({year: 2000, month: 10, day:1, hourss: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
             '2000-10-01 10:00:00', 'Date and time format');
         equal(tempus().set({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
         equal(typeof tempus().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
@@ -233,11 +218,11 @@
 
     test('Test instances', function() {
         var resultTest1 = function() {
-            var a = tempus().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
+            var a = tempus().set({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
             return a.format('%Y-%m-%d %H:%M:%S');
         };
         var resultTest2 = function() {
-            var a = tempus().set({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
+            var a = tempus().set({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
             var b = tempus().now();
             return a.format('%Y-%m-%d %H:%M:%S');
         };
@@ -330,6 +315,24 @@
         equal(typeof tempus().day(1).day(), 'number', 'Type is number');
     });
 
+    test('Test hours() method', function () {
+        // values
+        equal(tempus().hours(), new Date().getHours(), 'Test value: Current');
+        equal(tempus().hours(100).hours(), 100, 'Test value: 100');
+        equal(tempus().hours(12).hours(), 12, 'Test value: 12');
+        equal(tempus().hours(-5).hours(), -5, 'Test value: -5');
+        equal(tempus().hours('0').hours(), 0, 'Test value: \'0\'');
+        equal(tempus().hours({foo: 'bar'}).hours(), tempus().constants().MIN_HOURS, 'Test value: {foo: \'bar\'}');
+        equal(tempus().hours([1,2,3]).hours(), tempus().constants().MIN_HOURS, 'Test value: [1,2,3]');
+        equal(tempus().hours(undefined).hours(), tempus().constants().MIN_HOURS, 'Test value: undefined');
+        equal(tempus().hours(null).hours(), tempus().constants().MIN_HOURS, 'Test value: null');
+        equal(tempus().hours(true).hours(), tempus().constants().MIN_HOURS, 'Test value: true');
+        equal(tempus().hours(false).hours(), tempus().constants().MIN_HOURS, 'Test value: false');
+        equal(tempus().hours(NaN).hours(), tempus().constants().MIN_HOURS, 'Test value: false');
+        // check types
+        equal(typeof tempus().hours(1).hours(), 'number', 'Type is number');
+    });
+
 
 
 
@@ -399,32 +402,32 @@
 //
 //    test('tempus.incDate', function () {
 //        deepEqual(tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day'),
-//            {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 6, "timestamp": 1381521600,
+//            {"year":2013,"month":10,"day":12,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 6, "timestamp": 1381521600,
 //            "timezoneOffset": -14400}, 'Date increment');
 //        deepEqual(tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day'),
-//            {"year":2014,"month":1,"day":13,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 1,"timestamp": 1389556800,
+//            {"year":2014,"month":1,"day":13,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 1,"timestamp": 1389556800,
 //            "timezoneOffset": -14400}, 'Date increment');
 //        deepEqual(tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month'),
-//            {"year":2013,"month":12,"day":30,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 1, "timestamp": 1388347200,
+//            {"year":2013,"month":12,"day":30,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 1, "timestamp": 1388347200,
 //            "timezoneOffset": -14400}, 'Date increment');
 //        deepEqual(tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year'),
-//            {"year":2015,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 4, "timestamp": 1420056000,
+//            {"year":2015,"month":1,"day":1,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 4, "timestamp": 1420056000,
 //            "timezoneOffset": -14400}, 'Date increment');
 //        equal(typeof tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year'), 'object', 'Type is object');
 //    });
 //
 //    test('tempus.decDate', function () {
 //        deepEqual(tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day'),
-//            {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 6, "timestamp": 1380312000,
+//            {"year":2013,"month":9,"day":28,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 6, "timestamp": 1380312000,
 //            "timezoneOffset": -14400}, 'Date decrement');
 //        deepEqual(tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day'),
-//            {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 2, "timestamp": 1375732800,
+//            {"year":2013,"month":8,"day":6,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 2, "timestamp": 1375732800,
 //            "timezoneOffset": -14400}, 'Date decrement');
 //        deepEqual(tempus.decDate({year: 2013, month: 1, day: 1}, 11, 'month'),
-//            {"year":2012,"month":2,"day":1,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 3, "timestamp": 1328040000,
+//            {"year":2012,"month":2,"day":1,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 3, "timestamp": 1328040000,
 //            "timezoneOffset": -14400}, 'Date decrement');
 //        deepEqual(tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year'),
-//            {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 2,"timestamp": 473371200,
+//            {"year":1985,"month":1,"day":1,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 2,"timestamp": 473371200,
 //            "timezoneOffset": -14400}, 'Date decrement');
 //        equal(typeof tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year'), 'object', 'Type is object');
 //    });
@@ -433,52 +436,52 @@
 //        equal(tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day'), 4, 'Between');
 //        equal(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month'), 6, 'Between');
 //        equal(tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes'), 266400, 'Between');
-//        equal(tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours'), 10224, 'Between');
-//        equal(typeof tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours'), 'number', 'Type is number');
+//        equal(tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hourss'), 10224, 'Between');
+//        equal(typeof tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hourss'), 'number', 'Type is number');
 //    });
 //
 //    test('tempus.parse', function () {
 //        deepEqual(tempus.parse('21.10.2013', '%d.%m.%Y'),
-//            {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 1,"timestamp": 1382299200,
+//            {"day":21,"month":10,"year":2013,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 1,"timestamp": 1382299200,
 //            "timezoneOffset": -14400}, 'Parse');
 //        deepEqual(tempus.parse('20131005162015', '%Y%m%d%H%M%S'),
-//            {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15,"dayOfWeek": 6,"timestamp": 1380975615,
+//            {"day":5,"month":10,"year":2013,"hourss":16,"minutes":20,"seconds":15,"dayOfWeek": 6,"timestamp": 1380975615,
 //            "timezoneOffset": -14400}, 'Parse');
 //        deepEqual(tempus.parse('2012-05-07', '%F'),
-//            {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 1,"timestamp": 1336334400,
+//            {"day":7,"month":5,"year":2012,"hourss":0,"minutes":0,"seconds":0,"dayOfWeek": 1,"timestamp": 1336334400,
 //            "timezoneOffset": -14400}, 'Parse');
 //        deepEqual(tempus.parse('12/01/2013', '%D'),
-//            {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1385841600,
+//            {"day":1,"month":12,"year":2013,"hourss":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1385841600,
 //            "timezoneOffset": -14400}, 'Parse');
 //        deepEqual(tempus.parse('05 Dec, 2010', '%d %b, %Y'),
-//            {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1291492800,
+//            {"day":5,"month":12,"year":2010,"hourss":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1291492800,
 //            "timezoneOffset": -14400}, 'Parse');
 //        deepEqual(tempus.parse('10 October, 2010', '%d %B, %Y'),
-//            {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1286654400,
+//            {"day":10,"month":10,"year":2010,"hourss":0,"minutes":0,"seconds":0,"dayOfWeek": 0,"timestamp": 1286654400,
 //            "timezoneOffset": -14400}, 'Parse');
 //        equal(typeof tempus.parse('20131005162015', '%Y%m%d%H%M%S'), 'object', 'Type is object');
 //    });
 //
 //    test('tempus.normalizeDate', function () {
-//        deepEqual(tempus.normalizeDate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}),
-//            {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 3,"timestamp": 1388520000,
+//        deepEqual(tempus.normalizeDate({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}),
+//            {"day":1,"month":1,"year":2014,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 3,"timestamp": 1388520000,
 //            "timezoneOffset": -14400}, 'Normalize date');
-//        deepEqual(tempus.normalizeDate({day:46,month:13,year:2013,hours:0,minutes:0,seconds:0}),
-//            {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0, "dayOfWeek": 6,
+//        deepEqual(tempus.normalizeDate({day:46,month:13,year:2013,hourss:0,minutes:0,seconds:0}),
+//            {"day":15,"month":2,"year":2014,"hourss":0,"minutes":0,"seconds":0, "dayOfWeek": 6,
 //            "timestamp": 1392408000,"timezoneOffset": -14400}, 'Normalize date');
-//        deepEqual(tempus.normalizeDate({day:32,month:-5,year:2013,hours:55,minutes:0,seconds:-2}),
-//            {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58, "dayOfWeek": 5,"timestamp": 1343962798,
+//        deepEqual(tempus.normalizeDate({day:32,month:-5,year:2013,hourss:55,minutes:0,seconds:-2}),
+//            {"day":3,"month":8,"year":2012,"hourss":6,"minutes":59,"seconds":58, "dayOfWeek": 5,"timestamp": 1343962798,
 //            "timezoneOffset": -14400}, 'Normalize date');
-//        deepEqual(tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}),
-//            {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0,"dayOfWeek": 2,"timestamp": 1363719600,
+//        deepEqual(tempus.normalizeDate({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}),
+//            {"day":19,"month":3,"year":2013,"hourss":23,"minutes":0,"seconds":0,"dayOfWeek": 2,"timestamp": 1363719600,
 //            "timezoneOffset": -14400}, 'Normalize date');
-//        equal(typeof tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}), 'object', 'Type is object');
+//        equal(typeof tempus.normalizeDate({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}), 'object', 'Type is object');
 //    });
 //
 //    test('tempus.validate', function () {
-//        equal(tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}), false, 'validate');
-//        equal(tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}), false, 'validate');
-//        equal(tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}), true, 'validate');
+//        equal(tempus.validate({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}), false, 'validate');
+//        equal(tempus.validate({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}), false, 'validate');
+//        equal(tempus.validate({day:1,month:1,year:2013,hourss:0,minutes:0,seconds:0}), true, 'validate');
 //        equal(tempus.validate('2013-03-12', '%Y-%m-%d'), true, 'validate');
 //        equal(tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y'), true, 'validate');
 //        equal(tempus.validate('32.08.2013', '%d.%m.%Y'), false, 'validate');
@@ -486,7 +489,7 @@
 //        equal(tempus.validate('29.02.2012', '%d.%m.%Y'), true, 'validate');
 //        equal(tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y'), false, 'validate');
 //        equal(tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y'), true, 'validate');
-//        equal(typeof tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}), 'boolean', 'Type is boolean');
+//        equal(typeof tempus.validate({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}), 'boolean', 'Type is boolean');
 //    });
 //
 //    test('tempus.reformat', function () {
