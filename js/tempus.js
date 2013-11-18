@@ -158,13 +158,7 @@
         return this;
     };
 
-    TempusDate.fn.options = function () {
-        return {
-            useMilliseconds: useMilliseconds,
-            monthFromZero: monthFromZero,
-            lang: lang
-        }
-    };
+
 
     /**
      * Returns Date object.

@@ -1278,10 +1278,30 @@
      *     // returns current version
      *     tempus.version();
      *
+     * @static
      * @returns {string} Current version of Tempus.
      */
     tempus.version = function () {
         return version;
+    };
+
+    /**
+     * Returns current options.
+     *
+     *     @example
+     *     // returns current options
+     *     // for example, {useMilliseconds: false, monthFromZero: false, lang: 'en'}
+     *     tempus.options();
+     *
+     * @static
+     * @returns {Object} Current options object.
+     */
+    tempus.options = function () {
+        return {
+            useMilliseconds: useMilliseconds,
+            monthFromZero: monthFromZero,
+            lang: lang
+        }
     };
 
     /**
