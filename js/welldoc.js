@@ -435,14 +435,16 @@
      */
     TempusDate.fn.month = function (value) {
         if (arguments.length !== 0) {
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
-                this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
-                this._incorrect.month = false;
-            } else if (value === undefined) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= this.constants().MIN_MONTH && Number(value) <= this.constants().MAX_MONTH) {
+                    this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
+                    this._incorrect.month = false;
+                } else {
+                    this._incorrect.month = Number(value);
+                }
+            } else {
                 this._date.setMonth(monthFromZero ? this.constants().MIN_MONTH : this.constants().MIN_MONTH - 1);
                 this._incorrect.month = false;
-            } else {
-                this._incorrect.month = Number(value);
             }
         } else {
             if (this._incorrect.year === false) {
