@@ -1,5 +1,5 @@
-(function() {
-    var _Tempus = window.tempus,
+(function(window, undefined) {
+    var _tempus = window.tempus,
         tempus,
         version = '0.2.0',
         lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
@@ -790,7 +790,8 @@
      * If **object**, set date from {year: number, month: number, day: number, hours: number, minutes: number,
      * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
      * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or auto detect
-     * format).
+     * format). Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
+     * Two percent chars (%%) not allowed to directives. This replaced to single percent (%) on parsing.
      *
      *     @example
      *     // returns TempusDate with current date
@@ -810,6 +811,12 @@
      *
      *     // returns TempusDate with date "2013-11-18"
      *     tempus().set('18.11.2013');
+     *
+     *     // returns TempusDate with date "2013-12-12"
+     *     tempus().set('2013-12-12', '%Y-%m-%d'));
+     *
+     *     // returns TempusDate with date "2013-01-01"
+     *     tempus().set('123', '%d.%m.%Y', tempus([2013, 1, 1]));
      *
      * @param {undefined|Date|object|Array|number|string} newDate Some date.
      * @param {undefined|string} format String for getting date from string or undefined else.
@@ -983,4 +990,183 @@
         return this;
     };
 
-})();
+    // *************************************************
+    // *                                               *
+    // *       CONSTRUCTOR & NOT A DATE METHODS        *
+    // *                                               *
+    // *************************************************
+
+    /**
+     * Create method for TempusDate. You can set initial value, for more info, see {@link #set}.
+     *
+     *     @example
+     *     // returns TempusDate with current date.
+     *     tempus();
+     *
+     *     // returns TempusDate with date 2013-01-15.
+     *     tempus({year: 2013, month: 1, day: 15});
+     *
+     *     // returns TempusDate with date 2000-06-01 and time 12:01:15
+     *     tempus([2000, 6, 1, 12, 1, 15]);
+     *
+     *     // returns TempusDate with date 2001-05-10 and time 05:30:00
+     *     tempus('2001-05-10 05:30:00');
+     *
+     *     // returns TempusDate with date 2001-05-10 and time 05:30:00
+     *     tempus(989454600);
+     *
+     * @param {undefined|Date|object|Array|number|string} options Some date. See {@link #set}
+     * @param {undefined|string} format See {@link #set}
+     * @param {undefined|TempusDate} defaults See {@link #set}
+     * @returns {TempusDate} Instance of TempusDate.
+     */
+    tempus = function (options, format, defaults) {
+        return new TempusDate(options, format, defaults);
+    };
+
+    /**
+     * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
+     * @param options {object|undefined} Options object.
+     * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
+     *     any other value ({@see tempus}).
+     * @param options.formatFrom {string|undefined} Format. If undefined, tempus will be auto detect format.
+     * @param options.dateTo {TempusDate|undefined|object|Array|string|number} TempusDate object or
+     *     any other value ({@see tempus}).
+     * @param options.formatTo {string|undefined} Format. If undefined, will use formatFrom.
+     * @param options.period {number|string|object} Step size for dates, can be 'seconds', 'minutes', 'hours',
+     *     'day', 'month', 'year', number value (seconds) or object alike {year: number, month: number, day: number,
+     *     hours: number, minutes: number, seconds: number}.
+     * @param options.format {string|undefined} Results format. If undefined, returns TempusDate.
+     * @param options.asObject {boolean|undefined} If true, dates will be keys for objects in result array.
+     * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
+     *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
+     * @returns {Array|object} Array or object from dates.
+     * @example
+     * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+     * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
+     * tempus.generate({
+     *     dateFrom: '01.01.2013',
+     *     dateTo: '10.01.2013',
+     *     period: 'day',
+     *     format: '%d.%m.%Y'
+     * });
+     * @example
+     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     * tempus.generate({
+     *     dateFrom: '20130329',
+     *     formatFrom: '%Y%m%d',
+     *     dateTo: '20130402',
+     *     period: {day: 1},
+     *     format: '%d.%m.%Y'
+     * });
+     * @example
+     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     * tempus.generate({
+     *     dateFrom: '20130329',
+     *     formatFrom: '%s',
+     *     dateTo: '20130402',
+     *     period: {day: 1},
+     *     format: '%s'
+     * });
+     *
+     */
+    tempus.generate = function(options) {
+        var tsFrom = options.dateFrom,
+            tsTo = options.dateTo,
+            period,
+            result;
+        // timestamp "from"
+        if (typeof options.dateFrom !== 'number') {
+            if (options.dateFrom instanceof TempusDate) {
+                tsFrom = tsFrom.timestamp();
+            } else {
+                tsFrom = tempus(tsFrom, options.formatFrom).timestamp();
+            }
+        }
+        // timestamp "to"
+        if (typeof options.dateTo !== 'number') {
+            if (options.dateTo instanceof TempusDate) {
+                tsTo = tsTo.timestamp();
+            } else {
+                tsTo = tempus(tsTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).timestamp();
+            }
+        }
+        // period
+        if (typeof options.period === 'number') {
+            period = {
+                year: 0,
+                month: 0,
+                day: 0,
+                hours: 0,
+                minutes: 0,
+                seconds: options.period
+            }
+        } else if (typeof options.period === 'string') {
+            period = {
+                year: options.period === 'year' ? 1 : 0,
+                month: options.period === 'month' ? 1 : 0,
+                day: options.period === 'day' ? 1 : 0,
+                hours: options.period === 'hours' ? 1 : 0,
+                minutes: options.period === 'minutes' ? 1 : 0,
+                seconds: options.period === 'seconds' ? 1 : 0
+            }
+        } else if (typeof options.period === 'object') {
+            period = {
+                year: options.period.year !== undefined ? options.period.year : 0,
+                month: options.period.month !== undefined ? options.period.month : 0,
+                day: options.period.day !== undefined ? options.period.day : 0,
+                hours: options.period.hours !== undefined ? options.period.hours : 0,
+                minutes: options.period.minutes !== undefined ? options.period.minutes : 0,
+                seconds: options.period.seconds !== undefined ? options.period.seconds : 0
+            }
+        }
+        // result
+        if (options.groupBy === undefined) {
+            result = options.asObject === true ? {} : [];
+        } else {
+            result = [];
+            result.push([]);
+            var prevValue = tempusFactory.createDate(tsFrom).get()[options.groupBy];
+        }
+        var addTo = function(array, value) {
+            if (options.asObject === true) {
+                if (options.format !== undefined) {
+                    array[tempusFactory.createDate(value).format(options.format)] = {};
+                } else {
+                    array[tempusFactory.createDate(value).format('%F %H:%M:%S')] = {};
+                }
+            } else {
+                if (options.format !== undefined) {
+                    array.push(tempusFactory.createDate(value).format(options.format));
+                } else {
+                    array.push(tempusFactory.createDate(value));
+                }
+            }
+            return array;
+        };
+
+        for (; tsFrom <= tsTo; tsFrom = tempusFactory.createDate(tsFrom).calc(period).timestamp()) {
+            if (options.groupBy === undefined) {
+                addTo(result, tsFrom);
+            } else {
+                if (that.date(tsFrom, {week:true})[options.groupBy] === prevValue) {
+                    addTo(result[result.length-1], tsFrom);
+                } else {
+                    result.push([]);
+                    addTo(result[result.length-1], tsFrom);
+                    prevValue = tempusFactory.createDate(tsFrom).get()[options.groupBy];
+                }
+            }
+        }
+        return result;
+    };
+
+    // *************************************************
+    // *                                               *
+    // *                  EXPORTS                      *
+    // *                                               *
+    // *************************************************
+
+    window.TempusDate = TempusDate;
+    window.tempus = tempus;
+})(window);
