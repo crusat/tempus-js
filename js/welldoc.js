@@ -545,25 +545,25 @@
      *     // returns 0
      *     tempus().hours('0').hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours(undefined).hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours({foo: 'bar'}).hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours([1,2,3]).hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours(null).hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours(true).hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours(false).hours();
      *
-     *     // returns 1 (MIN_HOURS)
+     *     // returns 0 (MIN_HOURS)
      *     tempus().hours(NaN).hours();
      *
      *
@@ -717,6 +717,70 @@
             }
         } else {
             return this._incorrect.seconds === false ? this._date.getSeconds() : this._incorrect.seconds;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set milliseconds.
+     *
+     *     @example
+     *     // returns current milliseconds
+     *     tempus().milliseconds();
+     *
+     *     // returns 1000
+     *     tempus().milliseconds(1000).milliseconds();
+     *
+     *     // returns 120
+     *     tempus().milliseconds(12).milliseconds();
+     *
+     *     // returns 1
+     *     tempus().milliseconds(1).milliseconds();
+     *
+     *     // returns -5
+     *     tempus().milliseconds(-5).milliseconds();
+     *
+     *     // returns 0
+     *     tempus().milliseconds('0').milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(undefined).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds({foo: 'bar'}).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds([1,2,3]).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(null).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(true).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(false).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(NaN).milliseconds();
+     *
+     *
+     * @param {number} value Set new milliseconds. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.milliseconds = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
+                this._date.setMilliseconds(Number(value));
+                this._incorrect.milliseconds = false;
+            } else if (value === undefined) {
+                this._date.setMilliseconds(this.constants().MIN_MILLISECONDS);
+                this._incorrect.milliseconds = false;
+            } else {
+                this._incorrect.milliseconds = Number(value);
+            }
+        } else {
+            return this._incorrect.milliseconds === false ? this._date.getMilliseconds() : this._incorrect.milliseconds;
         }
         return this;
     };

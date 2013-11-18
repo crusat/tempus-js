@@ -311,28 +311,6 @@
     };
 
     /**
-     * Get or set seconds.
-     * @param value {number} New seconds. If undefined, returns numeric value.
-     * @returns {Tempus|number|undefined} If setter - Tempus, if getter - number.
-     */
-
-    TempusDate.fn.milliseconds = function (value) {
-        if (arguments.length !== 0) {
-            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value)) && Number(value) >= this.constants().MIN_MILLISECONDS && Number(value) <= this.constants().MAX_MILLISECONDS) {
-                this._date.setMilliseconds(Number(value));
-                this._incorrect.milliseconds = false;
-            } else if (value === undefined) {
-                this._date.setMilliseconds(this.constants().MIN_MILLISECONDS);
-                this._incorrect.milliseconds = false;
-            } else {
-                this._incorrect.milliseconds = Number(value);
-            }
-        } else {
-            return this._date.getMilliseconds();
-        }
-        return this;
-    };
-    /**
      * Set a current date.
      * @returns {Tempus}
      * @example
