@@ -1276,6 +1276,30 @@
      *     // returns true
      *     tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate();
      *
+     *     // returns false
+     *     tempus('32.08.2013', '%d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('29.02.2013', '%d.%m.%Y').validate();
+     *
+     *     // returns true
+     *     tempus('29.02.2012', '%d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate();
+     *
+     *     // returns true
+     *     tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('29.02.2012 24:00').validate();
+     *
+     *     // returns true
+     *     tempus('29.02.2012 23:00').validate();
+     *
+     *     // returns false
+     *     tempus('29.02.2013 23:00').validate();
+     *
      * @returns {boolean} If true, date is valid, else invalid.
      */
     TempusDate.fn.validate = function() {

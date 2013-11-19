@@ -1,21 +1,23 @@
-(function (TempusDate) {
+(function (tempus) {
     /**
-     * Generate random date.
-     * @returns {Tempus}
-     * @example
-     * // returns {"year":2145,"month":10,"day":27,"hours":9,"minutes":26,"seconds":47,"dayOfWeek":3,
-     *     "dayOfWeekShort":"Wed","dayOfWeekLong":"Wednesday","timestamp":5548368407,"UTC":5548382807}
-     * TP.random().date();
+     * Generate random date. Just for example plugin.
+     *
+     *     @example
+     *     // returns TempusDate with random date.
+     *     tempus.randomDate();
+     *
+     * @returns {TempusDate}
      */
-    TempusDate.prototype.random = function() {
-        this.year(Math.floor((Math.random()*(this.constants().MAX_YEAR - this.constants().MIN_YEAR)) + this.constants().MIN_YEAR));
-        this.month(Math.floor((Math.random()*(this.constants().MAX_MONTH - this.constants().MIN_MONTH)) + this.constants().MIN_MONTH));
-        this.day(Math.floor((Math.random()*(this.dayCount() - this.constants().MIN_DAY)) + this.constants().MIN_DAY));
-        this.hours(Math.floor((Math.random()*(this.constants().MAX_HOURS - this.constants().MIN_HOURS)) + this.constants().MIN_HOURS));
-        this.minutes(Math.floor((Math.random()*(this.constants().MAX_MINUTES - this.constants().MIN_MINUTES)) +
-            this.constants().MIN_MINUTES));
-        this.seconds(Math.floor((Math.random()*(this.constants().MAX_SECONDS - this.constants().MIN_SECONDS)) +
-            this.constants().MIN_SECONDS));
-        return this;
+    tempus.randomDate = function() {
+        var date = new TempusDate();
+        date.year(Math.floor((Math.random()*(tempus.constants().MAX_YEAR - tempus.constants().MIN_YEAR)) + tempus.constants().MIN_YEAR)).
+             month(Math.floor((Math.random()*(tempus.constants().MAX_MONTH - tempus.constants().MIN_MONTH)) + tempus.constants().MIN_MONTH)).
+             day(Math.floor((Math.random()*(date().dayCount() - tempus.constants().MIN_DAY)) + tempus.constants().MIN_DAY)).
+             hours(Math.floor((Math.random()*(tempus.constants().MAX_HOURS - tempus.constants().MIN_HOURS)) + tempus.constants().MIN_HOURS)).
+             minutes(Math.floor((Math.random()*(tempus.constants().MAX_MINUTES - tempus.constants().MIN_MINUTES)) +
+                tempus.constants().MIN_MINUTES)).
+             seconds(Math.floor((Math.random()*(tempus.constants().MAX_SECONDS - tempus.constants().MIN_SECONDS)) +
+                tempus.constants().MIN_SECONDS));
+        return date;
     };
-})(TempusDate);
+})(tempus);

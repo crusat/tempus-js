@@ -507,29 +507,29 @@
          * // returns true
          *
          * @example
-         * // returns false
-         * tempus.validate('32.08.2013', '%d.%m.%Y');
+         *
+         *
          * @example
-         * // returns false
-         * tempus.validate('29.02.2013', '%d.%m.%Y');
+         *
+         *
          * @example
-         * // returns true
-         * tempus.validate('29.02.2012', '%d.%m.%Y');
+         *
+         *
          * @example
-         * // returns false
-         * tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');
+         *
+         *
          * @example
-         * // returns true
-         * tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');
+         *
+         *
          * @example
-         * // returns false
-         * tempus.validate('29.02.2012 24:00');
+         *
+         *
          * @example
-         * // returns true
-         * tempus.validate('29.02.2012 23:00');
+         *
+         *
          * @example
-         * // returns false
-         * tempus.validate('29.02.2013 23:00');
+         *
+         *
          */
 //        this.validate = function(date, format) {
 //            if (typeof date === 'string') {
