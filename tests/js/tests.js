@@ -246,15 +246,15 @@
     // *************************************************
 
     test('Tests set() method', function() {
-        equal(tempus().set().timestamp(), Math.floor(new Date().valueOf()/1000),
+        equal(tempus().set().utc(), Math.floor(new Date().valueOf()/1000),
             'This test may be not completed and it be right, because here checking two NOW dates');
-        equal(tempus().set({year: 2013, month: 1, day: 15}).get('Date').valueOf(), new Date(2013, 0, 15).valueOf(),
+        equal(tempus().set({year: 2013, month: 1, day: 15}).utc()*1000, new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
-        equal(tempus().set([2000, 6, 1, 12, 1, 15]).get('Date').valueOf(), new Date(2000, 5, 1, 12, 1, 15).valueOf(),
+        equal(tempus().set([2000, 6, 1, 12, 1, 15]).utc()*1000, new Date(2000, 5, 1, 12, 1, 15).valueOf(),
             'Checking constructor with array value');
-        equal(tempus().set('2001-05-10 05:30:00').get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+        equal(tempus().set('2001-05-10 05:30:00').utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
             'Checking constructor with string value');
-        equal(tempus().set(989454600).get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+        equal(tempus().set(989454600).utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
             'Checking constructor with numeric value');
     });
 
