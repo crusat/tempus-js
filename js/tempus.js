@@ -1,14 +1,124 @@
 /*
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.1
+ * @version 0.2.2
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods.
  */
-(function(window, undefined) {
-    var _tempus = window.tempus,
+(function (window, undefined) {
+    "use strict";
+
+    // *************************************************
+    // *                                               *
+    // *               COMPATIBILITY                   *
+    // *                                               *
+    // *************************************************
+
+    // fix Array.indexOf for old browsers
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function (obj, start) {
+            var i, j;
+            for (i = (start || 0), j = this.length; i < j; i += 1) {
+                if (this[i] === obj) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+
+    // *************************************************
+    // *                                               *
+    // *                   CORE                        *
+    // *                                               *
+    // *************************************************
+
+    var version = '0.2.2',
+        formattingWithNulls = function (val, symb_count) {
+            var v = val.toString();
+            while (v.length < symb_count) {
+                v = '0' + v;
+            }
+            return v;
+        },
+        parseBadFormat = function (date, defaults) {
+            if (defaults !== undefined) {
+                date.year(defaults.year() || defaults.year);
+                date.month(defaults.month() || defaults.month);
+                date.day(defaults.day() || defaults.day);
+                date.hours(defaults.hours() || defaults.hours);
+                date.minutes(defaults.minutes() || defaults.minutes);
+                date.seconds(defaults.seconds() || defaults.seconds);
+                date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
+                return date;
+            }
+            return undefined;
+        },
+        detectTimeFormat = function (str, startFrom) {
+            var tmpChars, format = '';
+            tmpChars = str.slice(startFrom, startFrom + 1);
+            if (tmpChars !== '' && !isNaN(Number(tmpChars))) {
+                format += '%H';
+            }
+            tmpChars = str.charAt(startFrom + 2);
+            if (tmpChars !== '' && tmpChars === ':') {
+                format += tmpChars;
+            }
+            tmpChars = str.slice(startFrom + 3, startFrom + 4);
+            if (tmpChars !== '' && !isNaN(Number(tmpChars))) {
+                format += '%M';
+            }
+            tmpChars = str.charAt(startFrom + 5);
+            if (tmpChars !== '' && tmpChars === ':') {
+                format += tmpChars;
+            }
+            tmpChars = str.slice(startFrom + 6, startFrom + 7);
+            if (tmpChars !== '' && !isNaN(Number(tmpChars))) {
+                format += '%S';
+            }
+            return format;
+        },
+        detectDateFormat = function (str, startFrom) {
+            var tmpChars,
+                format,
+                part1 = [
+                    str.slice(startFrom, startFrom + 1),
+                    str.charAt(startFrom + 2),
+                    str.slice(startFrom + 3, startFrom + 4),
+                    str.charAt(startFrom + 5),
+                    str.slice(startFrom + 6, startFrom + 9)
+                ];
+
+            if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
+                if (part1[1] === '.' && part1[3] === '.') {
+                    format = '%d.%m.%Y';
+                } else if (part1[1] === '-' && part1[3] === '-') {
+                    format = '%m-%d-%Y';
+                } else if (part1[1] === '/' && part1[3] === '/') {
+                    format = '%m/%d/%Y';
+                }
+
+                return format;
+            }
+
+            var part2 = [
+                str.slice(startFrom, startFrom + 3),
+                str.charAt(startFrom + 4),
+                str.slice(startFrom + 5, startFrom + 6),
+                str.charAt(startFrom + 7),
+                str.slice(startFrom + 8, startFrom + 9)
+            ];
+
+            if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
+                if (part2[1] === '-' && part2[3] === '-') {
+                    format = '%Y-%m-%d';
+                }
+                return format;
+            }
+            return '';
+        },
+        _tempus = window.tempus,
         _TempusDate = window.TempusDate,
         tempus,
-        version = '0.2.1',
         lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
         translations = {
             "en": {
@@ -104,7 +214,7 @@
                     return translations[lang]["monthShortNames"][(date.month() || tempus.constants().MIN_MONTH)];
                 },
                 parse: function (value) {
-                    var month = that.getMonthNames().indexOf(value) + 1;
+                    var month = tempus.monthNames().indexOf(value) + 1;
                     return {month: month !== -1 ? month : undefined}
                 },
                 minLength: 1,
@@ -116,7 +226,7 @@
                     return translations[lang]["monthLongNames"][(date.month() || tempus.constants().MIN_MONTH)];
                 },
                 parse: function (value) {
-                    var month = that.getMonthNames(true).indexOf(value) + 1;
+                    var month = tempus.monthNames(true).indexOf(value) + 1;
                     return {month: month !== -1 ? month : undefined}
                 },
                 minLength: 1,
@@ -164,10 +274,7 @@
                     return date.timestamp();
                 },
                 parse: function (value) {
-                    var v = Number(value);
-                    var date = new TempusDate(Number(v), timezoneOffset);
-                    var obj = that.date(v);
-                    return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
+                    return isNaN(v) ? {} : tempus(Number(value)).get();
                 },
                 minLength: 1,
                 maxLength: 20,
@@ -218,93 +325,6 @@
             useMilliseconds: false,
             monthFromZero: false
         };
-
-    var formattingWithNulls = function (val, symb_count) {
-        var v = val.toString();
-        while (v.length < symb_count) {
-            v = '0' + v;
-        }
-        return v;
-    };
-
-    var parseBadFormat = function(date, defaults) {
-        if (defaults !== undefined) {
-            date.year(defaults.year() || defaults.year);
-            date.month(defaults.month() || defaults.month);
-            date.day(defaults.day() || defaults.day);
-            date.hours(defaults.hours() || defaults.hours);
-            date.minutes(defaults.minutes() || defaults.minutes);
-            date.seconds(defaults.seconds() || defaults.seconds);
-            date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
-            return date;
-        } else {
-            return undefined;
-        }
-    };
-
-    var detectTimeFormat = function(str, startFrom) {
-        var tmpChars, format = '';
-        tmpChars = str.slice(startFrom, startFrom+1);
-        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
-            format += '%H';
-        }
-        tmpChars = str.charAt(startFrom+2);
-        if (tmpChars !=='' && tmpChars === ':') {
-            format += tmpChars;
-        }
-        tmpChars = str.slice(startFrom+3, startFrom+4);
-        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
-            format += '%M';
-        }
-        tmpChars = str.charAt(startFrom+5);
-        if (tmpChars !=='' && tmpChars === ':') {
-            format += tmpChars;
-        }
-        tmpChars = str.slice(startFrom+6, startFrom+7);
-        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
-            format += '%S';
-        }
-        return format;
-    };
-
-    var detectDateFormat = function(str, startFrom) {
-        var tmpChars, format;
-        var part1 = [
-            str.slice(startFrom, startFrom+1),
-            str.charAt(startFrom+2),
-            str.slice(startFrom+3, startFrom+4),
-            str.charAt(startFrom+5),
-            str.slice(startFrom+6, startFrom+9)
-        ];
-
-        if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
-            if (part1[1] === '.' && part1[3] === '.') {
-                format = '%d.%m.%Y';
-            } else if (part1[1] === '-' && part1[3] === '-') {
-                format = '%m-%d-%Y';
-            } else if (part1[1] === '/' && part1[3] === '/') {
-                format = '%m/%d/%Y';
-            }
-
-            return format;
-        }
-
-        var part2 = [
-            str.slice(startFrom, startFrom+3),
-            str.charAt(startFrom+4),
-            str.slice(startFrom+5, startFrom+6),
-            str.charAt(startFrom+7),
-            str.slice(startFrom+8, startFrom+9)
-        ];
-
-        if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
-            if (part2[1] === '-' && part2[3] === '-') {
-                format = '%Y-%m-%d';
-            }
-            return format;
-        }
-        return '';
-    };
 
     /**
      * A **TempusDate** class. Store information about some date and can be use
@@ -498,7 +518,7 @@
             }
         } else {
             if (this._incorrect.month === false) {
-                return tempus.options('monthFromZero') ? this._date.getMonth() : (this._date.getMonth() +  1);
+                return tempus.options('monthFromZero') ? this._date.getMonth() : (this._date.getMonth() + 1);
             } else {
                 return this._incorrect.month;
             }
@@ -848,7 +868,7 @@
     TempusDate.fn.week = function () {
         var onejan = new Date(this.year(), 0, 1);
         var nowDate = this.get('Date');
-        return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay()+1)/7);
+        return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay() + 1) / 7);
     };
 
     /**
@@ -965,7 +985,7 @@
                     if (registeredFormats[directive] !== undefined) {
                         k = 0;
                         var shortString = '';
-                        switch(registeredFormats[directive].type) {
+                        switch (registeredFormats[directive].type) {
                             case 'number':
                                 while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && !isNaN(Number(newDate.charAt(j + k)))) {
                                     shortString += newDate.charAt(j + k);
@@ -1029,8 +1049,8 @@
 
             var resultdate = {};
             var tmpdate;
-            for(key in lits) {
-                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
+            for (key in lits) {
+                if (lits.hasOwnProperty(key) && (registeredFormats.hasOwnProperty(lits[key]))) {
                     tmpdate = registeredFormats[lits[key]].parse(res[key]);
                     resultdate = {
                         year: tmpdate.year !== undefined ? tmpdate.year : resultdate.year,
@@ -1105,13 +1125,13 @@
      */
     TempusDate.fn.timestamp = function (value) {
         if (arguments.length !== 0) {
-            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000) + this._date.getTimezoneOffset()*60000);
+            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000) + this._date.getTimezoneOffset() * 60000);
             return this;
         } else {
             if (tempus.options('useMilliseconds')) {
-                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
+                return this._date.getTime() - this._date.getTimezoneOffset() * 60000;
             } else {
-                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60
+                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset() * 60
             }
         }
     };
@@ -1186,7 +1206,7 @@
             case 'minutes':
                 return this._date.getTimezoneOffset();
             default:
-                return this._date.getTimezoneOffset()*60;
+                return this._date.getTimezoneOffset() * 60;
         }
     };
 
@@ -1314,7 +1334,7 @@
      *
      * @returns {boolean} If true, date is valid, else invalid.
      */
-    TempusDate.fn.validate = function() {
+    TempusDate.fn.validate = function () {
         return (this._incorrect.year === false && this._incorrect.month === false && this._incorrect.day === false &&
             this._incorrect.hours === false && this._incorrect.minutes === false && this._incorrect.seconds === false &&
             this._incorrect.milliseconds === false);
@@ -1329,7 +1349,7 @@
      *
      * @returns {Object} Object with date errors
      */
-    TempusDate.fn.errors = function() {
+    TempusDate.fn.errors = function () {
         return this._incorrect;
     };
 
@@ -1416,8 +1436,6 @@
         }
         return this;
     };
-
-
 
 
     // *************************************************
@@ -1623,7 +1641,7 @@
      * @static
      * @returns {Array|Object} Array or object from dates.
      */
-    tempus.generate = function(options) {
+    tempus.generate = function (options) {
         var tsFrom = options.dateFrom,
             tsTo = options.dateTo,
             period,
@@ -1681,7 +1699,7 @@
             result.push([]);
             var prevValue = tempus(tsFrom).get()[options.groupBy];
         }
-        var addTo = function(array, value) {
+        var addTo = function (array, value) {
             if (options.asObject === true) {
                 if (options.format !== undefined) {
                     array[tempus(value).format(options.format)] = {};
@@ -1702,11 +1720,11 @@
             if (options.groupBy === undefined) {
                 addTo(result, tsFrom);
             } else {
-                if (that.date(tsFrom, {week:true})[options.groupBy] === prevValue) {
-                    addTo(result[result.length-1], tsFrom);
+                if (tempus(tsFrom).get()[options.groupBy] === prevValue) {
+                    addTo(result[result.length - 1], tsFrom);
                 } else {
                     result.push([]);
-                    addTo(result[result.length-1], tsFrom);
+                    addTo(result[result.length - 1], tsFrom);
                     prevValue = tempus(tsFrom).get()[options.groupBy];
                 }
             }
@@ -1805,7 +1823,7 @@
      * @static
      * @returns {Array} Array of available languages.
      */
-    tempus.availableLangs = function() {
+    tempus.availableLangs = function () {
         return Object.keys(translations);
     };
 
@@ -1842,7 +1860,7 @@
      * @param {string} type Type of value, can be 'number', 'word' (only letters) or 'string' (any symbols)
      * @static
      */
-    tempus.registerFormat = function(value, formatFunc, parseFunc, minLength, maxLength, type) {
+    tempus.registerFormat = function (value, formatFunc, parseFunc, minLength, maxLength, type) {
         registeredFormats[value] = {
             format: formatFunc,
             parse: parseFunc,
@@ -1866,7 +1884,7 @@
      * @param {string} value Directive
      * @static
      */
-    tempus.unregisterFormat = function(value) {
+    tempus.unregisterFormat = function (value) {
         delete registeredFormats[value];
     };
 
@@ -1901,22 +1919,6 @@
         format += detectTimeFormat(str, len);
         return format;
     };
-
-    // *************************************************
-    // *                                               *
-    // *               COMPATIBILITY                   *
-    // *                                               *
-    // *************************************************
-
-    // fix Array.indexOf for old browsers
-    if (!Array.prototype.indexOf) {
-        Array.prototype.indexOf = function(obj, start) {
-            for (var i = (start || 0), j = this.length; i < j; i++) {
-                if (this[i] === obj) { return i; }
-            }
-            return -1;
-        }
-    }
 
     // *************************************************
     // *                                               *
