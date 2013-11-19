@@ -126,26 +126,8 @@
             this.milliseconds() !== undefined ? this.milliseconds() : 0
         ));
     };
-    /**
-     * Globally set or get language.
-     * @param value {string} Language's code.
-     * @returns {string|Tempus} Language's code or Tempus object.
-     * @example
-     * // returns "Ноябрь, 14"
-     * TP.lang('ru').set({year: 2013, month: 11, day: 14}).format('%B, %d');
-     * @example
-     * TP.lang('ru');
-     * // returns "Ноябрь"
-     * TP.month(11).format('%B');
-     */
-    TempusDate.fn.lang = function (value) {
-        if (value !== undefined) {
-            lang = value;
-        } else {
-            return lang;
-        }
-        return this;
-    };
+
+
     /**
      * All work with timestamps and timeouts will be in milliseconds.
      * @param value {boolean} False to disabling it.

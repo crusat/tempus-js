@@ -9,15 +9,15 @@
                 "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
                     "September", "October", "November", "December"],
-                "daysShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                "daysLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                "dayShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                "dayLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
             },
             "ru": {
                 "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
                 "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
                     "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-                "daysShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+                "dayShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                "dayLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
             }
         },
         registeredFormats = {
@@ -1533,13 +1533,13 @@
      * Returns array of day names. If type is undefined, short names was returned.
      *
      *     @example
-     *     // returns ??
+     *     // returns ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
      *     tempus.dayNames();
      *
-     *     // returns ??
+     *     // returns ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
      *     tempus.dayNames(true);
      *
-     *     // returns ??
+     *     // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
      *     tempus.setLang('ru');
      *     tempus.dayNames();
      *
@@ -1554,6 +1554,31 @@
             default:
                 return translations[lang]["dayShortNames"];
         }
+    };
+
+    /**
+     * Globally set or get language. By default **auto detect current user language**. If you want only english
+     * language, always set tempus.lang('en'); before using tempus.
+     *
+     *     @example
+     *     // returns "Ноябрь, 14"
+     *     tempus.lang('ru');
+     *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
+     *
+     *     // returns "November, 14"
+     *     tempus.lang('en');
+     *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
+     *
+     * @param {string} value Language's code.
+     * @returns {undefined|string} Language's code or undefined for setter.
+     */
+    tempus.lang = function (value) {
+        if (value !== undefined) {
+            lang = value;
+        } else {
+            return lang;
+        }
+        return undefined;
     };
 
     // *************************************************

@@ -22,6 +22,7 @@
     var day, month, year, hours, minutes, seconds;
 
 
+    tempus.lang('en');
 
 
 
