@@ -18,30 +18,6 @@
 
     tempus.lang('en');
 
-
-
-
-
-
-
-
-
-
-    test('Test format() method', function () {
-        equal(tempus().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Date format');
-        equal(tempus().set({year: 2000, month: 10, day:1, hourss: 10, minutes: 0, seconds: 0}).format('%Y-%m-%d %H:%M:%S'),
-            '2000-10-01 10:00:00', 'Date and time format');
-        equal(tempus().set({year: 2000}).format('%Y-%m-%d %H:%M:%S'), '2000-01-01 00:00:00', 'Enough date and time format');
-        equal(typeof tempus().set({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), 'string', 'Type is string');
-    });
-
-
-
-    test('Test calc()', function() {
-        equal(tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y'), '01.05.2013', 'Easy test');
-    });
-
-
     // *************************************************
     // *                                               *
     // *                   BASE                        *
@@ -237,6 +213,32 @@
         equal(resultTest2(), '2013-05-05 12:41:36', 'Test 2');
     });
 
+    test('Tests validate()', function () {
+        equal(tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), false, 'validate');
+        equal(tempus.({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}).validate(), false, 'validate');
+        equal(tempus({day:1,month:1,year:2013,hourss:0,minutes:0,seconds:0}).validate(), true, 'validate');
+        equal(tempus('2013-03-12', '%Y-%m-%d').validate(), true, 'validate');
+        equal(tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate(), true, 'validate');
+        equal(tempus('32.08.2013', '%d.%m.%Y').validate(), false, 'validate');
+        equal(tempus('29.02.2013', '%d.%m.%Y').validate(), false, 'validate');
+        equal(tempus('29.02.2012', '%d.%m.%Y').validate(), true, 'validate');
+        equal(tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate(), false, 'validate');
+        equal(tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate(), true, 'validate');
+        equal(typeof tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), 'boolean', 'Type is boolean');
+    });
+
+    test('Tests errors()', function () {
+        deepEqual(tempus().year(-5).errors(),
+            {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}, 'Get errors');
+    });
+
+    test('Tests between()', function () {
+        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day'), 4, 'test');
+        equal(tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month'), 6, 'test');
+        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes'), 266400, 'test');
+        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours'), 10224, 'test');
+    });
+
     // *************************************************
     // *                                               *
     // *                    SET                        *
@@ -373,30 +375,9 @@
         equal(tempus().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
 
-    test('Tests validate()', function () {
-        equal(tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus.({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus({day:1,month:1,year:2013,hourss:0,minutes:0,seconds:0}).validate(), true, 'validate');
-        equal(tempus('2013-03-12', '%Y-%m-%d').validate(), true, 'validate');
-        equal(tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate(), true, 'validate');
-        equal(tempus('32.08.2013', '%d.%m.%Y').validate(), false, 'validate');
-        equal(tempus('29.02.2013', '%d.%m.%Y').validate(), false, 'validate');
-        equal(tempus('29.02.2012', '%d.%m.%Y').validate(), true, 'validate');
-        equal(tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate(), false, 'validate');
-        equal(tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate(), true, 'validate');
-        equal(typeof tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), 'boolean', 'Type is boolean');
-    });
-
-    test('Tests errors()', function () {
-        deepEqual(tempus().year(-5).errors(),
-            {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}, 'Get errors');
-    });
-
-    test('Tests between()', function () {
-        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day'), 4, 'test');
-        equal(tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month'), 6, 'test');
-        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes'), 266400, 'test');
-        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours'), 10224, 'test');
+    test('Test calc()', function() {
+        equal(tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y'), '01.05.2013', 'Easy test');
+        equal(tempus([2011, 5, 2]).calc({year: 1, month: -4, day: -1}).format('%d.%m.%Y'), '01.01.2012', 'Easy test');
     });
 
     // *************************************************

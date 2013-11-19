@@ -1366,6 +1366,45 @@
         }
     };
 
+    /**
+     * Calculate date.
+     *
+     *     @example
+     *     // returns '01.05.2013'
+     *     tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y')
+     *
+     *     // returns TempusDate with date 2012-01-01
+     *     tempus([2011, 5, 2]).calc({year: 1, month: -4, day: -1});
+     *
+     * @param {Object} delta Object {year: number, month: number, day: number, hours: number, minutes: number,
+     *     seconds: number, milliseconds: number} or part of it.
+     * @returns {TempusDate} New date.
+     */
+    TempusDate.fn.calc = function (delta) {
+        if (delta.year !== undefined) {
+            this._date.setFullYear(this._date.getFullYear() + delta.year);
+        }
+        if (delta.month !== undefined) {
+            this._date.setMonth(this._date.getMonth() + delta.month);
+        }
+        if (delta.day !== undefined) {
+            this._date.setDate(this._date.getDate() + delta.day);
+        }
+        if (delta.hours !== undefined) {
+            this._date.setHours(this._date.getHours() + delta.hours);
+        }
+        if (delta.minutes !== undefined) {
+            this._date.setMinutes(this._date.getMinutes() + delta.minutes);
+        }
+        if (delta.seconds !== undefined) {
+            this._date.setSeconds(this._date.getSeconds() + delta.seconds);
+        }
+        if (delta.milliseconds !== undefined) {
+            this._date.setMilliseconds(this._date.getMilliseconds() + delta.milliseconds);
+        }
+        return this;
+    };
+
 
 
 
