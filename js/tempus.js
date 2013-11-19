@@ -851,7 +851,6 @@
      * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
      * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or auto detect
      * format). Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
-     * Two percent chars (%%) not allowed to directives. This replaced to single percent (%) on parsing.
      *
      *     @example
      *     // returns TempusDate with current date
@@ -956,10 +955,8 @@
                 k;
             while (i < format.length) {
                 if (format.charAt(i) === '%') {
-                    if (format.charAt(i+1) === '%') {
-                        i++;
-                    } else {
-                        directive = format.charAt(i) + format.charAt(i + 1);
+                    directive = format.charAt(i) + format.charAt(i + 1);
+                    if (registeredFormats[directive] !== undefined) {
                         k = 0;
                         var shortString = '';
                         switch(registeredFormats[directive].type) {
