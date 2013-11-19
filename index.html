@@ -14,7 +14,7 @@
         <div class="logo">TempusJS</div>
         <ul class="menu">
             <li><a href="tests/index.html">Tests</a></li>
-            <li><a href="docs/index.html">Docs & Demos</a></li>
+            <li><a href="docs/index.html">Docs</a></li>
             <li><a href="https://github.com/crusat/tempus-js">View at Github</a></li>
             <li><a href="https://github.com/crusat/tempus-js/releases">Download</a></li>
         </ul>
@@ -23,13 +23,15 @@
         <div class="subtext">This is a JavaScript library for more comfortable use date and time functions.</div>
     </div>
     <script type="text/javascript" src="js/tempus.js"></script>
-    <!--<script type="text/javascript" src="js/plugins/tempus.timers.js"></script>-->
     <script type="text/javascript" src="js/plugins/tempus.random.js"></script>
-    <!--<script type="text/javascript" src="js/plugins/tempus.widgets.js"></script>-->
     <script type="text/javascript">
-//        window.onload = function() {
-//            var clock = TP.DOMById('tempus-clock-example').digitalClock();
-//        }
+        window.onload = function() {
+            var elClock = document.getElementById('tempus-clock-example'),
+                clock = setInterval(function() {
+                    elClock.innerHTML = tempus().format('%H:%M:%S');
+            }, 1000);
+            elClock.innerHTML = tempus().format('%H:%M:%S');
+        }
     </script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
