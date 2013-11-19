@@ -112,9 +112,7 @@
         return this._incorrect;
     };
 
-    TempusDate.fn.getAvailableLangs = function() {
-        return Object.keys(translations);
-    };
+
 
 
 

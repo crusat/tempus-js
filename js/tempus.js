@@ -1362,7 +1362,7 @@
      *
      *     @example
      *     // returns all current options
-     *     // for example, {useMilliseconds: false, monthFromZero: false, lang: 'en'}
+     *     // for example, {useMilliseconds: false, monthFromZero: false}
      *     tempus.options();
      *
      *     // returns 'useMilliseconds' value
@@ -1633,6 +1633,20 @@
             return lang;
         }
         return undefined;
+    };
+
+    /**
+     * Get available languages.
+     *
+     *     @example
+     *     // returns ["en", "ru"]
+     *     tempus.availableLocales();
+     *
+     * @static
+     * @returns {Array} Array of available languages.
+     */
+    tempus.availableLangs = function() {
+        return Object.keys(translations);
     };
 
     /**
