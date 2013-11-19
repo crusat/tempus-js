@@ -1099,10 +1099,10 @@
      */
     TempusDate.fn.timestamp = function (value) {
         if (arguments.length !== 0) {
-            this._date = new Date(Number(value) * (useMilliseconds ? 1 : 1000));
+            this._date = new Date(Number(value) * (tempus.options().useMilliseconds ? 1 : 1000));
             return this;
         } else {
-            if (useMilliseconds) {
+            if (tempus.options().useMilliseconds) {
                 return this._date.getTime();
             } else {
                 return Math.floor(this._date.getTime() / 1000)
@@ -1123,12 +1123,12 @@
      * @param {number} value Value for set or no value for get.
      * @returns {TempusDate|number} TempusDate or numeric timestamp.
      */
-    TempusDate.fn.UTC = function (value) {
+    TempusDate.fn.utc = function (value) {
         if (arguments.length !== 0) {
-            this.date(new Date(Number(value) * (useMilliseconds ? 1 : 1000)));
+            this.date(new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000)));
             return this;
         } else {
-            if (useMilliseconds) {
+            if (tempus.options('useMilliseconds')) {
                 return this._date.getTime() - this._date.getTimezoneOffset()*60000;
             } else {
                 return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60;
@@ -1357,21 +1357,40 @@
     };
 
     /**
-     * Returns current options.
+     * Get or set current options. If option is undefined, returns all options.
      *
      *     @example
-     *     // returns current options
+     *     // returns all current options
      *     // for example, {useMilliseconds: false, monthFromZero: false, lang: 'en'}
      *     tempus.options();
      *
+     *     // returns 'useMilliseconds' value
+     *     tempus.options('useMilliseconds');
+     *
+     *     // Timeouts and timestamps in milliseconds
+     *     tempus.options('useMilliseconds', true);
+     *
+     *     // Month starts from 0.
+     *     tempus.options('monthFromZero', true);
+     *
      * @static
+     * @param {string} option Name of option.
+     * @param {*} value New value of option.
      * @returns {Object} Current options object.
      */
-    tempus.options = function () {
-        return {
-            useMilliseconds: options.useMilliseconds,
-            monthFromZero: options.monthFromZero
+    tempus.options = function (option, value) {
+        if (option === undefined) {
+            return options;
+        } else {
+            if (options.hasOwnProperty(option)) {
+                if (value === undefined) {
+                    return options[option];
+                } else {
+                    options[option] = value;
+                }
+            }
         }
+        return undefined;
     };
 
     /**
@@ -1613,26 +1632,6 @@
             return lang;
         }
         return undefined;
-    };
-
-    /**
-     * Set some option. List of option and defaults you can see here {@link #options}
-     *
-     *     @example
-     *     // Timeouts and timestamps in milliseconds
-     *     tempus.setOption('useMilliseconds', true);
-     *
-     *     // Month starts from 0.
-     *     tempus.setOption('monthFromZero', true);
-     *
-     * @param {string} option
-     * @param {*} value
-     * @static
-     */
-    tempus.setOption = function(option, value) {
-        if (options.hasOwnProperty(option)) {
-            options[option] = value;
-        }
     };
 
     /**
