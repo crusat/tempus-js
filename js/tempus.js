@@ -101,7 +101,7 @@
             },
             '%b': {
                 format: function (date) {
-                    return translations[lang]["monthShortNames"][(date.month() || tempus.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
+                    return translations[lang]["monthShortNames"][(date.month() || tempus.constants().MIN_MONTH)];
                 },
                 parse: function (value) {
                     var month = that.getMonthNames().indexOf(value) + 1;
@@ -113,7 +113,7 @@
             },
             '%B': {
                 format: function (date) {
-                    return translations[lang]["monthLongNames"][(date.month() || tempus.constants().MIN_MONTH) - (monthFromZero ? 0 : 1)];
+                    return translations[lang]["monthLongNames"][(date.month() || tempus.constants().MIN_MONTH)];
                 },
                 parse: function (value) {
                     var month = that.getMonthNames(true).indexOf(value) + 1;
@@ -361,7 +361,7 @@
      */
     TempusDate.fn.dayCount = function () {
         var m = this.month();
-        var dc = tempus.constants().MAX_DAY_IN_MONTHS[m - (monthFromZero ? 0 : 1)];
+        var dc = tempus.constants().MAX_DAY_IN_MONTHS[m - (tempus.options('monthFromZero') ? 0 : 1)];
         if (this.leapYear() && m === 2) {
             dc += 1;
         }
@@ -487,18 +487,18 @@
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
                 if (Number(value) >= tempus.constants().MIN_MONTH && Number(value) <= tempus.constants().MAX_MONTH) {
-                    this._date.setMonth(monthFromZero ? Number(value) : Number(value) - 1);
+                    this._date.setMonth(tempus.options('monthFromZero') ? Number(value) : Number(value) - 1);
                     this._incorrect.month = false;
                 } else {
                     this._incorrect.month = Number(value);
                 }
             } else {
-                this._date.setMonth(monthFromZero ? tempus.constants().MIN_MONTH : tempus.constants().MIN_MONTH - 1);
+                this._date.setMonth(tempus.options('monthFromZero') ? tempus.constants().MIN_MONTH : tempus.constants().MIN_MONTH - 1);
                 this._incorrect.month = false;
             }
         } else {
-            if (this._incorrect.year === false) {
-                return monthFromZero ? this._date.getMonth() : (this._date.getMonth() +  1);
+            if (this._incorrect.month === false) {
+                return tempus.options('monthFromZero') ? this._date.getMonth() : (this._date.getMonth() +  1);
             } else {
                 return this._incorrect.month;
             }
@@ -622,7 +622,7 @@
     TempusDate.fn.hours = function (value) {
         if (arguments.length !== 0) {
             if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
-                if (Number(value) >= tempus.constants().MIN_HOURS && Number(value) <= tempus.constants().MAX_HOUR) {
+                if (Number(value) >= tempus.constants().MIN_HOURS && Number(value) <= tempus.constants().MAX_HOURS) {
                     this._date.setHours(Number(value));
                     this._incorrect.hours = false;
                 } else {
@@ -1121,17 +1121,17 @@
      *
      *     @example
      *     // returns 1384732800
-     *     tempus([2013, 11, 18]).UTC();
+     *     tempus([2013, 11, 18]).utc();
      *
      *     // returns TempusDate with date '2013-11-18'
-     *     tempus().UTC(1384732800);
+     *     tempus().utc(1384732800);
      *
      * @param {number} value Value for set or no value for get.
      * @returns {TempusDate|number} TempusDate or numeric timestamp.
      */
     TempusDate.fn.utc = function (value) {
         if (arguments.length !== 0) {
-            this.date(new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000)));
+            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000));
             return this;
         } else {
             if (tempus.options('useMilliseconds')) {
@@ -1208,10 +1208,10 @@
     TempusDate.fn.get = function (type) {
         switch (type) {
             case 'Date':
-                return new Date(this.year(), this.month() - (tempus.options('monthFromZero') ? 1 : 0), this.day(), this.hours(), this.minutes(),
+                return new Date(this.year(), this.month(), this.day(), this.hours(), this.minutes(),
                     this.seconds(), this.milliseconds());
             case 'DateUTC':
-                return new Date(Date.UTC(this.year(), this.month() - (tempus.options('monthFromZero') ? 1 : 0), this.day(), this.hours(), this.minutes(),
+                return new Date(Date.UTC(this.year(), this.month(), this.day(), this.hours(), this.minutes(),
                     this.seconds(), this.milliseconds()));
             default:
                 return {
@@ -1223,7 +1223,7 @@
                     minutes: this.minutes(),
                     seconds: this.seconds(),
                     milliseconds: this.milliseconds(),
-                    UTC: this.UTC(),
+                    utc: this.utc(),
                     dayOfWeek: this.dayOfWeek(),
                     dayOfWeekShort: this.dayOfWeek('short'),
                     dayOfWeekLong: this.dayOfWeek('long'),
@@ -1491,7 +1491,7 @@
             MIN_DAY_OF_WEEK: 0,
             MAX_DAY_OF_WEEK: 6,
             MIN_HOURS: 0,
-            MAX_HOUR: 23,
+            MAX_HOURS: 23,
             MIN_MINUTES: 0,
             MAX_MINUTES: 59,
             MIN_SECONDS: 0,
