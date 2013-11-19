@@ -726,24 +726,8 @@
 
 
 
-//        this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
-//            registeredFormats[value] = {
-//                format: formatFunc,
-//                parse: parseFunc,
-//                parseLit: parseLit
-//            }
-//        };
 
-        /**
-         * Unregistering a format.
-         * @param value {string} Identify
-         * @example
-         * // unregistering a format
-         * tempus.unregisterFormat('%d');
-         * // test it
-         * // returns "%d.01.2013"
-         * tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
-         */
+
 //        this.unregisterFormat = function(value) {
 //            delete registeredFormats[value];
 //        };

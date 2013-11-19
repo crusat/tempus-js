@@ -133,9 +133,7 @@
 
 
 
-    TempusDate.fn.unregisterFormat = function(value) {
-        delete registeredFormats[value];
-    };
+
 
     TempusDate.fn.validate = function() {
         return (this._incorrect.year === false && this._incorrect.month === false && this._incorrect.day === false &&
