@@ -1,8 +1,8 @@
 /**
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.0
- * @url https://github.com/crusat/tempus-js
- * @description Library with date/time methods.
+ * /@version 0.2.0
+ * /@url https://github.com/crusat/tempus-js
+ * Library with date/time methods.
  */
 (function(window, undefined) {
     var _tempus = window.tempus,
@@ -1258,6 +1258,8 @@
                 if (registeredFormats[directive] !== undefined) {
                     result += registeredFormats[directive].format(this);
                     i++;
+                } else {
+                    result += '%';
                 }
             } else {
                 result += format.charAt(i);
@@ -1814,7 +1816,7 @@
      *     // no returns
      *     tempus.registerFormat('%q',
      *         function(date) {
-     *             return date.month;
+     *             return date.month();
      *         },
      *         function(value) {
      *             var v = Number(value);

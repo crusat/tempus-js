@@ -420,12 +420,27 @@
         equal(tempus([2013, 11, 5]).format('%Y%m%d'), '20131105', 'Test');
     });
 
-    test('Tests registerFormat()', function() {
+    test('Tests registerFormat() and unregisterFormat()', function() {
+        tempus.registerFormat('%q',
+            function(date) {
+                return date.month();
+            },
+            function(value) {
+                var v = Number(value);
+                return {month: (isNaN(v) ? undefined : v) };
+            },
+            1,
+            2,
+            'number'
+        );
 
-    });
+        equal(tempus({year: 2013, month: 1, day: 1}).format('%d.%q.%Y'), "01.1.2013", 'Test');
+        equal(tempus('10.2.2013', '%d.%q.%Y').month(), 2, 'Test');
 
-    test('Tests unregisterFormat()', function() {
+        tempus.unregisterFormat('%q');
 
+        equal(tempus({year: 2013, month: 1, day: 1}).format('%d.%q.%Y'), "01.%q.2013", 'Test');
+        equal(tempus('10.2.2013', '%d.%q.%Y').month(), -1, 'Test');
     });
 
     // *************************************************
@@ -435,15 +450,15 @@
     // *************************************************
 
     test('Tests constructor of TempusDate', function() {
-        equal(Math.floor(tempus().get('Date').valueOf()/1000), Math.floor(new Date().valueOf()/1000),
+        equal(Math.floor(tempus().utc()), Math.floor(new Date().valueOf()/1000),
             'This test may be not completed and it be right, because here checking two NOW dates');
-        equal(tempus({year: 2013, month: 1, day: 15}).get('Date').valueOf(), new Date(2013, 0, 15).valueOf(),
+        equal(tempus({year: 2013, month: 1, day: 15}).utc()*1000, new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
-        equal(tempus([2000, 6, 1, 12, 1, 15]).get('Date').valueOf(), new Date(2000, 5, 1, 12, 1, 15).valueOf(),
+        equal(tempus([2000, 6, 1, 12, 1, 15]).utc()*1000, new Date(2000, 5, 1, 12, 1, 15).valueOf(),
             'Checking constructor with array value');
-        equal(tempus('2001-05-10 05:30:00').get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+        equal(tempus('2001-05-10 05:30:00').utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
             'Checking constructor with string value');
-        equal(tempus(989454600).get('Date').valueOf(), new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+        equal(tempus(989454600).utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
             'Checking constructor with numeric value');
     });
 
