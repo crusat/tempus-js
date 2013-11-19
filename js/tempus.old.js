@@ -167,99 +167,6 @@
             return d;
         };
 
-        /**
-         * Returns a current date (in your time zone) as object or formatted string.
-         * @param format {string|undefined} If format is undefined, returns is object. If not, formatted string - see {@link format}.
-         * @returns {object|string} Tempus {@link date} object or formatted string.
-         * @example
-         * // returns {day: 21, dayOfWeek: 1, hours: 15, minutes: 10, month: 10, seconds: 3, timestamp: 1382353803, year: 2013};
-         * tempus.now();
-         * @example
-         * // returns '21.10.2013'
-         * tempus.now('%d.%m.%Y');
-         */
-//        this.now = function (format) {
-//            var currentDate = new TempusDate(undefined, timezoneOffset).getDate();
-//            return format === undefined ? currentDate : this.format(currentDate, format);
-//        };
-
-        /**
-         * If year is leap returns true.
-         * @param year {number|undefined} A year for checking. If undefined - checking current year.
-         * @returns {boolean} Results, leap year or not.
-         * @example
-         * // In 2013 returns false.
-         * tempus.isLeapYear();
-         * @example
-         * // returns true
-         * tempus.isLeapYear(2004);
-         */
-//        this.isLeapYear = function (year) {
-//            year = year !== undefined ? Number(year) : this.now().year;
-//            if (year % 4 == 0) {
-//                if (year % 100 == 0) {
-//                    return year % 400 == 0;
-//                } else return true;
-//            }
-//            return false;
-//        };
-
-
-
-        this.getMonthNames = function (longNames) {
-            if (longNames === true) {
-                return locales[locale]["monthLongNames"];
-            } else {
-                return locales[locale]["monthShortNames"];
-            }
-        };
-
-        /**
-         * Returns array of day names. If longNames is undefined, short names was returned.
-         * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {Array} Array of day names.
-         * @example
-         * // returns ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-         * tempus.getDayNames();
-         * @example
-         * // returns ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-         * tempus.getDayNames(true);
-         * @example
-         * // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
-         * tempus.setLocale('ru_RU');
-         * tempus.getDayNames();
-         */
-//        this.getDayNames = function (longNames) {
-//            if (longNames === true) {
-//                return locales[locale]["daysLongNames"];
-//            } else {
-//                return locales[locale]["daysShortNames"];
-//            }
-//        };
-
-        /**
-         * Get day of week by Tomohiko Sakamoto's algorithm, 1993.
-         * @param date {object} Tempus date object (see {@link date}).
-         * @returns {number} Index day of week (0..6), 0 is Sunday.
-         * @example
-         * // returns 6
-         * tempus.getDayOfWeek({year: 2013, month: 10, day: 5});
-         * @example
-         * // returns 0
-         * tempus.getDayOfWeek({year: 2013, month: 10, day: 6});
-         * @example
-         * // returns 2
-         * tempus.getDayOfWeek(tempus.now());
-         */
-//        this.getDayOfWeek = function (date) {
-//            date = that.date(date);
-//            var year = date.year;
-//            var month = date.month;
-//            var day = date.day;
-//            var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-//            year -= month < 3;
-//            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
-//        };
 
 //        var calcDate = function(date, value, type, modif) {
 //            if (typeof date !== 'object') {
@@ -818,30 +725,7 @@
          */
 
 
-        /**
-         * Registering a new format.
-         * @param value {string} Identify
-         * @param formatFunc {function} Format function.
-         * @param parseFunc {function} Parse function.
-         * @param parseLit {string} Parse regexp.
-         * @example
-         * // no returns
-         * tempus.registerFormat('%q',
-         *     function(date) {
-         *         return date.month;
-         *     },
-         *     function(value) {
-         *         var v = Number(value);
-         *         return {month: (isNaN(v) ? undefined : v) };
-         *     },
-         *     '\\d{1,2}'
-         * );
-         * // test it
-         * // returns "01.1.2013";
-         * tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y');
-         * // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
-         * tempus.parse('10.2.2013', '%d.%q.%Y');
-         */
+
 //        this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
 //            registeredFormats[value] = {
 //                format: formatFunc,

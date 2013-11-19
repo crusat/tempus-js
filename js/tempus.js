@@ -1571,6 +1571,7 @@
      *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
      *
      * @param {string} value Language's code.
+     * @static
      * @returns {undefined|string} Language's code or undefined for setter.
      */
     tempus.lang = function (value) {
@@ -1594,13 +1595,55 @@
      *
      * @param {string} option
      * @param {*} value
-     * @returns {undefined}
+     * @static
      */
     tempus.setOption = function(option, value) {
         if (options.hasOwnProperty(option)) {
             options[option] = value;
         }
-        return undefined;
+    };
+
+    /**
+     * Registering a new format.
+     *
+     *     @example
+     *     // no returns
+     *     tempus.registerFormat('%q',
+     *         function(date) {
+     *             return date.month;
+     *         },
+     *         function(value) {
+     *             var v = Number(value);
+     *             return {month: (isNaN(v) ? undefined : v) };
+     *         },
+     *         1,
+     *         2,
+     *         'number'
+     *     );
+     *
+     *     // test it
+     *     // returns "01.1.2013";
+     *     tempus({year: 2013, month: 1, day: 1}).format('%d.%q.%Y');
+     *
+     *     // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
+     *     tempus('10.2.2013', '%d.%q.%Y').get();
+     *
+     * @param {string} value Directive
+     * @param {function} formatFunc Format function.
+     * @param {function} parseFunc Parse function.
+     * @param {number} minLength Min length of value.
+     * @param {number} maxLength Max length of value.
+     * @param {string} type Type of value, can be 'number', 'word' (only letters) or 'string' (any symbols)
+     * @static
+     */
+    tempus.registerFormat = function(value, formatFunc, parseFunc, minLength, maxLength, type) {
+        registeredFormats[value] = {
+            format: formatFunc,
+            parse: parseFunc,
+            minLength: minLength,
+            maxLength: maxLength,
+            type: type
+        }
     };
 
     // *************************************************

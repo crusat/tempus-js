@@ -131,15 +131,7 @@
 
 
 
-    TempusDate.fn.registerFormat = function(value, formatFunc, parseFunc, minLength, maxLength, type) {
-        registeredFormats[value] = {
-            format: formatFunc,
-            parse: parseFunc,
-            minLength: minLength,
-            maxLength: maxLength,
-            type: type
-        }
-    };
+
 
     TempusDate.fn.unregisterFormat = function(value) {
         delete registeredFormats[value];
