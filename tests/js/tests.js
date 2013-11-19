@@ -254,7 +254,7 @@
             'Checking constructor with array value');
         equal(tempus().set('2001-05-10 05:30:00').utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
             'Checking constructor with string value');
-        equal(tempus().set(989454600).utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+        equal(tempus().set(989454600).utc(), 989454600,
             'Checking constructor with numeric value');
     });
 
@@ -458,7 +458,7 @@
             'Checking constructor with array value');
         equal(tempus('2001-05-10 05:30:00').utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
             'Checking constructor with string value');
-        equal(tempus(989454600).utc()*1000, new Date(2001, 4, 10, 5, 30, 0).valueOf(),
+        equal(tempus(989454600).utc(), 989454600,
             'Checking constructor with numeric value');
     });
 
