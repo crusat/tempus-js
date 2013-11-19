@@ -1515,7 +1515,7 @@
             MAX_SECONDS: 59,
             MIN_MILLISECONDS: 0,
             MAX_MILLISECONDS: 999
-        }
+        };
     };
 
     /**
@@ -1557,14 +1557,12 @@
     tempus.options = function (option, value) {
         if (option === undefined) {
             return options;
-        } else {
-            if (options.hasOwnProperty(option)) {
-                if (value === undefined) {
-                    return options[option];
-                } else {
-                    options[option] = value;
-                }
+        }
+        if (options.hasOwnProperty(option)) {
+            if (value === undefined) {
+                return options[option];
             }
+            options[option] = value;
         }
         return undefined;
     };
@@ -1642,7 +1640,9 @@
         var tsFrom = options.dateFrom,
             tsTo = options.dateTo,
             period,
-            result;
+            result,
+            prevValue,
+            addTo;
         // timestamp "from"
         if (typeof options.dateFrom !== 'number') {
             if (options.dateFrom instanceof TempusDate) {
@@ -1668,7 +1668,7 @@
                 hours: 0,
                 minutes: 0,
                 seconds: options.period
-            }
+            };
         } else if (typeof options.period === 'string') {
             period = {
                 year: options.period === 'year' ? 1 : 0,
@@ -1677,7 +1677,7 @@
                 hours: options.period === 'hours' ? 1 : 0,
                 minutes: options.period === 'minutes' ? 1 : 0,
                 seconds: options.period === 'seconds' ? 1 : 0
-            }
+            };
         } else if (typeof options.period === 'object') {
             period = {
                 year: options.period.year !== undefined ? options.period.year : 0,
@@ -1686,7 +1686,7 @@
                 hours: options.period.hours !== undefined ? options.period.hours : 0,
                 minutes: options.period.minutes !== undefined ? options.period.minutes : 0,
                 seconds: options.period.seconds !== undefined ? options.period.seconds : 0
-            }
+            };
         }
         // result
         if (options.groupBy === undefined) {
@@ -1694,9 +1694,9 @@
         } else {
             result = [];
             result.push([]);
-            var prevValue = tempus(tsFrom).get()[options.groupBy];
+            prevValue = tempus(tsFrom).get()[options.groupBy];
         }
-        var addTo = function (array, value) {
+        addTo = function (array, value) {
             if (options.asObject === true) {
                 if (options.format !== undefined) {
                     array[tempus(value).format(options.format)] = {};
@@ -1713,7 +1713,7 @@
             return array;
         };
 
-        for (; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).utc()) {
+        for (tsFrom; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).utc()) {
             if (options.groupBy === undefined) {
                 addTo(result, tsFrom);
             } else {
@@ -1751,9 +1751,9 @@
     tempus.monthNames = function (type) {
         switch (type) {
         case 'long':
-            return translations[lang]["monthLongNames"];
+            return translations[lang].monthLongNames;
         default:
-            return translations[lang]["monthShortNames"];
+            return translations[lang].monthShortNames;
         }
     };
 
@@ -1778,9 +1778,9 @@
     tempus.dayNames = function (type) {
         switch (type) {
         case 'long':
-            return translations[lang]["dayLongNames"];
+            return translations[lang].dayLongNames;
         default:
-            return translations[lang]["dayShortNames"];
+            return translations[lang].dayShortNames;
         }
     };
 
@@ -1864,7 +1864,7 @@
             minLength: minLength,
             maxLength: maxLength,
             type: type
-        }
+        };
     };
 
     /**
