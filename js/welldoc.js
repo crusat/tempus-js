@@ -1506,15 +1506,15 @@
      *
      *     @example
      *     // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-     *     tempus.getMonthNames();
+     *     tempus.monthNames();
      *
      *     // returns ["January","February","March","April","May","June",
      *     //     "July","August","September","October","November","December"];
-     *     tempus.getMonthNames(true);
+     *     tempus.monthNames(true);
      *
      *     // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
      *     tempus.setLang('ru');
-     *     tempus.getMonthNames();
+     *     tempus.monthNames();
      *
      * @static
      * @param {boolean} type If true, long names was returning, else - short names.
@@ -1526,6 +1526,33 @@
                 return translations[lang]["monthLongNames"];
             default:
                 return translations[lang]["monthShortNames"];
+        }
+    };
+
+    /**
+     * Returns array of day names. If type is undefined, short names was returned.
+     *
+     *     @example
+     *     // returns ??
+     *     tempus.dayNames();
+     *
+     *     // returns ??
+     *     tempus.dayNames(true);
+     *
+     *     // returns ??
+     *     tempus.setLang('ru');
+     *     tempus.dayNames();
+     *
+     * @static
+     * @param {boolean} type If true, long names was returning, else - short names.
+     * @returns {Array} Array of day names.
+     */
+    tempus.dayNames = function (type) {
+        switch (type) {
+            case 'long':
+                return translations[lang]["dayLongNames"];
+            default:
+                return translations[lang]["dayShortNames"];
         }
     };
 

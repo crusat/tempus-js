@@ -393,17 +393,17 @@
     // *************************************************
 
     test('Tests getMonthNames()', function () {
-        deepEqual(tempus.getMonthNames(),
+        deepEqual(tempus.monthNames(),
             ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
             'Test');
-        deepEqual(tempus.getMonthNames(true),
+        deepEqual(tempus.monthNames(true),
             ["January","February","March","April","May","June",
              "July","August","September","October","November","December"],
             'Test');
         deepEqual(function() {
                 var names;
                 tempus.setLang('ru');
-                names = tempus.getMonthNames();
+                names = tempus.monthNames();
                 tempus.setLang();
                 return names;
             },

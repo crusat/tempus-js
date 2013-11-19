@@ -18,14 +18,7 @@
 
 
 
-    TempusDate.fn.dayNames = function (type) {
-        switch (type) {
-            case 'long':
-                return translations[lang]["dayLongNames"];
-            default:
-                return translations[lang]["dayShortNames"];
-        }
-    };
+
     TempusDate.fn.between = function (dateTo, type) {
         var from = this.timestamp();
         var to = dateTo.timestamp();
