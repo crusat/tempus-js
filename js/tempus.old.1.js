@@ -128,36 +128,8 @@
     };
 
 
-    /**
-     * All work with timestamps and timeouts will be in milliseconds.
-     * @param value {boolean} False to disabling it.
-     * @returns {Tempus}
-     * @example
-     * // returns {"year":2013,"month":11,"day":14,"hours":12,"minutes":38,"seconds":54,"dayOfWeek":4,
-     * //    "dayOfWeekShort":"Thu","dayOfWeekLong":"Thursday","timestamp":1384418334445,"UTC":1384432734445,
-     * //    "milliseconds":445}
-     * TP.iWantUseMilliseconds().now().get();
-     */
-    TempusDate.fn.iWantUseMilliseconds = function (value) {
-        useMilliseconds = value !== false;
-        return this;
-    };
-    /**
-     * Month started from zero. By default is False.
-     * @param value {boolean} False to disabling it.
-     * @returns {Tempus}
-     * @example
-     * TP.iLoveMonthFromZero();
-     * // returns "14 December 2013"
-     * TP.set({year: 2013, month: 11, day: 14}).format('%d %B %Y');
-     * TP.iLoveMonthFromZero(false);
-     * // returns "14 November 2013"
-     * TP.set({year: 2013, month: 11, day: 14}).format('%d %B %Y');
-     */
-    TempusDate.fn.iLoveMonthFromZero = function (value) {
-        monthFromZero = value !== false;
-        return this;
-    };
+
+
 
     TempusDate.fn.registerFormat = function(value, formatFunc, parseFunc, minLength, maxLength, type) {
         registeredFormats[value] = {

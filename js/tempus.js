@@ -208,8 +208,10 @@
                 type: "string"
             }
         },
-        useMilliseconds = false,
-        monthFromZero = false;
+        options = {
+            useMilliseconds: false,
+            monthFromZero: false
+        };
 
     var formattingWithNulls = function (val, symb_count) {
         var v = val.toString();
@@ -1335,9 +1337,8 @@
      */
     tempus.options = function () {
         return {
-            useMilliseconds: useMilliseconds,
-            monthFromZero: monthFromZero,
-            lang: lang
+            useMilliseconds: options.useMilliseconds,
+            monthFromZero: options.monthFromZero
         }
     };
 
@@ -1577,6 +1578,27 @@
             lang = value;
         } else {
             return lang;
+        }
+        return undefined;
+    };
+
+    /**
+     * Set some option. List of option and defaults you can see here {@link #options}
+     *
+     *     @example
+     *     // Timeouts and timestamps in milliseconds
+     *     tempus.setOption('useMilliseconds', true);
+     *
+     *     // Month starts from 0.
+     *     tempus.setOption('monthFromZero', true);
+     *
+     * @param {string} option
+     * @param {*} value
+     * @returns {undefined}
+     */
+    tempus.setOption = function(option, value) {
+        if (options.hasOwnProperty(option)) {
+            options[option] = value;
         }
         return undefined;
     };
