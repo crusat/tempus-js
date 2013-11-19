@@ -1202,7 +1202,11 @@
     TempusDate.fn.get = function (type) {
         switch (type) {
             case 'Date':
-                return this._date;
+                return new Date(this.year(), this.month() - (tempus.options('monthFromZero') ? 1 : 0), this.day(), this.hours(), this.minutes(),
+                    this.seconds(), this.milliseconds());
+            case 'DateUTC':
+                return new Date(Date.UTC(this.year(), this.month() - (tempus.options('monthFromZero') ? 1 : 0), this.day(), this.hours(), this.minutes(),
+                    this.seconds(), this.milliseconds()));
             default:
                 return {
                     year: this.year(),
