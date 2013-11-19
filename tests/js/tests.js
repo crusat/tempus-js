@@ -199,11 +199,11 @@
 
     test('Test instances', function() {
         var resultTest1 = function() {
-            var a = tempus({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
+            var a = tempus({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
             return a.format('%Y-%m-%d %H:%M:%S');
         };
         var resultTest2 = function() {
-            var a = tempus({year: 2013, month: 5, day: 5, hourss: 12, minutes: 41, seconds: 36});
+            var a = tempus({year: 2013, month: 5, day: 5, hours: 12, minutes: 41, seconds: 36});
             var b = tempus();
             return a.format('%Y-%m-%d %H:%M:%S');
         };
@@ -213,9 +213,9 @@
     });
 
     test('Tests validate()', function () {
-        equal(tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus({day:1,month:1,year:2013,hourss:0,minutes:0,seconds:0}).validate(), true, 'validate');
+        equal(tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate(), false, 'validate');
+        equal(tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate(), false, 'validate');
+        equal(tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate(), true, 'validate');
         equal(tempus('2013-03-12', '%Y-%m-%d').validate(), true, 'validate');
         equal(tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate(), true, 'validate');
         equal(tempus('32.08.2013', '%d.%m.%Y').validate(), false, 'validate');
@@ -223,7 +223,7 @@
         equal(tempus('29.02.2012', '%d.%m.%Y').validate(), true, 'validate');
         equal(tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate(), false, 'validate');
         equal(tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate(), true, 'validate');
-        equal(typeof tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), 'boolean', 'Type is boolean');
+        equal(typeof tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate(), 'boolean', 'Type is boolean');
     });
 
     test('Tests errors()', function () {
@@ -342,7 +342,7 @@
         for (hours = -100; hours < 0; hours++) {
             equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hours);
         }
-        for (hourss = 24; hours <= 100; hours++) {
+        for (hours = 24; hours <= 100; hours++) {
             equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hours);
         }
         equal(tempus().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
