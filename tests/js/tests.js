@@ -157,8 +157,9 @@
     });
 
     test('Test utc() method', function () {
-        equal(tempus([2013, 11, 18]).utc(), 1384732800, 'Test');
+        equal(tempus([2013, 11, 18]).utc(), 1384718400, 'Test');
         equal(tempus().utc(1384732800).utc(), 1384732800, 'Test');
+        equal(tempus(1384732800).utc(), 1384732800, 'Test');
     });
 
     test('Test dayOfWeek() method', function () {

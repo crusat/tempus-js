@@ -907,7 +907,7 @@
             return this;
         }
         if (typeof newDate === 'number') {
-            this._date = new Date(newDate * (useMilliseconds ? 1 : 1000));
+            this._date = new Date(newDate * (tempus.options('useMilliseconds') ? 1 : 1000));
             return this;
         }
         if (typeof newDate === 'object') {
@@ -1105,7 +1105,7 @@
      */
     TempusDate.fn.timestamp = function (value) {
         if (arguments.length !== 0) {
-            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000) - this._date.getTimezoneOffset()*60000);
+            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000) + this._date.getTimezoneOffset()*60000);
             return this;
         } else {
             if (tempus.options('useMilliseconds')) {
