@@ -215,7 +215,7 @@
 
     test('Tests validate()', function () {
         equal(tempus({day:32,month:12,year:2013,hourss:0,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus.({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}).validate(), false, 'validate');
+        equal(tempus({day:20,month:3,year:2013,hourss:-1,minutes:0,seconds:0}).validate(), false, 'validate');
         equal(tempus({day:1,month:1,year:2013,hourss:0,minutes:0,seconds:0}).validate(), true, 'validate');
         equal(tempus('2013-03-12', '%Y-%m-%d').validate(), true, 'validate');
         equal(tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate(), true, 'validate');

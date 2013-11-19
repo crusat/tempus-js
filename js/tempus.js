@@ -1,3 +1,9 @@
+/**
+ * @author Aleksey Kuznetsov, me@akuzn.com
+ * @version 0.2.0
+ * @url https://github.com/crusat/tempus-js
+ * @description Library with date/time methods.
+ */
 (function(window, undefined) {
     var _tempus = window.tempus,
         _TempusDate = window.TempusDate,
