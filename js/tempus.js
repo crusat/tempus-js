@@ -1158,9 +1158,9 @@
     TempusDate.fn.dayOfWeek = function (type) {
         switch (type) {
             case 'long':
-                return translations[lang]["daysLongNames"][this._date.getDay()];
+                return translations[lang]["dayLongNames"][this._date.getDay()];
             case 'short':
-                return translations[lang]["daysShortNames"][this._date.getDay()];
+                return translations[lang]["dayShortNames"][this._date.getDay()];
             default:
                 return this._date.getDay();
         }
