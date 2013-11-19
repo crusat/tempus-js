@@ -1,1380 +1,1929 @@
-/**
- * @author Aleksey Kuznetsov me@akuzn.com
- * @version 0.1.31
+/*
+ * @author Aleksey Kuznetsov, me@akuzn.com
+ * @version 0.2.0
  * @url https://github.com/crusat/tempus-js
- * @description Library with date/time methods
+ * @description Library with date/time methods.
  */
-(function () {
-    /**
-     * Tempus Date Object. Base object, date objects convert to it.
-     * @param date {object|number|undefined} Date as {year: number, month: number, day: number,
-     *     hours: number, minutes: number, seconds: number}, numeric timestamp or undefined for current time.
-     *     Always must be a local date/time.
-     *     Timestamp is ALWAYS in UTC.
-     * @class TempusDate
-     */
-    window.TempusDate = function(date) {
-        // obj
-        var innerDate; // It's local date
-        if (date === undefined) {
-            innerDate = new Date((new Date()).getTime()*1000);
-        } else if (typeof date === 'number') {
-            innerDate = new Date(date*1000);
-        } else if (typeof date === 'object') {
-            innerDate = new Date(
-                date.year !== undefined ? date.year : 1970,
-                date.month !== undefined ? date.month-1 : 0,
-                date.day !== undefined ? date.day : 1,
-                date.hours !== undefined ? date.hours : 0,
-                date.minutes !== undefined ? date.minutes : 0,
-                date.seconds !== undefined ? date.seconds : 0
-            );
-        }
-        // timezone
-        var now = new Date().toString();
-        var timezoneId = now.indexOf('(') > -1 ? now.match(/\([^\)]+\)/)[0].match(/[A-Z]/g).join('') : now.match(/[A-Z]{3,4}/)[0];
-        if (timezoneId == "GMT" && /(GMT\W*\d{4})/.test(now)) {
-            timezoneId = RegExp.$1;
-        }
-        var timezoneOffset, timezoneOffsetFix;
-        if (timezoneId === 'MSK') { // No time conversion
-            timezoneOffset = -14400; // -240 * 60
-            if (innerDate.getTimezoneOffset() === -300) {
-                timezoneOffsetFix = 3600;
-            } else {
-                timezoneOffsetFix = 0;
-            }
-        } else {
-            timezoneOffset = Math.floor(innerDate.getTimezoneOffset()*60);
-            timezoneOffsetFix = 0;
-        }
-        // current date
-        if (date === undefined) {
-            innerDate = new Date((new Date()).getTime() - (timezoneOffset + timezoneOffsetFix)*1000);
-        }
-
-        this.getDateOriginal = function() {
-            return {
-                year: date.year !== undefined ? date.year : 1970,
-                month: date.month !== undefined ? date.month : 1,
-                day: date.day !== undefined ? date.day : 1,
-                hours: date.hours !== undefined ? date.hours : 0,
-                minutes: date.minutes !== undefined ? date.minutes : 0,
-                seconds: date.seconds !== undefined ? date.seconds : 0
-            };
-        };
-        /**
-         * Returns date at local time.
-         * @memberof TempusDate
-         * @returns {{year: number, month: number, day: (number|*), hours: number, minutes: number, seconds: number, timestamp: number, timezoneOffset: number, dayOfWeek: number}}
-         */
-        this.getDate = function() {
-            return {
-                year: innerDate.getFullYear(),
-                month: innerDate.getMonth()+1,
-                day: innerDate.getDate(),
-                hours: innerDate.getHours(),
-                minutes: innerDate.getMinutes(),
-                seconds: innerDate.getSeconds(),
-                timestamp: Math.floor(innerDate.getTime()/1000) + timezoneOffsetFix,
-                timezoneOffset: timezoneOffset,
-                dayOfWeek: innerDate.getDay()
-            };
-        };
-        /**
-         * Returns date at UTC.
-         * @memberof TempusDate
-         * @returns {{year: number, month: number, day: number, hours: number, minutes: number, seconds: number, timestamp: number, timezoneOffset: number, dayOfWeek: number}}
-         */
-        this.getDateUTC = function() {
-            return {
-                year: innerDate.getUTCFullYear(),
-                month: innerDate.getUTCMonth()+1,
-                day: innerDate.getUTCDate(),
-                hours: innerDate.getUTCHours(),
-                minutes: innerDate.getUTCMinutes(),
-                seconds: innerDate.getUTCSeconds(),
-                timestamp: Number(Math.floor(innerDate.getTime()/1000) + timezoneOffset + timezoneOffsetFix),
-                timezoneOffset: timezoneOffset,
-                dayOfWeek: innerDate.getUTCDay()
-            };
-        }
-    };
-    /**
-     * TempusJS constructor.
-     * @constructor
-     * @namespace
-     */
-    var TempusJS = function () {
-        // private
-        var that = this;
-        var version = '0.1.31';
-        var locale = 'en_US';
-        var weekStartsFromMonday = false;
-        var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-        var timezoneOffset = new TempusDate().getDate().timezoneOffset; // seconds
-        var locales = {
-            "en_US": {
+(function(window, undefined) {
+    var _tempus = window.tempus,
+        _TempusDate = window.TempusDate,
+        tempus,
+        version = '0.2.0',
+        lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
+        translations = {
+            "en": {
                 "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
                     "September", "October", "November", "December"],
-                "daysShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                "daysLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                "dayShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                "dayLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
             },
-            "ru_RU": {
+            "ru": {
                 "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
                 "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
                     "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-                "daysShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                "daysLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+                "dayShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+                "dayLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
             }
-        };
-        var registeredFormats = {
+        },
+        registeredFormats = {
             '%d': {
-                format: function(date) {
-                    return formattingWithNulls(date.day, 2);
+                format: function (date) {
+                    return formattingWithNulls(date.day() || tempus.constants().MIN_DAY, 2);
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     return {day: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%m': {
-                format: function(date) {
-                    return formattingWithNulls(date.month, 2);
+                format: function (date) {
+                    return formattingWithNulls(date.month() || tempus.constants().MIN_MONTH, 2);
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     return {month: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%Y': {
-                format: function(date) {
-                    return formattingWithNulls(date.year, 4);
+                format: function (date) {
+                    return formattingWithNulls(date.year() || tempus.constants().MIN_YEAR, 4);
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     return {year: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{4}'
+                minLength: 4,
+                maxLength: 4,
+                type: "number"
             },
             '%w': {
-                format: function(date) {
-                    return that.getDayOfWeek(date);
+                format: function (date) {
+                    return date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK;
                 },
-                parse: function(value) {
+                parse: function (value) {
                     // impossible
                     return {};
                 },
-                parseLit: '\\d{1}'
+                minLength: 1,
+                maxLength: 1,
+                type: "number"
             },
             '%a': {
-                format: function(date) {
-                    return locales[locale]["daysShortNames"][that.getDayOfWeek(date)];
+                format: function (date) {
+                    return translations[lang]["daysShortNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
-                parse: function(value) {
+                parse: function (value) {
                     // impossible
                     return {};
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%A': {
-                format: function(date) {
-                    return locales[locale]["daysLongNames"][that.getDayOfWeek(date)];
+                format: function (date) {
+                    return translations[lang]["daysLongNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
-                parse: function(value) {
+                parse: function (value) {
                     // impossible
                     return {};
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%b': {
-                format: function(date) {
-                    return locales[locale]["monthShortNames"][date.month-1];
+                format: function (date) {
+                    return translations[lang]["monthShortNames"][(date.month() || tempus.constants().MIN_MONTH)];
                 },
-                parse: function(value) {
-                    var month = that.getMonthNames().indexOf(value)+1;
+                parse: function (value) {
+                    var month = that.getMonthNames().indexOf(value) + 1;
                     return {month: month !== -1 ? month : undefined}
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%B': {
-                format: function(date) {
-                    return locales[locale]["monthLongNames"][date.month-1];
+                format: function (date) {
+                    return translations[lang]["monthLongNames"][(date.month() || tempus.constants().MIN_MONTH)];
                 },
-                parse: function(value) {
-                    var month = that.getMonthNames(true).indexOf(value)+1;
+                parse: function (value) {
+                    var month = that.getMonthNames(true).indexOf(value) + 1;
                     return {month: month !== -1 ? month : undefined}
                 },
-                parseLit: '\\w+'
+                minLength: 1,
+                maxLength: 999,
+                type: "word"
             },
             '%H': {
-                format: function(date) {
-                    return formattingWithNulls(date.hours, 2);
+                format: function (date) {
+                    return formattingWithNulls(date.hours() || tempus.constants().MIN_HOURS, 2);
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     return {hours: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%M': {
-                format: function(date) {
-                    return formattingWithNulls(date.minutes, 2);
+                format: function (date) {
+                    return formattingWithNulls(date.minutes() || tempus.constants().MIN_MINUTES, 2);
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     return {minutes: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%S': {
-                format: function(date) {
-                    return formattingWithNulls(date.seconds, 2);
+                format: function (date) {
+                    return formattingWithNulls(date.seconds() || tempus.constants().MIN_SECONDS, 2);
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
                     return {seconds: (isNaN(v) ? undefined : v) };
                 },
-                parseLit: '\\d{2}'
+                minLength: 2,
+                maxLength: 2,
+                type: "number"
             },
             '%s': {
-                format: function(date) {
-                    return that.time(date);
+                format: function (date) {
+                    return date.timestamp();
                 },
-                parse: function(value) {
+                parse: function (value) {
                     var v = Number(value);
-                    var date = new TempusDate(Number(v));
+                    var date = new TempusDate(Number(v), timezoneOffset);
                     var obj = that.date(v);
                     return isNaN(v) ? {} : that.incDate(obj, date.getTimezoneOffset(), 'minutes');
                 },
-                parseLit: '\\d{1,10}'
+                minLength: 1,
+                maxLength: 20,
+                type: "number"
             },
             '%F': {
-                format: function(date) {
-                    return formattingWithNulls(date.year, 4) + '-' + formattingWithNulls(date.month, 2) + '-' + formattingWithNulls(date.day, 2);
+                format: function (date) {
+                    return formattingWithNulls(date.year() || tempus.constants().MIN_YEAR, 4) + '-' +
+                        formattingWithNulls(date.month() || tempus.constants().MIN_MONTH, 2) + '-' +
+                        formattingWithNulls(date.day() || tempus.constants().MIN_DAY, 2);
                 },
-                parse: function(value) {
-                    var year = Number(value.slice(0,4));
-                    var month = Number(value.slice(6,7));
-                    var day = Number(value.slice(9,10));
+                parse: function (value) {
+                    var year = Number(value.slice(0, 4));
+                    var month = Number(value.slice(6, 7));
+                    var day = Number(value.slice(9, 10));
                     return {
                         year: year,
                         month: month,
                         day: day
                     }
                 },
-                parseLit: '\\d{4}-\\d{2}-\\d{2}'
+                minLength: 10,
+                maxLength: 10,
+                type: "string"
             },
             '%D': {
-                format: function(date) {
-                    return formattingWithNulls(date.month, 2) + '/' + formattingWithNulls(date.day, 2) + '/' + formattingWithNulls(date.year, 4)
+                format: function (date) {
+                    return formattingWithNulls(date.month() || tempus.constants().MIN_MONTH, 2) +
+                        '/' + formattingWithNulls(date.day() || tempus.constants().MIN_DAY, 2) +
+                        '/' + formattingWithNulls(date.year() || tempus.constants().MIN_YEAR, 4)
                 },
-                parse: function(value) {
-                    var month = Number(value.slice(0,2));
-                    var day = Number(value.slice(3,5));
-                    var year = Number(value.slice(6,10));
+                parse: function (value) {
+                    var month = Number(value.slice(0, 2));
+                    var day = Number(value.slice(3, 5));
+                    var year = Number(value.slice(6, 10));
                     return {
                         year: year,
                         month: month,
                         day: day
                     }
                 },
-                parseLit: '\\d{2}\/\\d{2}\/\\d{4}'
+                minLength: 10,
+                maxLength: 10,
+                type: "string"
             }
+        },
+        options = {
+            useMilliseconds: false,
+            monthFromZero: false
         };
 
-        /**
-         * Returns current timestamp (UTC) in seconds. If "date" parameter is not undefined, timestamp was received from this.
-         * If date is object, {@link date} will apply for it.
-         * @param date {object|string} Date as object (see {@link date}) or string (any formatted date, see examples)
-         * @param format {string|undefined} Date format as string (see formats doc) or undefined for autodetect format.
-         * @returns {number} UTC in seconds.
-         * @example
-         * // get current UTC
-         * // returns 1384252977
-         * tempus.time();
-         * @example
-         * // parse date and get UTC
-         * // returns 1381795200
-         * tempus.time('15.10.2013', '%d.%m.%Y');
-         * @example
-         * // returns 1381795200
-         * tempus.time('15.10.2013');
-         * @example
-         * // returns 1383609600
-         * tempus.time({year: 2013, month: 11, day: 5});
-         * @example
-         * // returns 1363046400
-         * tempus.time('2013-03-12', '%Y-%m-%d');
-         * @example
-         * // returns 1363360860
-         * tempus.time('2013-03-15 15:21', '%Y-%m-%d %H:%M');
-         */
-        this.time = function (date, format) {
-            if (date !== undefined) {
-                if (typeof date === 'string') {
-                    date = this.parse(date, format);
-                }
-                return (new TempusDate(date)).getDate().timestamp;
-            } else {
-                return (new TempusDate()).getDateUTC().timestamp;
-            }
-        };
+    var formattingWithNulls = function (val, symb_count) {
+        var v = val.toString();
+        while (v.length < symb_count) {
+            v = '0' + v;
+        }
+        return v;
+    };
 
-        /**
-         * Returns dump of tempus date object (see {@link TempusDate}) from timestamp (UTC) or received object.
-         * @param date {number|object} Date as timestamp or object.
-         * @param options {object|undefined} Options object.
-         * @param options.week {bool} Add to response number of week. Default is false.
-         * @param options.dayOfWeek {bool} Add to response day of week. Default is false.
-         * @returns {object} date - Tempus date object.
-         * @example
-         * // returns {"year":2013,"month":11,"day":5,"hours":16,"minutes":1,"seconds":53}
-         * tempus.date(1383667313);
-         * @example
-         * // returns {"year":2013,"month":11,"day":5,"hours":0,"minutes":0,"seconds":0}
-         * tempus.date(1383609600);
-         * @example
-         * // returns {"year":1970,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
-         * tempus.date({});
-         * @example
-         * // returns {"year":2013,"month":10,"day":5,"hours":0,"minutes":0,"seconds":0}
-         * tempus.date({year:2013, month:10, day:5});
-         * @example
-         * // returns {"year":2013,"month":10,"day":5,
-         * //     "hours":0,"minutes":0,"seconds":0,"week":40,"dayOfWeek":6}
-         * tempus.date({year:2013, month:10, day:5}, {week: true});
-         */
-        this.date = function(date, options) {
-            var d;
-            if ((typeof date === "number")||(typeof date === "object")) {
-                d = new TempusDate(date).getDate();
-                if (options && options.week === true) {
-                    d.week = that.getWeekNumber(d);
-                }
-            } else {
-                d = undefined;
-            }
-            return d;
-        };
-
-        /**
-         * Returns a current date (in your time zone) as object or formatted string.
-         * @param format {string|undefined} If format is undefined, returns is object. If not, formatted string - see {@link format}.
-         * @returns {object|string} Tempus {@link date} object or formatted string.
-         * @example
-         * // returns {day: 21, dayOfWeek: 1, hours: 15, minutes: 10, month: 10, seconds: 3, timestamp: 1382353803, year: 2013};
-         * tempus.now();
-         * @example
-         * // returns '21.10.2013'
-         * tempus.now('%d.%m.%Y');
-         */
-        this.now = function (format) {
-            var currentDate = new TempusDate().getDate();
-            return format === undefined ? currentDate : this.format(currentDate, format);
-        };
-
-        /**
-         * If year is leap returns true.
-         * @param year {number|undefined} A year for checking. If undefined - checking current year.
-         * @returns {boolean} Results, leap year or not.
-         * @example
-         * // In 2013 returns false.
-         * tempus.isLeapYear();
-         * @example
-         * // returns true
-         * tempus.isLeapYear(2004);
-         */
-        this.isLeapYear = function (year) {
-            year = year !== undefined ? Number(year) : this.now().year;
-            if (year % 4 == 0) {
-                if (year % 100 == 0) {
-                    return year % 400 == 0;
-                } else return true;
-            }
-            return false;
-        };
-
-        // get days count in month method
-        // from 1 to 12
-        /**
-         * Returns days count in month.
-         * @param month {number|string} If number (1..12) - month index, also you can send
-         *     string - month name as (Jan..Dec), (January..December)
-         *     or, for example, (Янв..Дек) if you change locale (see {@link setLocale}).
-         * @param year {number|undefined} Year for checking. If it is undefined - leap year is false.
-         * @returns {number|undefined} Returns days count or undefined if error occurred.
-         * @example
-         * // returns 30
-         * tempus.getDaysCountInMonth(11, 2013);
-         * @example
-         * // returns 29
-         * tempus.getDaysCountInMonth(2, 2012);
-         * @example
-         * // returns 28
-         * tempus.getDaysCountInMonth(2);
-         * @example
-         * // returns 31
-         * tempus.getDaysCountInMonth('Jan');
-         * @example
-         * // returns 30
-         * tempus.getDaysCountInMonth('September');
-         * @example
-         * // returns 31
-         * tempus.setLocale('ru_RU');
-         * tempus.getDaysCountInMonth('Март');
-         */
-        this.getDaysCountInMonth = function (month, year) {
-            var leapYear = year === undefined ? false : this.isLeapYear(year);
-            if (typeof month === 'number') {
-                if (month === 2) {
-                    return daysInMonth[month - 1] + (leapYear ? 1 : 0);
-                } else {
-                    return daysInMonth[month - 1]
-                }
-            }
-            if (typeof month === 'string') {
-                var month_int = locales[locale]["monthShortNames"].indexOf(month);
-                if (month_int === -1) {
-                    month_int = locales[locale]["monthLongNames"].indexOf(month);
-                }
-                if (month_int === -1) {
-                    return undefined;
-                }
-                month = month_int;
-                if (month === 2) {
-                    return daysInMonth[month] + (leapYear ? 1 : 0);
-                } else {
-                    return daysInMonth[month]
-                }
-            }
+    var parseBadFormat = function(date, defaults) {
+        if (defaults !== undefined) {
+            date.year(defaults.year() || defaults.year);
+            date.month(defaults.month() || defaults.month);
+            date.day(defaults.day() || defaults.day);
+            date.hours(defaults.hours() || defaults.hours);
+            date.minutes(defaults.minutes() || defaults.minutes);
+            date.seconds(defaults.seconds() || defaults.seconds);
+            date.milliseconds(defaults.milliseconds() || defaults.milliseconds);
+            return date;
+        } else {
             return undefined;
+        }
+    };
+
+    var detectTimeFormat = function(str, startFrom) {
+        var tmpChars, format = '';
+        tmpChars = str.slice(startFrom, startFrom+1);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%H';
+        }
+        tmpChars = str.charAt(startFrom+2);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+3, startFrom+4);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%M';
+        }
+        tmpChars = str.charAt(startFrom+5);
+        if (tmpChars !=='' && tmpChars === ':') {
+            format += tmpChars;
+        }
+        tmpChars = str.slice(startFrom+6, startFrom+7);
+        if (tmpChars !=='' && !isNaN(Number(tmpChars))) {
+            format += '%S';
+        }
+        return format;
+    };
+
+    var detectDateFormat = function(str, startFrom) {
+        var tmpChars, format;
+        var part1 = [
+            str.slice(startFrom, startFrom+1),
+            str.charAt(startFrom+2),
+            str.slice(startFrom+3, startFrom+4),
+            str.charAt(startFrom+5),
+            str.slice(startFrom+6, startFrom+9)
+        ];
+
+        if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
+            if (part1[1] === '.' && part1[3] === '.') {
+                format = '%d.%m.%Y';
+            } else if (part1[1] === '-' && part1[3] === '-') {
+                format = '%m-%d-%Y';
+            } else if (part1[1] === '/' && part1[3] === '/') {
+                format = '%m/%d/%Y';
+            }
+
+            return format;
+        }
+
+        var part2 = [
+            str.slice(startFrom, startFrom+3),
+            str.charAt(startFrom+4),
+            str.slice(startFrom+5, startFrom+6),
+            str.charAt(startFrom+7),
+            str.slice(startFrom+8, startFrom+9)
+        ];
+
+        if (!isNaN(Number(part2[0])) && !isNaN(Number(part2[2])) && !isNaN(Number(part2[4]))) {
+            if (part2[1] === '-' && part2[3] === '-') {
+                format = '%Y-%m-%d';
+            }
+            return format;
+        }
+        return '';
+    };
+
+    /**
+     * A **TempusDate** class. Store information about some date and can be use
+     * for working with it date.
+     * @param {undefined|Date|Object|Array|number|string} options Some date.
+     * @param {undefined|string} format String for getting date from string or undefined else.
+     * @param {TempusDate} defaults This object was returning, if parsing failed.
+     * @returns {TempusDate}
+     * @constructor
+     */
+    var TempusDate = function (options, format, defaults) {
+        // always valid date
+        this._date = new Date();
+        // if some errors, write here values.
+        this._incorrect = {
+            year: false,
+            month: false,
+            day: false,
+            hours: false,
+            minutes: false,
+            seconds: false,
+            milliseconds: false
         };
 
-        /**
-         * Returns array of month names. If longNames is undefined, short names was returned.
-         * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {Array} Array of month names.
-         * @example
-         * // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-         * tempus.getMonthNames();
-         * @example
-         * // returns ["January","February","March","April","May","June",
-         * //     "July","August","September","October","November","December"];
-         * tempus.getMonthNames(true);
-         * @example
-         * // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
-         * tempus.setLocale('ru_RU');
-         * tempus.getMonthNames();
-         */
-        this.getMonthNames = function (longNames) {
-            if (longNames === true) {
-                return locales[locale]["monthLongNames"];
+        if (options !== undefined) {
+            this.set(options, format, defaults);
+        }
+        return this;
+    };
+
+    /**
+     * Short **prototype** alias.
+     * @type {TempusDate}
+     */
+    TempusDate.fn = TempusDate.prototype;
+
+    /**
+     * Returns day count in current month.
+     *
+     *     @example
+     *     // returns 30
+     *     tempus([2013, 11, 18]).dayCount();
+     *
+     *     // returns 29
+     *     tempus([2012, 2]).dayCount();
+     *
+     *     // returns 28
+     *     tempus([2013, 2]).dayCount();
+     *
+     *     // returns 31
+     *     tempus([2013, 1]).dayCount();
+     *
+     * @returns {number} Day count in months.
+     */
+    TempusDate.fn.dayCount = function () {
+        var m = this.month();
+        var dc = tempus.constants().MAX_DAY_IN_MONTHS[m - (tempus.options('monthFromZero') ? 0 : 1)];
+        if (this.leapYear() && m === 2) {
+            dc += 1;
+        }
+        return dc;
+    };
+
+    /**
+     * Get or set year.
+     *
+     *     @example
+     *     // returns current year
+     *     tempus().year();
+     *
+     *     // returns 2000
+     *     tempus().year(2000).year();
+     *
+     *     // returns 1000
+     *     tempus().year(1000).year();
+     *
+     *     // returns 3000
+     *     tempus().year(3000).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(undefined).year();
+     *
+     *     // returns 1
+     *     tempus().year(1).year();
+     *
+     *     // returns -15
+     *     tempus().year(-15).year();
+     *
+     *     // returns 0
+     *     tempus().year('0').year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year({foo:"bar"}).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year([1,2,3]).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(null).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(true).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(false).year();
+     *
+     *     // returns 1000 (MIN_YEAR)
+     *     tempus().year(NaN).year();
+     *
+     * @param {number} value Set new year. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.year = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_YEAR && Number(value) <= tempus.constants().MAX_YEAR) {
+                    this._date.setFullYear(Number(value));
+                    this._incorrect.year = false;
+                } else {
+                    this._incorrect.year = Number(value);
+                }
             } else {
-                return locales[locale]["monthShortNames"];
+                this._date.setFullYear(tempus.constants().MIN_YEAR);
+                this._incorrect.year = false;
             }
-        };
+        } else {
+            return this._incorrect.year === false ? this._date.getFullYear() : this._incorrect.year;
+        }
+        return this;
+    };
 
-        /**
-         * Returns array of day names. If longNames is undefined, short names was returned.
-         * @param longNames {boolean} If true, long names was returning, else - short names.
-         * @returns {Array} Array of day names.
-         * @example
-         * // returns ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-         * tempus.getDayNames();
-         * @example
-         * // returns ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-         * tempus.getDayNames(true);
-         * @example
-         * // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
-         * tempus.setLocale('ru_RU');
-         * tempus.getDayNames();
-         */
-        this.getDayNames = function (longNames) {
-            if (longNames === true) {
-                return locales[locale]["daysLongNames"];
+    /**
+     * Get or set month.
+     *
+     *     @example
+     *     // returns current month
+     *     tempus().month();
+     *
+     *     // returns 100
+     *     tempus().month(100).month();
+     *
+     *     // returns 12
+     *     tempus().month(12).month();
+     *
+     *     // returns 1
+     *     tempus().month(1).month();
+     *
+     *     // returns -5
+     *     tempus().month(-5).month();
+     *
+     *     // returns 0
+     *     tempus().month('0').month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(undefined).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month({foo: 'bar'}).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month([1,2,3]).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(null).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(true).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(false).month();
+     *
+     *     // returns 1 (MIN_MONTH)
+     *     tempus().month(NaN).month();
+     *
+     *
+     * @param {number} value Set new month. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.month = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_MONTH && Number(value) <= tempus.constants().MAX_MONTH) {
+                    this._date.setMonth(tempus.options('monthFromZero') ? Number(value) : Number(value) - 1);
+                    this._incorrect.month = false;
+                } else {
+                    this._incorrect.month = Number(value);
+                }
             } else {
-                return locales[locale]["daysShortNames"];
+                this._date.setMonth(tempus.options('monthFromZero') ? tempus.constants().MIN_MONTH : tempus.constants().MIN_MONTH - 1);
+                this._incorrect.month = false;
             }
-        };
-
-        /**
-         * Get day of week by Tomohiko Sakamoto's algorithm, 1993.
-         * @param date {object} Tempus date object (see {@link date}).
-         * @returns {number} Index day of week (0..6), 0 is Sunday.
-         * @example
-         * // returns 6
-         * tempus.getDayOfWeek({year: 2013, month: 10, day: 5});
-         * @example
-         * // returns 0
-         * tempus.getDayOfWeek({year: 2013, month: 10, day: 6});
-         * @example
-         * // returns 2
-         * tempus.getDayOfWeek(tempus.now());
-         */
-        this.getDayOfWeek = function (date) {
-            date = that.date(date);
-            var year = date.year;
-            var month = date.month;
-            var day = date.day;
-            var t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
-            year -= month < 3;
-            return Math.floor((year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7);
-        };
-
-        var calcDate = function(date, value, type, modif) {
-            if (typeof date !== 'object') {
-                return undefined;
-            }
-
-            var newDate = clone(date);
-
-            if (typeof value === 'object') {
-                newDate = that.date(newDate);
-                return that.normalizeDate({
-                    year: newDate.year + modif*(value.year !== undefined ? value.year : 0),
-                    month: newDate.month + modif*(value.month !== undefined ? value.month : 0),
-                    day: newDate.day + modif*(value.day !== undefined ? value.day : 0),
-                    hours: newDate.hours + modif*(value.hours !== undefined ? value.hours : 0),
-                    minutes: newDate.minutes + modif*(value.minutes !== undefined ? value.minutes : 0),
-                    seconds: newDate.seconds + modif*(value.seconds !== undefined ? value.seconds : 0)
-                });
-            } else if (typeof value === 'number') {
-                if (type === 'seconds') {
-                    newDate.seconds += modif*Number(value);
-                }
-                if (type === 'minutes') {
-                    newDate.minutes += modif*Number(value);
-                }
-                if (type === 'hours') {
-                    newDate.hours += modif*Number(value);
-                }
-                if (type === 'day') {
-                    newDate.day += modif*Number(value);
-                }
-                if (type === 'month') {
-                    newDate.month += modif*Number(value);
-                }
-                if (type === 'year') {
-                    newDate.year += modif*Number(value);
-                }
-                return that.normalizeDate(newDate);
+        } else {
+            if (this._incorrect.month === false) {
+                return tempus.options('monthFromZero') ? this._date.getMonth() : (this._date.getMonth() +  1);
             } else {
-                return undefined;
+                return this._incorrect.month;
             }
-        };
+        }
+        return this;
+    };
 
-        /**
-         * Returns date object, increased on [value] [type].
-         * @param date {object} Source date. Tempus date object (see {@link date}).
-         * @param value {number|object} Any integer value or tempus date object (see {@link date}).
-         * @param type {string} Value type. Can be 'seconds','minutes', 'hours', 'day', 'month', 'year'
-         * @returns {object} Tempus date object.
-         * @example
-         * // returns {"year":2013,"month":10,"day":12,"hours":0,"minutes":0,"seconds":0}
-         * tempus.incDate({year: 2013, month: 10, day: 5}, 7, 'day');
-         * @example
-         * // returns {"year":2014,"month":1,"day":13,"hours":0,"minutes":0,"seconds":0}
-         * tempus.incDate({year: 2013, month: 10, day: 25}, 80, 'day');
-         * @example
-         * // returns {"year":2013,"month":12,"day":30,"hours":0,"minutes":0,"seconds":0}
-         * tempus.incDate({year: 2013, month: 1, day: 30}, 11, 'month');
-         * @example
-         * // returns {"year":2015,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
-         * tempus.incDate({year: 2000, month: 1, day: 1}, 15, 'year');
-         * @example
-         * // returns {"year":2013,"month":6,"day":1,"hours":0,"minutes":0,"seconds":0}
-         * tempus.incDate({year:2013, month: 1, day:1}, {month: 5});
-         * @example
-         * // returns {"year":2014,"month":4,"day":20,"hours":15,"minutes":10,"seconds":1}
-         * tempus.incDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
-         *     hours: 15, minutes: 10, seconds: 1});
-         */
-        this.incDate = function (date, value, type) {
-            return calcDate(date, value, type, 1);
-        };
-
-        /**
-         * Normalize date to valid.
-         * @param date {object} Tempus date object (see {@link date}).
-         * @returns {object} Tempus date object (see {@link date}).
-         * @example
-         * // returns {"day":1,"month":1,"year":2014,"hours":0,"minutes":0,"seconds":0}
-         * tempus.normalizeDate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});
-         * @example
-         * // returns {"day":15,"month":2,"year":2014,"hours":0,"minutes":0,"seconds":0}
-         * tempus.normalizeDate({day:46,month:13,year:2013,hours:0,minutes:0,seconds:0});
-         * @example
-         * // returns {"day":3,"month":8,"year":2012,"hours":6,"minutes":59,"seconds":58}
-         * tempus.normalizeDate({day:32,month:-5,year:2013,hours:55,minutes:0,seconds:-2});
-         * @example
-         * // returns {"day":19,"month":3,"year":2013,"hours":23,"minutes":0,"seconds":0}
-         * tempus.normalizeDate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});
-         */
-        this.normalizeDate = function(date) {
-            return clone(this.date(this.time(date)));
-        };
-
-        /**
-         * Returns date object, decreased on [value] [type].
-         * @param date {object} Source date. Tempus date object (see {@link date}).
-         * @param value {number|object} Any integer value or tempus date object (see {@link date}).
-         * @param type {string} Value type. Can be 'seconds','minutes', 'hours', 'day', 'month', 'year'
-         * @returns {object} Tempus date object.
-         * @example
-         * // returns {"year":2013,"month":9,"day":28,"hours":0,"minutes":0,"seconds":0}
-         * tempus.decDate({year: 2013, month: 10, day: 5}, 7, 'day');
-         * @example
-         * // returns {"year":2013,"month":8,"day":6,"hours":0,"minutes":0,"seconds":0}
-         * tempus.decDate({year: 2013, month: 10, day: 25}, 80, 'day');
-         * @example
-         * // returns {"year":2012,"month":2,"day":30,"hours":0,"minutes":0,"seconds":0}
-         * tempus.decDate({year: 2013, month: 1, day: 30}, 11, 'month');
-         * @example
-         * // returns {"year":1985,"month":1,"day":1,"hours":0,"minutes":0,"seconds":0}
-         * tempus.decDate({year: 2000, month: 1, day: 1}, 15, 'year');
-         * @example
-         * // returns {"year":2012,"month":8,"day":1,"hours":0,"minutes":0,"seconds":0}
-         * tempus.decDate({year:2013, month: 1, day:1}, {month: 5});
-         * @example
-         * // returns {"year":2012,"month":1,"day":30,"hours":8,"minutes":49,"seconds":59}
-         * tempus.decDate({year:2013, month: 3, day:10}, {year: 1, month: 1, day: 10,
-         *     hours: 15, minutes: 10, seconds: 1});
-         */
-        this.decDate = function (date, value, type) {
-            return calcDate(date, value, type, -1);
-        };
-
-        /**
-         * Returns integer of date between from [dateFrom] to [dateTo] as [type].
-         *
-         * Live Demo: http://plnkr.co/edit/BaPSNOdUbbiazYeqO9KA?p=preview
-         * @param dateFrom {object} Tempus date object (see {@link date}).
-         * @param dateTo {object} Tempus date object (see {@link date}).
-         * @param type {string} Type. Can be 'seconds', 'minutes', 'hours', 'day', 'month', 'year'.
-         * @returns {number|undefined} Value of [type] between dateFrom to dateTo.
-         * @example
-         * // returns 4
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day');
-         * @example
-         * // returns 6
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month');
-         * @example
-         * // returns 266400
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes');
-         * @example
-         * // returns 10224
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours');
-         * @example
-         * // Happy New Year!
-         * // returns 56
-         * tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');
-         * @example
-         * // my current age
-         * // returns 25
-         * tempus.between({year: 1988, month: 3, day: 6}, tempus.now(), 'year');
-         */
-        this.between = function (dateFrom, dateTo, type) {
-            var from = this.time(dateFrom);
-            var to = this.time(dateTo);
-            switch (type) {
-                case 'year':
-                    return Math.floor((to - from) / 31556952); // 365.2425 - average days in year. Here in seconds
-                case 'month':
-                    return Math.floor((to - from) / 2629746);
-                case 'day':
-                    return Math.floor((to - from) / 86400);
-                case 'hours':
-                    return Math.floor((to - from) / 3600);
-                case 'minutes':
-                    return Math.floor((to - from) / 60);
-                case 'seconds':
-                    return to - from;
-                default:
-                    return undefined;
-            }
-        };
-
-        /**
-         * Returns formatted string of date. You can use object or timestamp as parameter of method.
-         * @param date {object|number} Tempus date object (see {@link date}) or timestamp.
-         * @param format {string} Format of date. See index page for defaults.
-         * @returns {string|undefined} Formatted string
-         * @example
-         * // returns '05.11.2013'
-         * tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y');
-         * @example
-         * // returns '2013-11-05 12:36:42'
-         * tempus.format(tempus.now(), '%Y-%m-%d %H:%M:%S');
-         * @example
-         * // returns '20131105'
-         * tempus.format(tempus.time(), '%Y%m%d');
-         */
-        this.format = function(date, format) {
-            var result = format;
-            var d;
-            if ((typeof date === 'number')||(typeof date === 'object')) {
-                d = this.date(date);
+    /**
+     * Get or set day of month.
+     *
+     *     @example
+     *     // returns current day
+     *     tempus().day();
+     *
+     *     // returns 100
+     *     tempus().day(100).day();
+     *
+     *     // returns 12
+     *     tempus().day(12).day();
+     *
+     *     // returns 1
+     *     tempus().day(1).day();
+     *
+     *     // returns -5
+     *     tempus().day(-5).day();
+     *
+     *     // returns 0
+     *     tempus().day('0').day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(undefined).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day({foo: 'bar'}).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day([1,2,3]).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(null).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(true).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(false).day();
+     *
+     *     // returns 1 (MIN_DAY)
+     *     tempus().day(NaN).day();
+     *
+     *
+     * @param {number} value Set new day. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.day = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_DAY && Number(value) <= this.dayCount()) {
+                    this._date.setDate(Number(value));
+                    this._incorrect.day = false;
+                } else {
+                    this._incorrect.day = Number(value);
+                }
             } else {
-                return undefined;
+                this._date.setDate(tempus.constants().MIN_DAY);
+                this._incorrect.day = false;
             }
-            // formatting
-            for (var key in registeredFormats) {
-                if (registeredFormats.hasOwnProperty(key)) {
-                    result = result.replace(key, registeredFormats[key].format(d));
-                }
-            }
-            return result;
-        };
+        } else {
+            return this._incorrect.day === false ? this._date.getDate() : this._incorrect.day;
+        }
+        return this;
+    };
 
-        /**
-         * Detecting format of date  as string.
-         * @param str {string} Formatted date as string
-         * @returns {string|undefined} Format of date or undefined if auto detect failed.
-         * @example
-         * // returns "%d.%m.%Y"
-         * tempus.detectFormat('10.12.2013');
-         * @example
-         * // returns "%Y-%m-%d %H:%M"
-         * tempus.detectFormat('2013-01-01 12:00');
-         * @example
-         * // returns "%d.%m.%Y"
-         * tempus.detectFormat('01/02/2013');
-         */
-        this.detectFormat = function(str) {
-            var defaultFormats = [
-                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',
-                '^%d\\.%m\\.%Y %H:%M:%S$', '^%d\\.%m\\.%Y %H:%M$', '^%d\\.%m\\.%Y %H$',
-                '^%Y-%m-%d %H:%M:%S$', '^%Y-%m-%d %H:%M$', '^%Y-%m-%d %H$',
-                '^%m/%d/%Y %H:%M:%S$', '^%m/%d/%Y %H:%M$', '^%m/%d/%Y %H$',
-                '^%Y$', '^%H:%M:%S$', '^%H:%M$'
-            ];
-            for (var i=0; i < defaultFormats.length; i++) {
-                if (that.parse(str, defaultFormats[i]) !== undefined) {
-                    return defaultFormats[i].slice(1,-1);
+    /**
+     * Get or set hours.
+     *
+     *     @example
+     *     // returns current hours
+     *     tempus().hours();
+     *
+     *     // returns 100
+     *     tempus().hours(100).hours();
+     *
+     *     // returns 12
+     *     tempus().hours(12).hours();
+     *
+     *     // returns 1
+     *     tempus().hours(1).hours();
+     *
+     *     // returns -5
+     *     tempus().hours(-5).hours();
+     *
+     *     // returns 0
+     *     tempus().hours('0').hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours(undefined).hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours({foo: 'bar'}).hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours([1,2,3]).hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours(null).hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours(true).hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours(false).hours();
+     *
+     *     // returns 0 (MIN_HOURS)
+     *     tempus().hours(NaN).hours();
+     *
+     *
+     * @param {number} value Set new hours. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.hours = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_HOURS && Number(value) <= tempus.constants().MAX_HOURS) {
+                    this._date.setHours(Number(value));
+                    this._incorrect.hours = false;
+                } else {
+                    this._incorrect.hours = Number(value);
                 }
+            } else {
+                this._date.setHours(tempus.constants().MIN_HOURS);
+                this._incorrect.hours = false;
             }
-            return undefined;
-        };
+        } else {
+            return this._incorrect.hours === false ? this._date.getHours() : this._incorrect.hours;
+        }
+        return this;
+    };
 
-        /**
-         * Returns date object from parsed string.
-         * @param str {string} Formatted date string.
-         * @param format {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
-         * @param original {boolean|undefined} If true, returns not normalized date.
-         * @returns {object|undefined} Tempus date object (see {@link date}).
-         * @example
-         * // returns {"day":21,"month":10,"year":2013,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('21.10.2013', '%d.%m.%Y');
-         * @example
-         * // returns {"day":5,"month":10,"year":2013,"hours":16,"minutes":20,"seconds":15}
-         * tempus.parse('20131005162015', '%Y%m%d%H%M%S');
-         * @example
-         * // returns {"day":7,"month":5,"year":2012,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('2012-05-07', '%F');
-         * @example
-         * // returns {"day":1,"month":12,"year":2013,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('12/01/2013', '%D');
-         * @example
-         * // returns {"day":5,"month":12,"year":2010,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('05 Dec, 2010', '%d %b, %Y');
-         * @example
-         * // returns {"day":10,"month":10,"year":2010,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('10 October, 2010', '%d %B, %Y');
-         * @example
-         * // returns {"day":31,"month":12,"year":2012,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('31.12.2012');
-         * @example
-         * // returns {"year":2013,"month":3,"day":5,"hours":12,"minutes":31,"seconds":0}
-         * tempus.parse('2013-03-05 12:31');
-         * @example
-         * // returns {"year":2013,"month":3,"day":5,"hours":0,"minutes":0,"seconds":0}
-         * tempus.parse('2013-03-05', undefined, true);
-         */
-        this.parse = function(str, format, original) {
-            var key;
-            var litsarr = [];
+    /**
+     * Get or set minutes.
+     *
+     *     @example
+     *     // returns current minutes
+     *     tempus().minutes();
+     *
+     *     // returns 100
+     *     tempus().minutes(100).minutes();
+     *
+     *     // returns 12
+     *     tempus().minutes(12).minutes();
+     *
+     *     // returns 1
+     *     tempus().minutes(1).minutes();
+     *
+     *     // returns -5
+     *     tempus().minutes(-5).minutes();
+     *
+     *     // returns 0
+     *     tempus().minutes('0').minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(undefined).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes({foo: 'bar'}).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes([1,2,3]).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(null).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(true).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(false).minutes();
+     *
+     *     // returns 0 (MIN_MINUTES)
+     *     tempus().minutes(NaN).minutes();
+     *
+     *
+     * @param {number} value Set new minutes. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.minutes = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_MINUTES && Number(value) <= tempus.constants().MAX_MINUTES) {
+                    this._date.setMinutes(Number(value));
+                    this._incorrect.minutes = false;
+                } else {
+                    this._incorrect.minutes = Number(value);
+                }
+            } else {
+                this._date.setMinutes(tempus.constants().MIN_MINUTES);
+                this._incorrect.minutes = false;
+            }
+        } else {
+            return this._incorrect.minutes === false ? this._date.getMinutes() : this._incorrect.minutes;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set seconds.
+     *
+     *     @example
+     *     // returns current seconds
+     *     tempus().seconds();
+     *
+     *     // returns 100
+     *     tempus().seconds(100).seconds();
+     *
+     *     // returns 12
+     *     tempus().seconds(12).seconds();
+     *
+     *     // returns 1
+     *     tempus().seconds(1).seconds();
+     *
+     *     // returns -5
+     *     tempus().seconds(-5).seconds();
+     *
+     *     // returns 0
+     *     tempus().seconds('0').seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(undefined).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds({foo: 'bar'}).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds([1,2,3]).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(null).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(true).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(false).seconds();
+     *
+     *     // returns 0 (MIN_SECONDS)
+     *     tempus().seconds(NaN).seconds();
+     *
+     *
+     * @param {number} value Set new seconds. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.seconds = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_SECONDS && Number(value) <= tempus.constants().MAX_SECONDS) {
+                    this._date.setSeconds(Number(value));
+                    this._incorrect.seconds = false;
+                } else {
+                    this._incorrect.seconds = Number(value);
+                }
+            } else {
+                this._date.setSeconds(tempus.constants().MIN_SECONDS);
+                this._incorrect.seconds = false;
+            }
+        } else {
+            return this._incorrect.seconds === false ? this._date.getSeconds() : this._incorrect.seconds;
+        }
+        return this;
+    };
+
+    /**
+     * Get or set milliseconds.
+     *
+     *     @example
+     *     // returns current milliseconds
+     *     tempus().milliseconds();
+     *
+     *     // returns 1000
+     *     tempus().milliseconds(1000).milliseconds();
+     *
+     *     // returns 120
+     *     tempus().milliseconds(12).milliseconds();
+     *
+     *     // returns 1
+     *     tempus().milliseconds(1).milliseconds();
+     *
+     *     // returns -5
+     *     tempus().milliseconds(-5).milliseconds();
+     *
+     *     // returns 0
+     *     tempus().milliseconds('0').milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(undefined).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds({foo: 'bar'}).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds([1,2,3]).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(null).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(true).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(false).milliseconds();
+     *
+     *     // returns 0 (MIN_MILLISECONDS)
+     *     tempus().milliseconds(NaN).milliseconds();
+     *
+     *
+     * @param {number} value Set new milliseconds. If no arguments, returns numeric value.
+     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     */
+    TempusDate.fn.milliseconds = function (value) {
+        if (arguments.length !== 0) {
+            if ((typeof value === 'number' || typeof value === 'string') && !isNaN(Number(value))) {
+                if (Number(value) >= tempus.constants().MIN_MILLISECONDS && Number(value) <= tempus.constants().MAX_MILLISECONDS) {
+                    this._date.setMilliseconds(Number(value));
+                    this._incorrect.milliseconds = false;
+                } else {
+                    this._incorrect.milliseconds = Number(value);
+                }
+            } else {
+                this._date.setMilliseconds(tempus.constants().MIN_MILLISECONDS);
+                this._incorrect.milliseconds = false;
+            }
+        } else {
+            return this._incorrect.milliseconds === false ? this._date.getMilliseconds() : this._incorrect.milliseconds;
+        }
+        return this;
+    };
+
+    /**
+     * Returns week number.
+     *
+     *     @example
+     *     // returns 18
+     *     tempus([2013, 5, 1]).week();
+     *
+     * @returns {number} Week number.
+     */
+    TempusDate.fn.week = function () {
+        var onejan = new Date(this.year(), 0, 1);
+        var nowDate = this.get('Date');
+        return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay()+1)/7);
+    };
+
+    /**
+     * Set new date. If **undefined**, set now date. If instance of **Date** - set it date.
+     * If **object**, set date from {year: number, month: number, day: number, hours: number, minutes: number,
+     * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
+     * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or auto detect
+     * format). Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
+     *
+     *     @example
+     *     // returns TempusDate with current date
+     *     tempus().set();
+     *
+     *     // returns TempusDate with date "2013-11-18 20:14:23.918"
+     *     tempus().set({year: 2013, month: 11, day: 18, hours: 20, minutes: 14, seconds: 23, milliseconds: 918});
+     *
+     *     // returns TempusDate with date "2013-11-18 20:15:38"
+     *     tempus().set(1384791338);
+     *
+     *     // returns TempusDate with date "2013-01-01 12:00:03"
+     *     tempus().set([2013, 1, 1, 12, 0, 3]);
+     *
+     *     // returns TempusDate with date "2013-01-01"
+     *     tempus().set(new Date(2012, 0, 1));
+     *
+     *     // returns TempusDate with date "2013-11-18"
+     *     tempus().set('18.11.2013');
+     *
+     *     // returns TempusDate with date "2013-12-12"
+     *     tempus().set('2013-12-12', '%Y-%m-%d'));
+     *
+     *     // returns TempusDate with date "2013-01-01"
+     *     tempus().set('123', '%d.%m.%Y', tempus([2013, 1, 1]));
+     *
+     * @param {undefined|Date|Object|Array|number|string} newDate Some date.
+     * @param {undefined|string} format String for getting date from string or undefined else.
+     * @param {TempusDate} defaults This object was returning, if parsing failed.
+     * @returns {TempusDate}
+     */
+    TempusDate.fn.set = function (newDate, format, defaults) {
+        this._incorrect = {
+            year: false,
+            month: false,
+            day: false,
+            hours: false,
+            minutes: false,
+            seconds: false,
+            milliseconds: false
+        };
+        if (newDate === undefined) {
+            this._date = new Date();
+            return this;
+        }
+        if (newDate instanceof Date) {
+            this._date = newDate;
+            return this;
+        }
+        if (typeof newDate === 'number') {
+            this._date = new Date(newDate * (tempus.options('useMilliseconds') ? 1 : 1000));
+            return this;
+        }
+        if (typeof newDate === 'object') {
+            if (newDate instanceof Array) {
+                this.year(newDate[0]);
+                this.month(newDate[1]);
+                this.day(newDate[2]);
+                this.hours(newDate[3]);
+                this.minutes(newDate[4]);
+                this.seconds(newDate[5]);
+                this.milliseconds(newDate[6]);
+            } else {
+                this.year(newDate.year);
+                this.month(newDate.month);
+                this.day(newDate.day);
+                this.hours(newDate.hours);
+                this.minutes(newDate.minutes);
+                this.seconds(newDate.seconds);
+                this.milliseconds(newDate.milliseconds);
+            }
+        }
+        // parse date
+        if (typeof newDate === 'string') {
+            var key,
+                lits = [],
+                parseResult;
+            if (newDate === undefined) {
+                parseResult = parseBadFormat(this, defaults);
+                if (parseResult === undefined) {
+                    this._incorrect = {
+                        year: -1,
+                        month: -1,
+                        day: -1,
+                        hours: -1,
+                        minutes: -1,
+                        seconds: -1,
+                        milliseconds: -1
+                    };
+                }
+                return parseResult;
+            }
             if (format === undefined) {
-                format = that.detectFormat(str);
+                format = tempus.detectFormat(newDate);
             }
-            format = '^'+format+'$';
-            var format_re = format;
-            for (key in registeredFormats) {
-                if (registeredFormats.hasOwnProperty(key)) {
-                    litsarr.push(key);
-                    format_re = format_re.replace(new RegExp('('+key+')', 'g'), '('+registeredFormats[key].parseLit+')');
-                }
-            }
-            var litsstr = new RegExp('('+litsarr.join('|')+')', 'g');
-            var lits = format.match(litsstr);
-            var re = new RegExp(format_re, 'g');
-            var result = re.exec(str);
-            var result2 = [];
-            try {
-                for (var i=1; i < result.length; i++) {
-                    if (typeof result[i] === 'string') {
-                        result2.push(result[i]);
+
+            var directive;
+            var res = [];
+
+            var i = 0,
+                j = 0,
+                k;
+            while (i < format.length) {
+                if (format.charAt(i) === '%') {
+                    directive = format.charAt(i) + format.charAt(i + 1);
+                    if (registeredFormats[directive] !== undefined) {
+                        k = 0;
+                        var shortString = '';
+                        switch(registeredFormats[directive].type) {
+                            case 'number':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && !isNaN(Number(newDate.charAt(j + k)))) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                            case 'word':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && /^\w+$/.test(newDate.charAt(j + k))) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                            case 'string':
+                                while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length)) {
+                                    shortString += newDate.charAt(j + k);
+                                    k++;
+                                }
+                                break;
+                        }
+
+                        if (k < registeredFormats[directive].minLength) {
+                            parseResult = parseBadFormat(this, defaults);
+                            if (parseResult === undefined) {
+                                this._incorrect = {
+                                    year: -1,
+                                    month: -1,
+                                    day: -1,
+                                    hours: -1,
+                                    minutes: -1,
+                                    seconds: -1,
+                                    milliseconds: -1
+                                };
+                            }
+                            return parseResult;
+                        }
+                        lits.push(directive);
+                        res.push(shortString);
+                        j += --k;
+                        i++;
+                    }
+                } else {
+                    if (newDate.charAt(j) !== format.charAt(i)) {
+                        parseResult = parseBadFormat(this, defaults);
+                        if (parseResult === undefined) {
+                            this._incorrect = {
+                                year: -1,
+                                month: -1,
+                                day: -1,
+                                hours: -1,
+                                minutes: -1,
+                                seconds: -1,
+                                milliseconds: -1
+                            };
+                        }
+                        return parseResult;
                     }
                 }
-            } catch(e) {
-                return undefined;
+                i++;
+                j++;
             }
+
             var resultdate = {};
             var tmpdate;
             for(key in lits) {
-                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))&&!isNaN(Number(key))) {
-                    tmpdate = registeredFormats[lits[key]].parse(result2[key]);
+                if (lits.hasOwnProperty(key)&&(registeredFormats.hasOwnProperty(lits[key]))) {
+                    tmpdate = registeredFormats[lits[key]].parse(res[key]);
                     resultdate = {
-                        year: tmpdate.year != undefined ? tmpdate.year : resultdate.year,
-                        month: tmpdate.month != undefined ? tmpdate.month : resultdate.month,
-                        day: tmpdate.day != undefined ? tmpdate.day : resultdate.day,
-                        hours: tmpdate.hours != undefined ? tmpdate.hours : resultdate.hours,
-                        minutes: tmpdate.minutes != undefined ? tmpdate.minutes : resultdate.minutes,
-                        seconds: tmpdate.seconds != undefined ? tmpdate.seconds : resultdate.seconds
+                        year: tmpdate.year !== undefined ? tmpdate.year : resultdate.year,
+                        month: tmpdate.month !== undefined ? tmpdate.month : resultdate.month,
+                        day: tmpdate.day !== undefined ? tmpdate.day : resultdate.day,
+                        hours: tmpdate.hours !== undefined ? tmpdate.hours : resultdate.hours,
+                        minutes: tmpdate.minutes !== undefined ? tmpdate.minutes : resultdate.minutes,
+                        seconds: tmpdate.seconds !== undefined ? tmpdate.seconds : resultdate.seconds
                     };
                 }
             }
-            if (original === true) {
-                return new TempusDate(resultdate).getDateOriginal();
+            this.year(resultdate.year);
+            this.month(resultdate.month);
+            this.day(resultdate.day);
+            this.hours(resultdate.hours);
+            this.minutes(resultdate.minutes);
+            this.seconds(resultdate.seconds);
+            this.milliseconds(resultdate.milliseconds);
+        }
+        return this;
+    };
+
+    /**
+     * Is year leap?
+     *
+     *     @example
+     *     // returns false
+     *     tempus([2014]).leapYear();
+     *
+     *     // returns true
+     *     tempus({year: 2012}).leapYear();
+     *
+     *     // returns true
+     *     tempus(947698701).leapYear(); // 2012 year
+     *
+     *     // returns false
+     *     tempus([1900]).leapYear();
+     *
+     *     // returns false
+     *     tempus({year: 1941, day: 22, month: 6}).leapYear();
+     *
+     *     // returns true
+     *     tempus({year: 2008, day: 1, month: 1}).leapYear();
+     *
+     *    // check current year
+     *    tempus().leapYear();
+     *
+     * @returns {boolean} If true year is leap else not leap.
+     */
+    TempusDate.fn.leapYear = function () {
+        var year = this.year();
+        if (year % 4 == 0) {
+            if (year % 100 == 0) {
+                return year % 400 == 0;
+            } else return true;
+        }
+        return false;
+    };
+
+    /**
+     * Get or set timestamp.
+     *
+     *     @example
+     *     // returns 1384718400
+     *     tempus([2013, 11, 18]).timestamp();
+     *
+     *     // returns TempusDate with date '2013-11-18'
+     *     tempus().timestamp(1384718400);
+     *
+     * @param {number} value Value for set or no value for get.
+     * @returns {TempusDate|number} TempusDate or numeric timestamp.
+     */
+    TempusDate.fn.timestamp = function (value) {
+        if (arguments.length !== 0) {
+            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000) + this._date.getTimezoneOffset()*60000);
+            return this;
+        } else {
+            if (tempus.options('useMilliseconds')) {
+                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
             } else {
-                return that.date(resultdate);
-            }
-        };
-
-        /**
-         * Just wrapper on setTimeout, this timeout in seconds (not a milliseconds).
-         * @param callback {function} Callback.
-         * @param timeout {number} Int or float number, timeout.
-         * @returns {number} Default setTimeout identify.
-         * @example
-         * // Show message over 2 seconds.
-         * var t = tempus.setTimeout(function() {
-         *     alert("Hello over 2 seconds!");
-         * }, 2);
-         * @example
-         * // Show message over 0.5 seconds.
-         * var t = tempus.setTimeout(function() {
-         *     alert("Hello over 0.5 seconds!");
-         * }, 0.5);
-         */
-        this.setTimeout = function(callback, timeout) {
-            return setTimeout(callback, Number(timeout)*1000);
-        };
-
-        /**
-         * Just wrapper on setInterval, this timeout in seconds (not a milliseconds).
-         * @param callback {function} Callback.
-         * @param timeout {number} Int or float number, timeout.
-         * @returns {number} Default setInterval identify.
-         * @example
-         * //  "Hello again!" 3x times every 2 seconds;
-         * var x = 3;
-         * var t = tempus.setInterval(function() {
-         *     x--;
-         *     if (x === 0) {
-         *         clearInterval(t);
-         *     };
-         *     alert("Hello again!");
-         * }, 2);
-         */
-        this.setInterval = function(callback, timeout) {
-            return setInterval(callback, Number(timeout)*1000);
-        };
-
-        /**
-         * Clock. Every second callback is calling with parameter "date".
-         * "date" - is current date object. Also run callback immediately after starting.
-         * @param callback {function} Callback.
-         * @returns {number} Default setInterval identify.
-         * @example
-         * // Clock example
-         * &lt;div id="tempus-clock-example"&gt;&lt;/div&gt;
-         * &lt;script&gt;
-         * var clock = tempus.clock(function(date) {
-         *     document.getElementById('tempus-clock-example').innerHTML = tempus.format(date, "%H:%M:%S");
-         * });
-         * &lt;/script&gt;
-         */
-        this.clock = function(callback) {
-            callback(that.now());
-            return this.setInterval(function() {
-                callback(that.now());
-            }, 1);
-        };
-
-        /**
-         * Alarms at [date]. After alarming self-destructs.
-         *
-         * Live Demo: http://plnkr.co/edit/lORJQp?p=preview
-         * @param date {object} Tempus date object (see {@link date}).
-         * @param callback {function} Callback.
-         * @returns {number} Default setInterval identify.
-         * @example
-         * // Over 20 seconds show message "Alarmed at ..."
-         * var alarmAt = tempus.incDate(tempus.now(), 20, 'seconds');
-         * document.getElementById('tempus-alarm-example').innerHTML = tempus.format(alarmAt, '%H:%M:%S %d.%m.%Y');
-         * var a = tempus.alarm(alarmAt, function(date) {
-         *     alert('Alarmed at '+tempus.format(date, '%H:%M:%S %d.%m.%Y'));
-         * });
-         */
-        this.alarm = function(date, callback) {
-            var a = this.setInterval(function() {
-                if (that.between(that.now(), date, 'seconds') === 0) {
-                    callback(date);
-                    clearInterval(a);
-                }
-            }, 1);
-            return a;
-        };
-
-        /**
-         * Validates date.
-         * @param date {object|string} Tempus date object (see {@link date}) or formatted date string.
-         * @param format {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
-         * @returns {boolean} Valid or not valid.
-         * @example
-         * // returns false
-         * tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});
-         * @example
-         * // returns false
-         * tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});
-         * @example
-         * // returns true
-         * tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});
-         * @example
-         * // returns true
-         * tempus.validate('2013-03-12', '%Y-%m-%d');
-         * @example
-         * // returns true
-         * tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');
-         * @example
-         * // returns false
-         * tempus.validate('32.08.2013', '%d.%m.%Y');
-         * @example
-         * // returns false
-         * tempus.validate('29.02.2013', '%d.%m.%Y');
-         * @example
-         * // returns true
-         * tempus.validate('29.02.2012', '%d.%m.%Y');
-         * @example
-         * // returns false
-         * tempus.validate('24:61 29.02.2012', '%H:%M %d.%m.%Y');
-         * @example
-         * // returns true
-         * tempus.validate('00:00 01.01.2012', '%H:%M %d.%m.%Y');
-         * @example
-         * // returns false
-         * tempus.validate('29.02.2012 24:00');
-         * @example
-         * // returns true
-         * tempus.validate('29.02.2012 23:00');
-         * @example
-         * // returns false
-         * tempus.validate('29.02.2013 23:00');
-         */
-        this.validate = function(date, format) {
-            if (typeof date === 'string') {
-                date = this.parse(date, format, true);
-            }
-            var normalizedDate = this.normalizeDate(date);
-            return (date.year === normalizedDate.year)&&(date.month === normalizedDate.month)&&(date.day === normalizedDate.day)&&
-                    (date.hours === normalizedDate.hours)&&(date.minutes === normalizedDate.minutes)&&(date.seconds === normalizedDate.seconds);
-        };
-
-        /**
-         * Reformats date from one to other format.
-         * @param date {string} Formatted date string.
-         * @param formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
-         * @param formatTo {string} Format of date. See index page for defaults.
-         * @returns {string|undefined} Returns a reformatted date string.
-         * @example
-         * // returns "12.03.2013"
-         * tempus.reformat('2013-03-12', '%Y-%m-%d', '%d.%m.%Y');
-         * @example
-         * // returns "15.03.2013"
-         * tempus.reformat('2013-03-15 16:00', '%Y-%m-%d %H:%M', '%d.%m.%Y');
-         * @example
-         * // returns "12:31 (Fri 15, 2013)"
-         * tempus.reformat('2013-03-15T12:31:48', '%Y-%m-%dT%H:%M:%S', '%H:%M (%a %d, %Y)');
-         * @example
-         * // returns "2012-05-15"
-         * tempus.reformat('15.05.2012', undefined, '%Y-%m-%d');
-         */
-        this.reformat = function(date, formatFrom, formatTo) {
-            return this.format(this.parse(date, formatFrom), formatTo);
-        };
-
-        /**
-         * Settings up locale. With this %a, %A, %b, %B was returning strings on needed languages. Default is "en_US".
-         * For list locales see {@link getAvailableLocales}.
-         * @param loc {string|undefined} Need locale. If undefined, "en_US" will be select.
-         * @returns {undefined}
-         * @example
-         * // returns "2013, Ноябрь, 06, Среда"
-         * tempus.setLocale("ru_RU");
-         * tempus.now('%Y, %B, %d, %A');
-         */
-        this.setLocale = function(loc) {
-            locale = loc || "en_US";
-        };
-
-        /**
-         * Gets current value of locale.
-         * @returns {string} Current locale.
-         * @example
-         * // returns "en_US"
-         * tempus.getLocale();
-         */
-        this.getLocale = function() {
-            return locale;
-        };
-
-        this.setWeekStartsFromMonday = function(v) {
-            weekStartsFromMonday = v ? true : false;
-            return weekStartsFromMonday;
-        };
-        this.getWeekStartsFromMonday = function() {
-            return weekStartsFromMonday;
-        };
-
-        /**
-         * Get available locales list.
-         * @returns {Array} Array of available locales.
-         * @example
-         * // returns ["en_US", "ru_RU"]
-         * tempus.getAvailableLocales();
-         */
-        this.getAvailableLocales = function() {
-            return Object.keys(locales);
-        };
-
-        /**
-         * Get current version of TempusJS.
-         * @returns {string} Current version of TempusJS.
-         * @example
-         * // returns current version
-         * tempus.getVersion();
-         */
-        this.getVersion = function() {
-            return version;
-        };
-
-        /**
-         * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or timestamps, if format is undefined.
-         * @param options {object|undefined} Options object.
-         * @param options.dateFrom {string|object} Tempus date object (see {@link date}) or formatted date string.
-         * @param options.formatFrom {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
-         * @param options.dateTo {string|object} Tempus date object (see {@link date}) or formatted date string.
-         * @param options.formatTo {string|undefined} Format (see index page). If undefined, will use formatFrom.
-         * @param options.period {number|string|object} Step size for dates, can be 'seconds', 'minutes', 'hours',
-         *     'day', 'month', 'year', number value (seconds) or tempus date object (see {@link date}).
-         * @param options.format {string|undefined} Results format. If undefined, returns tempus date objects (see {@link date}).
-         * @param options.asObject {boolean} If true, dates will be keys for objects in result array.
-         * @param options.groupBy {string} If not undefined, group array by some field in tempus date object. Can be
-         *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
-         * @returns {Array|object} Array or object from dates.
-         * @example
-         * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
-         * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
-         * tempus.generateDates({
-         *     dateFrom: '01.01.2013',
-         *     formatFrom: '%d.%m.%Y',
-         *     dateTo: '10.01.2013',
-         *     formatTo: '%d.%m.%Y',
-         *     period: {day: 1},
-         *     format: '%d.%m.%Y'
-         * });
-         * @example
-         * // returns [1356998400,1357084800,1357171200,1357257600,1357344000,
-         * //     1357430400,1357516800,1357603200,1357689600,1357776000];
-         * tempus.generateDates({
-         *     dateFrom: '01.01.2013',
-         *     formatFrom: '%d.%m.%Y',
-         *     dateTo: '10.01.2013',
-         *     formatTo: '%d.%m.%Y',
-         *     period: {day: 1}
-         * });
-         * @example
-         * // returns ["00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00",
-         * //     "10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00",
-         * //     "20:00","21:00","22:00","23:00"];
-         * tempus.generateDates({
-         *     dateFrom: '01.01.2013 00:00',
-         *     formatFrom: '%d.%m.%Y %H:%M',
-         *     dateTo: '01.01.2013 23:00',
-         *     formatTo: '%d.%m.%Y %H:%M',
-         *     period: 'hours',
-         *     format: '%H:%M'
-         * });
-         * @example
-         * // returns ["2013-01-01","2013-02-01","2013-03-01","2013-04-01","2013-05-01",
-         * //     "2013-06-01","2013-07-01","2013-08-01","2013-09-01","2013-10-01"];
-         * tempus.generateDates({
-         *     dateFrom: '01.01.2013',
-         *     formatFrom: '%d.%m.%Y',
-         *     dateTo: '31.10.2013',
-         *     formatTo: '%d.%m.%Y',
-         *     period: 'month',
-         *     format: '%Y-%m-%d'
-         * });
-         * @example
-         * // returns ["2013-01-01 00:00","2013-01-02 12:00","2013-01-04 00:00","2013-01-05 12:00","2013-01-07 00:00",
-         * //     "2013-01-08 12:00","2013-01-10 00:00","2013-01-11 12:00"];
-         * tempus.generateDates({
-         *     dateFrom: '01.01.2013',
-         *     dateTo: '12.01.2013',
-         *     period: {day: 1, hours: 12},
-         *     format: '%Y-%m-%d %H:%M'
-         * });
-         * @example
-         * // returns ["05.01.2013","06.01.2013","07.01.2013","08.01.2013","09.01.2013","10.01.2013","11.01.2013",
-         * //     "12.01.2013","13.01.2013","14.01.2013","15.01.2013","16.01.2013","17.01.2013","18.01.2013",
-         * //     "19.01.2013","20.01.2013","21.01.2013","22.01.2013","23.01.2013","24.01.2013","25.01.2013",
-         * //     "26.01.2013","27.01.2013","28.01.2013","29.01.2013","30.01.2013","31.01.2013","01.02.2013"];
-         * tempus.generateDates({
-         *     dateFrom: {year: 2013, month: 1, day: 5},
-         *     dateTo: {year: 2013, month: 2, day: 1},
-         *     period: {day: 1},
-         *     format: '%d.%m.%Y'
-         * });
-         * @example
-         * // returns {"05.01.2013":{},"06.01.2013":{},"07.01.2013":{},"08.01.2013":{},"09.01.2013":{},
-         * //     "10.01.2013":{},"11.01.2013":{},"12.01.2013":{},"13.01.2013":{},"14.01.2013":{},"15.01.2013":{}};
-         * tempus.generateDates({
-         *     dateFrom: {year: 2013, month: 1, day: 5},
-         *     dateTo: {year: 2013, month: 1, day: 15},
-         *     period: {day: 1},
-         *     format: '%d.%m.%Y',
-         *     asObject: true
-         * });
-         * @example
-         * // returns [["01.01.2013","02.01.2013","03.01.2013","04.01.2013","05.01.2013","06.01.2013","07.01.2013","08.01.2013",
-         * // "09.01.2013","10.01.2013","11.01.2013","12.01.2013","13.01.2013","14.01.2013","15.01.2013","16.01.2013","17.01.2013",
-         * // "18.01.2013","19.01.2013","20.01.2013","21.01.2013","22.01.2013","23.01.2013","24.01.2013","25.01.2013","26.01.2013",
-         * // "27.01.2013","28.01.2013","29.01.2013","30.01.2013","31.01.2013"],["01.02.2013","02.02.2013","03.02.2013","04.02.2013",
-         * // "05.02.2013","06.02.2013","07.02.2013","08.02.2013","09.02.2013","10.02.2013","11.02.2013","12.02.2013","13.02.2013",
-         * // "14.02.2013","15.02.2013","16.02.2013","17.02.2013","18.02.2013","19.02.2013","20.02.2013","21.02.2013","22.02.2013",
-         * // "23.02.2013","24.02.2013","25.02.2013","26.02.2013","27.02.2013","28.02.2013"],["01.03.2013","02.03.2013","03.03.2013",
-         * // "04.03.2013","05.03.2013","06.03.2013","07.03.2013","08.03.2013","09.03.2013","10.03.2013","11.03.2013","12.03.2013",
-         * // "13.03.2013","14.03.2013","15.03.2013"]]
-         * tempus.generateDates({
-         *     dateFrom: {year: 2013, month: 1, day: 1},
-         *     dateTo: {year: 2013, month: 3, day: 15},
-         *     period: {day: 1},
-         *     format: '%d.%m.%Y',
-         *     groupBy: 'month'
-         * });
-         */
-        this.generateDates = function(options) {
-            var tsFrom = options.dateFrom, tsTo = options.dateTo, period, result;
-            // timestamp "from"
-            if (typeof options.dateFrom === 'string') {
-                tsFrom = that.parse(options.dateFrom, options.formatFrom);
-            }
-            tsFrom = that.time(tsFrom);
-            // timestamp "to"
-            if (typeof options.dateTo === 'string') {
-                tsTo = that.parse(options.dateTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom));
-            }
-            tsTo = that.time(tsTo);
-            // period
-            if (typeof options.period === 'number') {
-                period = {
-                    year: 0,
-                    month: 0,
-                    day: 0,
-                    hours: 0,
-                    minutes: 0,
-                    seconds: options.period
-                }
-            } else if (typeof options.period === 'string') {
-                period = {
-                    year: options.period === 'year' ? 1 : 0,
-                    month: options.period === 'month' ? 1 : 0,
-                    day: options.period === 'day' ? 1 : 0,
-                    hours: options.period === 'hours' ? 1 : 0,
-                    minutes: options.period === 'minutes' ? 1 : 0,
-                    seconds: options.period === 'seconds' ? 1 : 0
-                }
-            } else if (typeof options.period === 'object') {
-                period = {
-                    year: options.period.year !== undefined ? options.period.year : 0,
-                    month: options.period.month !== undefined ? options.period.month : 0,
-                    day: options.period.day !== undefined ? options.period.day : 0,
-                    hours: options.period.hours !== undefined ? options.period.hours : 0,
-                    minutes: options.period.minutes !== undefined ? options.period.minutes : 0,
-                    seconds: options.period.seconds !== undefined ? options.period.seconds : 0
-                }
-            }
-
-            // result
-            if (options.groupBy === undefined) {
-                result = options.asObject === true ? {} : [];
-            } else {
-                result = [];
-                result.push([]);
-                var prevValue = that.date(tsFrom, {week:true})[options.groupBy];
-            }
-            var addTo = function(array, value) {
-                if (options.asObject === true) {
-                    if (options.format !== undefined) {
-                        array[that.format(value, options.format)] = {};
-                    } else {
-                        array[that.format(value, '%F %H:%M:%S')] = {};
-                    }
-                } else {
-                    if (options.format !== undefined) {
-                        array.push(that.format(value, options.format));
-                    } else {
-                        array.push(value);
-                    }
-                }
-                return array;
-            };
-
-            for (; tsFrom <= tsTo; tsFrom = this.time(that.incDate(that.date(tsFrom), period))) {
-                if (options.groupBy === undefined) {
-                    addTo(result, tsFrom);
-                } else {
-                    if (that.date(tsFrom, {week:true})[options.groupBy] === prevValue) {
-                        addTo(result[result.length-1], tsFrom);
-                    } else {
-                        result.push([]);
-                        addTo(result[result.length-1], tsFrom);
-                        prevValue = that.date(tsFrom, {week:true})[options.groupBy];
-                    }
-                }
-            }
-            return result;
-        };
-
-        /**
-         * Registering a new format.
-         * @param value {string} Identify
-         * @param formatFunc {function} Format function.
-         * @param parseFunc {function} Parse function.
-         * @param parseLit {string} Parse regexp.
-         * @example
-         * // no returns
-         * tempus.registerFormat('%q',
-         *     function(date) {
-         *         return date.month;
-         *     },
-         *     function(value) {
-         *         var v = Number(value);
-         *         return {month: (isNaN(v) ? undefined : v) };
-         *     },
-         *     '\\d{1,2}'
-         * );
-         * // test it
-         * // returns "01.1.2013";
-         * tempus.format({year: 2013, month: 1, day: 1}, '%d.%q.%Y');
-         * // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
-         * tempus.parse('10.2.2013', '%d.%q.%Y');
-         */
-        this.registerFormat = function(value, formatFunc, parseFunc, parseLit) {
-            registeredFormats[value] = {
-                format: formatFunc,
-                parse: parseFunc,
-                parseLit: parseLit
-            }
-        };
-
-        /**
-         * Unregistering a format.
-         * @param value {string} Identify
-         * @example
-         * // unregistering a format
-         * tempus.unregisterFormat('%d');
-         * // test it
-         * // returns "%d.01.2013"
-         * tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
-         */
-        this.unregisterFormat = function(value) {
-            delete registeredFormats[value];
-        };
-
-        /**
-         * Get week number.
-         * @param date {object|string} Date as object (see {@link date}) or string (any formatted date, see examples)
-         * @param format {string|undefined} Date format as string (see formats doc) or undefined for autodetect format.
-         * @returns {number} Week number from 1.
-         * @example
-         * // returns 46
-         * tempus.getWeekNumber({day: 12, month: 11, year: 2013});
-         * @example
-         * // returns 42
-         * tempus.getWeekNumber('12.10.2000');
-         * @example
-         * // returns 1
-         * tempus.getWeekNumber('1999-01-01');
-         */
-        this.getWeekNumber = function(date, format) {
-            var currentTime;
-            if (typeof date === 'string') {
-                currentTime = that.time(date, format);
-                date = that.date(currentTime);
-                currentTime *= 1000;
-            } else {
-                currentTime = that.time(date)*1000;
-            }
-            var startOfYear = new TempusDate({year: date.year, month: 1, day: 1}).getDate().dayOfWeek;
-            return Math.ceil((((currentTime - startOfYear) / 86400000) + startOfYear+1)/7);
-        };
-
-        /**
-         * Returns current timezone offset.
-         * @param type {string|undefined} Type. Can be 'hours', 'minutes' or undefined. If undefined, returns in seconds.
-         * @returns {number} Current timezone offset value.
-         * @example
-         * // returns -14400
-         * tempus.getTimezoneOffset();
-         * @example
-         * // returns -4
-         * tempus.getTimezoneOffset('hours');
-         * @example
-         * // returns -240
-         * tempus.getTimezoneOffset('minutes');
-         */
-        this.getTimezoneOffset = function(type) {
-            switch (type) {
-                case 'hours':
-                    return Math.floor(timezoneOffset / 3600);
-                case 'minutes':
-                    return (timezoneOffset / 60);
-                default:
-                    return timezoneOffset
-            }
-        };
-
-        // *** HELPERS ***
-        var formattingWithNulls = function(val, symb_count) {
-            var v = val.toString();
-            while (v.length < symb_count) {
-                v = '0' + v;
-            }
-            return v;
-        };
-        var clone = function(obj){
-            if (null == obj || "object" != typeof obj) return obj;
-            var copy = obj.constructor();
-            for (var attr in obj) {
-                if (obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
-            }
-            return copy;
-        };
-        if (!Array.prototype.indexOf) {
-            Array.prototype.indexOf = function(obj, start) {
-                for (var i = (start || 0), j = this.length; i < j; i++) {
-                    if (this[i] === obj) { return i; }
-                }
-                return -1;
+                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60
             }
         }
     };
 
-    window.tempus = new TempusJS();
-})();
+    /**
+     * Get or set timestamp in UTC.
+     *
+     *     @example
+     *     // returns 1384732800
+     *     tempus([2013, 11, 18]).utc();
+     *
+     *     // returns TempusDate with date '2013-11-18'
+     *     tempus().utc(1384732800);
+     *
+     * @param {number} value Value for set or no value for get.
+     * @returns {TempusDate|number} TempusDate or numeric timestamp.
+     */
+    TempusDate.fn.utc = function (value) {
+        if (arguments.length !== 0) {
+            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000));
+            return this;
+        } else {
+            if (tempus.options('useMilliseconds')) {
+                return this._date.getTime();
+            } else {
+                return Math.floor(this._date.getTime() / 1000);
+            }
+        }
+    };
+
+    /**
+     * Get day of week.
+     *
+     *     @example
+     *     // returns current day of week
+     *     tempus().dayOfWeek();
+     *
+     *     // returns 1
+     *     tempus([2013, 11, 18]).dayOfWeek();
+     *
+     * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
+     * @returns {number} Numeric value of day of week.
+     */
+    TempusDate.fn.dayOfWeek = function (type) {
+        switch (type) {
+            case 'long':
+                return translations[lang]["dayLongNames"][this._date.getDay()];
+            case 'short':
+                return translations[lang]["dayShortNames"][this._date.getDay()];
+            default:
+                return this._date.getDay();
+        }
+    };
+
+    /**
+     * Get timezone offset.
+     *
+     *     @example
+     *     // returns your timezone offset in seconds
+     *     tempus().timezone();
+     *
+     *     // returns your timezone offset in hours
+     *     tempus().timezone('hours');
+     *
+     * @param {string} type If type is 'hours', returns offset in hours, 'minutes' for minutes and default in seconds.
+     * @returns {number} Timezone offset value
+     */
+    TempusDate.fn.timezone = function (type) {
+        switch (type) {
+            case 'hours':
+                return Math.floor(this._date.getTimezoneOffset() / 60);
+            case 'minutes':
+                return this._date.getTimezoneOffset();
+            default:
+                return this._date.getTimezoneOffset()*60;
+        }
+    };
+
+
+    /**
+     * Get info about date.
+     *
+     *     @example
+     *     // returns Date object
+     *     tempus().get('Date');
+     *
+     *     // returns object with more info
+     *     tempus().get();
+     *
+     * @param {string} type Can be 'Date' for returns Date object, 'DateUTC' for returns Date in UTC or default
+     *     for returns default object.
+     * @returns {Date|Object} Date or default object.
+     */
+    TempusDate.fn.get = function (type) {
+        switch (type) {
+            case 'Date':
+                return new Date(this.year(), this.month(), this.day(), this.hours(), this.minutes(),
+                    this.seconds(), this.milliseconds());
+            case 'DateUTC':
+                return new Date(Date.UTC(this.year(), this.month(), this.day(), this.hours(), this.minutes(),
+                    this.seconds(), this.milliseconds()));
+            default:
+                return {
+                    year: this.year(),
+                    month: this.month(),
+                    week: this.week(),
+                    day: this.day(),
+                    hours: this.hours(),
+                    minutes: this.minutes(),
+                    seconds: this.seconds(),
+                    milliseconds: this.milliseconds(),
+                    utc: this.utc(),
+                    dayOfWeek: this.dayOfWeek(),
+                    dayOfWeekShort: this.dayOfWeek('short'),
+                    dayOfWeekLong: this.dayOfWeek('long'),
+                    timestamp: this.timestamp()
+                }
+        }
+    };
+
+    /**
+     * Returns formatted string of date. You can use object or timestamp as parameter of method.
+     *
+     *     @example
+     *     // returns '05.11.2013'
+     *     tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y');
+     *
+     *     // returns '2013-11-18 12:36:42'
+     *     tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S')
+     *
+     *     // returns '20131105'
+     *     tempus([2013, 11, 5]).format('%Y%m%d');
+     *
+     * @param format {string} Format of date. See index page for defaults.
+     * @returns {string} Formatted string
+     */
+    TempusDate.fn.format = function (format) {
+        var i = 0,
+            result = '',
+            directive;
+        while (i < format.length) {
+            if (format.charAt(i) === '%') {
+                directive = format.charAt(i) + format.charAt(i + 1);
+                if (registeredFormats[directive] !== undefined) {
+                    result += registeredFormats[directive].format(this);
+                    i++;
+                } else {
+                    result += '%';
+                }
+            } else {
+                result += format.charAt(i);
+            }
+            i++;
+        }
+        return result;
+    };
+
+    /**
+     * Validates date.
+     *
+     *     @example
+     *     // returns false
+     *     tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     *
+     *     // returns false
+     *     tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate();
+     *
+     *     // returns true
+     *     tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     *
+     *     // returns true
+     *     tempus('2013-03-12', '%Y-%m-%d').validate();
+     *
+     *     // returns true
+     *     tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('32.08.2013', '%d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('29.02.2013', '%d.%m.%Y').validate();
+     *
+     *     // returns true
+     *     tempus('29.02.2012', '%d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate();
+     *
+     *     // returns true
+     *     tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate();
+     *
+     *     // returns false
+     *     tempus('29.02.2012 24:00').validate();
+     *
+     *     // returns true
+     *     tempus('29.02.2012 23:00').validate();
+     *
+     *     // returns false
+     *     tempus('29.02.2013 23:00').validate();
+     *
+     * @returns {boolean} If true, date is valid, else invalid.
+     */
+    TempusDate.fn.validate = function() {
+        return (this._incorrect.year === false && this._incorrect.month === false && this._incorrect.day === false &&
+            this._incorrect.hours === false && this._incorrect.minutes === false && this._incorrect.seconds === false &&
+            this._incorrect.milliseconds === false);
+    };
+
+    /**
+     * Get errors in date.
+     *
+     *     @example
+     *     // returns {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}
+     *     tempus().year(-5).errors();
+     *
+     * @returns {Object} Object with date errors
+     */
+    TempusDate.fn.errors = function() {
+        return this._incorrect;
+    };
+
+    /**
+     * Returns integer of date between from [this date] to [dateTo] as [type].
+     *
+     *     @example
+     *     // returns 4
+     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day');
+     *
+     *     // returns 6
+     *     tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month');
+     *
+     *     // returns 266400
+     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes');
+     *
+     *     // returns 10224
+     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours');
+     *
+     *     // Happy New Year!
+     *     // Days ago to New Year.
+     *     tempus().between(tempus([2014,1,1]), 'day');
+     *
+     * @param {TempusDate} dateTo Date to.
+     * @param {string} type Type of time.
+     * @returns {number|undefined} If errors, returns undefined.
+     */
+    TempusDate.fn.between = function (dateTo, type) {
+        var from = this.timestamp();
+        var to = dateTo.timestamp();
+        switch (type) {
+            case 'year':
+                return Math.floor((to - from) / 31556952); // 365.2425 - average days in year. Here in seconds
+            case 'month':
+                return Math.floor((to - from) / 2629746);
+            case 'day':
+                return Math.floor((to - from) / 86400);
+            case 'hours':
+                return Math.floor((to - from) / 3600);
+            case 'minutes':
+                return Math.floor((to - from) / 60);
+            case 'seconds':
+                return to - from;
+            default:
+                return undefined;
+        }
+    };
+
+    /**
+     * Calculate date.
+     *
+     *     @example
+     *     // returns '01.05.2013'
+     *     tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y')
+     *
+     *     // returns TempusDate with date 2012-01-01
+     *     tempus([2011, 5, 2]).calc({year: 1, month: -4, day: -1});
+     *
+     * @param {Object} delta Object {year: number, month: number, day: number, hours: number, minutes: number,
+     *     seconds: number, milliseconds: number} or part of it.
+     * @returns {TempusDate} New date.
+     */
+    TempusDate.fn.calc = function (delta) {
+        if (delta.year !== undefined) {
+            this._date.setFullYear(this._date.getFullYear() + delta.year);
+        }
+        if (delta.month !== undefined) {
+            this._date.setMonth(this._date.getMonth() + delta.month);
+        }
+        if (delta.day !== undefined) {
+            this._date.setDate(this._date.getDate() + delta.day);
+        }
+        if (delta.hours !== undefined) {
+            this._date.setHours(this._date.getHours() + delta.hours);
+        }
+        if (delta.minutes !== undefined) {
+            this._date.setMinutes(this._date.getMinutes() + delta.minutes);
+        }
+        if (delta.seconds !== undefined) {
+            this._date.setSeconds(this._date.getSeconds() + delta.seconds);
+        }
+        if (delta.milliseconds !== undefined) {
+            this._date.setMilliseconds(this._date.getMilliseconds() + delta.milliseconds);
+        }
+        return this;
+    };
+
+
+
+
+    // *************************************************
+    // *                                               *
+    // *                    FACTORY                    *
+    // *                                               *
+    // *************************************************
+
+    /**
+     * Create method for TempusDate. You can set initial value, for more info, see {@link TempusDate#set}.
+     *
+     *     @example
+     *     // returns TempusDate with current date.
+     *     tempus();
+     *
+     *     // returns TempusDate with date 2013-01-15.
+     *     tempus({year: 2013, month: 1, day: 15});
+     *
+     *     // returns TempusDate with date 2000-06-01 and time 12:01:15
+     *     tempus([2000, 6, 1, 12, 1, 15]);
+     *
+     *     // returns TempusDate with date 2001-05-10 and time 05:30:00
+     *     tempus('2001-05-10 05:30:00');
+     *
+     *     // returns TempusDate with date 2001-05-10 and time 05:30:00
+     *     tempus(989454600);
+     *
+     * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link TempusDate#set}
+     * @param {undefined|string} format See {@link TempusDate#set}
+     * @param {undefined|TempusDate} defaults See {@link TempusDate#set}
+     * @returns {TempusDate} Instance of TempusDate.
+     */
+    tempus = function (options, format, defaults) {
+        return new TempusDate(options, format, defaults);
+    };
+
+    /**
+     * Returns constants object. Some constants depends from options (MIN_MONTH, MAX_MONTH).
+     * For MAX_DAY_IN_MONTH better use {@link TempusDate#dayCount}.
+     *
+     *     @example
+     *     // returns {
+     *     //   "MIN_YEAR":1000,
+     *     //   "MAX_YEAR":3000,
+     *     //   "MIN_MONTH":1,
+     *     //   "MAX_MONTH":12,
+     *     //   "MIN_DAY":1,
+     *     //   "MAX_DAY_IN_MONTHS":[31,28,31,30,31,30,31,31,30,31,30,31],
+     *     //   "MIN_DAY_OF_WEEK":0,
+     *     //   "MAX_DAY_OF_WEEK":6,
+     *     //   "MIN_HOURS":0,
+     *     //   "MAX_HOUR":23,
+     *     //   "MIN_MINUTES":0,
+     *     //   "MAX_MINUTES":59,
+     *     //   "MIN_SECONDS":0,
+     *     //   "MAX_SECONDS":59,
+     *     //   "MIN_MILLISECONDS":0,
+     *     //   "MAX_MILLISECONDS":999
+     *     // }
+     *     tempus.constants();
+     *
+     * @static
+     * @returns {Object} Object with all constants in Tempus.
+     */
+    tempus.constants = function () {
+        return {
+            MIN_YEAR: 1000,
+            MAX_YEAR: 3000,
+            MIN_MONTH: tempus.options('monthFromZero') ? 0 : 1,
+            MAX_MONTH: tempus.options('monthFromZero') ? 11 : 12,
+            MIN_DAY: 1,
+            MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+            MIN_DAY_OF_WEEK: 0,
+            MAX_DAY_OF_WEEK: 6,
+            MIN_HOURS: 0,
+            MAX_HOURS: 23,
+            MIN_MINUTES: 0,
+            MAX_MINUTES: 59,
+            MIN_SECONDS: 0,
+            MAX_SECONDS: 59,
+            MIN_MILLISECONDS: 0,
+            MAX_MILLISECONDS: 999
+        }
+    };
+
+    /**
+     * Get a current version of Tempus.
+     *
+     *     @example
+     *     // returns current version
+     *     tempus.version();
+     *
+     * @static
+     * @returns {string} Current version of Tempus.
+     */
+    tempus.version = function () {
+        return version;
+    };
+
+    /**
+     * Get or set current options. If option is undefined, returns all options.
+     *
+     *     @example
+     *     // returns all current options
+     *     // for example, {useMilliseconds: false, monthFromZero: false}
+     *     tempus.options();
+     *
+     *     // returns 'useMilliseconds' value
+     *     tempus.options('useMilliseconds');
+     *
+     *     // Timeouts and timestamps in milliseconds
+     *     tempus.options('useMilliseconds', true);
+     *
+     *     // Month starts from 0.
+     *     tempus.options('monthFromZero', true);
+     *
+     * @static
+     * @param {string} option Name of option.
+     * @param {*} value New value of option.
+     * @returns {Object} Current options object.
+     */
+    tempus.options = function (option, value) {
+        if (option === undefined) {
+            return options;
+        } else {
+            if (options.hasOwnProperty(option)) {
+                if (value === undefined) {
+                    return options[option];
+                } else {
+                    options[option] = value;
+                }
+            }
+        }
+        return undefined;
+    };
+
+    /**
+     * Releases tempus variables from global scope.
+     *
+     *     @example
+     *     // returns object
+     *     var T = tempus.noConflict();
+     *     // returns options
+     *     T.tempus.options();
+     *     // returns TempusDate instance
+     *     T.tempus();
+     *
+     * @static
+     * @returns {Object} Object with keys as default names and values as default functions.
+     */
+    tempus.noConflict = function () {
+        window.tempus = _tempus;
+        window.TempusDate = _TempusDate;
+        return {tempus: tempus, TempusDate: TempusDate};
+    };
+
+    /**
+     * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
+     *
+     *     @example
+     *     // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+     *     //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
+     *     tempus.generate({
+     *         dateFrom: '01.01.2013',
+     *         dateTo: '10.01.2013',
+     *         period: 'day',
+     *         format: '%d.%m.%Y'
+     *     });
+     *
+     *     // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     *     tempus.generate({
+     *         dateFrom: '20130329',
+     *         formatFrom: '%Y%m%d',
+     *         dateTo: '20130402',
+     *         period: {day: 1},
+     *         format: '%d.%m.%Y'
+     *     });
+     *
+     *     // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     *     tempus.generate({
+     *         dateFrom: '20130329',
+     *         formatFrom: '%s',
+     *         dateTo: '20130402',
+     *         period: {day: 1},
+     *         format: '%s'
+     *     });
+     *
+     *
+     * @param options {object|undefined} Options object.
+     * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
+     *     any other value ({@see tempus}).
+     * @param options.formatFrom {string|undefined} Format. If undefined, tempus will be auto detect format.
+     * @param options.dateTo {TempusDate|undefined|object|Array|string|number} TempusDate object or
+     *     any other value ({@see tempus}).
+     * @param options.formatTo {string|undefined} Format. If undefined, will use formatFrom.
+     * @param options.period {number|string|object} Step size for dates, can be 'seconds', 'minutes', 'hours',
+     *     'day', 'month', 'year', number value (seconds) or object alike {year: number, month: number, day: number,
+     *     hours: number, minutes: number, seconds: number}.
+     * @param options.format {string|undefined} Results format. If undefined, returns TempusDate.
+     * @param options.asObject {boolean|undefined} If true, dates will be keys for objects in result array.
+     * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
+     *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
+     * @static
+     * @returns {Array|Object} Array or object from dates.
+     */
+    tempus.generate = function(options) {
+        var tsFrom = options.dateFrom,
+            tsTo = options.dateTo,
+            period,
+            result;
+        // timestamp "from"
+        if (typeof options.dateFrom !== 'number') {
+            if (options.dateFrom instanceof TempusDate) {
+                tsFrom = tsFrom.utc();
+            } else {
+                tsFrom = tempus(tsFrom, options.formatFrom).utc();
+            }
+        }
+        // timestamp "to"
+        if (typeof options.dateTo !== 'number') {
+            if (options.dateTo instanceof TempusDate) {
+                tsTo = tsTo.utc();
+            } else {
+                tsTo = tempus(tsTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).utc();
+            }
+        }
+        // period
+        if (typeof options.period === 'number') {
+            period = {
+                year: 0,
+                month: 0,
+                day: 0,
+                hours: 0,
+                minutes: 0,
+                seconds: options.period
+            }
+        } else if (typeof options.period === 'string') {
+            period = {
+                year: options.period === 'year' ? 1 : 0,
+                month: options.period === 'month' ? 1 : 0,
+                day: options.period === 'day' ? 1 : 0,
+                hours: options.period === 'hours' ? 1 : 0,
+                minutes: options.period === 'minutes' ? 1 : 0,
+                seconds: options.period === 'seconds' ? 1 : 0
+            }
+        } else if (typeof options.period === 'object') {
+            period = {
+                year: options.period.year !== undefined ? options.period.year : 0,
+                month: options.period.month !== undefined ? options.period.month : 0,
+                day: options.period.day !== undefined ? options.period.day : 0,
+                hours: options.period.hours !== undefined ? options.period.hours : 0,
+                minutes: options.period.minutes !== undefined ? options.period.minutes : 0,
+                seconds: options.period.seconds !== undefined ? options.period.seconds : 0
+            }
+        }
+        // result
+        if (options.groupBy === undefined) {
+            result = options.asObject === true ? {} : [];
+        } else {
+            result = [];
+            result.push([]);
+            var prevValue = tempus(tsFrom).get()[options.groupBy];
+        }
+        var addTo = function(array, value) {
+            if (options.asObject === true) {
+                if (options.format !== undefined) {
+                    array[tempus(value).format(options.format)] = {};
+                } else {
+                    array[tempus(value).format('%F %H:%M:%S')] = {};
+                }
+            } else {
+                if (options.format !== undefined) {
+                    array.push(tempus(value).format(options.format));
+                } else {
+                    array.push(tempus(value));
+                }
+            }
+            return array;
+        };
+
+        for (; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).utc()) {
+            if (options.groupBy === undefined) {
+                addTo(result, tsFrom);
+            } else {
+                if (that.date(tsFrom, {week:true})[options.groupBy] === prevValue) {
+                    addTo(result[result.length-1], tsFrom);
+                } else {
+                    result.push([]);
+                    addTo(result[result.length-1], tsFrom);
+                    prevValue = tempus(tsFrom).get()[options.groupBy];
+                }
+            }
+        }
+        return result;
+    };
+
+    /**
+     * Returns array of month names. If type is undefined, short names was returned.
+     *
+     *     @example
+     *     // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+     *     tempus.monthNames();
+     *
+     *     // returns ["January","February","March","April","May","June",
+     *     //     "July","August","September","October","November","December"];
+     *     tempus.monthNames(true);
+     *
+     *     // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+     *     tempus.setLang('ru');
+     *     tempus.monthNames();
+     *
+     * @static
+     * @param {boolean} type If true, long names was returning, else - short names.
+     * @returns {Array} Array of month names.
+     */
+    tempus.monthNames = function (type) {
+        switch (type) {
+            case 'long':
+                return translations[lang]["monthLongNames"];
+            default:
+                return translations[lang]["monthShortNames"];
+        }
+    };
+
+    /**
+     * Returns array of day names. If type is undefined, short names was returned.
+     *
+     *     @example
+     *     // returns ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+     *     tempus.dayNames();
+     *
+     *     // returns ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+     *     tempus.dayNames(true);
+     *
+     *     // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
+     *     tempus.setLang('ru');
+     *     tempus.dayNames();
+     *
+     * @static
+     * @param {boolean} type If true, long names was returning, else - short names.
+     * @returns {Array} Array of day names.
+     */
+    tempus.dayNames = function (type) {
+        switch (type) {
+            case 'long':
+                return translations[lang]["dayLongNames"];
+            default:
+                return translations[lang]["dayShortNames"];
+        }
+    };
+
+    /**
+     * Globally set or get language. By default **auto detect current user language**. If you want only english
+     * language, always set tempus.lang('en'); before using tempus.
+     *
+     *     @example
+     *     // returns "Ноябрь, 14"
+     *     tempus.lang('ru');
+     *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
+     *
+     *     // returns "November, 14"
+     *     tempus.lang('en');
+     *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
+     *
+     * @param {string} value Language's code.
+     * @static
+     * @returns {undefined|string} Language's code or undefined for setter.
+     */
+    tempus.lang = function (value) {
+        if (value !== undefined) {
+            lang = value;
+        } else {
+            return lang;
+        }
+        return undefined;
+    };
+
+    /**
+     * Get available languages.
+     *
+     *     @example
+     *     // returns ["en", "ru"]
+     *     tempus.availableLocales();
+     *
+     * @static
+     * @returns {Array} Array of available languages.
+     */
+    tempus.availableLangs = function() {
+        return Object.keys(translations);
+    };
+
+    /**
+     * Registering a new format.
+     *
+     *     @example
+     *     // no returns
+     *     tempus.registerFormat('%q',
+     *         function(date) {
+     *             return date.month();
+     *         },
+     *         function(value) {
+     *             var v = Number(value);
+     *             return {month: (isNaN(v) ? undefined : v) };
+     *         },
+     *         1,
+     *         2,
+     *         'number'
+     *     );
+     *
+     *     // test it
+     *     // returns "01.1.2013";
+     *     tempus({year: 2013, month: 1, day: 1}).format('%d.%q.%Y');
+     *
+     *     // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
+     *     tempus('10.2.2013', '%d.%q.%Y').get();
+     *
+     * @param {string} value Directive
+     * @param {Function} formatFunc Format function.
+     * @param {Function} parseFunc Parse function.
+     * @param {number} minLength Min length of value.
+     * @param {number} maxLength Max length of value.
+     * @param {string} type Type of value, can be 'number', 'word' (only letters) or 'string' (any symbols)
+     * @static
+     */
+    tempus.registerFormat = function(value, formatFunc, parseFunc, minLength, maxLength, type) {
+        registeredFormats[value] = {
+            format: formatFunc,
+            parse: parseFunc,
+            minLength: minLength,
+            maxLength: maxLength,
+            type: type
+        }
+    };
+
+    /**
+     * Unregistering a format.
+     *
+     *     @example
+     *     // unregistering a format
+     *     tempus.unregisterFormat('%d');
+     *
+     *     // test it
+     *     // returns "%d.01.2013"
+     *     tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
+     *
+     * @param {string} value Directive
+     * @static
+     */
+    tempus.unregisterFormat = function(value) {
+        delete registeredFormats[value];
+    };
+
+    /**
+     * Detecting format of date  as string.
+     *
+     *     @example
+     *     // returns "%d.%m.%Y"
+     *     tempus.detectFormat('10.12.2013');
+     *
+     *     // returns "%Y-%m-%d %H:%M"
+     *     tempus.detectFormat('2013-01-01 12:00');
+     *
+     *     // returns "%d.%m.%Y"
+     *     tempus.detectFormat('01/02/2013');
+     *
+     * @static
+     * @param {string} str Formatted date as string
+     * @return {string} Format of date.
+     */
+    tempus.detectFormat = function (str) {
+        var format, tmpChars, len;
+        format = detectDateFormat(str, 0);
+        if (format !== '') {
+            len = 10;
+        }
+        tmpChars = str.charAt(len);
+        if (tmpChars === 'T' || tmpChars === ' ') {
+            format += tmpChars;
+            len++;
+        }
+        format += detectTimeFormat(str, len);
+        return format;
+    };
+
+    // *************************************************
+    // *                                               *
+    // *               COMPATIBILITY                   *
+    // *                                               *
+    // *************************************************
+
+    // fix Array.indexOf for old browsers
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function(obj, start) {
+            for (var i = (start || 0), j = this.length; i < j; i++) {
+                if (this[i] === obj) { return i; }
+            }
+            return -1;
+        }
+    }
+
+    // *************************************************
+    // *                                               *
+    // *                  EXPORTS                      *
+    // *                                               *
+    // *************************************************
+
+    window.TempusDate = TempusDate;
+    window.tempus = tempus;
+})(window);

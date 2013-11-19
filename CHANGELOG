@@ -1,3 +1,12 @@
+0.2.0
+- Supports chains.
+- Supports modular structure.
+- Changed tempus to Tempus and TP, added method noConflict().
+- Autodetect user language.
+- parse(), now() and set() methods merget to set().
+- Can be set date as Array.
+- Some functions built as static.
+
 0.1.31
 - Added TempusDate constructor.
 - Added time zones support.
