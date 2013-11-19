@@ -78,15 +78,15 @@
             return format;
         },
         detectDateFormat = function (str, startFrom) {
-            var tmpChars,
-                format,
+            var format,
                 part1 = [
                     str.slice(startFrom, startFrom + 1),
                     str.charAt(startFrom + 2),
                     str.slice(startFrom + 3, startFrom + 4),
                     str.charAt(startFrom + 5),
                     str.slice(startFrom + 6, startFrom + 9)
-                ];
+                ],
+                part2;
 
             if (!isNaN(Number(part1[0])) && !isNaN(Number(part1[2])) && !isNaN(Number(part1[4]))) {
                 if (part1[1] === '.' && part1[3] === '.') {
@@ -100,7 +100,7 @@
                 return format;
             }
 
-            var part2 = [
+            part2 = [
                 str.slice(startFrom, startFrom + 3),
                 str.charAt(startFrom + 4),
                 str.slice(startFrom + 5, startFrom + 6),
@@ -116,10 +116,11 @@
             }
             return '';
         },
-        _tempus = window.tempus,
-        _TempusDate = window.TempusDate,
+        oldTempus = window.tempus,
+        oldTempusDate = window.TempusDate,
         tempus,
-        lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
+        nav = window.navigator,
+        lang = (nav.language || nav.systemLanguage || nav.userLanguage || 'en').substr(0, 2).toLowerCase(),
         translations = {
             "en": {
                 "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -177,7 +178,7 @@
                 format: function (date) {
                     return date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK;
                 },
-                parse: function (value) {
+                parse: function () {
                     // impossible
                     return {};
                 },
@@ -187,9 +188,9 @@
             },
             '%a': {
                 format: function (date) {
-                    return translations[lang]["dayShortNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
+                    return translations[lang].dayShortNames[date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
-                parse: function (value) {
+                parse: function () {
                     // impossible
                     return {};
                 },
@@ -199,9 +200,9 @@
             },
             '%A': {
                 format: function (date) {
-                    return translations[lang]["dayLongNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
+                    return translations[lang].dayLongNames[date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
-                parse: function (value) {
+                parse: function () {
                     // impossible
                     return {};
                 },
@@ -211,11 +212,11 @@
             },
             '%b': {
                 format: function (date) {
-                    return translations[lang]["monthShortNames"][(date.month() || tempus.constants().MIN_MONTH)];
+                    return translations[lang].monthShortNames[(date.month() || tempus.constants().MIN_MONTH)];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames().indexOf(value) + 1;
-                    return {month: month !== -1 ? month : undefined}
+                    return {month: month !== -1 ? month : undefined};
                 },
                 minLength: 1,
                 maxLength: 999,
@@ -223,11 +224,11 @@
             },
             '%B': {
                 format: function (date) {
-                    return translations[lang]["monthLongNames"][(date.month() || tempus.constants().MIN_MONTH)];
+                    return translations[lang].monthLongNames[(date.month() || tempus.constants().MIN_MONTH)];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames(true).indexOf(value) + 1;
-                    return {month: month !== -1 ? month : undefined}
+                    return {month: month !== -1 ? month : undefined};
                 },
                 minLength: 1,
                 maxLength: 999,
@@ -274,7 +275,7 @@
                     return date.timestamp();
                 },
                 parse: function (value) {
-                    return isNaN(v) ? {} : tempus(Number(value)).get();
+                    return isNaN(Number(value)) ? {} : tempus(Number(value)).get();
                 },
                 minLength: 1,
                 maxLength: 20,
@@ -287,14 +288,14 @@
                         formattingWithNulls(date.day() || tempus.constants().MIN_DAY, 2);
                 },
                 parse: function (value) {
-                    var year = Number(value.slice(0, 4));
-                    var month = Number(value.slice(6, 7));
-                    var day = Number(value.slice(9, 10));
+                    var year = Number(value.slice(0, 4)),
+                        month = Number(value.slice(6, 7)),
+                        day = Number(value.slice(9, 10));
                     return {
                         year: year,
                         month: month,
                         day: day
-                    }
+                    };
                 },
                 minLength: 10,
                 maxLength: 10,
@@ -307,14 +308,14 @@
                         '/' + formattingWithNulls(date.year() || tempus.constants().MIN_YEAR, 4)
                 },
                 parse: function (value) {
-                    var month = Number(value.slice(0, 2));
-                    var day = Number(value.slice(3, 5));
-                    var year = Number(value.slice(6, 10));
+                    var month = Number(value.slice(0, 2)),
+                        day = Number(value.slice(3, 5)),
+                        year = Number(value.slice(6, 10));
                     return {
                         year: year,
                         month: month,
                         day: day
-                    }
+                    };
                 },
                 minLength: 10,
                 maxLength: 10,
@@ -1587,8 +1588,8 @@
      * @returns {Object} Object with keys as default names and values as default functions.
      */
     tempus.noConflict = function () {
-        window.tempus = _tempus;
-        window.TempusDate = _TempusDate;
+        window.tempus = oldTempus;
+        window.TempusDate = oldTempusDate;
         return {tempus: tempus, TempusDate: TempusDate};
     };
 
