@@ -1631,17 +1631,17 @@
         // timestamp "from"
         if (typeof options.dateFrom !== 'number') {
             if (options.dateFrom instanceof TempusDate) {
-                tsFrom = tsFrom.timestamp();
+                tsFrom = tsFrom.utc();
             } else {
-                tsFrom = tempus(tsFrom, options.formatFrom).timestamp();
+                tsFrom = tempus(tsFrom, options.formatFrom).utc();
             }
         }
         // timestamp "to"
         if (typeof options.dateTo !== 'number') {
             if (options.dateTo instanceof TempusDate) {
-                tsTo = tsTo.timestamp();
+                tsTo = tsTo.utc();
             } else {
-                tsTo = tempus(tsTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).timestamp();
+                tsTo = tempus(tsTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).utc();
             }
         }
         // period
@@ -1698,7 +1698,7 @@
             return array;
         };
 
-        for (; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).timestamp()) {
+        for (; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).utc()) {
             if (options.groupBy === undefined) {
                 addTo(result, tsFrom);
             } else {
