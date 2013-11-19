@@ -1308,6 +1308,19 @@
             this._incorrect.milliseconds === false);
     };
 
+    /**
+     * Get errors in date.
+     *
+     *     @example
+     *     // returns {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}
+     *     tempus().year(-5).errors();
+     *
+     * @returns {Object} Object with date errors
+     */
+    TempusDate.fn.errors = function() {
+        return this._incorrect;
+    };
+
 
 
 
@@ -1377,8 +1390,8 @@
         return {
             MIN_YEAR: 1000,
             MAX_YEAR: 3000,
-            MIN_MONTH: monthFromZero ? 0 : 1,
-            MAX_MONTH: monthFromZero ? 11 : 12,
+            MIN_MONTH: tempus.options('monthFromZero') ? 0 : 1,
+            MAX_MONTH: tempus.options('monthFromZero') ? 11 : 12,
             MIN_DAY: 1,
             MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
             MIN_DAY_OF_WEEK: 0,

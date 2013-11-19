@@ -104,9 +104,7 @@
 
 
 
-    TempusDate.fn.getErrors = function() {
-        return this._incorrect;
-    };
+
 
 
 
