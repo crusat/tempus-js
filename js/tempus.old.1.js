@@ -47,20 +47,7 @@
 
 
 
-    TempusDate.fn.detectFormat = function (str) {
-        var format, tmpChars, len;
-        format = detectDateFormat(str, 0);
-        if (format !== '') {
-            len = 10;
-        }
-        tmpChars = str.charAt(len);
-        if (tmpChars === 'T' || tmpChars === ' ') {
-            format += tmpChars;
-            len++;
-        }
-        format += detectTimeFormat(str, len);
-        return format;
-    };
+
 
     TempusDate.fn.calc = function (delta) {
         if (delta.year !== undefined) {

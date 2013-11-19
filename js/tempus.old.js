@@ -359,20 +359,7 @@
 //            return result;
 //        };
 
-        /**
-         * Detecting format of date  as string.
-         * @param str {string} Formatted date as string
-         * @returns {string|undefined} Format of date or undefined if auto detect failed.
-         * @example
-         * // returns "%d.%m.%Y"
-         * tempus.detectFormat('10.12.2013');
-         * @example
-         * // returns "%Y-%m-%d %H:%M"
-         * tempus.detectFormat('2013-01-01 12:00');
-         * @example
-         * // returns "%d.%m.%Y"
-         * tempus.detectFormat('01/02/2013');
-         */
+
 //        this.detectFormat = function(str) {
 //            var defaultFormats = [
 //                '^%d\\.%m\\.%Y$', '^%Y-%m-%d$', '^%m/%d/%Y$', '^%Y-%m-%dT%H:%M:%S$',

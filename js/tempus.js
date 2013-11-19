@@ -944,7 +944,7 @@
                 return parseResult;
             }
             if (format === undefined) {
-                format = this.detectFormat(newDate);
+                format = tempus.detectFormat(newDate);
             }
 
             var directive;
@@ -1256,6 +1256,7 @@
         }
         return result;
     };
+
 
 
 
@@ -1693,6 +1694,38 @@
      */
     tempus.unregisterFormat = function(value) {
         delete registeredFormats[value];
+    };
+
+    /**
+     * Detecting format of date  as string.
+     *
+     *     @example
+     *     // returns "%d.%m.%Y"
+     *     tempus.detectFormat('10.12.2013');
+     *
+     *     // returns "%Y-%m-%d %H:%M"
+     *     tempus.detectFormat('2013-01-01 12:00');
+     *
+     *     // returns "%d.%m.%Y"
+     *     tempus.detectFormat('01/02/2013');
+     *
+     * @static
+     * @param {string} str Formatted date as string
+     * @return {string} Format of date.
+     */
+    tempus.detectFormat = function (str) {
+        var format, tmpChars, len;
+        format = detectDateFormat(str, 0);
+        if (format !== '') {
+            len = 10;
+        }
+        tmpChars = str.charAt(len);
+        if (tmpChars === 'T' || tmpChars === ' ') {
+            format += tmpChars;
+            len++;
+        }
+        format += detectTimeFormat(str, len);
+        return format;
     };
 
     // *************************************************
