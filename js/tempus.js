@@ -1050,24 +1050,24 @@
     /**
      * Is year leap?
      *
-     *    @example
-     *    // returns false
-     *    tempus([2014]).leapYear();
+     *     @example
+     *     // returns false
+     *     tempus([2014]).leapYear();
      *
-     *    // returns true
-     *    tempus({year: 2012}).leapYear();
+     *     // returns true
+     *     tempus({year: 2012}).leapYear();
      *
-     *    // returns true
-     *    tempus(947698701).leapYear(); // 2012 year
+     *     // returns true
+     *     tempus(947698701).leapYear(); // 2012 year
      *
-     *    // returns false
-     *    tempus([1900]).leapYear();
+     *     // returns false
+     *     tempus([1900]).leapYear();
      *
-     *    // returns false
-     *    tempus({year: 1941, day: 22, month: 6}).leapYear();
+     *     // returns false
+     *     tempus({year: 1941, day: 22, month: 6}).leapYear();
      *
-     *    // returns true
-     *    tempus({year: 2008, day: 1, month: 1}).leapYear();
+     *     // returns true
+     *     tempus({year: 2008, day: 1, month: 1}).leapYear();
      *
      *    // check current year
      *    tempus().leapYear();
@@ -1094,7 +1094,7 @@
      *     // returns TempusDate with date '2013-11-18'
      *     tempus().timestamp(1384718400);
      *
-     * @param {none|number} value
+     * @param {number} value Value for set or no value for get.
      * @returns {TempusDate|number} TempusDate or numeric timestamp.
      */
     TempusDate.fn.timestamp = function (value) {
@@ -1120,7 +1120,7 @@
      *     // returns TempusDate with date '2013-11-18'
      *     tempus().UTC(1384732800);
      *
-     * @param {none|number} value
+     * @param {number} value Value for set or no value for get.
      * @returns {TempusDate|number} TempusDate or numeric timestamp.
      */
     TempusDate.fn.UTC = function (value) {
@@ -1266,7 +1266,7 @@
     // *************************************************
 
     /**
-     * Create method for TempusDate. You can set initial value, for more info, see {@link #set}.
+     * Create method for TempusDate. You can set initial value, for more info, see {@link TempusDate#set}.
      *
      *     @example
      *     // returns TempusDate with current date.
@@ -1284,9 +1284,9 @@
      *     // returns TempusDate with date 2001-05-10 and time 05:30:00
      *     tempus(989454600);
      *
-     * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link #set}
-     * @param {undefined|string} format See {@link #set}
-     * @param {undefined|TempusDate} defaults See {@link #set}
+     * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link TempusDate#set}
+     * @param {undefined|string} format See {@link TempusDate#set}
+     * @param {undefined|TempusDate} defaults See {@link TempusDate#set}
      * @returns {TempusDate} Instance of TempusDate.
      */
     tempus = function (options, format, defaults) {
@@ -1295,7 +1295,7 @@
 
     /**
      * Returns constants object. Some constants depends from options (MIN_MONTH, MAX_MONTH).
-     * For MAX_DAY_IN_MONTH better use {@link #dayCount}.
+     * For MAX_DAY_IN_MONTH better use {@link TempusDate#dayCount}.
      *
      *     @example
      *     // returns {
@@ -1661,8 +1661,8 @@
      *     tempus('10.2.2013', '%d.%q.%Y').get();
      *
      * @param {string} value Directive
-     * @param {function} formatFunc Format function.
-     * @param {function} parseFunc Parse function.
+     * @param {Function} formatFunc Format function.
+     * @param {Function} parseFunc Parse function.
      * @param {number} minLength Min length of value.
      * @param {number} maxLength Max length of value.
      * @param {string} type Type of value, can be 'number', 'word' (only letters) or 'string' (any symbols)
