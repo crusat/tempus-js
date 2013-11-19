@@ -17,7 +17,7 @@
 <body onload="prettyPrint(); highlight();">
   <pre class="prettyprint lang-js">/*
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.0
+ * @version 0.2.1
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods.
  */
@@ -25,7 +25,7 @@
     var _tempus = window.tempus,
         _TempusDate = window.TempusDate,
         tempus,
-        version = '0.2.0',
+        version = '0.2.1',
         lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
         translations = {
             &quot;en&quot;: {
@@ -94,7 +94,7 @@
             },
             '%a': {
                 format: function (date) {
-                    return translations[lang][&quot;daysShortNames&quot;][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
+                    return translations[lang][&quot;dayShortNames&quot;][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
@@ -106,7 +106,7 @@
             },
             '%A': {
                 format: function (date) {
-                    return translations[lang][&quot;daysLongNames&quot;][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
+                    return translations[lang][&quot;dayLongNames&quot;][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
