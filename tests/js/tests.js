@@ -152,13 +152,13 @@
     });
 
     test('Test timestamp() method', function () {
-        equal(tempus([2013, 11, 18]).timestamp(), 1384718400, 'Test');
+        equal(tempus([2013, 11, 18]).timestamp(), 1384732800, 'Test');
         equal(tempus().timestamp(1384718400).timestamp(), 1384718400, 'Test');
     });
 
     test('Test utc() method', function () {
         equal(tempus([2013, 11, 18]).utc(), 1384732800, 'Test');
-        equal(tempus().utc(1384732800).timestamp(), 1384732800, 'Test');
+        equal(tempus().utc(1384732800).utc(), 1384732800, 'Test');
     });
 
     test('Test dayOfWeek() method', function () {
@@ -245,7 +245,7 @@
     // *************************************************
 
     test('Tests set() method', function() {
-        equal(Math.floor(tempus().set().get('Date').valueOf()/1000), Math.floor(new Date().valueOf()/1000),
+        equal(tempus().set().timestamp(), Math.floor(new Date().valueOf()/1000),
             'This test may be not completed and it be right, because here checking two NOW dates');
         equal(tempus().set({year: 2013, month: 1, day: 15}).get('Date').valueOf(), new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');

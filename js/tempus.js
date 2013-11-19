@@ -1105,13 +1105,13 @@
      */
     TempusDate.fn.timestamp = function (value) {
         if (arguments.length !== 0) {
-            this._date = new Date(Number(value) * (tempus.options().useMilliseconds ? 1 : 1000));
+            this._date = new Date(Number(value) * (tempus.options('useMilliseconds') ? 1 : 1000) - this._date.getTimezoneOffset()*60000);
             return this;
         } else {
-            if (tempus.options().useMilliseconds) {
-                return this._date.getTime();
+            if (tempus.options('useMilliseconds')) {
+                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
             } else {
-                return Math.floor(this._date.getTime() / 1000)
+                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60
             }
         }
     };
@@ -1135,9 +1135,9 @@
             return this;
         } else {
             if (tempus.options('useMilliseconds')) {
-                return this._date.getTime() - this._date.getTimezoneOffset()*60000;
+                return this._date.getTime();
             } else {
-                return Math.floor(this._date.getTime() / 1000) - this._date.getTimezoneOffset()*60;
+                return Math.floor(this._date.getTime() / 1000);
             }
         }
     };
