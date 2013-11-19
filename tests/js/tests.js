@@ -8,12 +8,6 @@
         return false;
     }
 
-    function setLocaleTest(date, locale) {
-        tempus.setLocale(locale);
-        var t = tempus.format(date, '%Y, %B, %d, %A');
-        tempus.setLocale();
-        return t;
-    }
     // prepare for tests
     var today = new Date(); // current day
     var dd = today.getDate(); // day. Begin from 1.
@@ -25,13 +19,6 @@
     tempus.lang('en');
 
 
-
-
-    test('Test base set() method', function () {
-        deepEqual(tempus(new Date(2013, 0, 1, 0, 0, 0, 0)).get(), tempus({year: 2013, month: 1, day: 1, hourss: 0, minutes: 0,
-            seconds:0, milliseconds:0}).get(), 'Set new Date().');
-        equal(typeof tempus().get(), 'object', 'Type is object');
-    });
 
 
 
@@ -410,6 +397,26 @@
             },
             ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
             'Test');
+    });
+
+    // *************************************************
+    // *                                               *
+    // *                   FORMAT                      *
+    // *                                               *
+    // *************************************************
+
+    test('Tests format()', function() {
+        equal(tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Test');
+        equal(tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S'), '2013-11-18 12:36:42', 'Test');
+        equal(tempus([2013, 11, 5]).format('%Y%m%d'), '20131105', 'Test');
+    });
+
+    test('Tests registerFormat()', function() {
+
+    });
+
+    test('Tests unregisterFormat()', function() {
+
     });
 
     // *************************************************

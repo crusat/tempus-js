@@ -341,21 +341,7 @@
             }
         };
 
-        /**
-         * Returns formatted string of date. You can use object or timestamp as parameter of method.
-         * @param date {object|number} Tempus date object (see {@link date}) or timestamp.
-         * @param format {string} Format of date. See index page for defaults.
-         * @returns {string|undefined} Formatted string
-         * @example
-         * // returns '05.11.2013'
-         * tempus.format({year: 2013, month: 11, day:5}, '%d.%m.%Y');
-         * @example
-         * // returns '2013-11-05 12:36:42'
-         * tempus.format(tempus.now(), '%Y-%m-%d %H:%M:%S');
-         * @example
-         * // returns '20131105'
-         * tempus.format(tempus.time(), '%Y%m%d');
-         */
+
 //        this.format = function(date, format) {
 //            var result = format;
 //            var d;
@@ -728,9 +714,6 @@
 
 
 
-//        this.unregisterFormat = function(value) {
-//            delete registeredFormats[value];
-//        };
 
         /**
          * Get week number.

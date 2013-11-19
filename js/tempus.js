@@ -1222,6 +1222,41 @@
         }
     };
 
+    /**
+     * Returns formatted string of date. You can use object or timestamp as parameter of method.
+     *
+     *     @example
+     *     // returns '05.11.2013'
+     *     tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y');
+     *
+     *     // returns '2013-11-18 12:36:42'
+     *     tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S')
+     *
+     *     // returns '20131105'
+     *     tempus([2013, 11, 5]).format('%Y%m%d');
+     *
+     * @param format {string} Format of date. See index page for defaults.
+     * @returns {string} Formatted string
+     */
+    TempusDate.fn.format = function (format) {
+        var i = 0,
+            result = '',
+            directive;
+        while (i < format.length) {
+            if (format.charAt(i) === '%') {
+                directive = format.charAt(i) + format.charAt(i + 1);
+                if (registeredFormats[directive] !== undefined) {
+                    result += registeredFormats[directive].format(this);
+                    i++;
+                }
+            } else {
+                result += format.charAt(i);
+            }
+            i++;
+        }
+        return result;
+    };
+
 
 
     // *************************************************
