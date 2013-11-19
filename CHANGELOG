@@ -1,3 +1,6 @@
+0.2.1
+- Fixed error with %a, %A directives.
+
 0.2.0
 - Supports chains.
 - Supports modular structure.

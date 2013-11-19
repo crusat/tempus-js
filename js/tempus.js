@@ -1,6 +1,6 @@
 /*
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.0
+ * @version 0.2.1
  * @url https://github.com/crusat/tempus-js
  * @description Library with date/time methods.
  */
@@ -8,7 +8,7 @@
     var _tempus = window.tempus,
         _TempusDate = window.TempusDate,
         tempus,
-        version = '0.2.0',
+        version = '0.2.1',
         lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || 'en').substr(0, 2).toLowerCase(),
         translations = {
             "en": {
@@ -77,7 +77,7 @@
             },
             '%a': {
                 format: function (date) {
-                    return translations[lang]["daysShortNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
+                    return translations[lang]["dayShortNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
@@ -89,7 +89,7 @@
             },
             '%A': {
                 format: function (date) {
-                    return translations[lang]["daysLongNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
+                    return translations[lang]["dayLongNames"][date.dayOfWeek() || tempus.constants().MIN_DAY_OF_WEEK];
                 },
                 parse: function (value) {
                     // impossible
