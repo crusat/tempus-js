@@ -301,20 +301,20 @@
          * @returns {number|undefined} Value of [type] between dateFrom to dateTo.
          * @example
          * // returns 4
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2013, month: 11, day: 5}, 'day');
+         *
          * @example
-         * // returns 6
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'month');
+         *
+         *
          * @example
-         * // returns 266400
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2014, month: 5, day: 5}, 'minutes');
+         *
+         *
          * @example
-         * // returns 10224
-         * tempus.between({year: 2013, month: 11, day: 1}, {year: 2015, month: 1, day: 1}, 'hours');
+         *
+         *
          * @example
-         * // Happy New Year!
-         * // returns 56
-         * tempus.between(tempus.now(), {year: 2014, month: 1, day: 1}, 'day');
+         *
+         *
+         *
          * @example
          * // my current age
          * // returns 25

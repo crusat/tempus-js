@@ -1321,6 +1321,51 @@
         return this._incorrect;
     };
 
+    /**
+     * Returns integer of date between from [this date] to [dateTo] as [type].
+     *
+     *     @example
+     *     // returns 4
+     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day');
+     *
+     *     // returns 6
+     *     tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month');
+     *
+     *     // returns 266400
+     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes');
+     *
+     *     // returns 10224
+     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours');
+     *
+     *     // Happy New Year!
+     *     // Days ago to New Year.
+     *     tempus().between(tempus([2014,1,1]), 'day');
+     *
+     * @param {TempusDate} dateTo Date to.
+     * @param {string} type Type of time.
+     * @returns {number|undefined} If errors, returns undefined.
+     */
+    TempusDate.fn.between = function (dateTo, type) {
+        var from = this.timestamp();
+        var to = dateTo.timestamp();
+        switch (type) {
+            case 'year':
+                return Math.floor((to - from) / 31556952); // 365.2425 - average days in year. Here in seconds
+            case 'month':
+                return Math.floor((to - from) / 2629746);
+            case 'day':
+                return Math.floor((to - from) / 86400);
+            case 'hours':
+                return Math.floor((to - from) / 3600);
+            case 'minutes':
+                return Math.floor((to - from) / 60);
+            case 'seconds':
+                return to - from;
+            default:
+                return undefined;
+        }
+    };
+
 
 
 

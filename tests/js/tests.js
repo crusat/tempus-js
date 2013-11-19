@@ -392,8 +392,12 @@
             {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}, 'Get errors');
     });
 
-
-
+    test('Tests between()', function () {
+        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day'), 4, 'test');
+        equal(tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month'), 6, 'test');
+        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes'), 266400, 'test');
+        equal(tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours'), 10224, 'test');
+    });
 
     // *************************************************
     // *                                               *

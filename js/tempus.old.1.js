@@ -19,26 +19,7 @@
 
 
 
-    TempusDate.fn.between = function (dateTo, type) {
-        var from = this.timestamp();
-        var to = dateTo.timestamp();
-        switch (type) {
-            case 'year':
-                return Math.floor((to - from) / 31556952); // 365.2425 - average days in year. Here in seconds
-            case 'month':
-                return Math.floor((to - from) / 2629746);
-            case 'day':
-                return Math.floor((to - from) / 86400);
-            case 'hours':
-                return Math.floor((to - from) / 3600);
-            case 'minutes':
-                return Math.floor((to - from) / 60);
-            case 'seconds':
-                return to - from;
-            default:
-                return undefined;
-        }
-    };
+
 
 
 
