@@ -260,7 +260,7 @@
 
     test('Test now date', function () {
         // check current date/time
-        equal(tempus().timestamp(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
+        equal(tempus().utc(), Math.floor(new Date().getTime() / 1000), 'Current UTC');
         equal(tempus().year(), new Date().getFullYear(), 'Full year');
         equal(tempus().month(), new Date().getMonth() + 1, 'Month');
         equal(tempus().day(), new Date().getDate(), 'Day');
@@ -269,7 +269,7 @@
         equal(tempus().seconds(), new Date().getSeconds(), 'Seconds');
         equal(tempus().dayOfWeek(), new Date().getDay(), 'Day of week');
         // check types
-        equal(typeof tempus().now(), 'object', 'Type is object');
+        equal(typeof tempus(), 'object', 'Type is object');
         equal(typeof tempus().year(), 'number', 'Type is number');
         equal(typeof tempus().month(), 'number', 'Type is number');
         equal(typeof tempus().day(), 'number', 'Type is number');
@@ -285,10 +285,10 @@
             equal(tempus({year: year}).year(), year, 'Year can be from 1000 to 3000, else MIN_YEAR. Year: ' + year);
         }
         for (year = -100; year <= 999; year++) {
-            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 999 or less, else current and set incorrect. Year: ' + year);
+            equal(tempus({year: year}).year(), year, 'Year can not be 999 or less, else current and set incorrect. Year: ' + year);
         }
         for (year = 3001; year <= 4000; year++) {
-            equal(tempus({year: year}).year(), new Date().getFullYear(), 'Year can not be 3001 or more, else current and set incorrect. Year: ' + year);
+            equal(tempus({year: year}).year(), year, 'Year can not be 3001 or more, else current and set incorrect. Year: ' + year);
         }
         equal(tempus({}).year(), 1000, 'If year is not setted, setting MIN_YEAR');
     });
@@ -298,10 +298,10 @@
             equal(tempus().set({month: month}).month(), month, 'Month can be from 1 to 12. Month: ' + month);
         }
         for (month = -100; month <= 0; month++) {
-            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 0 or less. Month: ' + month);
+            equal(tempus().set({month: month}).month(), month, 'Month can not be 0 or less. Month: ' + month);
         }
         for (month = 13; month <= 100; month++) {
-            equal(tempus().set({month: month}).month(), new Date().getMonth() + 1, 'Month can not be 13 or more. Month: ' + month);
+            equal(tempus().set({month: month}).month(), month, 'Month can not be 13 or more. Month: ' + month);
         }
         equal(tempus().set({}).month(), 1, 'If month is not setted, setting MIN_MONTH');
     });
@@ -314,10 +314,10 @@
                 equal(tempus().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(tempus().set({year: 2001, month: month, day: day}).day(), new Date().getDate(), 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2001, month: month, day: day}).day(), day, 'Year: 2001. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
         // leap year check
@@ -327,10 +327,10 @@
                 equal(tempus().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can be from 1 to X. Month: ' + month + '. Day:' + day);
             }
             for (day = -10; day <= 0; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
             for (day = dayInMonth[month - 1] + 1; day <= 40; day++) {
-                equal(tempus().set({year: 2012, month: month, day: day}).day(), new Date().getDate(), 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
+                equal(tempus().set({year: 2012, month: month, day: day}).day(), day, 'Year: 2012. Day can not be 0 or less. Month: ' + month + '. Day:' + day);
             }
         }
         equal(tempus().set({}).day(), 1, 'If day is not setted, setting MIN_DAY');
@@ -341,10 +341,10 @@
             equal(tempus().set({hours: hours}).hours(), hours, 'Hours can be from 0 to 23. Hours: ' + hours);
         }
         for (hours = -100; hours < 0; hours++) {
-            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 0 or less. Month: ' + hours);
+            equal(tempus().set({hours: hours}).hours(), hours, 'Hours can not be 0 or less. Month: ' + hours);
         }
         for (hours = 24; hours <= 100; hours++) {
-            equal(tempus().set({hours: hours}).hours(), new Date().getHours(), 'Hours can not be 24 or more. Month: ' + hours);
+            equal(tempus().set({hours: hours}).hours(), hours, 'Hours can not be 24 or more. Month: ' + hours);
         }
         equal(tempus().set({}).hours(), 0, 'If hours is not setted, setting MIN_HOURS');
     });
@@ -354,10 +354,10 @@
             equal(tempus().set({minutes: minutes}).minutes(), minutes, 'Minutes can be from 0 to 59. Minutes: ' + minutes);
         }
         for (minutes = -100; minutes < 0; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 0 or less. Minutes: ' + minutes);
+            equal(tempus().set({minutes: minutes}).minutes(), minutes, 'Minutes can not be 0 or less. Minutes: ' + minutes);
         }
         for (minutes = 60; minutes <= 100; minutes++) {
-            equal(tempus().set({minutes: minutes}).minutes(), new Date().getMinutes(), 'Minutes can not be 59 or more. Minutes: ' + minutes);
+            equal(tempus().set({minutes: minutes}).minutes(), minutes, 'Minutes can not be 59 or more. Minutes: ' + minutes);
         }
         equal(tempus().set({}).minutes(), 0, 'If minutes is not setted, setting MIN_MINUTES');
     });
@@ -367,10 +367,10 @@
             equal(tempus().set({seconds: seconds}).seconds(), seconds, 'Seconds can be from 0 to 59. Minutes: ' + seconds);
         }
         for (seconds = -100; seconds < 0; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 0 or less. Minutes: ' + seconds);
+            equal(tempus().set({seconds: seconds}).seconds(), seconds, 'Seconds can not be 0 or less. Minutes: ' + seconds);
         }
         for (seconds = 60; seconds <= 100; seconds++) {
-            equal(tempus().set({seconds: seconds}).seconds(), new Date().getSeconds(), 'Seconds can not be 59 or more. Minutes: ' + seconds);
+            equal(tempus().set({seconds: seconds}).seconds(), seconds, 'Seconds can not be 59 or more. Minutes: ' + seconds);
         }
         equal(tempus().set({}).seconds(), 0, 'If seconds is not setted, setting MIN_SECONDS');
     });
@@ -386,21 +386,24 @@
     // *                                               *
     // *************************************************
 
-    test('Tests getMonthNames()', function () {
+    test('Tests monthNames()', function () {
+
+        var anotherLangTest = function() {
+            var names;
+            tempus.lang('ru');
+            names = tempus.monthNames();
+            tempus.lang();
+            return names;
+        };
+
         deepEqual(tempus.monthNames(),
             ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
             'Test');
-        deepEqual(tempus.monthNames(true),
+        deepEqual(tempus.monthNames('long'),
             ["January","February","March","April","May","June",
              "July","August","September","October","November","December"],
             'Test');
-        deepEqual(function() {
-                var names;
-                tempus.setLang('ru');
-                names = tempus.monthNames();
-                tempus.setLang();
-                return names;
-            },
+        deepEqual(anotherLangTest(),
             ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
             'Test');
     });
