@@ -1257,6 +1257,33 @@
         return result;
     };
 
+    /**
+     * Validates date.
+     *
+     *     @example
+     *     // returns false
+     *     tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     *
+     *     // returns false
+     *     tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate();
+     *
+     *     // returns true
+     *     tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     *
+     *     // returns true
+     *     tempus('2013-03-12', '%Y-%m-%d').validate();
+     *
+     *     // returns true
+     *     tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate();
+     *
+     * @returns {boolean} If true, date is valid, else invalid.
+     */
+    TempusDate.fn.validate = function() {
+        return (this._incorrect.year === false && this._incorrect.month === false && this._incorrect.day === false &&
+            this._incorrect.hours === false && this._incorrect.minutes === false && this._incorrect.seconds === false &&
+            this._incorrect.milliseconds === false);
+    };
+
 
 
 

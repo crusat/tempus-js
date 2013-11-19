@@ -492,20 +492,20 @@
          * @param format {string|undefined} Format (see index page). If undefined, tempus will be auto detect format.
          * @returns {boolean} Valid or not valid.
          * @example
-         * // returns false
-         * tempus.validate({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0});
+         *
+         *
          * @example
-         * // returns false
-         * tempus.validate({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0});
-         * @example
-         * // returns true
-         * tempus.validate({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0});
+         *
+         *
          * @example
          * // returns true
-         * tempus.validate('2013-03-12', '%Y-%m-%d');
+         *
+         * @example
+         *
+         *
          * @example
          * // returns true
-         * tempus.validate('16:00 08.08.2013', '%H:%M %d.%m.%Y');
+         *
          * @example
          * // returns false
          * tempus.validate('32.08.2013', '%d.%m.%Y');

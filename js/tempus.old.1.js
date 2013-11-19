@@ -102,11 +102,7 @@
 
 
 
-    TempusDate.fn.validate = function() {
-        return (this._incorrect.year === false && this._incorrect.month === false && this._incorrect.day === false &&
-            this._incorrect.hours === false && this._incorrect.minutes === false && this._incorrect.seconds === false &&
-            this._incorrect.milliseconds === false);
-    };
+
 
     TempusDate.fn.getErrors = function() {
         return this._incorrect;
