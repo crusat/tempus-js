@@ -1154,17 +1154,20 @@
     };
 
     /**
-     * Get or set timestamp.
-     *
-     *     @example
-     *     // returns 1384718400
-     *     tempus([2013, 11, 18]).timestamp();
-     *
-     *     // returns TempusDate with date '2013-11-18'
-     *     tempus().timestamp(1384718400);
-     *
+     * @doc method
+     * @name TempusDate.global:timestamp
      * @param {number} value Value for set or no value for get.
      * @return {TempusDate|number} TempusDate or numeric timestamp.
+     * @description
+     * Get or set timestamp.
+     *
+     * ```js
+     * // returns 1384718400
+     * tempus([2013, 11, 18]).timestamp();
+     *
+     * // returns TempusDate with date '2013-11-18'
+     * tempus().timestamp(1384718400);
+     * ```
      */
     TempusDate.fn.timestamp = function (value) {
         if (arguments.length !== 0) {
@@ -1178,17 +1181,20 @@
     };
 
     /**
-     * Get or set timestamp in UTC.
-     *
-     *     @example
-     *     // returns 1384732800
-     *     tempus([2013, 11, 18]).utc();
-     *
-     *     // returns TempusDate with date '2013-11-18'
-     *     tempus().utc(1384732800);
-     *
+     * @doc method
+     * @name TempusDate.global:utc
      * @param {number} value Value for set or no value for get.
      * @return {TempusDate|number} TempusDate or numeric timestamp.
+     * @description
+     * Get or set timestamp in UTC.
+     *
+     * ```js
+     * // returns 1384732800
+     * tempus([2013, 11, 18]).utc();
+     *
+     * // returns TempusDate with date '2013-11-18'
+     * tempus().utc(1384732800);
+     * ```
      */
     TempusDate.fn.utc = function (value) {
         if (arguments.length !== 0) {
@@ -1202,17 +1208,20 @@
     };
 
     /**
-     * Get day of week.
-     *
-     *     @example
-     *     // returns current day of week
-     *     tempus().dayOfWeek();
-     *
-     *     // returns 1
-     *     tempus([2013, 11, 18]).dayOfWeek();
-     *
+     * @doc method
+     * @name TempusDate.global:dayOfWeek
      * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
      * @return {number} Numeric value of day of week.
+     * @description
+     * Get day of week.
+     *
+     * ```js
+     * // returns current day of week
+     * tempus().dayOfWeek();
+     *
+     * // returns 1
+     * tempus([2013, 11, 18]).dayOfWeek();
+     * ```
      */
     TempusDate.fn.dayOfWeek = function (type) {
         switch (type) {
@@ -1226,17 +1235,20 @@
     };
 
     /**
-     * Get timezone offset.
-     *
-     *     @example
-     *     // returns your timezone offset in seconds
-     *     tempus().timezone();
-     *
-     *     // returns your timezone offset in hours
-     *     tempus().timezone('hours');
-     *
+     * @doc method
+     * @name TempusDate.global:timezone
      * @param {string} type If type is 'hours', returns offset in hours, 'minutes' for minutes and default in seconds.
      * @return {number} Timezone offset value
+     * @description
+     * Get timezone offset.
+     *
+     * ```js
+     * // returns your timezone offset in seconds
+     * tempus().timezone();
+     *
+     * // returns your timezone offset in hours
+     * tempus().timezone('hours');
+     * ```
      */
     TempusDate.fn.timezone = function (type) {
         switch (type) {
@@ -1251,18 +1263,21 @@
 
 
     /**
-     * Get info about date.
-     *
-     *     @example
-     *     // returns Date object
-     *     tempus().get('Date');
-     *
-     *     // returns object with more info
-     *     tempus().get();
-     *
+     * @doc method
+     * @name TempusDate.global:get
      * @param {string} type Can be 'Date' for returns Date object, 'DateUTC' for returns Date in UTC or default
      *     for returns default object.
      * @return {Date|Object} Date or default object.
+     * @description
+     * Get info about date.
+     *
+     * ```js
+     * // returns Date object
+     * tempus().get('Date');
+     *
+     * // returns object with more info
+     * tempus().get();
+     * ```
      */
     TempusDate.fn.get = function (type) {
         switch (type) {
@@ -1292,20 +1307,23 @@
     };
 
     /**
-     * Returns formatted string of date. You can use object or timestamp as parameter of method.
-     *
-     *     @example
-     *     // returns '05.11.2013'
-     *     tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y');
-     *
-     *     // returns '2013-11-18 12:36:42'
-     *     tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S')
-     *
-     *     // returns '20131105'
-     *     tempus([2013, 11, 5]).format('%Y%m%d');
-     *
+     * @doc method
+     * @name TempusDate.global:format
      * @param format {string} Format of date. See index page for defaults.
      * @return {string} Formatted string
+     * @description
+     * Returns formatted string of date. You can use object or timestamp as parameter of method.
+     *
+     * ```js
+     * // returns '05.11.2013'
+     * tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y');
+     *
+     * // returns '2013-11-18 12:36:42'
+     * tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S')
+     *
+     * // returns '20131105'
+     * tempus([2013, 11, 5]).format('%Y%m%d');
+     * ```
      */
     TempusDate.fn.format = function (format) {
         var i = 0,
@@ -1329,49 +1347,52 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:validate
+     * @return {boolean} If true, date is valid, else invalid.
+     * @description
      * Validates date.
      *
-     *     @example
-     *     // returns false
-     *     tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     * ```js
+     * // returns false
+     * tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate();
      *
-     *     // returns false
-     *     tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate();
+     * // returns false
+     * tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate();
      *
-     *     // returns true
-     *     tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     * // returns true
+     * tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate();
      *
-     *     // returns true
-     *     tempus('2013-03-12', '%Y-%m-%d').validate();
+     * // returns true
+     * tempus('2013-03-12', '%Y-%m-%d').validate();
      *
-     *     // returns true
-     *     tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate();
+     * // returns true
+     * tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate();
      *
-     *     // returns false
-     *     tempus('32.08.2013', '%d.%m.%Y').validate();
+     * // returns false
+     * tempus('32.08.2013', '%d.%m.%Y').validate();
      *
-     *     // returns false
-     *     tempus('29.02.2013', '%d.%m.%Y').validate();
+     * // returns false
+     * tempus('29.02.2013', '%d.%m.%Y').validate();
      *
-     *     // returns true
-     *     tempus('29.02.2012', '%d.%m.%Y').validate();
+     * // returns true
+     * tempus('29.02.2012', '%d.%m.%Y').validate();
      *
-     *     // returns false
-     *     tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate();
+     * // returns false
+     * tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate();
      *
-     *     // returns true
-     *     tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate();
+     * // returns true
+     * tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate();
      *
-     *     // returns false
-     *     tempus('29.02.2012 24:00').validate();
+     * // returns false
+     * tempus('29.02.2012 24:00').validate();
      *
-     *     // returns true
-     *     tempus('29.02.2012 23:00').validate();
+     * // returns true
+     * tempus('29.02.2012 23:00').validate();
      *
-     *     // returns false
-     *     tempus('29.02.2013 23:00').validate();
-     *
-     * @return {boolean} If true, date is valid, else invalid.
+     * // returns false
+     * tempus('29.02.2013 23:00').validate();
+     * ```
      */
     TempusDate.fn.validate = function () {
         return (this.incorrect.year === false && this.incorrect.month === false && this.incorrect.day === false &&
@@ -1380,41 +1401,47 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:errors
+     * @return {Object} Object with date errors
+     * @description
      * Get errors in date.
      *
-     *     @example
-     *     // returns {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}
-     *     tempus().year(-5).errors();
-     *
-     * @return {Object} Object with date errors
+     * ```js
+     * // returns {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}
+     * tempus().year(-5).errors();
+     * ```
      */
     TempusDate.fn.errors = function () {
         return this.incorrect;
     };
 
     /**
-     * Returns integer of date between from [this date] to [dateTo] as [type].
-     *
-     *     @example
-     *     // returns 4
-     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day');
-     *
-     *     // returns 6
-     *     tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month');
-     *
-     *     // returns 266400
-     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes');
-     *
-     *     // returns 10224
-     *     tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours');
-     *
-     *     // Happy New Year!
-     *     // Days ago to New Year.
-     *     tempus().between(tempus([2014,1,1]), 'day');
-     *
+     * @doc method
+     * @name TempusDate.global:between
      * @param {TempusDate} dateTo Date to.
      * @param {string} type Type of time.
      * @return {number|undefined} If errors, returns undefined.
+     * @description
+     * Returns integer of date between from [this date] to [dateTo] as [type].
+     *
+     * ```js
+     * // returns 4
+     * tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2013, month: 11, day: 5}), 'day');
+     *
+     * // returns 6
+     * tempus([2013, 11, 1]).between(tempus([2014, 5, 5]), 'month');
+     *
+     * // returns 266400
+     * tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2014, month: 5, day: 5}), 'minutes');
+     *
+     * // returns 10224
+     * tempus({year: 2013, month: 11, day: 1}).between(tempus({year: 2015, month: 1, day: 1}), 'hours');
+     *
+     * // Happy New Year!
+     * // Days ago to New Year.
+     * tempus().between(tempus([2014,1,1]), 'day');
+     * ```
      */
     TempusDate.fn.between = function (dateTo, type) {
         var from = this.timestamp(),
@@ -1438,18 +1465,21 @@
     };
 
     /**
-     * Calculate date.
-     *
-     *     @example
-     *     // returns '01.05.2013'
-     *     tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y')
-     *
-     *     // returns TempusDate with date 2012-01-01
-     *     tempus([2011, 5, 2]).calc({year: 1, month: -4, day: -1});
-     *
+     * @doc method
+     * @name TempusDate.global:calc
      * @param {Object} delta Object {year: number, month: number, day: number, hours: number, minutes: number,
      *     seconds: number, milliseconds: number} or part of it.
      * @return {TempusDate} New date.
+     * @description
+     * Calculate date.
+     *
+     * ```js
+     * // returns '01.05.2013'
+     * tempus({year: 2013, month: 6, day: 1}).calc({month: -1}).format('%d.%m.%Y')
+     *
+     * // returns TempusDate with date 2012-01-01
+     * tempus([2011, 5, 2]).calc({year: 1, month: -4, day: -1});
+     * ```
      */
     TempusDate.fn.calc = function (delta) {
         if (delta.year !== undefined) {
