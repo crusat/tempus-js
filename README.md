@@ -3,9 +3,9 @@ TempusJS
 
 JavaScript library for most comfortable using date/time.
 
-Supports IE6+, Firefox, Chrome, Opera. [Check tests in your browser](http://crusat.github.io/tempus-js/tests.html)
+Supports IE6+, Firefox, Chrome, Opera. [Check tests in your browser](http://tempus.akuzn.com/tests/index.html)
 
-Demo and description here: http://crusat.github.io/tempus-js/
+Demo and description here: http://tempus.akuzn.com/
 
 Install over bower:
 
