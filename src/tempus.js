@@ -830,7 +830,7 @@
      * @description
      * Get or set milliseconds.
      *
-     * ```
+     * ```js
      * // returns current milliseconds
      * tempus().milliseconds();
      *
@@ -1210,7 +1210,7 @@
     /**
      * @doc method
      * @name TempusDate.global:dayOfWeek
-     * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
+     * @param {string|undefined} type If none, number returned. If 'short', short string returned, 'long' for long.
      * @return {number} Numeric value of day of week.
      * @description
      * Get day of week.
@@ -1309,7 +1309,7 @@
     /**
      * @doc method
      * @name TempusDate.global:format
-     * @param format {string} Format of date. See index page for defaults.
+     * @param {string} format Format of date. See index page for defaults.
      * @return {string} Formatted string
      * @description
      * Returns formatted string of date. You can use object or timestamp as parameter of method.
@@ -1514,38 +1514,45 @@
     // *************************************************
 
     /**
-     * Create method for TempusDate. You can set initial value, for more info, see {@link TempusDate#set}.
-     *
-     *     @example
-     *     // returns TempusDate with current date.
-     *     tempus();
-     *
-     *     // returns TempusDate with date 2013-01-15.
-     *     tempus({year: 2013, month: 1, day: 15});
-     *
-     *     // returns TempusDate with date 2000-06-01 and time 12:01:15
-     *     tempus([2000, 6, 1, 12, 1, 15]);
-     *
-     *     // returns TempusDate with date 2001-05-10 and time 05:30:00
-     *     tempus('2001-05-10 05:30:00');
-     *
-     *     // returns TempusDate with date 2001-05-10 and time 05:30:00
-     *     tempus(989454600);
-     *
+     * @doc function
+     * @name tempus.global:tempus
      * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link TempusDate#set}
      * @param {undefined|string} format See {@link TempusDate#set}
      * @param {undefined|TempusDate} defaults See {@link TempusDate#set}
      * @return {TempusDate} Instance of TempusDate.
+     * @description
+     * Create method for TempusDate. You can set initial value, for more info, see {@link TempusDate#set}.
+     *
+     * ```js
+     * // returns TempusDate with current date.
+     * tempus();
+     *
+     * // returns TempusDate with date 2013-01-15.
+     * tempus({year: 2013, month: 1, day: 15});
+     *
+     * // returns TempusDate with date 2000-06-01 and time 12:01:15
+     * tempus([2000, 6, 1, 12, 1, 15]);
+     *
+     * // returns TempusDate with date 2001-05-10 and time 05:30:00
+     * tempus('2001-05-10 05:30:00');
+     *
+     * // returns TempusDate with date 2001-05-10 and time 05:30:00
+     * tempus(989454600);
+     * ```
      */
     tempus = function (options, format, defaults) {
         return new TempusDate(options, format, defaults);
     };
 
     /**
+     * @doc function
+     * @name tempus.global:constants
+     * @return {Object} Object with all constants in Tempus.
+     * @description
      * Returns constants object. Some constants depends from options (MIN_MONTH, MAX_MONTH).
      * For MAX_DAY_IN_MONTH better use {@link TempusDate#dayCount}.
      *
-     *     @example
+     * ```js
      *     // returns {
      *     //   "MIN_YEAR":1000,
      *     //   "MAX_YEAR":3000,
@@ -1565,9 +1572,7 @@
      *     //   "MAX_MILLISECONDS":999
      *     // }
      *     tempus.constants();
-     *
-     * @static
-     * @return {Object} Object with all constants in Tempus.
+     * ```
      */
     tempus.constants = function () {
         return {
@@ -1591,40 +1596,44 @@
     };
 
     /**
+     * @doc function
+     * @name tempus.global:version
+     * @return {string} Current version of Tempus.
+     * @description
      * Get a current version of Tempus.
      *
-     *     @example
-     *     // returns current version
-     *     tempus.version();
-     *
-     * @static
-     * @return {string} Current version of Tempus.
+     * ```js
+     * // returns current version
+     * tempus.version();
+     * ```
      */
     tempus.version = function () {
         return version;
     };
 
     /**
-     * Get or set current options. If option is undefined, returns all options.
-     *
-     *     @example
-     *     // returns all current options
-     *     // for example, {useMilliseconds: false, monthFromZero: false}
-     *     tempus.options();
-     *
-     *     // returns 'useMilliseconds' value
-     *     tempus.options('useMilliseconds');
-     *
-     *     // Timeouts and timestamps in milliseconds
-     *     tempus.options('useMilliseconds', true);
-     *
-     *     // Month starts from 0.
-     *     tempus.options('monthFromZero', true);
-     *
-     * @static
+     * @doc function
+     * @name tempus.global:options
      * @param {string} option Name of option.
      * @param {*} value New value of option.
      * @return {Object} Current options object.
+     * @description
+     * Get or set current options. If option is undefined, returns all options.
+     *
+     * ```js
+     * // returns all current options
+     * // for example, {useMilliseconds: false, monthFromZero: false}
+     * tempus.options();
+     *
+     * // returns 'useMilliseconds' value
+     * tempus.options('useMilliseconds');
+     *
+     * // Timeouts and timestamps in milliseconds
+     * tempus.options('useMilliseconds', true);
+     *
+     * // Month starts from 0.
+     * tempus.options('monthFromZero', true);
+     * ```
      */
     tempus.options = function (option, value) {
         if (option === undefined) {
@@ -1640,18 +1649,20 @@
     };
 
     /**
+     * @doc function
+     * @name tempus.global:noConflict
+     * @return {Object} Object with keys as default names and values as default functions.
+     * @description
      * Releases tempus variables from global scope.
      *
-     *     @example
-     *     // returns object
-     *     var T = tempus.noConflict();
-     *     // returns options
-     *     T.tempus.options();
-     *     // returns TempusDate instance
-     *     T.tempus();
-     *
-     * @static
-     * @return {Object} Object with keys as default names and values as default functions.
+     * ```js
+     * // returns object
+     * var T = tempus.noConflict();
+     * // returns options
+     * T.tempus.options();
+     * // returns TempusDate instance
+     * T.tempus();
+     * ```
      */
     tempus.noConflict = function () {
         window.tempus = oldTempus;
@@ -1660,37 +1671,8 @@
     };
 
     /**
-     * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
-     *
-     *     @example
-     *     // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
-     *     //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
-     *     tempus.generate({
-     *         dateFrom: '01.01.2013',
-     *         dateTo: '10.01.2013',
-     *         period: 'day',
-     *         format: '%d.%m.%Y'
-     *     });
-     *
-     *     // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
-     *     tempus.generate({
-     *         dateFrom: '20130329',
-     *         formatFrom: '%Y%m%d',
-     *         dateTo: '20130402',
-     *         period: {day: 1},
-     *         format: '%d.%m.%Y'
-     *     });
-     *
-     *     // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
-     *     tempus.generate({
-     *         dateFrom: '20130329',
-     *         formatFrom: '%s',
-     *         dateTo: '20130402',
-     *         period: {day: 1},
-     *         format: '%s'
-     *     });
-     *
-     *
+     * @doc function
+     * @name tempus.global:generate
      * @param options {object|undefined} Options object.
      * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
      *     any other value ({@see tempus}).
@@ -1707,6 +1689,37 @@
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
      * @static
      * @return {Array|Object} Array or object from dates.
+     * @description
+     * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
+     *
+     * ```js
+     * // returns ["01.01.2013", "02.01.2013", "03.01.2013", "04.01.2013", "05.01.2013",
+     * //    "06.01.2013", "07.01.2013", "08.01.2013", "09.01.2013", "10.01.2013"];
+     * tempus.generate({
+     *     dateFrom: '01.01.2013',
+     *     dateTo: '10.01.2013',
+     *     period: 'day',
+     *     format: '%d.%m.%Y'
+     * });
+     *
+     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     * tempus.generate({
+     *     dateFrom: '20130329',
+     *     formatFrom: '%Y%m%d',
+     *     dateTo: '20130402',
+     *     period: {day: 1},
+     *     format: '%d.%m.%Y'
+     * });
+     *
+     * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
+     * tempus.generate({
+     *     dateFrom: '20130329',
+     *     formatFrom: '%s',
+     *     dateTo: '20130402',
+     *     period: {day: 1},
+     *     format: '%s'
+     * });
+     * ```
      */
     tempus.generate = function (options) {
         var tsFrom = options.dateFrom,
@@ -1802,23 +1815,25 @@
     };
 
     /**
-     * Returns array of month names. If type is undefined, short names was returned.
-     *
-     *     @example
-     *     // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-     *     tempus.monthNames();
-     *
-     *     // returns ["January","February","March","April","May","June",
-     *     //     "July","August","September","October","November","December"];
-     *     tempus.monthNames(true);
-     *
-     *     // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
-     *     tempus.setLang('ru');
-     *     tempus.monthNames();
-     *
-     * @static
+     * @doc function
+     * @name tempus.global:monthNames
      * @param {boolean} type If true, long names was returning, else - short names.
      * @return {Array} Array of month names.
+     * @description
+     * Returns array of month names. If type is undefined, short names was returned.
+     *
+     * ```js
+     * // returns ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+     * tempus.monthNames();
+     *
+     * // returns ["January","February","March","April","May","June",
+     * //     "July","August","September","October","November","December"];
+     * tempus.monthNames(true);
+     *
+     * // returns ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"]
+     * tempus.setLang('ru');
+     * tempus.monthNames();
+     * ```
      */
     tempus.monthNames = function (type) {
         switch (type) {
@@ -1830,22 +1845,24 @@
     };
 
     /**
-     * Returns array of day names. If type is undefined, short names was returned.
-     *
-     *     @example
-     *     // returns ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-     *     tempus.dayNames();
-     *
-     *     // returns ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-     *     tempus.dayNames(true);
-     *
-     *     // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
-     *     tempus.setLang('ru');
-     *     tempus.dayNames();
-     *
-     * @static
+     * @doc function
+     * @name tempus.global:dayNames
      * @param {boolean} type If true, long names was returning, else - short names.
      * @return {Array} Array of day names.
+     * @description
+     * Returns array of day names. If type is undefined, short names was returned.
+     *
+     * ```js
+     * // returns ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+     * tempus.dayNames();
+     *
+     * // returns ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+     * tempus.dayNames(true);
+     *
+     * // returns ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"]
+     * tempus.setLang('ru');
+     * tempus.dayNames();
+     * ```
      */
     tempus.dayNames = function (type) {
         switch (type) {
@@ -1857,21 +1874,23 @@
     };
 
     /**
+     * @doc function
+     * @name tempus.global:lang
+     * @param {string} value Language's code.
+     * @return {undefined|string} Language's code or undefined for setter.
+     * @description
      * Globally set or get language. By default **auto detect current user language**. If you want only english
      * language, always set tempus.lang('en'); before using tempus.
      *
-     *     @example
-     *     // returns "Ноябрь, 14"
-     *     tempus.lang('ru');
-     *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
+     * ```js
+     * // returns "Ноябрь, 14"
+     * tempus.lang('ru');
+     * tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
      *
-     *     // returns "November, 14"
-     *     tempus.lang('en');
-     *     tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
-     *
-     * @param {string} value Language's code.
-     * @static
-     * @return {undefined|string} Language's code or undefined for setter.
+     * // returns "November, 14"
+     * tempus.lang('en');
+     * tempus({year: 2013, month: 11, day: 14}).format('%B, %d');
+     * ```
      */
     tempus.lang = function (value) {
         if (value !== undefined) {
@@ -1883,51 +1902,55 @@
     };
 
     /**
+     * @doc function
+     * @name tempus.global:availableLangs
+     * @return {Array} Array of available languages.
+     * @description
      * Get available languages.
      *
-     *     @example
-     *     // returns ["en", "ru"]
-     *     tempus.availableLocales();
-     *
-     * @static
-     * @return {Array} Array of available languages.
+     * ```js
+     * // returns ["en", "ru"]
+     * tempus.availableLocales();
+     * ```
      */
     tempus.availableLangs = function () {
         return Object.keys(translations);
     };
 
     /**
-     * Registering a new format.
-     *
-     *     @example
-     *     // no returns
-     *     tempus.registerFormat('%q',
-     *         function(date) {
-     *             return date.month();
-     *         },
-     *         function(value) {
-     *             var v = Number(value);
-     *             return {month: (isNaN(v) ? undefined : v) };
-     *         },
-     *         1,
-     *         2,
-     *         'number'
-     *     );
-     *
-     *     // test it
-     *     // returns "01.1.2013";
-     *     tempus({year: 2013, month: 1, day: 1}).format('%d.%q.%Y');
-     *
-     *     // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
-     *     tempus('10.2.2013', '%d.%q.%Y').get();
-     *
+     * @doc function
+     * @name tempus.global:registerFormat
      * @param {string} value Directive
      * @param {Function} formatFunc Format function.
      * @param {Function} parseFunc Parse function.
      * @param {number} minLength Min length of value.
      * @param {number} maxLength Max length of value.
      * @param {string} type Type of value, can be 'number', 'word' (only letters) or 'string' (any symbols)
-     * @static
+     * @description
+     * Registering a new format.
+     *
+     * ```js
+     * // no returns
+     * tempus.registerFormat('%q',
+     *     function(date) {
+     *         return date.month();
+     *     },
+     *     function(value) {
+     *         var v = Number(value);
+     *         return {month: (isNaN(v) ? undefined : v) };
+     *     },
+     *     1,
+     *     2,
+     *     'number'
+     * );
+     *
+     * // test it
+     * // returns "01.1.2013";
+     * tempus({year: 2013, month: 1, day: 1}).format('%d.%q.%Y');
+     *
+     * // returns {"year":2013,"month":2,"day":10,"hours":0,"minutes":0,"seconds":0};
+     * tempus('10.2.2013', '%d.%q.%Y').get();
+     * ```
      */
     tempus.registerFormat = function (value, formatFunc, parseFunc, minLength, maxLength, type) {
         registeredFormats[value] = {
@@ -1940,39 +1963,43 @@
     };
 
     /**
+     * @doc function
+     * @name tempus.global:unregisterFormat
+     * @param {string} value Directive
+     * @description
      * Unregistering a format.
      *
-     *     @example
-     *     // unregistering a format
-     *     tempus.unregisterFormat('%d');
+     * ```js
+     * // unregistering a format
+     * tempus.unregisterFormat('%d');
      *
-     *     // test it
-     *     // returns "%d.01.2013"
-     *     tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
-     *
-     * @param {string} value Directive
-     * @static
+     * // test it
+     * // returns "%d.01.2013"
+     * tempus.format({year: 2013, month: 1, day: 1}, '%d.%m.%Y');
+     * ```
      */
     tempus.unregisterFormat = function (value) {
         delete registeredFormats[value];
     };
 
     /**
-     * Detecting format of date  as string.
-     *
-     *     @example
-     *     // returns "%d.%m.%Y"
-     *     tempus.detectFormat('10.12.2013');
-     *
-     *     // returns "%Y-%m-%d %H:%M"
-     *     tempus.detectFormat('2013-01-01 12:00');
-     *
-     *     // returns "%d.%m.%Y"
-     *     tempus.detectFormat('01/02/2013');
-     *
-     * @static
+     * @doc function
+     * @name tempus.global:detectFormat
      * @param {string} str Formatted date as string
      * @return {string} Format of date.
+     * @description
+     * Detecting format of date  as string.
+     *
+     * ```js
+     * // returns "%d.%m.%Y"
+     * tempus.detectFormat('10.12.2013');
+     *
+     * // returns "%Y-%m-%d %H:%M"
+     * tempus.detectFormat('2013-01-01 12:00');
+     *
+     * // returns "%d.%m.%Y"
+     * tempus.detectFormat('01/02/2013');
+     * ```
      */
     tempus.detectFormat = function (str) {
         var format, tmpChars, len;
