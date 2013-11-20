@@ -348,7 +348,7 @@
      * @param {undefined|Date|Object|Array|number|string} options Some date.
      * @param {undefined|string} format String for getting date from string or undefined else.
      * @param {TempusDate} defaults This object was returning, if parsing failed.
-     * @returns {TempusDate}
+     * @return {TempusDate}
      * @constructor
      */
     TempusDate = function (options, format, defaults) {
@@ -554,7 +554,7 @@
      * @doc method
      * @name TempusDate.global:day
      * @param {number} value Set new day. If no arguments, returns numeric value.
-     * @returns {TempusDate|number} Returns: if setter - TempusDate, else numeric value.
+     * @return {TempusDate|number} Returns: if setter - TempusDate, else numeric value.
      * @description
      * Get or set day of month.
      *
@@ -622,7 +622,7 @@
      * @doc method
      * @name TempusDate.global:hours
      * @param {number} value Set new hours. If no arguments, returns numeric value.
-     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     * @return {TempusDate|number} Returns: if setter - TempusDate, else numeric value.
      * @description
      * Get or set hours.
      *
@@ -687,51 +687,53 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:minutes
+     * @param {number} value Set new minutes. If no arguments, returns numeric value.
+     * @return {TempusDate|number} Returns: if setter - TempusDate, else numeric value.
+     * @description
      * Get or set minutes.
      *
-     *     @example
-     *     // returns current minutes
-     *     tempus().minutes();
+     * ```js
+     * // returns current minutes
+     * tempus().minutes();
      *
-     *     // returns 100
-     *     tempus().minutes(100).minutes();
+     * // returns 100
+     * tempus().minutes(100).minutes();
      *
-     *     // returns 12
-     *     tempus().minutes(12).minutes();
+     * // returns 12
+     * tempus().minutes(12).minutes();
      *
-     *     // returns 1
-     *     tempus().minutes(1).minutes();
+     * // returns 1
+     * tempus().minutes(1).minutes();
      *
-     *     // returns -5
-     *     tempus().minutes(-5).minutes();
+     * // returns -5
+     * tempus().minutes(-5).minutes();
      *
-     *     // returns 0
-     *     tempus().minutes('0').minutes();
+     * // returns 0
+     * tempus().minutes('0').minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes(undefined).minutes();
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes(undefined).minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes({foo: 'bar'}).minutes();
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes({foo: 'bar'}).minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes([1,2,3]).minutes();
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes([1,2,3]).minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes(null).minutes();
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes(null).minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes(true).minutes();
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes(true).minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes(false).minutes();
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes(false).minutes();
      *
-     *     // returns 0 (MIN_MINUTES)
-     *     tempus().minutes(NaN).minutes();
-     *
-     *
-     * @param {number} value Set new minutes. If no arguments, returns numeric value.
-     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     * // returns 0 (MIN_MINUTES)
+     * tempus().minutes(NaN).minutes();
+     * ```
      */
     TempusDate.fn.minutes = function (value) {
         if (arguments.length !== 0) {
@@ -753,51 +755,53 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:seconds
+     * @param {number} value Set new seconds. If no arguments, returns numeric value.
+     * @return {TempusDate|number} Returns: if setter - TempusDate, else numeric value.
+     * @description
      * Get or set seconds.
      *
-     *     @example
-     *     // returns current seconds
-     *     tempus().seconds();
+     * ```js
+     * // returns current seconds
+     * tempus().seconds();
      *
-     *     // returns 100
-     *     tempus().seconds(100).seconds();
+     * // returns 100
+     * tempus().seconds(100).seconds();
      *
-     *     // returns 12
-     *     tempus().seconds(12).seconds();
+     * // returns 12
+     * tempus().seconds(12).seconds();
      *
-     *     // returns 1
-     *     tempus().seconds(1).seconds();
+     * // returns 1
+     * tempus().seconds(1).seconds();
      *
-     *     // returns -5
-     *     tempus().seconds(-5).seconds();
+     * // returns -5
+     * tempus().seconds(-5).seconds();
      *
-     *     // returns 0
-     *     tempus().seconds('0').seconds();
+     * // returns 0
+     * tempus().seconds('0').seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds(undefined).seconds();
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds(undefined).seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds({foo: 'bar'}).seconds();
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds({foo: 'bar'}).seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds([1,2,3]).seconds();
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds([1,2,3]).seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds(null).seconds();
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds(null).seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds(true).seconds();
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds(true).seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds(false).seconds();
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds(false).seconds();
      *
-     *     // returns 0 (MIN_SECONDS)
-     *     tempus().seconds(NaN).seconds();
-     *
-     *
-     * @param {number} value Set new seconds. If no arguments, returns numeric value.
-     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     * // returns 0 (MIN_SECONDS)
+     * tempus().seconds(NaN).seconds();
+     * ```
      */
     TempusDate.fn.seconds = function (value) {
         if (arguments.length !== 0) {
@@ -819,51 +823,53 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:milliseconds
+     * @param {number} value Set new milliseconds. If no arguments, returns numeric value.
+     * @return {TempusDate|number} Returns: if setter - TempusDate, else numeric value.
+     * @description
      * Get or set milliseconds.
      *
-     *     @example
-     *     // returns current milliseconds
-     *     tempus().milliseconds();
+     * ```
+     * // returns current milliseconds
+     * tempus().milliseconds();
      *
-     *     // returns 1000
-     *     tempus().milliseconds(1000).milliseconds();
+     * // returns 1000
+     * tempus().milliseconds(1000).milliseconds();
      *
-     *     // returns 120
-     *     tempus().milliseconds(12).milliseconds();
+     * // returns 120
+     * tempus().milliseconds(12).milliseconds();
      *
-     *     // returns 1
-     *     tempus().milliseconds(1).milliseconds();
+     * // returns 1
+     * tempus().milliseconds(1).milliseconds();
      *
-     *     // returns -5
-     *     tempus().milliseconds(-5).milliseconds();
+     * // returns -5
+     * tempus().milliseconds(-5).milliseconds();
      *
-     *     // returns 0
-     *     tempus().milliseconds('0').milliseconds();
+     * // returns 0
+     * tempus().milliseconds('0').milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds(undefined).milliseconds();
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds(undefined).milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds({foo: 'bar'}).milliseconds();
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds({foo: 'bar'}).milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds([1,2,3]).milliseconds();
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds([1,2,3]).milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds(null).milliseconds();
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds(null).milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds(true).milliseconds();
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds(true).milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds(false).milliseconds();
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds(false).milliseconds();
      *
-     *     // returns 0 (MIN_MILLISECONDS)
-     *     tempus().milliseconds(NaN).milliseconds();
-     *
-     *
-     * @param {number} value Set new milliseconds. If no arguments, returns numeric value.
-     * @returns {TempusDate|number} Returns: if setter - TempusDate, else **number** value.
+     * // returns 0 (MIN_MILLISECONDS)
+     * tempus().milliseconds(NaN).milliseconds();
+     * ```
      */
     TempusDate.fn.milliseconds = function (value) {
         if (arguments.length !== 0) {
@@ -885,13 +891,16 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:week
+     * @return {number} Week number.
+     * @description
      * Returns week number.
      *
-     *     @example
-     *     // returns 18
-     *     tempus([2013, 5, 1]).week();
-     *
-     * @returns {number} Week number.
+     * ```js
+     * // returns 18
+     * tempus([2013, 5, 1]).week();
+     * ```
      */
     TempusDate.fn.week = function () {
         var onejan = new Date(this.year(), 0, 1),
@@ -900,41 +909,44 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:set
+     * @param {undefined|Date|Object|Array|number|string} newDate Some date.
+     * @param {undefined|string} format String for getting date from string or undefined else.
+     * @param {TempusDate} defaults This object was returning, if parsing failed.
+     * @return {TempusDate} Date as TempusDate.
+     * @description
      * Set new date. If **undefined**, set now date. If instance of **Date** - set it date.
      * If **object**, set date from {year: number, month: number, day: number, hours: number, minutes: number,
      * milliseconds: number}. If **Array**, set date from [YEAR, MONTH, DAY, HOURS, MINUTES, SECONDS, MILLISECONDS].
      * If **number**, set local time from timestamp. If **string**, set date from formatted date by format (or auto detect
      * format). Directives ALWAYS must be started from % and content only 1 char. For example %q, %d, %y, %0.
      *
-     *     @example
-     *     // returns TempusDate with current date
-     *     tempus().set();
+     * ```js
+     * // returns TempusDate with current date
+     * tempus().set();
      *
-     *     // returns TempusDate with date "2013-11-18 20:14:23.918"
-     *     tempus().set({year: 2013, month: 11, day: 18, hours: 20, minutes: 14, seconds: 23, milliseconds: 918});
+     * // returns TempusDate with date "2013-11-18 20:14:23.918"
+     * tempus().set({year: 2013, month: 11, day: 18, hours: 20, minutes: 14, seconds: 23, milliseconds: 918});
      *
-     *     // returns TempusDate with date "2013-11-18 20:15:38"
-     *     tempus().set(1384791338);
+     * // returns TempusDate with date "2013-11-18 20:15:38"
+     * tempus().set(1384791338);
      *
-     *     // returns TempusDate with date "2013-01-01 12:00:03"
-     *     tempus().set([2013, 1, 1, 12, 0, 3]);
+     * // returns TempusDate with date "2013-01-01 12:00:03"
+     * tempus().set([2013, 1, 1, 12, 0, 3]);
      *
-     *     // returns TempusDate with date "2013-01-01"
-     *     tempus().set(new Date(2012, 0, 1));
+     * // returns TempusDate with date "2013-01-01"
+     * tempus().set(new Date(2012, 0, 1));
      *
-     *     // returns TempusDate with date "2013-11-18"
-     *     tempus().set('18.11.2013');
+     * // returns TempusDate with date "2013-11-18"
+     * tempus().set('18.11.2013');
      *
-     *     // returns TempusDate with date "2013-12-12"
-     *     tempus().set('2013-12-12', '%Y-%m-%d'));
+     * // returns TempusDate with date "2013-12-12"
+     * tempus().set('2013-12-12', '%Y-%m-%d'));
      *
-     *     // returns TempusDate with date "2013-01-01"
-     *     tempus().set('123', '%d.%m.%Y', tempus([2013, 1, 1]));
-     *
-     * @param {undefined|Date|Object|Array|number|string} newDate Some date.
-     * @param {undefined|string} format String for getting date from string or undefined else.
-     * @param {TempusDate} defaults This object was returning, if parsing failed.
-     * @returns {TempusDate}
+     * // returns TempusDate with date "2013-01-01"
+     * tempus().set('123', '%d.%m.%Y', tempus([2013, 1, 1]));
+     * ```
      */
     TempusDate.fn.set = function (newDate, format, defaults) {
         this.incorrect = {
@@ -1101,31 +1113,34 @@
     };
 
     /**
+     * @doc method
+     * @name TempusDate.global:leapYear
+     * @return {boolean} If true year is leap else not leap.
+     * @description
      * Is year leap?
      *
-     *     @example
-     *     // returns false
-     *     tempus([2014]).leapYear();
+     * ```js
+     * // returns false
+     * tempus([2014]).leapYear();
      *
-     *     // returns true
-     *     tempus({year: 2012}).leapYear();
+     * // returns true
+     * tempus({year: 2012}).leapYear();
      *
-     *     // returns true
-     *     tempus(947698701).leapYear(); // 2012 year
+     * // returns true
+     * tempus(947698701).leapYear(); // 2012 year
      *
-     *     // returns false
-     *     tempus([1900]).leapYear();
+     * // returns false
+     * tempus([1900]).leapYear();
      *
-     *     // returns false
-     *     tempus({year: 1941, day: 22, month: 6}).leapYear();
+     * // returns false
+     * tempus({year: 1941, day: 22, month: 6}).leapYear();
      *
-     *     // returns true
-     *     tempus({year: 2008, day: 1, month: 1}).leapYear();
+     * // returns true
+     * tempus({year: 2008, day: 1, month: 1}).leapYear();
      *
-     *    // check current year
-     *    tempus().leapYear();
-     *
-     * @returns {boolean} If true year is leap else not leap.
+     * // check current year
+     * tempus().leapYear();
+     * ```
      */
     TempusDate.fn.leapYear = function () {
         var year = this.year();
@@ -1149,7 +1164,7 @@
      *     tempus().timestamp(1384718400);
      *
      * @param {number} value Value for set or no value for get.
-     * @returns {TempusDate|number} TempusDate or numeric timestamp.
+     * @return {TempusDate|number} TempusDate or numeric timestamp.
      */
     TempusDate.fn.timestamp = function (value) {
         if (arguments.length !== 0) {
@@ -1173,7 +1188,7 @@
      *     tempus().utc(1384732800);
      *
      * @param {number} value Value for set or no value for get.
-     * @returns {TempusDate|number} TempusDate or numeric timestamp.
+     * @return {TempusDate|number} TempusDate or numeric timestamp.
      */
     TempusDate.fn.utc = function (value) {
         if (arguments.length !== 0) {
@@ -1197,7 +1212,7 @@
      *     tempus([2013, 11, 18]).dayOfWeek();
      *
      * @param type {string|none} If none, number returned. If 'short', short string returned, 'long' for long.
-     * @returns {number} Numeric value of day of week.
+     * @return {number} Numeric value of day of week.
      */
     TempusDate.fn.dayOfWeek = function (type) {
         switch (type) {
@@ -1221,7 +1236,7 @@
      *     tempus().timezone('hours');
      *
      * @param {string} type If type is 'hours', returns offset in hours, 'minutes' for minutes and default in seconds.
-     * @returns {number} Timezone offset value
+     * @return {number} Timezone offset value
      */
     TempusDate.fn.timezone = function (type) {
         switch (type) {
@@ -1247,7 +1262,7 @@
      *
      * @param {string} type Can be 'Date' for returns Date object, 'DateUTC' for returns Date in UTC or default
      *     for returns default object.
-     * @returns {Date|Object} Date or default object.
+     * @return {Date|Object} Date or default object.
      */
     TempusDate.fn.get = function (type) {
         switch (type) {
@@ -1290,7 +1305,7 @@
      *     tempus([2013, 11, 5]).format('%Y%m%d');
      *
      * @param format {string} Format of date. See index page for defaults.
-     * @returns {string} Formatted string
+     * @return {string} Formatted string
      */
     TempusDate.fn.format = function (format) {
         var i = 0,
@@ -1356,7 +1371,7 @@
      *     // returns false
      *     tempus('29.02.2013 23:00').validate();
      *
-     * @returns {boolean} If true, date is valid, else invalid.
+     * @return {boolean} If true, date is valid, else invalid.
      */
     TempusDate.fn.validate = function () {
         return (this.incorrect.year === false && this.incorrect.month === false && this.incorrect.day === false &&
@@ -1371,7 +1386,7 @@
      *     // returns {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}
      *     tempus().year(-5).errors();
      *
-     * @returns {Object} Object with date errors
+     * @return {Object} Object with date errors
      */
     TempusDate.fn.errors = function () {
         return this.incorrect;
@@ -1399,7 +1414,7 @@
      *
      * @param {TempusDate} dateTo Date to.
      * @param {string} type Type of time.
-     * @returns {number|undefined} If errors, returns undefined.
+     * @return {number|undefined} If errors, returns undefined.
      */
     TempusDate.fn.between = function (dateTo, type) {
         var from = this.timestamp(),
@@ -1434,7 +1449,7 @@
      *
      * @param {Object} delta Object {year: number, month: number, day: number, hours: number, minutes: number,
      *     seconds: number, milliseconds: number} or part of it.
-     * @returns {TempusDate} New date.
+     * @return {TempusDate} New date.
      */
     TempusDate.fn.calc = function (delta) {
         if (delta.year !== undefined) {
@@ -1490,7 +1505,7 @@
      * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link TempusDate#set}
      * @param {undefined|string} format See {@link TempusDate#set}
      * @param {undefined|TempusDate} defaults See {@link TempusDate#set}
-     * @returns {TempusDate} Instance of TempusDate.
+     * @return {TempusDate} Instance of TempusDate.
      */
     tempus = function (options, format, defaults) {
         return new TempusDate(options, format, defaults);
@@ -1522,7 +1537,7 @@
      *     tempus.constants();
      *
      * @static
-     * @returns {Object} Object with all constants in Tempus.
+     * @return {Object} Object with all constants in Tempus.
      */
     tempus.constants = function () {
         return {
@@ -1553,7 +1568,7 @@
      *     tempus.version();
      *
      * @static
-     * @returns {string} Current version of Tempus.
+     * @return {string} Current version of Tempus.
      */
     tempus.version = function () {
         return version;
@@ -1579,7 +1594,7 @@
      * @static
      * @param {string} option Name of option.
      * @param {*} value New value of option.
-     * @returns {Object} Current options object.
+     * @return {Object} Current options object.
      */
     tempus.options = function (option, value) {
         if (option === undefined) {
@@ -1606,7 +1621,7 @@
      *     T.tempus();
      *
      * @static
-     * @returns {Object} Object with keys as default names and values as default functions.
+     * @return {Object} Object with keys as default names and values as default functions.
      */
     tempus.noConflict = function () {
         window.tempus = oldTempus;
@@ -1661,7 +1676,7 @@
      * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
      * @static
-     * @returns {Array|Object} Array or object from dates.
+     * @return {Array|Object} Array or object from dates.
      */
     tempus.generate = function (options) {
         var tsFrom = options.dateFrom,
@@ -1773,7 +1788,7 @@
      *
      * @static
      * @param {boolean} type If true, long names was returning, else - short names.
-     * @returns {Array} Array of month names.
+     * @return {Array} Array of month names.
      */
     tempus.monthNames = function (type) {
         switch (type) {
@@ -1800,7 +1815,7 @@
      *
      * @static
      * @param {boolean} type If true, long names was returning, else - short names.
-     * @returns {Array} Array of day names.
+     * @return {Array} Array of day names.
      */
     tempus.dayNames = function (type) {
         switch (type) {
@@ -1826,7 +1841,7 @@
      *
      * @param {string} value Language's code.
      * @static
-     * @returns {undefined|string} Language's code or undefined for setter.
+     * @return {undefined|string} Language's code or undefined for setter.
      */
     tempus.lang = function (value) {
         if (value !== undefined) {
@@ -1845,7 +1860,7 @@
      *     tempus.availableLocales();
      *
      * @static
-     * @returns {Array} Array of available languages.
+     * @return {Array} Array of available languages.
      */
     tempus.availableLangs = function () {
         return Object.keys(translations);
