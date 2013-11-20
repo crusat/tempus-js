@@ -1,3 +1,11 @@
+0.2.3
+- Constants format changed.
+- Added function classes() for returns some class.
+- Now only "tempus" exports to global scope.
+
+0.2.2
+- Documentation.
+
 0.2.1
 - Fixed error with %a, %A directives.
 

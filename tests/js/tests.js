@@ -24,15 +24,6 @@
     // *                                               *
     // *************************************************
 
-    test('Tests constants()', function() {
-        deepEqual(tempus.constants(),
-            {MIN_YEAR: 1000,MAX_YEAR: 3000,MIN_MONTH: 1,MAX_MONTH: 12,
-            MIN_DAY: 1,MAX_DAY_IN_MONTHS: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],MIN_DAY_OF_WEEK: 0,
-            MAX_DAY_OF_WEEK: 6,MIN_HOURS: 0,MAX_HOURS: 23,MIN_MINUTES: 0,MAX_MINUTES: 59,MIN_SECONDS: 0,MAX_SECONDS: 59,
-            MIN_MILLISECONDS: 0,MAX_MILLISECONDS: 999},
-            'Tests constants');
-    });
-
     test('Tests dayCount()', function() {
         equal(tempus([2013, 11, 18]).dayCount(), 30, 'November');
         equal(tempus([2012, 2]).dayCount(), 29, 'February leap year');
@@ -46,16 +37,16 @@
         equal(tempus().year(2000).year(), 2000, 'Test value: 2000');
         equal(tempus().year(1000).year(), 1000, 'Test value: 1000');
         equal(tempus().year(3000).year(), 3000, 'Test value: 3000');
-        equal(tempus().year(undefined).year(), tempus.constants().MIN_YEAR, 'Test value: undefined');
+        equal(tempus().year(undefined).year(), tempus.MIN_YEAR, 'Test value: undefined');
         equal(tempus().year(1).year(), 1, 'Test value: 1');
         equal(tempus().year(-15).year(), -15, 'Test value: -15');
         equal(tempus().year('0').year(), 0, 'Test value: \'0\'');
-        equal(tempus().year({foo: 'bar'}).year(), tempus.constants().MIN_YEAR, 'Test value: {foo: \'bar\'}');
-        equal(tempus().year([1,2,3]).year(), tempus.constants().MIN_YEAR, 'Test value: [1,2,3]');
-        equal(tempus().year(null).year(), tempus.constants().MIN_YEAR, 'Test value: null');
-        equal(tempus().year(true).year(), tempus.constants().MIN_YEAR, 'Test value: true');
-        equal(tempus().year(false).year(), tempus.constants().MIN_YEAR, 'Test value: false');
-        equal(tempus().year(NaN).year(), tempus.constants().MIN_YEAR, 'Test value: false');
+        equal(tempus().year({foo: 'bar'}).year(), tempus.MIN_YEAR, 'Test value: {foo: \'bar\'}');
+        equal(tempus().year([1,2,3]).year(), tempus.MIN_YEAR, 'Test value: [1,2,3]');
+        equal(tempus().year(null).year(), tempus.MIN_YEAR, 'Test value: null');
+        equal(tempus().year(true).year(), tempus.MIN_YEAR, 'Test value: true');
+        equal(tempus().year(false).year(), tempus.MIN_YEAR, 'Test value: false');
+        equal(tempus().year(NaN).year(), tempus.MIN_YEAR, 'Test value: false');
         // check types
         equal(typeof tempus().year(2000).year(), 'number', 'Type is number');
     });
@@ -68,13 +59,13 @@
         equal(tempus().month(1).month(), 1, 'Test value: 12');
         equal(tempus().month(-5).month(), -5, 'Test value: -5');
         equal(tempus().month('0').month(), 0, 'Test value: \'0\'');
-        equal(tempus().month(undefined).month(), tempus.constants().MIN_MONTH, 'Test value: undefined');
-        equal(tempus().month({foo: 'bar'}).month(), tempus.constants().MIN_MONTH, 'Test value: {foo: \'bar\'}');
-        equal(tempus().month([1,2,3]).month(), tempus.constants().MIN_MONTH, 'Test value: [1,2,3]');
-        equal(tempus().month(null).month(), tempus.constants().MIN_MONTH, 'Test value: null');
-        equal(tempus().month(true).month(), tempus.constants().MIN_MONTH, 'Test value: true');
-        equal(tempus().month(false).month(), tempus.constants().MIN_MONTH, 'Test value: false');
-        equal(tempus().month(NaN).month(), tempus.constants().MIN_MONTH, 'Test value: false');
+        equal(tempus().month(undefined).month(), tempus.MIN_MONTH, 'Test value: undefined');
+        equal(tempus().month({foo: 'bar'}).month(), tempus.MIN_MONTH, 'Test value: {foo: \'bar\'}');
+        equal(tempus().month([1,2,3]).month(), tempus.MIN_MONTH, 'Test value: [1,2,3]');
+        equal(tempus().month(null).month(), tempus.MIN_MONTH, 'Test value: null');
+        equal(tempus().month(true).month(), tempus.MIN_MONTH, 'Test value: true');
+        equal(tempus().month(false).month(), tempus.MIN_MONTH, 'Test value: false');
+        equal(tempus().month(NaN).month(), tempus.MIN_MONTH, 'Test value: false');
         // check types
         equal(typeof tempus().month(1).month(), 'number', 'Type is number');
     });
@@ -86,13 +77,13 @@
         equal(tempus().day(12).day(), 12, 'Test value: 12');
         equal(tempus().day(-5).day(), -5, 'Test value: -5');
         equal(tempus().day('0').day(), 0, 'Test value: \'0\'');
-        equal(tempus().day({foo: 'bar'}).day(), tempus.constants().MIN_DAY, 'Test value: {foo: \'bar\'}');
-        equal(tempus().day([1,2,3]).day(), tempus.constants().MIN_DAY, 'Test value: [1,2,3]');
-        equal(tempus().day(undefined).day(), tempus.constants().MIN_DAY, 'Test value: undefined');
-        equal(tempus().day(null).day(), tempus.constants().MIN_DAY, 'Test value: null');
-        equal(tempus().day(true).day(), tempus.constants().MIN_DAY, 'Test value: true');
-        equal(tempus().day(false).day(), tempus.constants().MIN_DAY, 'Test value: false');
-        equal(tempus().day(NaN).day(), tempus.constants().MIN_DAY, 'Test value: false');
+        equal(tempus().day({foo: 'bar'}).day(), tempus.MIN_DAY, 'Test value: {foo: \'bar\'}');
+        equal(tempus().day([1,2,3]).day(), tempus.MIN_DAY, 'Test value: [1,2,3]');
+        equal(tempus().day(undefined).day(), tempus.MIN_DAY, 'Test value: undefined');
+        equal(tempus().day(null).day(), tempus.MIN_DAY, 'Test value: null');
+        equal(tempus().day(true).day(), tempus.MIN_DAY, 'Test value: true');
+        equal(tempus().day(false).day(), tempus.MIN_DAY, 'Test value: false');
+        equal(tempus().day(NaN).day(), tempus.MIN_DAY, 'Test value: false');
         // check types
         equal(typeof tempus().day(1).day(), 'number', 'Type is number');
     });
@@ -104,13 +95,13 @@
         equal(tempus().hours(12).hours(), 12, 'Test value: 12');
         equal(tempus().hours(-5).hours(), -5, 'Test value: -5');
         equal(tempus().hours('0').hours(), 0, 'Test value: \'0\'');
-        equal(tempus().hours({foo: 'bar'}).hours(), tempus.constants().MIN_HOURS, 'Test value: {foo: \'bar\'}');
-        equal(tempus().hours([1,2,3]).hours(), tempus.constants().MIN_HOURS, 'Test value: [1,2,3]');
-        equal(tempus().hours(undefined).hours(), tempus.constants().MIN_HOURS, 'Test value: undefined');
-        equal(tempus().hours(null).hours(), tempus.constants().MIN_HOURS, 'Test value: null');
-        equal(tempus().hours(true).hours(), tempus.constants().MIN_HOURS, 'Test value: true');
-        equal(tempus().hours(false).hours(), tempus.constants().MIN_HOURS, 'Test value: false');
-        equal(tempus().hours(NaN).hours(), tempus.constants().MIN_HOURS, 'Test value: false');
+        equal(tempus().hours({foo: 'bar'}).hours(), tempus.MIN_HOURS, 'Test value: {foo: \'bar\'}');
+        equal(tempus().hours([1,2,3]).hours(), tempus.MIN_HOURS, 'Test value: [1,2,3]');
+        equal(tempus().hours(undefined).hours(), tempus.MIN_HOURS, 'Test value: undefined');
+        equal(tempus().hours(null).hours(), tempus.MIN_HOURS, 'Test value: null');
+        equal(tempus().hours(true).hours(), tempus.MIN_HOURS, 'Test value: true');
+        equal(tempus().hours(false).hours(), tempus.MIN_HOURS, 'Test value: false');
+        equal(tempus().hours(NaN).hours(), tempus.MIN_HOURS, 'Test value: false');
         // check types
         equal(typeof tempus().hours(1).hours(), 'number', 'Type is number');
     });
@@ -122,13 +113,13 @@
         equal(tempus().minutes(12).minutes(), 12, 'Test value: 12');
         equal(tempus().minutes(-5).minutes(), -5, 'Test value: -5');
         equal(tempus().minutes('0').minutes(), 0, 'Test value: \'0\'');
-        equal(tempus().minutes({foo: 'bar'}).minutes(), tempus.constants().MIN_MINUTES, 'Test value: {foo: \'bar\'}');
-        equal(tempus().minutes([1,2,3]).minutes(), tempus.constants().MIN_MINUTES, 'Test value: [1,2,3]');
-        equal(tempus().minutes(undefined).minutes(), tempus.constants().MIN_MINUTES, 'Test value: undefined');
-        equal(tempus().minutes(null).minutes(), tempus.constants().MIN_MINUTES, 'Test value: null');
-        equal(tempus().minutes(true).minutes(), tempus.constants().MIN_MINUTES, 'Test value: true');
-        equal(tempus().minutes(false).minutes(), tempus.constants().MIN_MINUTES, 'Test value: false');
-        equal(tempus().minutes(NaN).minutes(), tempus.constants().MIN_MINUTES, 'Test value: false');
+        equal(tempus().minutes({foo: 'bar'}).minutes(), tempus.MIN_MINUTES, 'Test value: {foo: \'bar\'}');
+        equal(tempus().minutes([1,2,3]).minutes(), tempus.MIN_MINUTES, 'Test value: [1,2,3]');
+        equal(tempus().minutes(undefined).minutes(), tempus.MIN_MINUTES, 'Test value: undefined');
+        equal(tempus().minutes(null).minutes(), tempus.MIN_MINUTES, 'Test value: null');
+        equal(tempus().minutes(true).minutes(), tempus.MIN_MINUTES, 'Test value: true');
+        equal(tempus().minutes(false).minutes(), tempus.MIN_MINUTES, 'Test value: false');
+        equal(tempus().minutes(NaN).minutes(), tempus.MIN_MINUTES, 'Test value: false');
         // check types
         equal(typeof tempus().minutes(1).minutes(), 'number', 'Type is number');
     });
@@ -140,13 +131,13 @@
         equal(tempus().seconds(12).seconds(), 12, 'Test value: 12');
         equal(tempus().seconds(-5).seconds(), -5, 'Test value: -5');
         equal(tempus().seconds('0').seconds(), 0, 'Test value: \'0\'');
-        equal(tempus().seconds({foo: 'bar'}).seconds(), tempus.constants().MIN_SECONDS, 'Test value: {foo: \'bar\'}');
-        equal(tempus().seconds([1,2,3]).seconds(), tempus.constants().MIN_SECONDS, 'Test value: [1,2,3]');
-        equal(tempus().seconds(undefined).seconds(), tempus.constants().MIN_SECONDS, 'Test value: undefined');
-        equal(tempus().seconds(null).seconds(), tempus.constants().MIN_SECONDS, 'Test value: null');
-        equal(tempus().seconds(true).seconds(), tempus.constants().MIN_SECONDS, 'Test value: true');
-        equal(tempus().seconds(false).seconds(), tempus.constants().MIN_SECONDS, 'Test value: false');
-        equal(tempus().seconds(NaN).seconds(), tempus.constants().MIN_SECONDS, 'Test value: false');
+        equal(tempus().seconds({foo: 'bar'}).seconds(), tempus.MIN_SECONDS, 'Test value: {foo: \'bar\'}');
+        equal(tempus().seconds([1,2,3]).seconds(), tempus.MIN_SECONDS, 'Test value: [1,2,3]');
+        equal(tempus().seconds(undefined).seconds(), tempus.MIN_SECONDS, 'Test value: undefined');
+        equal(tempus().seconds(null).seconds(), tempus.MIN_SECONDS, 'Test value: null');
+        equal(tempus().seconds(true).seconds(), tempus.MIN_SECONDS, 'Test value: true');
+        equal(tempus().seconds(false).seconds(), tempus.MIN_SECONDS, 'Test value: false');
+        equal(tempus().seconds(NaN).seconds(), tempus.MIN_SECONDS, 'Test value: false');
         // check types
         equal(typeof tempus().seconds(1).seconds(), 'number', 'Type is number');
     });
