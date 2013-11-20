@@ -1,22 +1,11 @@
-/*
- * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.2
- * @url https://github.com/crusat/tempus-js
- * @description Library with date/time methods.
- */
 /**
  * @doc module
  * @name tempus
+ * @author Aleksey Kuznetsov, me@akuzn.com
+ * @version 0.2.2
+ * @url https://github.com/crusat/tempus-js
  * @description
- *
- * ## Global Utilities
- *
- * This module houses utillities that can be used
- * across the app. There are some pretty cool and
- * uncool methods in this module so check it outizzle.
- *
- * Note, if you do not define the module using @doc module
- * and the @name with the module id, then this page won't exist!!
+ * Library with date/time methods.
  */
 (function (window, undefined) {
     "use strict";
@@ -1516,12 +1505,12 @@
     /**
      * @doc function
      * @name tempus.global:tempus
-     * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link TempusDate#set}
-     * @param {undefined|string} format See {@link TempusDate#set}
-     * @param {undefined|TempusDate} defaults See {@link TempusDate#set}
+     * @param {undefined|Date|Object|Array|number|string} options Some date. See {@link TempusDate.global:set}
+     * @param {undefined|string} format See {@link TempusDate.global:set}
+     * @param {undefined|TempusDate} defaults See {@link TempusDate.global:set}
      * @return {TempusDate} Instance of TempusDate.
      * @description
-     * Create method for TempusDate. You can set initial value, for more info, see {@link TempusDate#set}.
+     * Create method for TempusDate. You can set initial value, for more info, see {@link TempusDate.global:set}.
      *
      * ```js
      * // returns TempusDate with current date.
@@ -1550,7 +1539,7 @@
      * @return {Object} Object with all constants in Tempus.
      * @description
      * Returns constants object. Some constants depends from options (MIN_MONTH, MAX_MONTH).
-     * For MAX_DAY_IN_MONTH better use {@link TempusDate#dayCount}.
+     * For MAX_DAY_IN_MONTH better use {@link TempusDate.global:dayCount}.
      *
      * ```js
      *     // returns {
@@ -1673,19 +1662,19 @@
     /**
      * @doc function
      * @name tempus.global:generate
-     * @param options {object|undefined} Options object.
-     * @param options.dateFrom {TempusDate|undefined|object|Array|string|number} TempusDate object or
-     *     any other value ({@see tempus}).
-     * @param options.formatFrom {string|undefined} Format. If undefined, tempus will be auto detect format.
-     * @param options.dateTo {TempusDate|undefined|object|Array|string|number} TempusDate object or
-     *     any other value ({@see tempus}).
-     * @param options.formatTo {string|undefined} Format. If undefined, will use formatFrom.
-     * @param options.period {number|string|object} Step size for dates, can be 'seconds', 'minutes', 'hours',
+     * @param {object|undefined} options Options object.
+     * @param {TempusDate|undefined|object|Array|string|number} options.dateFrom TempusDate object or
+     *     any other value ({@link TempusDate.global:set}).
+     * @param {string|undefined} options.formatFrom Format. If undefined, tempus will be auto detect format.
+     * @param {TempusDate|undefined|object|Array|string|number} options.dateTo TempusDate object or
+     *     any other value ({@link TempusDate.global:set}).
+     * @param {string|undefined} options.formatTo Format. If undefined, will use formatFrom.
+     * @param {number|string|object} options.period Step size for dates, can be 'seconds', 'minutes', 'hours',
      *     'day', 'month', 'year', number value (seconds) or object alike {year: number, month: number, day: number,
      *     hours: number, minutes: number, seconds: number}.
-     * @param options.format {string|undefined} Results format. If undefined, returns TempusDate.
-     * @param options.asObject {boolean|undefined} If true, dates will be keys for objects in result array.
-     * @param options.groupBy {string|undefined} If not undefined, group array by some field in TempusDate. Can be
+     * @param {string|undefined} options.format Results format. If undefined, returns TempusDate.
+     * @param {boolean|undefined} options.asObject If true, dates will be keys for objects in result array.
+     * @param {string|undefined} options.groupBy If not undefined, group array by some field in TempusDate. Can be
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
      * @static
      * @return {Array|Object} Array or object from dates.
