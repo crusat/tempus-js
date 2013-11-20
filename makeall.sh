@@ -1,3 +1,3 @@
 #!/bin/bash
 grunt
-jsduck js/tempus.js --output docs
+grunt && grunt docular-server
