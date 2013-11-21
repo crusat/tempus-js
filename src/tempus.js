@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.4
+ * @version 0.2.5
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -215,10 +215,11 @@
             },
             '%b': {
                 format: function (date) {
-                    return translations[lang].monthShortNames[(date.month() || tempus.MIN_MONTH)];
+                    return translations[lang].monthShortNames[((tempus.options('monthFromZero') ? date.month() : date.month()-1) || tempus.MIN_MONTH)];
                 },
                 parse: function (value) {
-                    var month = tempus.monthNames().indexOf(value) + 1;
+                    console.log(value);
+                    var month = tempus.monthNames().indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
                     return {month: month !== -1 ? month : undefined};
                 },
                 minLength: 1,
@@ -227,10 +228,10 @@
             },
             '%B': {
                 format: function (date) {
-                    return translations[lang].monthLongNames[(date.month() || tempus.MIN_MONTH)];
+                    return translations[lang].monthLongNames[((tempus.options('monthFromZero') ? date.month() : date.month()-1) || tempus.MIN_MONTH)];
                 },
                 parse: function (value) {
-                    var month = tempus.monthNames(true).indexOf(value) + 1;
+                    var month = tempus.monthNames(true).indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
                     return {month: month !== -1 ? month : undefined};
                 },
                 minLength: 1,
@@ -1023,7 +1024,7 @@
                             }
                             break;
                         case 'word':
-                            while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && /^\w+$/.test(newDate.charAt(j + k))) {
+                            while ((k < registeredFormats[directive].maxLength) && (j + k < newDate.length) && /^[\u00BF-\u1FFF\u2C00-\uD7FF\w]+$/.test(newDate.charAt(j + k))) {
                                 shortString += newDate.charAt(j + k);
                                 k += 1;
                             }
@@ -1807,7 +1808,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.4';
+    tempus.VERSION = '0.2.5';
 
     // *************************************************
     // *                                               *

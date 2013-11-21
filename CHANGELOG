@@ -1,3 +1,6 @@
+0.2.5
+- Fixed bug with format and parse %b, %B directives.
+
 0.2.4
 - dayOfWeek() now setter too.
 - Fixed bug with week().
