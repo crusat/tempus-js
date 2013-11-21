@@ -1,12 +1,12 @@
 {
   "name": "tempus",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "homepage": "https://github.com/crusat/tempus-js",
   "authors": [
     "Kuznetsov Aleksey <me@akuzn.com>"
   ],
   "description": "JS library for most comfortable using date/time.",
-  "main": "js/tempus.js",
+  "main": "src/tempus.js",
   "keywords": [
     "date",
     "time",

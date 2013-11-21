@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.3
+ * @version 0.2.4
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -28,6 +28,8 @@
             return -1;
         };
     }
+
+
 
     // *************************************************
     // *                                               *
@@ -891,8 +893,8 @@
      */
     TempusDate.fn.week = function () {
         var onejan = new Date(this.year(), 0, 1),
-            nowDate = this.get('Date');
-        return Math.ceil((((nowDate - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+            nowDate = this.hours(0).minutes(0).seconds(0).milliseconds(0).utc()*1000;
+        return Math.ceil((((nowDate - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7);
     };
 
     /**
@@ -1197,10 +1199,13 @@
     /**
      * @doc method
      * @name TempusDate.global:dayOfWeek
-     * @param {string|undefined} type If none, number returned. If 'short', short string returned, 'long' for long.
-     * @return {number} Numeric value of day of week.
+     * @param {string|undefined} type If none, number returned.
+     *     If 'short', short string returned, 'long' for long.
+     *     If type is number from 0 to 6 - set day of week from 0 (Sunday) to 6 (Saturday).
+     *     You can also set day of week as string, See examples.
+     * @return {TempusDate|number} Numeric/String value of day of week or TempusDate.
      * @description
-     * Get day of week.
+     * Get or set day of week.
      *
      * ```js
      * // returns current day of week
@@ -1208,16 +1213,42 @@
      *
      * // returns 1
      * tempus([2013, 11, 18]).dayOfWeek();
+     *
+     * // set less near monday
+     * tempus().dayOfWeek(0);
+     *
+     * // or
+     * tempus().dayOfWeek('Monday');
+     *
+     * // returns date with 2013-11-22 as TempusDate
+     * tempus([2013, 11, 21]).dayOfWeek('Friday');
+     *
+     * // returns date with 2013-11-17 as TempusDate
+     * tempus([2013, 11, 21]).dayOfWeek('Sunday')
      * ```
      */
     TempusDate.fn.dayOfWeek = function (type) {
-        switch (type) {
-        case 'long':
+
+        if (type === 'long') {
             return translations[lang].dayLongNames[this.date.getDay()];
-        case 'short':
+        } else if (type === 'short') {
             return translations[lang].dayShortNames[this.date.getDay()];
-        default:
+        } else if (type === undefined) {
             return this.date.getDay();
+        } else if (type === 0 || type === 'Sunday') {
+            return this.calc({day: -this.dayOfWeek()});
+        } else if (type === 1 || type === 'Monday') {
+            return this.calc({day: (this.dayOfWeek() === 0 ? -6 : 1) - this.dayOfWeek()});
+        } else if (type === 2 || type === 'Tuesday') {
+            return this.calc({day: (this.dayOfWeek() === 0 ? -5 : 2) - this.dayOfWeek()});
+        } else if (type === 3 || type === 'Wednesday') {
+            return this.calc({day: (this.dayOfWeek() === 0 ? -4 : 3) - this.dayOfWeek()});
+        } else if (type === 4 || type === 'Thursday') {
+            return this.calc({day: (this.dayOfWeek() === 0 ? -3 : 4) - this.dayOfWeek()});
+        } else if (type === 5 || type === 'Friday') {
+            return this.calc({day: (this.dayOfWeek() === 0 ? -2 : 5) - this.dayOfWeek()});
+        } else if (type === 6 || type === 'Saturday') {
+            return this.calc({day: (this.dayOfWeek() === 0 ? -1 : 6) - this.dayOfWeek()});
         }
     };
 
@@ -1776,7 +1807,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.3';
+    tempus.VERSION = '0.2.4';
 
     // *************************************************
     // *                                               *
@@ -1863,7 +1894,7 @@
      * @param {boolean|undefined} options.asObject If true, dates will be keys for objects in result array.
      * @param {string|undefined} options.groupBy If not undefined, group array by some field in TempusDate. Can be
      *     'seconds', 'minutes', 'hours', 'day', 'week', 'month', 'year'.
-     * @static
+     * @param {boolean|undefined} options.fillNulls If true, with grouping missing values filling null's.
      * @return {Array|Object} Array or object from dates.
      * @description
      * Generates dates from [dateFrom] to [dateTo] with period [period] and result format dates is [format] or any other.
@@ -1942,11 +1973,28 @@
      *     format: '%d.%m.%Y',
      *     groupBy: 'month'
      * });
+     *
+     * // returns [[null,null,"01.10.2013, Tue","02.10.2013, Wed","03.10.2013, Thu","04.10.2013, Fri","05.10.2013, Sat"],
+     *     ["06.10.2013, Sun","07.10.2013, Mon","08.10.2013, Tue","09.10.2013, Wed","10.10.2013, Thu","11.10.2013, Fri",
+     *     "12.10.2013, Sat"],["13.10.2013, Sun","14.10.2013, Mon","15.10.2013, Tue","16.10.2013, Wed","17.10.2013, Thu",
+     *     "18.10.2013, Fri","19.10.2013, Sat"],["20.10.2013, Sun","21.10.2013, Mon","22.10.2013, Tue","23.10.2013, Wed",
+     *     "24.10.2013, Thu","25.10.2013, Fri","26.10.2013, Sat"],["27.10.2013, Sun","28.10.2013, Mon","29.10.2013, Tue",
+     *     "30.10.2013, Wed",null,null,null]]
+     * tempus.generate({
+     *     dateFrom: (tempus([2013,10,1]),
+     *     dateTo: tempus([2013,10]).day(tempus([2013,10]).dayCount()),
+     *     period:{day:1},
+     *     format: '%d.%m.%Y, %a',
+     *     groupBy:'week',
+     *     fillNulls: true
+     * });
      * ```
      */
     tempus.generate = function (options) {
-        var tsFrom = options.dateFrom,
-            tsTo = options.dateTo,
+        var tsFrom,
+            tsTo,
+            tsMinimal,
+            tsMaximal,
             period,
             result,
             prevValue,
@@ -1954,17 +2002,17 @@
         // timestamp "from"
         if (typeof options.dateFrom !== 'number') {
             if (options.dateFrom instanceof TempusDate) {
-                tsFrom = tsFrom.utc();
+                tsFrom = options.dateFrom.utc();
             } else {
-                tsFrom = tempus(tsFrom, options.formatFrom).utc();
+                tsFrom = tempus(options.dateFrom, options.formatFrom).utc();
             }
         }
         // timestamp "to"
         if (typeof options.dateTo !== 'number') {
             if (options.dateTo instanceof TempusDate) {
-                tsTo = tsTo.utc();
+                tsTo = options.dateTo.utc();
             } else {
-                tsTo = tempus(tsTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).utc();
+                tsTo = tempus(options.dateTo, (options.formatTo !== undefined ? options.formatTo : options.formatFrom)).utc();
             }
         }
         // period
@@ -2004,7 +2052,7 @@
             result.push([]);
             prevValue = tempus(tsFrom).get()[options.groupBy];
         }
-        addTo = function (array, value) {
+        addTo = function (array, value, nulled) {
             if (options.asObject === true) {
                 if (options.format !== undefined) {
                     array[tempus(value).format(options.format)] = {};
@@ -2013,15 +2061,32 @@
                 }
             } else {
                 if (options.format !== undefined) {
-                    array.push(tempus(value).format(options.format));
+                    array.push(nulled ? null : tempus(value).format(options.format));
                 } else {
-                    array.push(tempus(value));
+                    array.push(nulled ? null : tempus(value));
                 }
             }
             return array;
         };
 
-        for (tsFrom; tsFrom <= tsTo; tsFrom = tempus(tsFrom).calc(period).utc()) {
+        if (options.groupBy !== undefined && options.fillNulls) {
+            var inversePeriod = {
+                year: period.year ? -period.year : undefined,
+                month: period.month ? -period.month : undefined,
+                day: period.day ? -period.day : undefined,
+                hours: period.hours ? -period.hours : undefined,
+                minutes: period.minutes ? -period.minutes : undefined,
+                seconds: period.seconds ? -period.seconds : undefined,
+                milliseconds: period.milliseconds ? -period.milliseconds : undefined
+            };
+            tsMinimal = tempus(tsFrom).calc(inversePeriod).utc();
+            while (tempus(tsMinimal).get()[options.groupBy] === prevValue) {
+                addTo(result[result.length - 1], tsMinimal, true);
+                tsMinimal = tempus(tsMinimal).calc(inversePeriod).utc();
+            }
+        }
+
+        while (tsFrom <= tsTo) {
             if (options.groupBy === undefined) {
                 addTo(result, tsFrom);
             } else {
@@ -2033,7 +2098,17 @@
                     prevValue = tempus(tsFrom).get()[options.groupBy];
                 }
             }
+            tsFrom = tempus(tsFrom).calc(period).utc()
         }
+
+        if (options.groupBy !== undefined && options.fillNulls) {
+            tsMaximal = tempus(tsTo).calc(period).utc();
+            while (tempus(tsMaximal).get()[options.groupBy] === prevValue) {
+                addTo(result[result.length - 1], tsMaximal, true);
+                tsMaximal = tempus(tsMaximal).calc(period).utc();
+            }
+        }
+
         return result;
     };
 

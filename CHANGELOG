@@ -1,3 +1,8 @@
+0.2.4
+- dayOfWeek() now setter too.
+- Fixed bug with week().
+- Added fillNulls for generate().
+
 0.2.3
 - Constants format changed.
 - Added function classes() for returns some class.
