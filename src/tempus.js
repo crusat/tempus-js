@@ -1981,7 +1981,7 @@
      *     "24.10.2013, Thu","25.10.2013, Fri","26.10.2013, Sat"],["27.10.2013, Sun","28.10.2013, Mon","29.10.2013, Tue",
      *     "30.10.2013, Wed",null,null,null]]
      * tempus.generate({
-     *     dateFrom: (tempus([2013,10,1]),
+     *     dateFrom: tempus([2013,10,1]),
      *     dateTo: tempus([2013,10]).day(tempus([2013,10]).dayCount()),
      *     period:{day:1},
      *     format: '%d.%m.%Y, %a',
