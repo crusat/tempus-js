@@ -1,3 +1,9 @@
+0.2.8
+- Fixed bug with 1 week january with generate().
+
+0.2.7
+- Fixed some small bugs.
+
 0.2.6
 - classes() now setter too.
 - Fixed week() bug.

@@ -486,5 +486,17 @@
         deepEqual(tempus.generate({dateFrom: '20130329',formatFrom: '%Y%m%d',dateTo: '20130402',period: {day: 1},format: '%d.%m.%Y'}),
             ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"],
             'Tests generation of dates with custom format and period as object');
+        deepEqual(tempus.generate({
+                dateFrom: tempus([2014,1]).day(1),
+                dateTo: tempus([2014, 1]).day(3),
+                period: {
+                    day:1
+                },
+                format: '%d',
+                groupBy: 'week',
+                fillNulls: true
+            }),
+            [[null,null,null,"01","02","03",null]],
+            'Tests generation of dates with custom format and period as object');
     });
 })();
