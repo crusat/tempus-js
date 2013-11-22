@@ -156,8 +156,8 @@
     test('Test dayOfWeek() method', function () {
         equal(tempus().dayOfWeek(), new Date().getDay(), 'Test');
         equal(tempus([2013, 11, 18]).dayOfWeek(), new Date(2013, 10, 18).getDay(), 'Test');
-        equal(tempus([2013, 11, 21]).dayOfWeek('Sunday').format('%d.%m.%Y'), '2013-11-17', 'Test setter');
-        equal(tempus([2013, 11, 21]).dayOfWeek('Friday').format('%d.%m.%Y'), '2013-11-22', 'Test setter');
+        equal(tempus([2013, 11, 21]).dayOfWeek('Sunday').format('%Y-%m-%d'), '2013-11-17', 'Test setter');
+        equal(tempus([2013, 11, 21]).dayOfWeek('Friday').format('%Y-%m-%d'), '2013-11-22', 'Test setter');
 
     });
 
