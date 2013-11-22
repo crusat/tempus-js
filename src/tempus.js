@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.6
+ * @version 0.2.7
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -192,7 +192,8 @@
             },
             '%a': {
                 format: function (date) {
-                    return translations[lang].dayShortNames[date.dayOfWeek() || tempus.MIN_DAY_OF_WEEK];
+                    var d = date.dayOfWeek();
+                    return translations[lang].dayShortNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
                 },
                 parse: function () {
                     // impossible
@@ -204,7 +205,8 @@
             },
             '%A': {
                 format: function (date) {
-                    return translations[lang].dayLongNames[date.dayOfWeek() || tempus.MIN_DAY_OF_WEEK];
+                    var d = date.dayOfWeek();
+                    return translations[lang].dayLongNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
                 },
                 parse: function () {
                     // impossible
@@ -216,10 +218,10 @@
             },
             '%b': {
                 format: function (date) {
-                    return translations[lang].monthShortNames[((tempus.options('monthFromZero') ? date.month() : date.month()-1) || tempus.MIN_MONTH)];
+                    var m = tempus.options('monthFromZero') ? date.month() : date.month()-1;
+                    return translations[lang].monthShortNames[m !== undefined ? m : tempus.MIN_MONTH];
                 },
                 parse: function (value) {
-                    console.log(value);
                     var month = tempus.monthNames().indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
                     return {month: month !== -1 ? month : undefined};
                 },
@@ -229,7 +231,8 @@
             },
             '%B': {
                 format: function (date) {
-                    return translations[lang].monthLongNames[((tempus.options('monthFromZero') ? date.month() : date.month()-1) || tempus.MIN_MONTH)];
+                    var m = tempus.options('monthFromZero') ? date.month() : date.month()-1;
+                    return translations[lang].monthLongNames[m !== undefined ? m : tempus.MIN_MONTH];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames(true).indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
@@ -1810,7 +1813,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.6';
+    tempus.VERSION = '0.2.7';
 
     // *************************************************
     // *                                               *

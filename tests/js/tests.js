@@ -409,9 +409,31 @@
     // *************************************************
 
     test('Tests format()', function() {
+        tempus.lang('en');
         equal(tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Test');
         equal(tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S'), '2013-11-18 12:36:42', 'Test');
+        // months
         equal(tempus([2013, 11, 5]).format('%Y%m%d'), '20131105', 'Test');
+        equal(tempus([2013, 1, 1]).format('%b %B'), 'Jan January', 'Test');
+        equal(tempus([2013, 2, 1]).format('%b %B'), 'Feb February', 'Test');
+        equal(tempus([2013, 3, 1]).format('%b %B'), 'Mar March', 'Test');
+        equal(tempus([2013, 4, 1]).format('%b %B'), 'Apr April', 'Test');
+        equal(tempus([2013, 5, 1]).format('%b %B'), 'May May', 'Test');
+        equal(tempus([2013, 6, 1]).format('%b %B'), 'Jun June', 'Test');
+        equal(tempus([2013, 7, 1]).format('%b %B'), 'Jul July', 'Test');
+        equal(tempus([2013, 8, 1]).format('%b %B'), 'Aug August', 'Test');
+        equal(tempus([2013, 9, 1]).format('%b %B'), 'Sep September', 'Test');
+        equal(tempus([2013, 10, 1]).format('%b %B'), 'Oct October', 'Test');
+        equal(tempus([2013, 11, 1]).format('%b %B'), 'Nov November', 'Test');
+        equal(tempus([2013, 12, 1]).format('%b %B'), 'Dec December', 'Test');
+        // day of week
+        equal(tempus([2013, 11, 17]).format('%a %A'), 'Sun Sunday', 'Test');
+        equal(tempus([2013, 11, 18]).format('%a %A'), 'Mon Monday', 'Test');
+        equal(tempus([2013, 11, 19]).format('%a %A'), 'Tue Tuesday', 'Test');
+        equal(tempus([2013, 11, 20]).format('%a %A'), 'Wed Wednesday', 'Test');
+        equal(tempus([2013, 11, 21]).format('%a %A'), 'Thu Thursday', 'Test');
+        equal(tempus([2013, 11, 22]).format('%a %A'), 'Fri Friday', 'Test');
+        equal(tempus([2013, 11, 23]).format('%a %A'), 'Sat Saturday', 'Test');
     });
 
     test('Tests registerFormat() and unregisterFormat()', function() {
