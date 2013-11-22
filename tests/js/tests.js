@@ -497,6 +497,20 @@
                 fillNulls: true
             }),
             [[null,null,null,"01","02","03",null]],
-            'Tests generation of dates with custom format and period as object');
+            'Tests generation of dates');
+        deepEqual(tempus.generate({
+                dateFrom: tempus([2014,2]).day(1),
+                dateTo: tempus([2014, 2]).day(25),
+                period: {
+                    day:1
+                },
+                format: '%d',
+                groupBy: 'week',
+                fillNulls: true
+            }),
+            [[null,null,null,null,null,null,"01"],["02","03","04","05","06","07","08"],
+                ["09","10","11","12","13","14","15"],["16","17","18","19","20","21","22"],
+                ["23","24","25",null,null,null,null]],
+            'Tests generation of dates');
     });
 })();

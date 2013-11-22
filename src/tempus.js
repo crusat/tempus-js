@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.8
+ * @version 0.2.9
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -1813,7 +1813,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.8';
+    tempus.VERSION = '0.2.9';
 
     // *************************************************
     // *                                               *
@@ -2092,8 +2092,9 @@
             }
             // only for groupBy "week" and first week january. Because week #53 !== week #1
             if (options.groupBy === 'week') {
+                var tsFromDoW = tempus(tsFrom).dayOfWeek();
                 tsMinimal = tempus(tsFrom).dayOfWeek(0).utc();
-                while (result[0].length < 7 && tsMinimal < tsFrom) {
+                while (result[0].length < tsFromDoW && tsMinimal < tsFrom) {
                     addTo(result[result.length - 1], tsMinimal, true);
                     tsMinimal = tempus(tsMinimal).calc(period).utc();
                 }

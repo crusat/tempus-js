@@ -1,3 +1,6 @@
+0.2.9
+- Fixed bug with generate().
+
 0.2.8
 - Fixed bug with 1 week january with generate().
 
