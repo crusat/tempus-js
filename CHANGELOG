@@ -1,3 +1,6 @@
+0.2.10
+- Fixed bug with get('DateUTC') and get('Date').
+
 0.2.9
 - Fixed bug with generate().
 

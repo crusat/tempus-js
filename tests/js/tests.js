@@ -174,6 +174,8 @@
         equal(tempus().get().hours, new Date().getHours(), 'Test');
         equal(tempus().get().minutes, new Date().getMinutes(), 'Test');
         equal(tempus().get().seconds, new Date().getSeconds(), 'Test');
+        equal(tempus().get('Date').getTime(), new Date().getTime(), 'Test');
+        equal(tempus().get('DateUTC').getTime(), new Date().getTime() - new Date().getTimezoneOffset()*60000, 'Test');
     });
 
     test('Tests leapYear() method', function () {

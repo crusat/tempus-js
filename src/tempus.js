@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.9
+ * @version 0.2.10
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -1306,10 +1306,10 @@
     TempusDate.fn.get = function (type) {
         switch (type) {
         case 'Date':
-            return new Date(this.year(), this.month(), this.day(), this.hours(), this.minutes(),
+            return new Date(this.year(), this.month() - (tempus.options('monthFromZero') ? 0 : 1), this.day(), this.hours(), this.minutes(),
                 this.seconds(), this.milliseconds());
         case 'DateUTC':
-            return new Date(Date.UTC(this.year(), this.month(), this.day(), this.hours(), this.minutes(),
+            return new Date(Date.UTC(this.year(), this.month() - (tempus.options('monthFromZero') ? 0 : 1), this.day(), this.hours(), this.minutes(),
                 this.seconds(), this.milliseconds()));
         default:
             return {
@@ -1813,7 +1813,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.9';
+    tempus.VERSION = '0.2.10';
 
     // *************************************************
     // *                                               *
