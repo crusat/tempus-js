@@ -4,7 +4,9 @@
     "version": "0.2.10",
     "devDependencies": {
         "grunt": "~0.4.1",
+        "grunt-cli": "~0.1.11",
         "grunt-contrib-uglify": "~0.2.2",
-        "grunt-docular": "~0.1.0"
+        "grunt-docular": "~0.1.0",
+        "grunt-contrib-watch": "~0.5.3"
     }
 }

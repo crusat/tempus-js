@@ -33,10 +33,20 @@ module.exports = function(grunt) {
                 src: 'src/<%= pkg.name %>.js',
                 dest: 'min/<%= pkg.name %>.min.js'
             }
+        },
+        watch: {
+            scripts: {
+                files: 'src/<%= pkg.name %>.js',
+                tasks: ['default'],
+                options: {
+                    debounceDelay: 250
+                }
+            }
         }
     });
     grunt.loadNpmTasks('grunt-docular');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     // Default task(s).
     grunt.registerTask('default', ['docular', 'uglify']);
 
