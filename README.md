@@ -25,8 +25,12 @@ Some Examples
 --------------
 
 ```js
+// Returns TempusDate object with current date.
+tempus();
+
 // Returns "2013-11-18 20:14:23"
-tempus({year: 2013, month: 11, day: 18, hours: 20, minutes: 14, seconds: 23, milliseconds: 918}).format('%Y-%m-%d %H:%M:%S');
+tempus({year: 2013, month: 11, day: 18, hours: 20, minutes: 14,
+     seconds: 23, milliseconds: 918}).format('%Y-%m-%d %H:%M:%S');
 
 // Returns TempusDate object with date "2013-11-18 20:15:38"
 tempus(1384791338);
@@ -51,7 +55,8 @@ tempus('32.08.2013', '%d.%m.%Y').valid();
 // returns true
 tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').valid();
 
-// returns {"year":-5,"month":false,"day":false,"hours":false,"minutes":false,"seconds":false,"milliseconds":false}
+// returns {"year":-5,"month":false,"day":false,"hours":false,
+//     "minutes":false,"seconds":false,"milliseconds":false}
 tempus().year(-5).errors();
 
 // RANGES
@@ -64,8 +69,9 @@ tempus([2011, 5, 2]).calc({year: 1, month: -4, day: -1});
 
 // DATE GENERATION
 
-// returns ["2013-01-01 00:00","2013-01-02 12:00","2013-01-04 00:00","2013-01-05 12:00","2013-01-07 00:00",
-//     "2013-01-08 12:00","2013-01-10 00:00","2013-01-11 12:00"];
+// returns ["2013-01-01 00:00","2013-01-02 12:00","2013-01-04 00:00",
+//     "2013-01-05 12:00","2013-01-07 00:00","2013-01-08 12:00",
+//     "2013-01-10 00:00","2013-01-11 12:00"];
 tempus.generateDates({
     dateFrom: '01.01.2013',
     dateTo: '12.01.2013',
