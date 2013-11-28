@@ -17,11 +17,12 @@ Or download some release here https://github.com/crusat/tempus-js/releases
 Quick Examples
 --------------
 
-dayCount
-~~~~~~~~
+**dayCount**
 
-    // Returns 30, because in November 30 days.
-    tempus([2013, 11, 18]).dayCount();
+```js
+// Returns 30, because in November 30 days.
+tempus([2013, 11, 18]).dayCount();
+```
 
 License
 -------
