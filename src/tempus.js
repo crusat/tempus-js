@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.10
+ * @version 0.2.11
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -1823,7 +1823,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.10';
+    tempus.VERSION = '0.2.11';
 
     // *************************************************
     // *                                               *
