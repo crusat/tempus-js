@@ -42,18 +42,6 @@
             }
             return v;
         },
-        OS = (function () {
-            var nav = navigator.platform.toUpperCase();
-            if (nav.indexOf('WIN') !== -1) {
-                return 'win';
-            } else if (nav.indexOf('LINUX') !== -1) {
-                return 'linux';
-            } else if (nav.indexOf('MAC') !== -1) {
-                return 'mac';
-            } else {
-                return 'unknown';
-            }
-        })(),
         parseBadFormat = function (date, defaults) {
             if (defaults !== undefined) {
                 date.year(defaults.year() || defaults.year);
