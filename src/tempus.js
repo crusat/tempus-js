@@ -29,8 +29,6 @@
         };
     }
 
-
-
     // *************************************************
     // *                                               *
     // *                   CORE                        *
@@ -44,6 +42,18 @@
             }
             return v;
         },
+        OS = (function () {
+            var nav = navigator.platform.toUpperCase();
+            if (nav.indexOf('WIN') !== -1) {
+                return 'win';
+            } else if (nav.indexOf('LINUX') !== -1) {
+                return 'linux';
+            } else if (nav.indexOf('MAC') !== -1) {
+                return 'mac';
+            } else {
+                return 'unknown';
+            }
+        })(),
         parseBadFormat = function (date, defaults) {
             if (defaults !== undefined) {
                 date.year(defaults.year() || defaults.year);
@@ -972,6 +982,9 @@
                 this.day(newDate[2]);
                 this.hours(newDate[3]);
                 this.minutes(newDate[4]);
+                if (this.valid() && OS === 'win') {
+                    this.calc({minutes: -this.timezone('minutes')});
+                }
                 this.seconds(newDate[5]);
                 this.milliseconds(newDate[6]);
             } else {
@@ -980,6 +993,9 @@
                 this.day(newDate.day);
                 this.hours(newDate.hours);
                 this.minutes(newDate.minutes);
+                if (this.valid() && OS === 'win') {
+                    this.calc({minutes: -this.timezone('minutes')});
+                }
                 this.seconds(newDate.seconds);
                 this.milliseconds(newDate.milliseconds);
             }
@@ -1455,53 +1471,53 @@
 
     /**
      * @doc method
-     * @name TempusDate.global:validate
+     * @name TempusDate.global:valid
      * @return {boolean} If true, date is valid, else invalid.
      * @description
-     * Validates date.
+     * validates date.
      *
      * ```js
      * // returns false
-     * tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     * tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).valid();
      *
      * // returns false
-     * tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate();
+     * tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).valid();
      *
      * // returns true
-     * tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate();
+     * tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).valid();
      *
      * // returns true
-     * tempus('2013-03-12', '%Y-%m-%d').validate();
+     * tempus('2013-03-12', '%Y-%m-%d').valid();
      *
      * // returns true
-     * tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate();
+     * tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').valid();
      *
      * // returns false
-     * tempus('32.08.2013', '%d.%m.%Y').validate();
+     * tempus('32.08.2013', '%d.%m.%Y').valid();
      *
      * // returns false
-     * tempus('29.02.2013', '%d.%m.%Y').validate();
+     * tempus('29.02.2013', '%d.%m.%Y').valid();
      *
      * // returns true
-     * tempus('29.02.2012', '%d.%m.%Y').validate();
+     * tempus('29.02.2012', '%d.%m.%Y').valid();
      *
      * // returns false
-     * tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate();
+     * tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').valid();
      *
      * // returns true
-     * tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate();
+     * tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').valid();
      *
      * // returns false
-     * tempus('29.02.2012 24:00').validate();
+     * tempus('29.02.2012 24:00').valid();
      *
      * // returns true
-     * tempus('29.02.2012 23:00').validate();
+     * tempus('29.02.2012 23:00').valid();
      *
      * // returns false
-     * tempus('29.02.2013 23:00').validate();
+     * tempus('29.02.2013 23:00').valid();
      * ```
      */
-    TempusDate.fn.validate = function () {
+    TempusDate.fn.valid = function () {
         return (this._i.year === false && this._i.month === false && this._i.day === false &&
             this._i.hours === false && this._i.minutes === false && this._i.seconds === false &&
             this._i.milliseconds === false);

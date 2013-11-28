@@ -209,18 +209,18 @@
         equal(resultTest2(), '2013-05-05 12:41:36', 'Test 2');
     });
 
-    test('Tests validate()', function () {
-        equal(tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).validate(), false, 'validate');
-        equal(tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).validate(), true, 'validate');
-        equal(tempus('2013-03-12', '%Y-%m-%d').validate(), true, 'validate');
-        equal(tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').validate(), true, 'validate');
-        equal(tempus('32.08.2013', '%d.%m.%Y').validate(), false, 'validate');
-        equal(tempus('29.02.2013', '%d.%m.%Y').validate(), false, 'validate');
-        equal(tempus('29.02.2012', '%d.%m.%Y').validate(), true, 'validate');
-        equal(tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').validate(), false, 'validate');
-        equal(tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').validate(), true, 'validate');
-        equal(typeof tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).validate(), 'boolean', 'Type is boolean');
+    test('Tests valid()', function () {
+        equal(tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).valid(), false, 'valid');
+        equal(tempus({day:20,month:3,year:2013,hours:-1,minutes:0,seconds:0}).valid(), false, 'valid');
+        equal(tempus({day:1,month:1,year:2013,hours:0,minutes:0,seconds:0}).valid(), true, 'valid');
+        equal(tempus('2013-03-12', '%Y-%m-%d').valid(), true, 'valid');
+        equal(tempus('16:00 08.08.2013', '%H:%M %d.%m.%Y').valid(), true, 'valid');
+        equal(tempus('32.08.2013', '%d.%m.%Y').valid(), false, 'valid');
+        equal(tempus('29.02.2013', '%d.%m.%Y').valid(), false, 'valid');
+        equal(tempus('29.02.2012', '%d.%m.%Y').valid(), true, 'valid');
+        equal(tempus('24:61 29.02.2012', '%H:%M %d.%m.%Y').valid(), false, 'valid');
+        equal(tempus('00:00 01.01.2012', '%H:%M %d.%m.%Y').valid(), true, 'valid');
+        equal(typeof tempus({day:32,month:12,year:2013,hours:0,minutes:0,seconds:0}).valid(), 'boolean', 'Type is boolean');
     });
 
     test('Tests errors()', function () {
