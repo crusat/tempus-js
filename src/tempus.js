@@ -982,9 +982,6 @@
                 this.day(newDate[2]);
                 this.hours(newDate[3]);
                 this.minutes(newDate[4]);
-                if (this.valid() && OS === 'win') {
-                    this.calc({minutes: -this.timezone('minutes')});
-                }
                 this.seconds(newDate[5]);
                 this.milliseconds(newDate[6]);
             } else {
@@ -993,9 +990,6 @@
                 this.day(newDate.day);
                 this.hours(newDate.hours);
                 this.minutes(newDate.minutes);
-                if (this.valid() && OS === 'win') {
-                    this.calc({minutes: -this.timezone('minutes')});
-                }
                 this.seconds(newDate.seconds);
                 this.milliseconds(newDate.milliseconds);
             }

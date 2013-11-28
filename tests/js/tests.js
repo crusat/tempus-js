@@ -148,7 +148,8 @@
     });
 
     test('Test utc() method', function () {
-        equal(tempus([2013, 11, 18]).utc(), 1384718400, 'Test');
+        equal(tempus([2013, 11, 18]).utc()*1000, new Date(2013, 10, 18).getTime(), 'Test');
+        equal(tempus({year: 2013, month: 11, day: 18}).utc()*1000, new Date(2013, 10, 18).getTime(), 'Test');
         equal(tempus().utc(1384732800).utc(), 1384732800, 'Test');
         equal(tempus(1384732800).utc(), 1384732800, 'Test');
     });
@@ -414,6 +415,16 @@
         tempus.lang('en');
         equal(tempus({year: 2013, month: 11, day:5}).format('%d.%m.%Y'), '05.11.2013', 'Test');
         equal(tempus([2013, 11, 18, 12, 36, 42]).format('%Y-%m-%d %H:%M:%S'), '2013-11-18 12:36:42', 'Test');
+        // all formats
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%Y'), '2013', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%m'), '11', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%d'), '05', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%H'), '12', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%M'), '15', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%S'), '32', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%s'), '1383653732', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%F'), '2013-11-05', 'Test');
+        equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%D'), '11/05/2013', 'Test');
         // months
         equal(tempus([2013, 11, 5]).format('%Y%m%d'), '20131105', 'Test');
         equal(tempus([2013, 1, 1]).format('%b %B'), 'Jan January', 'Test');
