@@ -14,10 +14,6 @@ Install over bower:
 ```
 Or download some release here https://github.com/crusat/tempus-js/releases
 
-Default formats
----------------
-
-
 
 License: MIT.
 
