@@ -14,7 +14,21 @@ Install over bower:
 ```
 Or download some release here https://github.com/crusat/tempus-js/releases
 
+Quick Examples
+--------------
 
-License: MIT.
+dayCount
+~~~~~~~~
 
-Contact me: me@akuzn.com
+    // Returns 30, because in November 30 days.
+    tempus([2013, 11, 18]).dayCount();
+
+License
+-------
+
+MIT
+
+Contact me
+----------
+
+me@akuzn.com
