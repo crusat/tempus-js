@@ -1,6 +1,7 @@
 0.2.12
 - Fixed tests.
 - Fixed docs.
+- Fixed bug with setting february from current date 29+ day of month.
 
 0.2.11
 - Validate() changes to valid().

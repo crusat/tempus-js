@@ -395,7 +395,7 @@
     TempusDate.fn.dayCount = function () {
         var m = this.month(),
             dc = tempus.MAX_DAY_IN_MONTHS[m - (tempus.options('monthFromZero') ? 0 : 1)];
-        if (this.leapYear() && m === 2) {
+        if (this.leapYear() && (m === (tempus.options('monthFromZero') ? 1 : 2))) {
             dc += 1;
         }
         return dc;
@@ -536,7 +536,7 @@
             }
         } else {
             if (this._i.month === false) {
-                return tempus.options('monthFromZero') ? this._d.getMonth() : (this._d.getMonth() + 1);
+                return tempus.options('monthFromZero') ? this._d.getMonth() : (this._d.getMonth()+1);
             }
             return this._i.month;
         }
@@ -965,6 +965,7 @@
         }
         if (typeof newDate === 'object') {
             if (newDate instanceof Array) {
+                this.day(tempus.MIN_DAY); // if curr day = 29 and curr month not february - month can be set as march, not feb.
                 this.year(newDate[0]);
                 this.month(newDate[1]);
                 this.day(newDate[2]);
@@ -973,6 +974,7 @@
                 this.seconds(newDate[5]);
                 this.milliseconds(newDate[6]);
             } else {
+                this.day(tempus.MIN_DAY);
                 this.year(newDate.year);
                 this.month(newDate.month);
                 this.day(newDate.day);
@@ -1094,6 +1096,7 @@
                     };
                 }
             }
+            this.day(tempus.MIN_DAY);
             this.year(resultdate.year);
             this.month(resultdate.month);
             this.day(resultdate.day);

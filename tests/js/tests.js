@@ -175,8 +175,8 @@
         equal(tempus().get().hours, new Date().getHours(), 'Test');
         equal(tempus().get().minutes, new Date().getMinutes(), 'Test');
         equal(tempus().get().seconds, new Date().getSeconds(), 'Test');
-        equal(tempus().get('Date').getTime(), new Date().getTime(), 'Test');
-        equal(tempus().get('DateUTC').getTime(), new Date().getTime() - new Date().getTimezoneOffset()*60000, 'Test');
+        equal(Math.floor(tempus().get('Date').getTime()/1000), Math.floor(new Date().getTime()/1000), 'Test');
+        equal(Math.floor(tempus().get('DateUTC').getTime()/1000), Math.floor(new Date().getTime()/1000) - new Date().getTimezoneOffset()*60, 'Test');
     });
 
     test('Tests leapYear() method', function () {
@@ -243,6 +243,8 @@
     // *************************************************
 
     test('Tests set() method', function() {
+        equal(tempus().set().utc(), Math.floor(new Date().valueOf()/1000),
+            'This test may be not completed and it be right, because here checking two NOW dates');
         equal(tempus().set({year: 2013, month: 1, day: 15}).utc()*1000, new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
         equal(tempus().set([2000, 6, 1, 12, 1, 15]).utc()*1000, new Date(2000, 5, 1, 12, 1, 15).valueOf(),
@@ -477,6 +479,8 @@
     // *************************************************
 
     test('Tests constructor of TempusDate', function() {
+        equal(Math.floor(tempus().utc()), Math.floor(new Date().valueOf()/1000),
+            'This test may be not completed and it be right, because here checking two NOW dates');
         equal(tempus({year: 2013, month: 1, day: 15}).utc()*1000, new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
         equal(tempus([2000, 6, 1, 12, 1, 15]).utc()*1000, new Date(2000, 5, 1, 12, 1, 15).valueOf(),
