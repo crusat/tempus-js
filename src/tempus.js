@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.11
+ * @version 0.2.12
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -1811,7 +1811,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.11';
+    tempus.VERSION = '0.2.12';
 
     // *************************************************
     // *                                               *
@@ -1925,15 +1925,15 @@
      * // returns ["29.03.2013", "30.03.2013", "31.03.2013", "01.04.2013", "02.04.2013"];
      * tempus.generate({
      *     dateFrom: '20130329',
-     *     formatFrom: '%s',
+     *     formatFrom: '%Y%m%d',
      *     dateTo: '20130402',
      *     period: {day: 1},
-     *     format: '%s'
+     *     format: '%d.%m.%Y'
      * });
      *
      * // returns ["2013-01-01 00:00","2013-01-02 12:00","2013-01-04 00:00","2013-01-05 12:00","2013-01-07 00:00",
      * //     "2013-01-08 12:00","2013-01-10 00:00","2013-01-11 12:00"];
-     * tempus.generateDates({
+     * tempus.generate({
      *     dateFrom: '01.01.2013',
      *     dateTo: '12.01.2013',
      *     period: {day: 1, hours: 12},
@@ -1944,7 +1944,7 @@
      * //     "12.01.2013","13.01.2013","14.01.2013","15.01.2013","16.01.2013","17.01.2013","18.01.2013",
      * //     "19.01.2013","20.01.2013","21.01.2013","22.01.2013","23.01.2013","24.01.2013","25.01.2013",
      * //     "26.01.2013","27.01.2013","28.01.2013","29.01.2013","30.01.2013","31.01.2013","01.02.2013"];
-     * tempus.generateDates({
+     * tempus.generate({
      *     dateFrom: {year: 2013, month: 1, day: 5},
      *     dateTo: {year: 2013, month: 2, day: 1},
      *     period: {day: 1},
@@ -1953,7 +1953,7 @@
      *
      * // returns {"05.01.2013":{},"06.01.2013":{},"07.01.2013":{},"08.01.2013":{},"09.01.2013":{},
      * //     "10.01.2013":{},"11.01.2013":{},"12.01.2013":{},"13.01.2013":{},"14.01.2013":{},"15.01.2013":{}};
-     * tempus.generateDates({
+     * tempus.generate({
      *     dateFrom: {year: 2013, month: 1, day: 5},
      *     dateTo: {year: 2013, month: 1, day: 15},
      *     period: {day: 1},
@@ -1985,7 +1985,7 @@
      *     "24.10.2013, Thu","25.10.2013, Fri","26.10.2013, Sat"],["27.10.2013, Sun","28.10.2013, Mon","29.10.2013, Tue",
      *     "30.10.2013, Wed",null,null,null]]
      * tempus.generate({
-     *     dateFrom: tempus([2013,10,1]),
+     *     dateFrom: [2013,10,1],
      *     dateTo: tempus([2013,10]).day(tempus([2013,10]).dayCount()),
      *     period:{day:1},
      *     format: '%d.%m.%Y, %a',

@@ -243,8 +243,6 @@
     // *************************************************
 
     test('Tests set() method', function() {
-        equal(tempus().set().utc(), Math.floor(new Date().valueOf()/1000),
-            'This test may be not completed and it be right, because here checking two NOW dates');
         equal(tempus().set({year: 2013, month: 1, day: 15}).utc()*1000, new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
         equal(tempus().set([2000, 6, 1, 12, 1, 15]).utc()*1000, new Date(2000, 5, 1, 12, 1, 15).valueOf(),
@@ -479,8 +477,6 @@
     // *************************************************
 
     test('Tests constructor of TempusDate', function() {
-        equal(Math.floor(tempus().utc()), Math.floor(new Date().valueOf()/1000),
-            'This test may be not completed and it be right, because here checking two NOW dates');
         equal(tempus({year: 2013, month: 1, day: 15}).utc()*1000, new Date(2013, 0, 15).valueOf(),
             'Checking constructor with some object value');
         equal(tempus([2000, 6, 1, 12, 1, 15]).utc()*1000, new Date(2000, 5, 1, 12, 1, 15).valueOf(),

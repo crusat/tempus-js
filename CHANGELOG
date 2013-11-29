@@ -1,3 +1,7 @@
+0.2.12
+- Fixed tests.
+- Fixed docs.
+
 0.2.11
 - Validate() changes to valid().
 - Bug fix with UTC/GMT Date on MS Windows and GNU/Linux.
