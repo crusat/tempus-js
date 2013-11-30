@@ -1,3 +1,8 @@
+0.2.13
+- Fixed bug https://github.com/crusat/tempus-js/issues/5
+- Finished https://github.com/crusat/tempus-js/issues/6
+- Added json2.js to tests directory.
+
 0.2.12
 - Fixed tests.
 - Fixed docs.

@@ -387,6 +387,7 @@
 
         var anotherLangTest = function() {
             var names;
+//            tempus.loadTranslations('../src/translations.json');
             tempus.lang('ru');
             names = tempus.monthNames();
             tempus.lang();
@@ -424,6 +425,9 @@
         equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%S'), '32', 'Test');
         equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%s'), '1383653732', 'Test');
         equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%F'), '2013-11-05', 'Test');
+        equal(tempus("2013-11-30", "%F").format("%F"), '2013-11-30', 'Test');
+        equal(tempus("11/30/2013", "%D").format("%D"), '11/30/2013', 'Test');
+
         equal(tempus([2013, 11, 5, 12, 15, 32, 108]).format('%D'), '11/05/2013', 'Test');
         // months
         equal(tempus([2013, 11, 5]).format('%Y%m%d'), '20131105', 'Test');

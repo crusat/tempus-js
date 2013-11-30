@@ -1,7 +1,7 @@
 {
     "author": "Kuznetsov Aleksey <me@akuzn.com>",
     "name": "tempus",
-    "version": "0.2.12",
+    "version": "0.2.13",
     "devDependencies": {
         "grunt": "~0.4.1",
         "grunt-cli": "~0.1.11",

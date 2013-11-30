@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.12
+ * @version 0.2.13
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -122,23 +122,154 @@
         tempus,
         classes,
         nav = window.navigator,
-        lang = (nav.language || nav.systemLanguage || nav.userLanguage || 'en').substr(0, 2).toLowerCase(),
+        lang = 'en',
         translations = {
             "en": {
-                "monthShortNames": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                "monthLongNames": ["January", "February", "March", "April", "May", "June", "July", "August",
-                    "September", "October", "November", "December"],
-                "dayShortNames": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                "dayLongNames": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-            },
-            "ru": {
-                "monthShortNames": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
-                "monthLongNames": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август",
-                    "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
-                "dayShortNames": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
-                "dayLongNames": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
+                "JANUARY_SHORT": "Jan",
+                "FEBRUARY_SHORT": "Feb",
+                "MARCH_SHORT": "Mar",
+                "APRIL_SHORT": "Apr",
+                "MAY_SHORT": "May",
+                "JUNE_SHORT": "Jun",
+                "JULY_SHORT": "Jul",
+                "AUGUST_SHORT": "Aug",
+                "SEPTEMBER_SHORT": "Sep",
+                "OCTOBER_SHORT": "Oct",
+                "NOVEMBER_SHORT": "Nov",
+                "DECEMBER_SHORT": "Dec",
+                "JANUARY_LONG": "January",
+                "FEBRUARY_LONG": "February",
+                "MARCH_LONG": "March",
+                "APRIL_LONG": "April",
+                "MAY_LONG": "May",
+                "JUNE_LONG": "June",
+                "JULY_LONG": "July",
+                "AUGUST_LONG": "August",
+                "SEPTEMBER_LONG": "September",
+                "OCTOBER_LONG": "October",
+                "NOVEMBER_LONG": "November",
+                "DECEMBER_LONG": "December",
+                "SUNDAY_SHORT": "Sun",
+                "MONDAY_SHORT": "Mon",
+                "TUESDAY_SHORT": "Tue",
+                "WEDNESDAY_SHORT": "Wed",
+                "THURSDAY_SHORT": "Thu",
+                "FRIDAY_SHORT": "Fri",
+                "SATURDAY_SHORT": "Sat",
+                "SUNDAY_LONG": "Sunday",
+                "MONDAY_LONG": "Monday",
+                "TUESDAY_LONG": "Tuesday",
+                "WEDNESDAY_LONG": "Wednesday",
+                "THURSDAY_LONG": "Thursday",
+                "FRIDAY_LONG": "Friday",
+                "SATURDAY_LONG": "Saturday"
             }
         },
+        getMonthLongNames = function () {
+            return [
+                translations[lang].JANUARY_LONG,
+                translations[lang].FEBRUARY_LONG,
+                translations[lang].MARCH_LONG,
+                translations[lang].APRIL_LONG,
+                translations[lang].MAY_LONG,
+                translations[lang].JUNE_LONG,
+                translations[lang].JULY_LONG,
+                translations[lang].AUGUST_LONG,
+                translations[lang].SEPTEMBER_LONG,
+                translations[lang].OCTOBER_LONG,
+                translations[lang].NOVEMBER_LONG,
+                translations[lang].DECEMBER_LONG
+            ];
+        },
+        getMonthShortNames = function() {
+            return [
+                translations[lang].JANUARY_SHORT,
+                translations[lang].FEBRUARY_SHORT,
+                translations[lang].MARCH_SHORT,
+                translations[lang].APRIL_SHORT,
+                translations[lang].MAY_SHORT,
+                translations[lang].JUNE_SHORT,
+                translations[lang].JULY_SHORT,
+                translations[lang].AUGUST_SHORT,
+                translations[lang].SEPTEMBER_SHORT,
+                translations[lang].OCTOBER_SHORT,
+                translations[lang].NOVEMBER_SHORT,
+                translations[lang].DECEMBER_SHORT
+            ];
+        },
+        getDayLongNames = function () {
+            return [
+                translations[lang].SUNDAY_LONG,
+                translations[lang].MONDAY_LONG,
+                translations[lang].TUESDAY_LONG,
+                translations[lang].WEDNESDAY_LONG,
+                translations[lang].THURSDAY_LONG,
+                translations[lang].FRIDAY_LONG,
+                translations[lang].SATURDAY_LONG,
+            ];
+        },
+        getDayShortNames = function () {
+            return [
+                translations[lang].SUNDAY_SHORT,
+                translations[lang].MONDAY_SHORT,
+                translations[lang].TUESDAY_SHORT,
+                translations[lang].WEDNESDAY_SHORT,
+                translations[lang].THURSDAY_SHORT,
+                translations[lang].FRIDAY_SHORT,
+                translations[lang].SATURDAY_SHORT,
+            ];
+        },
+        monthLongNames,
+        monthShortNames,
+        dayLongNames,
+        dayShortNames,
+        loadJSON = function (path, success, error) {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        if (success) {
+                            if (window.JSON === undefined) {
+                                alert('Please, include json2 into your project if you want use old browsers!\nhttps://github.com/douglascrockford/JSON-js/blob/master/json2.js');
+                            } else {
+                                success(JSON.parse(xhr.responseText));
+                            }
+                        }
+                    } else {
+                        if (error) {
+                            error(xhr);
+                        }
+                    }
+                }
+            };
+            xhr.open("GET", path, false);
+            xhr.send();
+        },
+        currentLocation = (function() {
+            var scripts = document.getElementsByTagName("script"),
+                params = {},
+                url = scripts[scripts.length-1].src,
+                queryString = url.split('?').slice(1).join(''),
+                paramsArray = queryString.split('&'),
+                i,
+                len,
+                variable,
+                directory = url.split('/').slice(0, -1).join('/');
+            for (i = 0, len = paramsArray.length; i < len; i++) {
+                variable = paramsArray[i].split('=');
+                params[variable[0]] = typeof variable[1] === undefined ? '' : variable[1];
+            }
+            return {
+                src: url,
+                dir: directory,
+                params: params
+            };
+        })(),
         registeredFormats = {
             '%d': {
                 format: function (date) {
@@ -191,7 +322,7 @@
             '%a': {
                 format: function (date) {
                     var d = date.dayOfWeek();
-                    return translations[lang].dayShortNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
+                    return dayShortNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
                 },
                 parse: function () {
                     // impossible
@@ -204,7 +335,7 @@
             '%A': {
                 format: function (date) {
                     var d = date.dayOfWeek();
-                    return translations[lang].dayLongNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
+                    return dayLongNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
                 },
                 parse: function () {
                     // impossible
@@ -217,7 +348,7 @@
             '%b': {
                 format: function (date) {
                     var m = tempus.options('monthFromZero') ? date.month() : date.month()-1;
-                    return translations[lang].monthShortNames[m !== undefined ? m : tempus.MIN_MONTH];
+                    return monthShortNames[m !== undefined ? m : tempus.MIN_MONTH];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames().indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
@@ -230,7 +361,7 @@
             '%B': {
                 format: function (date) {
                     var m = tempus.options('monthFromZero') ? date.month() : date.month()-1;
-                    return translations[lang].monthLongNames[m !== undefined ? m : tempus.MIN_MONTH];
+                    return monthLongNames[m !== undefined ? m : tempus.MIN_MONTH];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames(true).indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
@@ -295,8 +426,8 @@
                 },
                 parse: function (value) {
                     var year = Number(value.slice(0, 4)),
-                        month = Number(value.slice(6, 7)),
-                        day = Number(value.slice(9, 10));
+                        month = Number(value.slice(5, 7)),
+                        day = Number(value.slice(8, 10));
                     return {
                         year: year,
                         month: month,
@@ -1237,9 +1368,9 @@
     TempusDate.fn.dayOfWeek = function (type) {
 
         if (type === 'long') {
-            return translations[lang].dayLongNames[this._d.getDay()];
+            return dayLongNames[this._d.getDay()];
         } else if (type === 'short') {
-            return translations[lang].dayShortNames[this._d.getDay()];
+            return dayShortNames[this._d.getDay()];
         } else if (type === undefined) {
             return this._d.getDay();
         } else if (type === 0 || type === 'Sunday') {
@@ -1814,7 +1945,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.12';
+    tempus.VERSION = '0.2.13';
 
     // *************************************************
     // *                                               *
@@ -2152,9 +2283,9 @@
     tempus.monthNames = function (type) {
         switch (type) {
         case 'long':
-            return translations[lang].monthLongNames;
+            return monthLongNames;
         default:
-            return translations[lang].monthShortNames;
+            return monthShortNames;
         }
     };
 
@@ -2181,9 +2312,9 @@
     tempus.dayNames = function (type) {
         switch (type) {
         case 'long':
-            return translations[lang].dayLongNames;
+            return dayLongNames;
         default:
-            return translations[lang].dayShortNames;
+            return dayShortNames;
         }
     };
 
@@ -2209,6 +2340,13 @@
     tempus.lang = function (value) {
         if (value !== undefined) {
             lang = value;
+            if (translations[lang] === undefined) {
+                lang = 'en';
+            }
+            monthLongNames = getMonthLongNames();
+            monthShortNames = getMonthShortNames();
+            dayLongNames = getDayLongNames();
+            dayShortNames = getDayShortNames();
         } else {
             return lang;
         }
@@ -2370,6 +2508,53 @@
             classes[klass] = value;
         }
     };
+
+    /**
+     * @doc function
+     * @name tempus.global:loadTranslations
+     * @param {object} translationsObject
+     * @return {undefined} None.
+     * @description
+     * Load/change current translations on new.
+     *
+     * ```js
+     * // Load some translations from object
+     * tempus.loadTranslations(myCustomTranslations);
+     *
+     * // Load some translations from url
+     * tempus.loadTranslations('src/translations.json');
+     *
+     * ```
+     *
+     * If you don't want autoload translations, use:
+     * ```html
+     * <script type="text/javascript" src="src/tempus.js?loadTranslations=false"></script>
+     * ```
+     */
+    tempus.loadTranslations = function (translationsObject) {
+        var script;
+        if (typeof translationsObject === 'object') { // some object
+            translations = translationsObject;
+        } else if (typeof translationsObject === 'string') { // url address
+            loadJSON(translationsObject, function (data) {
+                translations = data;
+            }, function (xhr) {
+            })
+        }
+    };
+
+    // autoload languages
+    if (currentLocation.params.loadTranslations !== 'false') {
+        tempus.loadTranslations(currentLocation.dir+'/translations.json');
+    }
+    lang = (nav.language || nav.systemLanguage || nav.userLanguage || 'en').substr(0, 2).toLowerCase();
+    if (translations[lang] === undefined) {
+        lang = 'en';
+    }
+    monthLongNames = getMonthLongNames();
+    monthShortNames = getMonthShortNames();
+    dayLongNames = getDayLongNames();
+    dayShortNames = getDayShortNames();
 
     // *************************************************
     // *                                               *
