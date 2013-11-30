@@ -2512,7 +2512,7 @@
     /**
      * @doc function
      * @name tempus.global:loadTranslations
-     * @param {object} translationsObject
+     * @param {Object} translationsObject Object with translations (see translations.json for example) or url of translations.
      * @return {undefined} None.
      * @description
      * Load/change current translations on new.
