@@ -385,10 +385,10 @@
 
     test('Tests monthNames()', function () {
 
-        var anotherLangTest = function() {
+        var anotherLangTest = function(lang) {
             var names;
 //            tempus.loadTranslations('../src/translations.json');
-            tempus.lang('ru');
+            tempus.lang(lang);
             names = tempus.monthNames();
             tempus.lang();
             return names;
@@ -401,8 +401,14 @@
             ["January","February","March","April","May","June",
              "July","August","September","October","November","December"],
             'Test');
-        deepEqual(anotherLangTest(),
+        deepEqual(anotherLangTest('ru'),
             ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+            'Test');
+        deepEqual(anotherLangTest('ua'),
+            ["Січ", "Лют", "Берез", "Квіт", "Трав", "Черв", "Лип", "Серп", "Верес", "Жовт", "Листоп", "Груд"],
+            'Test');
+        deepEqual(anotherLangTest('de'),
+            ["Jan", "Feb", "März", "Apr", "Mai", "Juni", "Juli", "Aug", "Sept", "Okt", "Nov", "Dez"],
             'Test');
     });
 
