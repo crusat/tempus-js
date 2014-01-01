@@ -1,5 +1,6 @@
 0.2.16
 - Exports bug fix.
+- Changed name to tempusjs.
 
 0.2.15
 - Translation are included in the main file. JSON file is removed.
