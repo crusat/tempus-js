@@ -118,10 +118,10 @@
             }
             return '';
         },
-        oldTempus = window.tempus,
+        oldTempus = root.tempus,
         tempus,
         classes,
-        nav = window.navigator,
+        nav = root.navigator || {},
         lang = 'en',
         translations = {
             "en": {
@@ -345,7 +345,7 @@
         dayShortNames,
         loadJSON = function (path, success, error) {
             var xhr;
-            if (window.XMLHttpRequest) {
+            if (root.XMLHttpRequest) {
                 xhr = new XMLHttpRequest();
             } else {
                 xhr = new ActiveXObject("Microsoft.XMLHTTP");
@@ -354,7 +354,7 @@
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         if (success) {
-                            if (window.JSON === undefined) {
+                            if (root.JSON === undefined) {
                                 alert('Please, include json2 into your project if you want use old browsers!\nhttps://github.com/douglascrockford/JSON-js/blob/master/json2.js');
                             } else {
                                 success(JSON.parse(xhr.responseText));
@@ -2112,7 +2112,7 @@
      * ```
      */
     tempus.noConflict = function () {
-        window.tempus = oldTempus;
+        root.tempus = oldTempus;
         return tempus;
     };
 
