@@ -2654,4 +2654,7 @@
     // *************************************************
 
     window.tempus = tempus;
+    if (module !== undefined) {
+        module.exports = tempus;
+    }
 })(window);
