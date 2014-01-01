@@ -1,6 +1,6 @@
 {
   "name": "tempusjs",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "description": "Easy and fast datetime library.",
   "main": "src/tempus.js",
   "dependencies": {},
