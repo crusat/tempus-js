@@ -7,7 +7,7 @@
  * @description
  * Library with date/time methods.
  */
-(function (window, undefined) {
+(function (undefined) {
     "use strict";
 
     // *************************************************
@@ -563,7 +563,8 @@
             useMilliseconds: false,
             monthFromZero: false
         },
-        TempusDate;
+        TempusDate,
+        root = this;
 
     /**
      * A **TempusDate** class. Store information about some date and can be use
@@ -2653,8 +2654,13 @@
     // *                                               *
     // *************************************************
 
-    window.tempus = tempus;
-    if (module !== undefined) {
-        module.exports = tempus;
+    if (typeof exports !== 'undefined') {
+        if (typeof module !== 'undefined' && module.exports) {
+            exports = module.exports = tempus;
+        }
+        exports.tempus = tempus;
+    } else {
+        root.tempus = tempus;
     }
-})(window);
+
+})();
