@@ -19,6 +19,13 @@ Install over bower:
 ```bash
     $ bower install tempusjs
 ```
+
+Install over npm (after this you can add module as "var tempus = require('tempusjs');"):
+
+```bash
+    $ npm install tempusjs
+```
+
 Or download some release here https://github.com/crusat/tempus-js/releases
 
 Some Examples

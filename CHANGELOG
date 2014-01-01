@@ -1,8 +1,11 @@
-0.2.16
-- Exports bug fix.
-- Changed name to tempusjs.
+0.2.17
+- Bug fixes.
 
-0.2.15
+0.2.16 (Bad version)
+- Exports bug fix.
+- Changed file names to tempusjs.
+
+0.2.15 (Bad version)
 - Translation are included in the main file. JSON file is removed.
 - Added to npm.
 

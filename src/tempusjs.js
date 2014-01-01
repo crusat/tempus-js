@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.16
+ * @version 0.2.17
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -35,7 +35,8 @@
     // *                                               *
     // *************************************************
 
-    var formattingWithNulls = function (val, symb_count) {
+    var root = this,
+        formattingWithNulls = function (val, symb_count) {
             var v = val.toString();
             while (v.length < symb_count) {
                 v = '0' + v;
@@ -563,8 +564,9 @@
             useMilliseconds: false,
             monthFromZero: false
         },
-        TempusDate,
-        root = this;
+        TempusDate;
+
+    console.log(root);
 
     /**
      * A **TempusDate** class. Store information about some date and can be use
@@ -2046,7 +2048,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.16';
+    tempus.VERSION = '0.2.17';
 
     // *************************************************
     // *                                               *
@@ -2654,6 +2656,7 @@
     // *                                               *
     // *************************************************
 
+    console.log('exports');
     if (typeof exports !== 'undefined') {
         if (typeof module !== 'undefined' && module.exports) {
             exports = module.exports = tempus;
