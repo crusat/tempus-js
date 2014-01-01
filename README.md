@@ -17,7 +17,7 @@ Site: http://tempusjs.org/
 Install over bower:
 
 ```bash
-    $ bower install tempus
+    $ bower install tempusjs
 ```
 Or download some release here https://github.com/crusat/tempus-js/releases
 
