@@ -2663,4 +2663,4 @@
         root.tempus = tempus;
     }
 
-})();
+}).call(this); // window or exports
