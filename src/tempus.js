@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.14
+ * @version 0.2.15
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -163,6 +163,126 @@
                 "THURSDAY_LONG": "Thursday",
                 "FRIDAY_LONG": "Friday",
                 "SATURDAY_LONG": "Saturday"
+            },
+            "ru": {
+                "JANUARY_SHORT": "Янв",
+                "FEBRUARY_SHORT": "Фев",
+                "MARCH_SHORT": "Мар",
+                "APRIL_SHORT": "Апр",
+                "MAY_SHORT": "Май",
+                "JUNE_SHORT": "Июн",
+                "JULY_SHORT": "Июл",
+                "AUGUST_SHORT": "Авг",
+                "SEPTEMBER_SHORT": "Сен",
+                "OCTOBER_SHORT": "Окт",
+                "NOVEMBER_SHORT": "Ноя",
+                "DECEMBER_SHORT": "Дек",
+                "JANUARY_LONG": "Январь",
+                "FEBRUARY_LONG": "Февраль",
+                "MARCH_LONG": "Март",
+                "APRIL_LONG": "Апрель",
+                "MAY_LONG": "Май",
+                "JUNE_LONG": "Июнь",
+                "JULY_LONG": "Июль",
+                "AUGUST_LONG": "Август",
+                "SEPTEMBER_LONG": "Сентябрь",
+                "OCTOBER_LONG": "Октябрь",
+                "NOVEMBER_LONG": "Ноябрь",
+                "DECEMBER_LONG": "Декабрь",
+                "SUNDAY_SHORT": "Вс",
+                "MONDAY_SHORT": "Пн",
+                "TUESDAY_SHORT": "Вт",
+                "WEDNESDAY_SHORT": "Ср",
+                "THURSDAY_SHORT": "Чт",
+                "FRIDAY_SHORT": "Пт",
+                "SATURDAY_SHORT": "Сб",
+                "SUNDAY_LONG": "Воскресенье",
+                "MONDAY_LONG": "Понедельник",
+                "TUESDAY_LONG": "Вторник",
+                "WEDNESDAY_LONG": "Среда",
+                "THURSDAY_LONG": "Четверг",
+                "FRIDAY_LONG": "Пятница",
+                "SATURDAY_LONG": "Суббота"
+            },
+            "ua": {
+                "JANUARY_SHORT": "Січ",
+                "FEBRUARY_SHORT": "Лют",
+                "MARCH_SHORT": "Берез",
+                "APRIL_SHORT": "Квіт",
+                "MAY_SHORT": "Трав",
+                "JUNE_SHORT": "Черв",
+                "JULY_SHORT": "Лип",
+                "AUGUST_SHORT": "Серп",
+                "SEPTEMBER_SHORT": "Верес",
+                "OCTOBER_SHORT": "Жовт",
+                "NOVEMBER_SHORT": "Листоп",
+                "DECEMBER_SHORT": "Груд",
+                "JANUARY_LONG": "Січень",
+                "FEBRUARY_LONG": "Лютий",
+                "MARCH_LONG": "Березень",
+                "APRIL_LONG": "Квітень",
+                "MAY_LONG": "Травень",
+                "JUNE_LONG": "Червень",
+                "JULY_LONG": "Липень",
+                "AUGUST_LONG": "Серпень",
+                "SEPTEMBER_LONG": "Вересень",
+                "OCTOBER_LONG": "Жовтень",
+                "NOVEMBER_LONG": "Листопад",
+                "DECEMBER_LONG": "Грудень",
+                "SUNDAY_SHORT": "Нд",
+                "MONDAY_SHORT": "Пн",
+                "TUESDAY_SHORT": "Вт",
+                "WEDNESDAY_SHORT": "Ср",
+                "THURSDAY_SHORT": "Чт",
+                "FRIDAY_SHORT": "Пт",
+                "SATURDAY_SHORT": "Сб",
+                "SUNDAY_LONG": "Неділя",
+                "MONDAY_LONG": "Понеділок",
+                "TUESDAY_LONG": "Вівторок",
+                "WEDNESDAY_LONG": "Середа",
+                "THURSDAY_LONG": "Четвер",
+                "FRIDAY_LONG": "П’ятниця",
+                "SATURDAY_LONG": "Субота"
+            },
+            "de": {
+                "JANUARY_SHORT": "Jan",
+                "FEBRUARY_SHORT": "Feb",
+                "MARCH_SHORT": "März",
+                "APRIL_SHORT": "Apr",
+                "MAY_SHORT": "Mai",
+                "JUNE_SHORT": "Juni",
+                "JULY_SHORT": "Juli",
+                "AUGUST_SHORT": "Aug",
+                "SEPTEMBER_SHORT": "Sept",
+                "OCTOBER_SHORT": "Okt",
+                "NOVEMBER_SHORT": "Nov",
+                "DECEMBER_SHORT": "Dez",
+                "JANUARY_LONG": "Januar",
+                "FEBRUARY_LONG": "Februar",
+                "MARCH_LONG": "März",
+                "APRIL_LONG": "April",
+                "MAY_LONG": "Mai",
+                "JUNE_LONG": "Juni",
+                "JULY_LONG": "Juli",
+                "AUGUST_LONG": "August",
+                "SEPTEMBER_LONG": "September",
+                "OCTOBER_LONG": "Oktober",
+                "NOVEMBER_LONG": "November",
+                "DECEMBER_LONG": "Dezember",
+                "SUNDAY_SHORT": "So",
+                "MONDAY_SHORT": "Mo",
+                "TUESDAY_SHORT": "Di",
+                "WEDNESDAY_SHORT": "Mi",
+                "THURSDAY_SHORT": "Do",
+                "FRIDAY_SHORT": "Fr",
+                "SATURDAY_SHORT": "Sa",
+                "SUNDAY_LONG": "Sonntag",
+                "MONDAY_LONG": "Montag",
+                "TUESDAY_LONG": "Dienstag",
+                "WEDNESDAY_LONG": "Mittwoch",
+                "THURSDAY_LONG": "Donnerstag",
+                "FRIDAY_LONG": "Freitag",
+                "SATURDAY_LONG": "Samstag"
             }
         },
         getMonthLongNames = function () {
@@ -205,7 +325,7 @@
                 translations[lang].WEDNESDAY_LONG,
                 translations[lang].THURSDAY_LONG,
                 translations[lang].FRIDAY_LONG,
-                translations[lang].SATURDAY_LONG,
+                translations[lang].SATURDAY_LONG
             ];
         },
         getDayShortNames = function () {
@@ -216,7 +336,7 @@
                 translations[lang].WEDNESDAY_SHORT,
                 translations[lang].THURSDAY_SHORT,
                 translations[lang].FRIDAY_SHORT,
-                translations[lang].SATURDAY_SHORT,
+                translations[lang].SATURDAY_SHORT
             ];
         },
         monthLongNames,
@@ -250,26 +370,6 @@
             xhr.open("GET", path, false);
             xhr.send();
         },
-        currentLocation = (function() {
-            var scripts = document.getElementsByTagName("script"),
-                params = {},
-                url = scripts[scripts.length-1].src,
-                queryString = url.split('?').slice(1).join(''),
-                paramsArray = queryString.split('&'),
-                i,
-                len,
-                variable,
-                directory = url.split('/').slice(0, -1).join('/');
-            for (i = 0, len = paramsArray.length; i < len; i++) {
-                variable = paramsArray[i].split('=');
-                params[variable[0]] = typeof variable[1] === undefined ? '' : variable[1];
-            }
-            return {
-                src: url,
-                dir: directory,
-                params: params
-            };
-        })(),
         registeredFormats = {
             '%d': {
                 format: function (date) {
@@ -1945,7 +2045,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.14';
+    tempus.VERSION = '0.2.15';
 
     // *************************************************
     // *                                               *
@@ -2525,14 +2625,8 @@
      * tempus.loadTranslations('src/translations.json');
      *
      * ```
-     *
-     * If you don't want autoload translations, use:
-     * ```html
-     * <script type="text/javascript" src="src/tempus.js?loadTranslations=false"></script>
-     * ```
      */
     tempus.loadTranslations = function (translationsObject) {
-        var script;
         if (typeof translationsObject === 'object') { // some object
             translations = translationsObject;
         } else if (typeof translationsObject === 'string') { // url address
@@ -2543,10 +2637,7 @@
         }
     };
 
-    // autoload languages
-    if (currentLocation.params.loadTranslations !== 'false') {
-        tempus.loadTranslations(currentLocation.dir+'/translations.json');
-    }
+    // auto select language
     lang = (nav.language || nav.systemLanguage || nav.userLanguage || 'en').substr(0, 2).toLowerCase();
     if (translations[lang] === undefined) {
         lang = 'en';

@@ -1,12 +1,39 @@
 {
-    "author": "Kuznetsov Aleksey <me@akuzn.com>",
-    "name": "tempus",
-    "version": "0.2.14",
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-cli": "~0.1.11",
-        "grunt-contrib-uglify": "~0.2.2",
-        "grunt-docular": "~0.1.0",
-        "grunt-contrib-watch": "~0.5.3"
-    }
+  "name": "tempus",
+  "version": "0.2.15",
+  "description": "Easy and fast datetime library.",
+  "main": "src/tempus.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-docular": "~0.1.2",
+    "grunt-cli": "~0.1.11"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "tests/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crusat/tempus-js.git"
+  },
+  "keywords": [
+    "tempus",
+    "date",
+    "time",
+    "datetime",
+    "format",
+    "date",
+    "parse",
+    "date"
+  ],
+  "author": "Aleksey Kuznetsov <me@akuzn.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/crusat/tempus-js/issues"
+  }
 }

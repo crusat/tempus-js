@@ -1,3 +1,7 @@
+0.2.15
+- Translation are included in the main file. JSON file is removed.
+- Added to npm.
+
 0.2.14
 - Added UA and DE translation (Thanks to Valentin Kovshik).
 
