@@ -14,7 +14,7 @@ module.exports = function(grunt) {
                             id: "tempus",
                             title: "Tempus",
                             scripts: [
-                                "src/tempus.js"
+                                "src/<%= pkg.name %>.js"
                             ],
                             docs: [],
                             rank : {}
