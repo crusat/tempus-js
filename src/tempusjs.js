@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.17
+ * @version 0.2.18
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -565,8 +565,6 @@
             monthFromZero: false
         },
         TempusDate;
-
-    console.log(root);
 
     /**
      * A **TempusDate** class. Store information about some date and can be use
@@ -1524,8 +1522,8 @@
     /**
      * @doc method
      * @name TempusDate.global:get
-     * @param {string} type Can be 'Date' for returns Date object, 'DateUTC' for returns Date in UTC or default
-     *     for returns default object.
+     * @param {string} type Can be 'Date' for returns Date object, 'DateUTC' for returns Date in UTC, 'Array' for
+     *     returns Array or no arguments for returns default object.
      * @return {Date|Object} Date or default object.
      * @description
      * Get info about date.
@@ -1536,6 +1534,9 @@
      *
      * // returns object with more info
      * tempus().get();
+     *
+     * // returns Array: [2014,1,1,12,0,0,0]
+     * tempus([2014,1,1,12,0,0]).get('Array');
      * ```
      */
     TempusDate.fn.get = function (type) {
@@ -1546,6 +1547,16 @@
         case 'DateUTC':
             return new Date(Date.UTC(this.year(), this.month() - (tempus.options('monthFromZero') ? 0 : 1), this.day(), this.hours(), this.minutes(),
                 this.seconds(), this.milliseconds()));
+        case 'Array':
+            return [
+                this.year(),
+                this.month(),
+                this.day(),
+                this.hours(),
+                this.minutes(),
+                this.seconds(),
+                this.milliseconds()
+            ];
         default:
             return {
                 year: this.year(),
@@ -2048,7 +2059,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.17';
+    tempus.VERSION = '0.2.18';
 
     // *************************************************
     // *                                               *
@@ -2656,7 +2667,6 @@
     // *                                               *
     // *************************************************
 
-    console.log('exports');
     if (typeof exports !== 'undefined') {
         if (typeof module !== 'undefined' && module.exports) {
             exports = module.exports = tempus;

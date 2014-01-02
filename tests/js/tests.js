@@ -175,6 +175,7 @@
         equal(tempus().get().hours, new Date().getHours(), 'Test');
         equal(tempus().get().minutes, new Date().getMinutes(), 'Test');
         equal(tempus().get().seconds, new Date().getSeconds(), 'Test');
+        deepEqual(tempus([2014,1,1,12,0,0]).get('Array'), [2014,1,1,12,0,0,0], 'Test');
         equal(Math.floor(tempus().get('Date').getTime()/1000), Math.floor(new Date().getTime()/1000), 'Test');
         equal(Math.floor(tempus().get('DateUTC').getTime()/1000), Math.floor(new Date().getTime()/1000) - new Date().getTimezoneOffset()*60, 'Test');
     });
