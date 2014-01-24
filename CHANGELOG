@@ -1,3 +1,6 @@
+0.3.0
+
+
 0.2.18
 - get() can returns date as Array. Use get('Array').
 

@@ -2,7 +2,7 @@
  * @doc module
  * @name tempus
  * @author Aleksey Kuznetsov, me@akuzn.com
- * @version 0.2.18
+ * @version 0.3.0
  * @url https://github.com/crusat/tempus-js
  * @description
  * Library with date/time methods.
@@ -125,225 +125,44 @@
         nav = root.navigator || {},
         lang = 'en',
         translations = {
-            "en": {
-                "JANUARY_SHORT": "Jan",
-                "FEBRUARY_SHORT": "Feb",
-                "MARCH_SHORT": "Mar",
-                "APRIL_SHORT": "Apr",
-                "MAY_SHORT": "May",
-                "JUNE_SHORT": "Jun",
-                "JULY_SHORT": "Jul",
-                "AUGUST_SHORT": "Aug",
-                "SEPTEMBER_SHORT": "Sep",
-                "OCTOBER_SHORT": "Oct",
-                "NOVEMBER_SHORT": "Nov",
-                "DECEMBER_SHORT": "Dec",
-                "JANUARY_LONG": "January",
-                "FEBRUARY_LONG": "February",
-                "MARCH_LONG": "March",
-                "APRIL_LONG": "April",
-                "MAY_LONG": "May",
-                "JUNE_LONG": "June",
-                "JULY_LONG": "July",
-                "AUGUST_LONG": "August",
-                "SEPTEMBER_LONG": "September",
-                "OCTOBER_LONG": "October",
-                "NOVEMBER_LONG": "November",
-                "DECEMBER_LONG": "December",
-                "SUNDAY_SHORT": "Sun",
-                "MONDAY_SHORT": "Mon",
-                "TUESDAY_SHORT": "Tue",
-                "WEDNESDAY_SHORT": "Wed",
-                "THURSDAY_SHORT": "Thu",
-                "FRIDAY_SHORT": "Fri",
-                "SATURDAY_SHORT": "Sat",
-                "SUNDAY_LONG": "Sunday",
-                "MONDAY_LONG": "Monday",
-                "TUESDAY_LONG": "Tuesday",
-                "WEDNESDAY_LONG": "Wednesday",
-                "THURSDAY_LONG": "Thursday",
-                "FRIDAY_LONG": "Friday",
-                "SATURDAY_LONG": "Saturday"
+            'en': {
+                monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                monthLongNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
+                'October', 'November', 'December'],
+                dayShortNames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                dayLongNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                zodiac: ['The Ram', 'The Bull', 'The Twins', 'The Crab', 'The Lion', 'The Maiden', 'The Scales',
+                'The Scorpion', 'The Archer', 'The Sea-Goat', 'The Water-Bearer', 'The Fishes']
             },
-            "ru": {
-                "JANUARY_SHORT": "Янв",
-                "FEBRUARY_SHORT": "Фев",
-                "MARCH_SHORT": "Мар",
-                "APRIL_SHORT": "Апр",
-                "MAY_SHORT": "Май",
-                "JUNE_SHORT": "Июн",
-                "JULY_SHORT": "Июл",
-                "AUGUST_SHORT": "Авг",
-                "SEPTEMBER_SHORT": "Сен",
-                "OCTOBER_SHORT": "Окт",
-                "NOVEMBER_SHORT": "Ноя",
-                "DECEMBER_SHORT": "Дек",
-                "JANUARY_LONG": "Январь",
-                "FEBRUARY_LONG": "Февраль",
-                "MARCH_LONG": "Март",
-                "APRIL_LONG": "Апрель",
-                "MAY_LONG": "Май",
-                "JUNE_LONG": "Июнь",
-                "JULY_LONG": "Июль",
-                "AUGUST_LONG": "Август",
-                "SEPTEMBER_LONG": "Сентябрь",
-                "OCTOBER_LONG": "Октябрь",
-                "NOVEMBER_LONG": "Ноябрь",
-                "DECEMBER_LONG": "Декабрь",
-                "SUNDAY_SHORT": "Вс",
-                "MONDAY_SHORT": "Пн",
-                "TUESDAY_SHORT": "Вт",
-                "WEDNESDAY_SHORT": "Ср",
-                "THURSDAY_SHORT": "Чт",
-                "FRIDAY_SHORT": "Пт",
-                "SATURDAY_SHORT": "Сб",
-                "SUNDAY_LONG": "Воскресенье",
-                "MONDAY_LONG": "Понедельник",
-                "TUESDAY_LONG": "Вторник",
-                "WEDNESDAY_LONG": "Среда",
-                "THURSDAY_LONG": "Четверг",
-                "FRIDAY_LONG": "Пятница",
-                "SATURDAY_LONG": "Суббота"
+            'ru': {
+                monthShortNames: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+                monthLongNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь',
+                    'Октябрь', 'Ноябрь', 'Декабрь'],
+                dayShortNames: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                dayLongNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+                zodiac: ['Овен', 'Телец', 'Близнецы', 'Рак', 'Лев', 'Дева', 'Весы',
+                    'Скорпион', 'Стрелец', 'Козерог', 'Водолей', 'Рыбы']
             },
-            "ua": {
-                "JANUARY_SHORT": "Січ",
-                "FEBRUARY_SHORT": "Лют",
-                "MARCH_SHORT": "Берез",
-                "APRIL_SHORT": "Квіт",
-                "MAY_SHORT": "Трав",
-                "JUNE_SHORT": "Черв",
-                "JULY_SHORT": "Лип",
-                "AUGUST_SHORT": "Серп",
-                "SEPTEMBER_SHORT": "Верес",
-                "OCTOBER_SHORT": "Жовт",
-                "NOVEMBER_SHORT": "Листоп",
-                "DECEMBER_SHORT": "Груд",
-                "JANUARY_LONG": "Січень",
-                "FEBRUARY_LONG": "Лютий",
-                "MARCH_LONG": "Березень",
-                "APRIL_LONG": "Квітень",
-                "MAY_LONG": "Травень",
-                "JUNE_LONG": "Червень",
-                "JULY_LONG": "Липень",
-                "AUGUST_LONG": "Серпень",
-                "SEPTEMBER_LONG": "Вересень",
-                "OCTOBER_LONG": "Жовтень",
-                "NOVEMBER_LONG": "Листопад",
-                "DECEMBER_LONG": "Грудень",
-                "SUNDAY_SHORT": "Нд",
-                "MONDAY_SHORT": "Пн",
-                "TUESDAY_SHORT": "Вт",
-                "WEDNESDAY_SHORT": "Ср",
-                "THURSDAY_SHORT": "Чт",
-                "FRIDAY_SHORT": "Пт",
-                "SATURDAY_SHORT": "Сб",
-                "SUNDAY_LONG": "Неділя",
-                "MONDAY_LONG": "Понеділок",
-                "TUESDAY_LONG": "Вівторок",
-                "WEDNESDAY_LONG": "Середа",
-                "THURSDAY_LONG": "Четвер",
-                "FRIDAY_LONG": "П’ятниця",
-                "SATURDAY_LONG": "Субота"
+            'ua': {
+                monthShortNames: ['Січ', 'Лют', 'Берез', 'Квіт', 'Трав', 'Черв', 'Лип', 'Серп', 'Верес', 'Жовт',
+                    'Листоп', 'Груд'],
+                monthLongNames: ['Січень', 'Лютий', 'Березень', 'Квітень', 'Травень', 'Червень', 'Липень',
+                    'Серпень', 'Вересень', 'Жовтень', 'Листопад', 'Грудень'],
+                dayShortNames: ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                dayLongNames: ['Неділя', 'Понеділок', 'Вівторок', 'Середа', 'Четвер', 'П’ятниця', 'Субота'],
+                zodiac: ['Овен', 'Телець', 'Близнята', 'Рак', 'Лев', 'Діва', 'Терези',
+                    'Скорпіон', 'Стрілець', 'Козоріг', 'Водолій', 'Риби']
             },
-            "de": {
-                "JANUARY_SHORT": "Jan",
-                "FEBRUARY_SHORT": "Feb",
-                "MARCH_SHORT": "März",
-                "APRIL_SHORT": "Apr",
-                "MAY_SHORT": "Mai",
-                "JUNE_SHORT": "Juni",
-                "JULY_SHORT": "Juli",
-                "AUGUST_SHORT": "Aug",
-                "SEPTEMBER_SHORT": "Sept",
-                "OCTOBER_SHORT": "Okt",
-                "NOVEMBER_SHORT": "Nov",
-                "DECEMBER_SHORT": "Dez",
-                "JANUARY_LONG": "Januar",
-                "FEBRUARY_LONG": "Februar",
-                "MARCH_LONG": "März",
-                "APRIL_LONG": "April",
-                "MAY_LONG": "Mai",
-                "JUNE_LONG": "Juni",
-                "JULY_LONG": "Juli",
-                "AUGUST_LONG": "August",
-                "SEPTEMBER_LONG": "September",
-                "OCTOBER_LONG": "Oktober",
-                "NOVEMBER_LONG": "November",
-                "DECEMBER_LONG": "Dezember",
-                "SUNDAY_SHORT": "So",
-                "MONDAY_SHORT": "Mo",
-                "TUESDAY_SHORT": "Di",
-                "WEDNESDAY_SHORT": "Mi",
-                "THURSDAY_SHORT": "Do",
-                "FRIDAY_SHORT": "Fr",
-                "SATURDAY_SHORT": "Sa",
-                "SUNDAY_LONG": "Sonntag",
-                "MONDAY_LONG": "Montag",
-                "TUESDAY_LONG": "Dienstag",
-                "WEDNESDAY_LONG": "Mittwoch",
-                "THURSDAY_LONG": "Donnerstag",
-                "FRIDAY_LONG": "Freitag",
-                "SATURDAY_LONG": "Samstag"
+            'de': {
+                monthShortNames: ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sept', 'Okt', 'Nov', 'Dez'],
+                monthLongNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September',
+                    'Oktober', 'November', 'Dezember'],
+                dayShortNames: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+                dayLongNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+                zodiac: ['The Ram', 'The Bull', 'The Twins', 'The Crab', 'The Lion', 'The Maiden', 'The Scales',
+                    'The Scorpion', 'The Archer', 'The Sea-Goat', 'The Water-Bearer', 'The Fishes']
             }
         },
-        getMonthLongNames = function () {
-            return [
-                translations[lang].JANUARY_LONG,
-                translations[lang].FEBRUARY_LONG,
-                translations[lang].MARCH_LONG,
-                translations[lang].APRIL_LONG,
-                translations[lang].MAY_LONG,
-                translations[lang].JUNE_LONG,
-                translations[lang].JULY_LONG,
-                translations[lang].AUGUST_LONG,
-                translations[lang].SEPTEMBER_LONG,
-                translations[lang].OCTOBER_LONG,
-                translations[lang].NOVEMBER_LONG,
-                translations[lang].DECEMBER_LONG
-            ];
-        },
-        getMonthShortNames = function() {
-            return [
-                translations[lang].JANUARY_SHORT,
-                translations[lang].FEBRUARY_SHORT,
-                translations[lang].MARCH_SHORT,
-                translations[lang].APRIL_SHORT,
-                translations[lang].MAY_SHORT,
-                translations[lang].JUNE_SHORT,
-                translations[lang].JULY_SHORT,
-                translations[lang].AUGUST_SHORT,
-                translations[lang].SEPTEMBER_SHORT,
-                translations[lang].OCTOBER_SHORT,
-                translations[lang].NOVEMBER_SHORT,
-                translations[lang].DECEMBER_SHORT
-            ];
-        },
-        getDayLongNames = function () {
-            return [
-                translations[lang].SUNDAY_LONG,
-                translations[lang].MONDAY_LONG,
-                translations[lang].TUESDAY_LONG,
-                translations[lang].WEDNESDAY_LONG,
-                translations[lang].THURSDAY_LONG,
-                translations[lang].FRIDAY_LONG,
-                translations[lang].SATURDAY_LONG
-            ];
-        },
-        getDayShortNames = function () {
-            return [
-                translations[lang].SUNDAY_SHORT,
-                translations[lang].MONDAY_SHORT,
-                translations[lang].TUESDAY_SHORT,
-                translations[lang].WEDNESDAY_SHORT,
-                translations[lang].THURSDAY_SHORT,
-                translations[lang].FRIDAY_SHORT,
-                translations[lang].SATURDAY_SHORT
-            ];
-        },
-        monthLongNames,
-        monthShortNames,
-        dayLongNames,
-        dayShortNames,
         loadJSON = function (path, success, error) {
             var xhr;
             if (root.XMLHttpRequest) {
@@ -423,7 +242,7 @@
             '%a': {
                 format: function (date) {
                     var d = date.dayOfWeek();
-                    return dayShortNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
+                    return translations[lang]['dayShortNames'][d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
                 },
                 parse: function () {
                     // impossible
@@ -436,7 +255,7 @@
             '%A': {
                 format: function (date) {
                     var d = date.dayOfWeek();
-                    return dayLongNames[d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
+                    return translations[lang]['dayLongNames'][d !== undefined ? d : tempus.MIN_DAY_OF_WEEK];
                 },
                 parse: function () {
                     // impossible
@@ -449,7 +268,7 @@
             '%b': {
                 format: function (date) {
                     var m = tempus.options('monthFromZero') ? date.month() : date.month()-1;
-                    return monthShortNames[m !== undefined ? m : tempus.MIN_MONTH];
+                    return translations[lang]['monthShortNames'][m !== undefined ? m : tempus.MIN_MONTH];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames().indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
@@ -462,7 +281,7 @@
             '%B': {
                 format: function (date) {
                     var m = tempus.options('monthFromZero') ? date.month() : date.month()-1;
-                    return monthLongNames[m !== undefined ? m : tempus.MIN_MONTH];
+                    return translations[lang]['monthLongNames'][m !== undefined ? m : tempus.MIN_MONTH];
                 },
                 parse: function (value) {
                     var month = tempus.monthNames(true).indexOf(value) + (tempus.options('monthFromZero') ? 0 : 1);
@@ -1469,9 +1288,9 @@
     TempusDate.fn.dayOfWeek = function (type) {
 
         if (type === 'long') {
-            return dayLongNames[this._d.getDay()];
+            return translations[lang]['dayLongNames'][this._d.getDay()];
         } else if (type === 'short') {
-            return dayShortNames[this._d.getDay()];
+            return translations[lang]['dayShortNames'][this._d.getDay()];
         } else if (type === undefined) {
             return this._d.getDay();
         } else if (type === 0 || type === 'Sunday') {
@@ -2059,7 +1878,7 @@
      * tempus.VERSION;
      * ```
      */
-    tempus.VERSION = '0.2.18';
+    tempus.VERSION = '0.3.0';
 
     // *************************************************
     // *                                               *
@@ -2397,9 +2216,9 @@
     tempus.monthNames = function (type) {
         switch (type) {
         case 'long':
-            return monthLongNames;
+            return translations[lang]['monthLongNames'];
         default:
-            return monthShortNames;
+            return translations[lang]['monthShortNames'];
         }
     };
 
@@ -2426,9 +2245,9 @@
     tempus.dayNames = function (type) {
         switch (type) {
         case 'long':
-            return dayLongNames;
+            return translations[lang]['dayLongNames'];
         default:
-            return dayShortNames;
+            return translations[lang]['dayShortNames'];
         }
     };
 
@@ -2457,10 +2276,6 @@
             if (translations[lang] === undefined) {
                 lang = 'en';
             }
-            monthLongNames = getMonthLongNames();
-            monthShortNames = getMonthShortNames();
-            dayLongNames = getDayLongNames();
-            dayShortNames = getDayShortNames();
         } else {
             return lang;
         }
@@ -2656,10 +2471,6 @@
     if (translations[lang] === undefined) {
         lang = 'en';
     }
-    monthLongNames = getMonthLongNames();
-    monthShortNames = getMonthShortNames();
-    dayLongNames = getDayLongNames();
-    dayShortNames = getDayShortNames();
 
     // *************************************************
     // *                                               *
