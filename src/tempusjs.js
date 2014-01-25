@@ -159,8 +159,8 @@
                     'Oktober', 'November', 'Dezember'],
                 dayShortNames: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
                 dayLongNames: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
-                zodiac: ['The Ram', 'The Bull', 'The Twins', 'The Crab', 'The Lion', 'The Maiden', 'The Scales',
-                    'The Scorpion', 'The Archer', 'The Sea-Goat', 'The Water-Bearer', 'The Fishes']
+                zodiac: ['Widder', 'Stier', 'Zwillinge', 'Krebs', 'Löwe', 'Jungfrau', 'Waage',
+                    'Skorpion', 'Schütze', 'Steinbock', 'Wassermann', 'Fische']
             }
         },
         loadJSON = function (path, success, error) {
